@@ -103,6 +103,9 @@
             </intent-filter>
         </activity>
 
+        <activity android:name="com.android.launcher2.preference.Preferences"
+            android:label="@string/preferences_title" />
+
         <!-- Intent received used to install shortcuts from other applications -->
         <receiver
             android:name="com.android.launcher2.InstallShortcutReceiver"
