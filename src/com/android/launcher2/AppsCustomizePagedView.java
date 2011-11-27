@@ -743,16 +743,12 @@ public class AppsCustomizePagedView extends PagedViewWithDraggableItems implemen
      * page much higher priority)
      */
     private int getThreadPriorityForPage(int page) {
-        // TODO-APPS_CUSTOMIZE: detect number of cores and set thread priorities accordingly below
         int pageDiff = Math.abs(page - mCurrentPage);
         if (pageDiff <= 0) {
-            // return Process.THREAD_PRIORITY_DEFAULT;
-            return Process.THREAD_PRIORITY_MORE_FAVORABLE;
+            return Process.THREAD_PRIORITY_FOREGROUND;
         } else if (pageDiff <= 1) {
-            // return Process.THREAD_PRIORITY_BACKGROUND;
-            return Process.THREAD_PRIORITY_DEFAULT;
+            return Process.THREAD_PRIORITY_MORE_FAVORABLE;
         } else {
-            // return Process.THREAD_PRIORITY_LOWEST;
             return Process.THREAD_PRIORITY_DEFAULT;
         }
     }
