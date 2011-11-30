@@ -4,10 +4,16 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 public final class PreferencesProvider {
-    private static final String PREFERENCES_FILE = "com.android.launcher2_preferences";
+    public static final String PREFERENCES_KEY = "com.android.launcher_preferences";
+
+    public static final String PREFERENCES_CHANGED = "preferences_changed";
+
     public static class Interface {
         public static class Homescreen {
-
+            public static boolean getShowSearchBar(Context context) {
+                final SharedPreferences preferences = context.getSharedPreferences(PREFERENCES_KEY, 0);
+                return preferences.getBoolean("ui_homescreen_general_search", true);
+            }
         }
 
         public static class Drawer {

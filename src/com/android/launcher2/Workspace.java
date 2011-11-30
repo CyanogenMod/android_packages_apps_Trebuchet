@@ -33,6 +33,7 @@ import android.content.ClipDescription;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
@@ -65,6 +66,7 @@ import android.widget.Toast;
 import com.android.launcher.R;
 import com.android.launcher2.FolderIcon.FolderRingAnimator;
 import com.android.launcher2.InstallWidgetReceiver.WidgetMimeTypeHandlerData;
+import com.android.launcher2.preference.PreferencesProvider;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -236,6 +238,9 @@ public class Workspace extends SmoothPagedView
     private float[] mNewRotationYs;
     private float mTransitionProgress;
 
+    // Preferences
+    private boolean mShowSearchBar;
+
     /**
      * Used to inflate the Workspace from XML.
      *
@@ -307,6 +312,9 @@ public class Workspace extends SmoothPagedView
         LauncherModel.updateWorkspaceLayoutCells(cellCountX, cellCountY);
         setHapticFeedbackEnabled(false);
 
+        // Preferences
+        mShowSearchBar = PreferencesProvider.Interface.Homescreen.getShowSearchBar(context);
+
         mLauncher = (Launcher) context;
         initWorkspace();
 
@@ -349,11 +357,20 @@ public class Workspace extends SmoothPagedView
         setWillNotDraw(false);
         setChildrenDrawnWithCacheEnabled(true);
 
+        final Resources res = getResources();
+
         try {
-            final Resources res = getResources();
             mBackground = res.getDrawable(R.drawable.apps_customize_bg);
         } catch (Resources.NotFoundException e) {
             // In this case, we will skip drawing background protection
+        }
+
+        if (!mShowSearchBar) {
+            int paddingTop = 0;
+            if (mLauncher.getCurrentOrientation() == Configuration.ORIENTATION_PORTRAIT) {
+                paddingTop = (int)res.getDimension(R.dimen.qsb_bar_hidden_inset);
+            }
+            setPadding(0, paddingTop, getPaddingRight(), getPaddingBottom());
         }
 
         mChangeStateAnimationListener = new AnimatorListenerAdapter() {
@@ -3462,19 +3479,27 @@ public class Workspace extends SmoothPagedView
         final View qsbDivider = (ImageView) (parent.findViewById(R.id.qsb_divider));
         final View dockDivider = (ImageView) (parent.findViewById(R.id.dock_divider));
         if (qsbDivider != null && dockDivider != null) {
-            qsbDivider.setVisibility(View.VISIBLE);
+            if (mShowSearchBar) {
+                qsbDivider.setVisibility(View.VISIBLE);
+            }
             dockDivider.setVisibility(View.VISIBLE);
             if (mDividerAnimator != null) {
                 mDividerAnimator.cancel();
                 mDividerAnimator = null;
             }
             if (immediately) {
-                qsbDivider.setAlpha(1f);
+                if (mShowSearchBar) {
+                    qsbDivider.setAlpha(1f);
+                }
                 dockDivider.setAlpha(1f);
             } else {
                 mDividerAnimator = new AnimatorSet();
-                mDividerAnimator.playTogether(ObjectAnimator.ofFloat(qsbDivider, "alpha", 1f),
-                        ObjectAnimator.ofFloat(dockDivider, "alpha", 1f));
+                if (mShowSearchBar) {
+                    mDividerAnimator.playTogether(ObjectAnimator.ofFloat(qsbDivider, "alpha", 1f),
+                            ObjectAnimator.ofFloat(dockDivider, "alpha", 1f));
+                } else {
+                    mDividerAnimator.play(ObjectAnimator.ofFloat(dockDivider, "alpha", 1f));
+                }
                 mDividerAnimator.setDuration(sScrollIndicatorFadeInDuration);
                 mDividerAnimator.start();
             }
@@ -3491,14 +3516,20 @@ public class Workspace extends SmoothPagedView
                 mDividerAnimator = null;
             }
             if (immediately) {
-                qsbDivider.setVisibility(View.GONE);
+                if (mShowSearchBar) {
+                    qsbDivider.setVisibility(View.GONE);
+                    qsbDivider.setAlpha(0f);
+                }
                 dockDivider.setVisibility(View.GONE);
-                qsbDivider.setAlpha(0f);
                 dockDivider.setAlpha(0f);
             } else {
                 mDividerAnimator = new AnimatorSet();
-                mDividerAnimator.playTogether(ObjectAnimator.ofFloat(qsbDivider, "alpha", 0f),
-                        ObjectAnimator.ofFloat(dockDivider, "alpha", 0f));
+                if (mShowSearchBar) {
+                    mDividerAnimator.playTogether(ObjectAnimator.ofFloat(qsbDivider, "alpha", 0f),
+                            ObjectAnimator.ofFloat(dockDivider, "alpha", 0f));
+                } else {
+                    mDividerAnimator.play(ObjectAnimator.ofFloat(dockDivider, "alpha", 0f));
+                }
                 mDividerAnimator.addListener(new AnimatorListenerAdapter() {
                     private boolean cancelled = false;
                     @Override
@@ -3508,7 +3539,9 @@ public class Workspace extends SmoothPagedView
                     @Override
                     public void onAnimationEnd(android.animation.Animator animation) {
                         if (!cancelled) {
-                            qsbDivider.setVisibility(View.GONE);
+                            if (mShowSearchBar) {
+                                qsbDivider.setVisibility(View.GONE);
+                            }
                             dockDivider.setVisibility(View.GONE);
                         }
                     }
