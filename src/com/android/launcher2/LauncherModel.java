@@ -812,9 +812,9 @@ public class LauncherModel extends BroadcastReceiver {
                 // starving at boot time. Staring at a blank home is not cool.
                 synchronized (mLock) {
                     if (DEBUG_LOADERS) Log.d(TAG, "Setting thread priority to " +
-                            (mIsLaunching ? "DEFAULT" : "BACKGROUND"));
+                            (mIsLaunching ? "FOREGROUND" : "DEFAULT"));
                     android.os.Process.setThreadPriority(mIsLaunching
-                            ? Process.THREAD_PRIORITY_DEFAULT : Process.THREAD_PRIORITY_BACKGROUND);
+                            ? Process.THREAD_PRIORITY_FOREGROUND : Process.THREAD_PRIORITY_DEFAULT);
                 }
                 if (loadWorkspaceFirst) {
                     if (DEBUG_LOADERS) Log.d(TAG, "step 1: loading workspace");
