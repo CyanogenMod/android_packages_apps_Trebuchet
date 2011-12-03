@@ -13,6 +13,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import com.android.launcher.R;
+import com.android.launcher2.preference.PreferencesProvider;
 
 public class AppWidgetResizeFrame extends FrameLayout {
 
@@ -116,6 +117,11 @@ public class AppWidgetResizeFrame extends FrameLayout {
         mWidgetPaddingTop = p.top;
         mWidgetPaddingRight = p.right;
         mWidgetPaddingBottom = p.bottom;
+
+        // Resize any widget
+        if (PreferencesProvider.Interface.Homescreen.getResizeAnyWidget(context)) {
+            mResizeMode = AppWidgetProviderInfo.RESIZE_BOTH;
+        }
 
         if (mResizeMode == AppWidgetProviderInfo.RESIZE_HORIZONTAL) {
             mTopHandle.setVisibility(GONE);
