@@ -75,5 +75,7 @@
 
     <!-- Application -->
     <PreferenceCategory android:title="@string/preferences_application_title">
+        <Preference android:key="application_version"
+            android:summary="@string/application_copyright" />
     </PreferenceCategory>
 </PreferenceScreen>

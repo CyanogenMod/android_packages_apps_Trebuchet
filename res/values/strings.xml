@@ -21,7 +21,12 @@
     <!-- General -->
     <skip />
     <!-- Application name -->
-    <string name="application_name">Launcher</string>
+    <string name="application_name" translateable="false">Trebuchet</string>
+    <!-- Application copyright -->
+    <string name="application_copyright">Copyright \u00A9 CyanogenMod 2012</string>
+    <!-- Application version -->
+    <string name="application_version">0.1</string>
+
     <!-- Name for all applications running as this uid. -->
     <string name="uid_name">Android Core Apps</string>
     <!-- Default folder name -->

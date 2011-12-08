@@ -19,7 +19,8 @@
 -->
 <manifest
     xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.android.launcher">
+    package="com.android.launcher"
+    android:versionName="@string/application_version">
 
     <original-package android:name="com.android.launcher2" />
 
