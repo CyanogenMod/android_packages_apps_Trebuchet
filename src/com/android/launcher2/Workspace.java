@@ -242,6 +242,7 @@ public class Workspace extends SmoothPagedView
     private boolean mShowSearchBar;
     private boolean mResizeAnyWidget;
     private boolean mShowScrollingIndicator;
+    private boolean mFadeScrollingIndicator;
 
     /**
      * Used to inflate the Workspace from XML.
@@ -318,6 +319,7 @@ public class Workspace extends SmoothPagedView
         mShowSearchBar = PreferencesProvider.Interface.Homescreen.getShowSearchBar(context);
         mResizeAnyWidget = PreferencesProvider.Interface.Homescreen.getResizeAnyWidget(context);
         mShowScrollingIndicator = PreferencesProvider.Interface.Homescreen.getShowScrollingIndicator(context);
+        mFadeScrollingIndicator = PreferencesProvider.Interface.Homescreen.getFadeScrollingIndicator(context);
 
         mLauncher = (Launcher) context;
         initWorkspace();
@@ -686,7 +688,9 @@ public class Workspace extends SmoothPagedView
     }
 
     protected void onPageEndMoving() {
-        super.onPageEndMoving();
+        if (mFadeScrollingIndicator) {
+            hideScrollingIndicator(false);
+        }
 
         if (isHardwareAccelerated()) {
             updateChildrenLayersEnabled();
@@ -715,6 +719,15 @@ public class Workspace extends SmoothPagedView
         super.notifyPageSwitchListener();
         Launcher.setScreen(mCurrentPage);
     };
+
+    @Override
+    protected void flashScrollingIndicator() {
+        if (mFadeScrollingIndicator) {
+            super.flashScrollingIndicator();
+        } else {
+            showScrollingIndicator(true);
+        }
+    }
 
     // As a ratio of screen height, the total distance we want the parallax effect to span
     // vertically
@@ -1595,7 +1608,7 @@ public class Workspace extends SmoothPagedView
             if (oldState == State.NORMAL && state == State.SMALL) {
                 zoomIn = false;
                 if (animated) {
-                    hideScrollingIndicator(true);
+                    hideScrollingIndicator(false, sScrollIndicatorFadeOutShortDuration);
                 }
                 setLayoutScale(finalScaleFactor);
                 updateChildrenLayersEnabled();

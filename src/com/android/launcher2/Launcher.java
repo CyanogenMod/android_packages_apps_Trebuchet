@@ -2410,7 +2410,6 @@ public final class Launcher extends Activity
                         ((LauncherTransitionable) fromView).onLauncherTransitionEnd(instance,
                                 alphaAnim, true);
                     }
-                    mWorkspace.hideScrollingIndicator(false);
                 }
             });
 
