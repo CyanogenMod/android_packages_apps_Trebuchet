@@ -55,13 +55,17 @@ public class AppsCustomizeTabHost extends TabHost implements LauncherTransitiona
     private boolean mInTransition;
     private boolean mResetAfterTransition;
 
+    // Preferences
     private boolean mJoinWidgetsApps;
+    private boolean mFadeScrollingIndicator;
 
     public AppsCustomizeTabHost(Context context, AttributeSet attrs) {
         super(context, attrs);
         mLayoutInflater = LayoutInflater.from(context);
 
+        // Preferences
         mJoinWidgetsApps = PreferencesProvider.Interface.Drawer.getJoinWidgetsApps(context);
+        mFadeScrollingIndicator = PreferencesProvider.Interface.Drawer.getFadeScrollingIndicator(context);
     }
 
     /**
@@ -337,7 +341,7 @@ public class AppsCustomizeTabHost extends TabHost implements LauncherTransitiona
             // Dismiss the cling if necessary
             l.dismissWorkspaceCling(null);
 
-            if (!LauncherApplication.isScreenLarge()) {
+            if (!LauncherApplication.isScreenLarge() && mFadeScrollingIndicator) {
                 mAppsCustomizePane.hideScrollingIndicator(false);
             }
         }

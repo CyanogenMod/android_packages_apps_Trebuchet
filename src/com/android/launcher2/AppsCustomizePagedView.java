@@ -235,6 +235,8 @@ public class AppsCustomizePagedView extends PagedViewWithDraggableItems implemen
 
     // Preferences
     private boolean mJoinWidgetsApps;
+    private boolean mShowScrollingIndicator;
+    private boolean mFadeScrollingIndicator;
 
     public AppsCustomizePagedView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -250,6 +252,12 @@ public class AppsCustomizePagedView extends PagedViewWithDraggableItems implemen
 
         // Preferences
         mJoinWidgetsApps = PreferencesProvider.Interface.Drawer.getJoinWidgetsApps(context);
+        mShowScrollingIndicator = PreferencesProvider.Interface.Drawer.getShowScrollingIndicator(context);
+        mFadeScrollingIndicator = PreferencesProvider.Interface.Drawer.getFadeScrollingIndicator(context);
+
+        if (!mShowScrollingIndicator) {
+            disableScrollingIndicator();
+        }
 
         // Save the default widget preview background
         Resources resources = context.getResources();
@@ -1414,11 +1422,22 @@ public class AppsCustomizePagedView extends PagedViewWithDraggableItems implemen
 
     @Override
     protected void onPageEndMoving() {
-        super.onPageEndMoving();
+        if (mFadeScrollingIndicator) {
+            hideScrollingIndicator(false);
+        }
 
         // We reset the save index when we change pages so that it will be recalculated on next
         // rotation
         mSaveInstanceStateItemIndex = -1;
+    }
+
+    @Override
+    protected void flashScrollingIndicator() {
+        if (mFadeScrollingIndicator) {
+            super.flashScrollingIndicator();
+        } else {
+            showScrollingIndicator(false);
+        }
     }
 
     /*
