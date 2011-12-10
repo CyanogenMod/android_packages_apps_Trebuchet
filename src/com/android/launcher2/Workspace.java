@@ -1168,11 +1168,12 @@ public class Workspace extends SmoothPagedView
         return Math.min(r / threshold, 1.0f);
     }
 
-    private void screenScrolledLargeUI(int screenCenter) {
-        for (int i = 0; i < getChildCount(); i++) {
+    private void screenScrolledLargeUI(int screenScroll) {
+        int currentScreen = (int) Math.floor((double) (screenScroll / (float) getMeasuredWidth()));
+        for (int i = currentScreen; i <= Math.min(getChildCount(), currentScreen + 1); i++) {
             CellLayout cl = (CellLayout) getChildAt(i);
             if (cl != null) {
-                float scrollProgress = getScrollProgress(screenCenter, cl, i);
+                float scrollProgress = getScrollProgress(screenScroll, cl, i);
                 float rotation = WORKSPACE_ROTATION * scrollProgress;
                 float translationX = getOffsetXForRotation(rotation, cl.getWidth(), cl.getHeight());
 
@@ -1203,11 +1204,11 @@ public class Workspace extends SmoothPagedView
         cl.setPivotY(cl.getMeasuredHeight() / 2);
     }
 
-    private void screenScrolledStandardUI(int screenCenter) {
+    private void screenScrolledStandardUI(int screenScroll) {
         if (mScrollX < 0 || mScrollX > mMaxScrollX) {
             int index = mScrollX < 0 ? 0 : getChildCount() - 1;
             CellLayout cl = (CellLayout) getChildAt(index);
-            float scrollProgress = getScrollProgress(screenCenter, cl, index);
+            float scrollProgress = getScrollProgress(screenScroll, cl, index);
             cl.setOverScrollAmount(Math.abs(scrollProgress), index == 0);
             float translationX = index == 0 ? mScrollX : - (mMaxScrollX - mScrollX);
             float rotation = - WORKSPACE_OVERSCROLL_ROTATION * scrollProgress;
@@ -1225,12 +1226,12 @@ public class Workspace extends SmoothPagedView
     }
 
     @Override
-    protected void screenScrolled(int screenCenter) {
-        super.screenScrolled(screenCenter);
+    protected void screenScrolled(int screenScroll) {
+        super.screenScrolled(screenScroll);
         if (LauncherApplication.isScreenLarge()) {
-            screenScrolledLargeUI(screenCenter);
+            screenScrolledLargeUI(screenScroll);
         } else {
-            screenScrolledStandardUI(screenCenter);
+            screenScrolledStandardUI(screenScroll);
         }
     }
 

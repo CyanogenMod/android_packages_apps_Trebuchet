@@ -19,13 +19,7 @@ package com.android.launcher2;
 import java.util.ArrayList;
 
 public interface AllAppsView {
-    public interface Watcher {
-        public void zoomed(float zoom);
-    }
-
     public void setup(Launcher launcher, DragController dragController);
-
-    public void zoom(float zoom, boolean animate);
 
     public boolean isVisible();
 
@@ -38,8 +32,7 @@ public interface AllAppsView {
     public void removeApps(ArrayList<ApplicationInfo> list);
 
     public void updateApps(ArrayList<ApplicationInfo> list);
-    
-    // Resets the AllApps page to the front
+
     public void reset();
 
     public void dumpState();

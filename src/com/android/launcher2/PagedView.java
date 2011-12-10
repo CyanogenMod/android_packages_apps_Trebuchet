@@ -93,7 +93,7 @@ public abstract class PagedView extends ViewGroup {
     protected float mLastMotionXRemainder;
     protected float mLastMotionY;
     protected float mTotalMotionX;
-    private int mLastScreenCenter = -1;
+    private int mLastScreenScroll = -1;
 
     protected final static int TOUCH_STATE_REST = 0;
     protected final static int TOUCH_STATE_SCROLLING = 1;
@@ -669,7 +669,7 @@ public abstract class PagedView extends ViewGroup {
         }
     }
 
-    protected void screenScrolled(int screenCenter) {
+    protected void screenScrolled(int screenScroll) {
         updateScrollingIndicator();
     }
 
@@ -701,13 +701,10 @@ public abstract class PagedView extends ViewGroup {
 
     @Override
     protected void dispatchDraw(Canvas canvas) {
-        int halfScreenSize = getMeasuredWidth() / 2;
-        int screenCenter = mScrollX + halfScreenSize;
-
-        if (screenCenter != mLastScreenCenter) {
-            screenScrolled(screenCenter);
+        if (mScrollX != mLastScreenScroll) {
+            screenScrolled(mScrollX);
             updateAdjacentPagesAlpha();
-            mLastScreenCenter = screenCenter;
+            mLastScreenScroll = mScrollX;
         }
 
         // Find out which screens are visible; as an optimization we only call draw on them
@@ -1013,8 +1010,9 @@ public abstract class PagedView extends ViewGroup {
         }
     }
 
-    protected float getScrollProgress(int screenCenter, View v, int page) {
+    protected float getScrollProgress(int screenScroll, View v, int page) {
         final int halfScreenSize = getMeasuredWidth() / 2;
+        int screenCenter = screenScroll + getMeasuredWidth() / 2;
 
         int totalDistance = getScaledMeasuredWidth(v) + mPageSpacing;
         int delta = screenCenter - (getChildOffset(page) -

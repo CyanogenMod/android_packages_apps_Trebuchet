@@ -109,7 +109,7 @@ import java.util.HashMap;
  */
 public final class Launcher extends Activity
         implements View.OnClickListener, OnLongClickListener, LauncherModel.Callbacks,
-                   AllAppsView.Watcher, View.OnTouchListener {
+                   View.OnTouchListener {
     static final String TAG = "Launcher";
     static final boolean LOGD = false;
 
@@ -2166,13 +2166,6 @@ public final class Launcher extends Activity
     // Now a part of LauncherModel.Callbacks. Used to reorder loading steps.
     public boolean isAllAppsVisible() {
         return (mState == State.APPS_CUSTOMIZE);
-    }
-
-    // AllAppsView.Watcher
-    public void zoomed(float zoom) {
-        if (zoom == 1.0f) {
-            mWorkspace.setVisibility(View.GONE);
-        }
     }
 
     /**
