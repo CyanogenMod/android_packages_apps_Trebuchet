@@ -489,6 +489,15 @@ public class FolderIcon extends FrameLayout implements FolderListener {
         if (d.dragInfo instanceof AppInfo) {
             // Came from all apps -- make a copy
             item = ((AppInfo) d.dragInfo).makeShortcut();
+        } else if (d.dragInfo instanceof FolderInfo) {
+            FolderInfo folder = (FolderInfo) d.dragInfo;
+            mFolder.notifyDrop();
+            for (ShortcutInfo fItem : folder.contents) {
+                onDrop(fItem, d.dragView, null, 1.0f, mInfo.contents.size(), d.postAnimationRunnable, d);
+            }
+            mLauncher.removeFolder(folder);
+            LauncherModel.deleteItemFromDatabase(mLauncher, folder);
+            return;
         } else {
             item = (ShortcutInfo) d.dragInfo;
         }
