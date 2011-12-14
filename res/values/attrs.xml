@@ -164,4 +164,11 @@
         <attr name="title" format="reference" />
         <attr name="uri" format="string" />
     </declare-styleable>
+
+    <declare-styleable name="NumberPickerPreference">
+        <attr name="max" format="integer" />
+        <attr name="min" format="integer" />
+        <attr name="maxExternal" format="string" />
+        <attr name="minExternal" format="string" />
+    </declare-styleable>
 </resources>
