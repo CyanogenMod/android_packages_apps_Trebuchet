@@ -68,10 +68,8 @@ public class LauncherModel extends BroadcastReceiver {
     static final boolean DEBUG_LOADERS = false;
     static final String TAG = "Launcher.Model";
 
-    private static final int ITEMS_CHUNK = 6; // batch size for the workspace icons
+    private static final int ITEMS_CHUNK = 10; // batch size for the workspace icons
     private final boolean mAppsCanBeOnExternalStorage;
-    private int mBatchSize; // 0 is all apps at once
-    private int mAllAppsLoadDelay; // milliseconds between batches
 
     private final LauncherApplication mApp;
     private final Object mLock = new Object();
@@ -151,8 +149,6 @@ public class LauncherModel extends BroadcastReceiver {
                 mIconCache.getFullResDefaultActivityIcon(), app);
 
         final Resources res = app.getResources();
-        mAllAppsLoadDelay = res.getInteger(R.integer.config_allAppsBatchLoadDelay);
-        mBatchSize = res.getInteger(R.integer.config_allAppsBatchSize);
         Configuration config = res.getConfiguration();
         mPreviousConfigMcc = config.mcc;
     }
@@ -1237,9 +1233,9 @@ public class LauncherModel extends BroadcastReceiver {
 
             // Add the items to the workspace.
             N = workspaceItems.size();
-            for (int i=0; i<N; i+=ITEMS_CHUNK) {
+            for (int i = 0; i < N; i += ITEMS_CHUNK) {
                 final int start = i;
-                final int chunkSize = (i+ITEMS_CHUNK <= N) ? ITEMS_CHUNK : (N-i);
+                final int chunkSize = (i + ITEMS_CHUNK <= N) ? ITEMS_CHUNK : (N - i);
                 mHandler.post(new Runnable() {
                     public void run() {
                         Callbacks callbacks = tryGetCallbacks(oldCallbacks);
@@ -1275,7 +1271,7 @@ public class LauncherModel extends BroadcastReceiver {
             final int currentScreen = oldCallbacks.getCurrentWorkspaceScreen();
             N = sAppWidgets.size();
             // once for the current screen
-            for (int i=0; i<N; i++) {
+            for (int i = 0; i < N; i++) {
                 final LauncherAppWidgetInfo widget = sAppWidgets.get(i);
                 if (widget.screen == currentScreen) {
                     mHandler.post(new Runnable() {
@@ -1388,7 +1384,6 @@ public class LauncherModel extends BroadcastReceiver {
 
             int startIndex;
             int i=0;
-            int batchSize = -1;
             while (i < N && !mStopped) {
                 if (i == 0) {
                     mAllAppsList.clear();
@@ -1409,11 +1404,6 @@ public class LauncherModel extends BroadcastReceiver {
                         // There are no apps?!?
                         return;
                     }
-                    if (mBatchSize == 0) {
-                        batchSize = N;
-                    } else {
-                        batchSize = mBatchSize;
-                    }
 
                     final long sortTime = DEBUG_LOADERS ? SystemClock.uptimeMillis() : 0;
                     Collections.sort(apps,
@@ -1427,14 +1417,14 @@ public class LauncherModel extends BroadcastReceiver {
                 final long t2 = DEBUG_LOADERS ? SystemClock.uptimeMillis() : 0;
 
                 startIndex = i;
-                for (int j=0; i<N && j<batchSize; j++) {
+                for (int j = 0; i < N && j < N; j++) {
                     // This builds the icon bitmaps.
                     mAllAppsList.add(new ApplicationInfo(packageManager, apps.get(i),
                             mIconCache, mLabelCache));
                     i++;
                 }
 
-                final boolean first = i <= batchSize;
+                final boolean first = i <= N;
                 final Callbacks callbacks = tryGetCallbacks(oldCallbacks);
                 final ArrayList<ApplicationInfo> added = mAllAppsList.added;
                 mAllAppsList.added = new ArrayList<ApplicationInfo>();
@@ -1462,21 +1452,11 @@ public class LauncherModel extends BroadcastReceiver {
                     Log.d(TAG, "batch of " + (i-startIndex) + " icons processed in "
                             + (SystemClock.uptimeMillis()-t2) + "ms");
                 }
-
-                if (mAllAppsLoadDelay > 0 && i < N) {
-                    try {
-                        if (DEBUG_LOADERS) {
-                            Log.d(TAG, "sleeping for " + mAllAppsLoadDelay + "ms");
-                        }
-                        Thread.sleep(mAllAppsLoadDelay);
-                    } catch (InterruptedException exc) { }
-                }
             }
 
             if (DEBUG_LOADERS) {
                 Log.d(TAG, "cached all " + N + " apps in "
-                        + (SystemClock.uptimeMillis()-t) + "ms"
-                        + (mAllAppsLoadDelay > 0 ? " (including delay)" : ""));
+                        + (SystemClock.uptimeMillis()-t) + "ms");
             }
         }
 
@@ -1517,20 +1497,20 @@ public class LauncherModel extends BroadcastReceiver {
             final int N = packages.length;
             switch (mOp) {
                 case OP_ADD:
-                    for (int i=0; i<N; i++) {
+                    for (int i = 0; i < N; i++) {
                         if (DEBUG_LOADERS) Log.d(TAG, "mAllAppsList.addPackage " + packages[i]);
                         mAllAppsList.addPackage(context, packages[i]);
                     }
                     break;
                 case OP_UPDATE:
-                    for (int i=0; i<N; i++) {
+                    for (int i = 0; i < N; i++) {
                         if (DEBUG_LOADERS) Log.d(TAG, "mAllAppsList.updatePackage " + packages[i]);
                         mAllAppsList.updatePackage(context, packages[i]);
                     }
                     break;
                 case OP_REMOVE:
                 case OP_UNAVAILABLE:
-                    for (int i=0; i<N; i++) {
+                    for (int i = 0; i < N; i++) {
                         if (DEBUG_LOADERS) Log.d(TAG, "mAllAppsList.removePackage " + packages[i]);
                         mAllAppsList.removePackage(packages[i]);
                     }
@@ -1548,7 +1528,7 @@ public class LauncherModel extends BroadcastReceiver {
             if (mAllAppsList.removed.size() > 0) {
                 removed = mAllAppsList.removed;
                 mAllAppsList.removed = new ArrayList<ApplicationInfo>();
-                for (ApplicationInfo info: removed) {
+                for (ApplicationInfo info : removed) {
                     mIconCache.remove(info.intent.getComponent());
                 }
             }
