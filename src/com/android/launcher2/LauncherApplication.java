@@ -40,7 +40,8 @@ public class LauncherApplication extends Application {
         super.onCreate();
 
         // set sIsScreenXLarge and sScreenDensity *before* creating icon cache
-        final int screenSize = getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK;
+        final int screenSize = getResources().getConfiguration().screenLayout &
+                Configuration.SCREENLAYOUT_SIZE_MASK;
         sIsScreenLarge = screenSize == Configuration.SCREENLAYOUT_SIZE_LARGE ||
             screenSize == Configuration.SCREENLAYOUT_SIZE_XLARGE;
         sScreenDensity = getResources().getDisplayMetrics().density;

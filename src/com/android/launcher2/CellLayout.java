@@ -18,7 +18,6 @@ package com.android.launcher2;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
-import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.animation.TimeInterpolator;
@@ -36,7 +35,6 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
-import android.graphics.Region;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.NinePatchDrawable;
 import android.util.AttributeSet;
@@ -72,6 +70,7 @@ public class CellLayout extends ViewGroup {
     private int mWidthGap;
     private int mHeightGap;
     private int mMaxGap;
+    private boolean mScrollingTransformsDirty = false;
 
     private final Rect mRect = new Rect();
     private final CellInfo mCellInfo = new CellInfo();
@@ -96,27 +95,16 @@ public class CellLayout extends ViewGroup {
     private float mBackgroundAlphaMultiplier = 1.0f;
 
     private Drawable mNormalBackground;
-    private Drawable mActiveBackground;
     private Drawable mActiveGlowBackground;
-    private Drawable mNormalBackgroundMini;
-    private Drawable mNormalGlowBackgroundMini;
-    private Drawable mActiveBackgroundMini;
-    private Drawable mActiveGlowBackgroundMini;
     private Drawable mOverScrollForegroundDrawable;
     private Drawable mOverScrollLeft;
     private Drawable mOverScrollRight;
     private Rect mBackgroundRect;
     private Rect mForegroundRect;
-    private Rect mGlowBackgroundRect;
-    private float mGlowBackgroundScale;
-    private float mGlowBackgroundAlpha;
     private int mForegroundPadding;
 
-    private boolean mAcceptsDrops = true;
     // If we're actively dragging something over this screen, mIsDragOverlapping is true
     private boolean mIsDragOverlapping = false;
-    private boolean mIsDragOccuring = false;
-    private boolean mIsDefaultDropTarget = false;
     private final Point mDragCenter = new Point();
 
     // These arrays are used to implement the drag visualization on x-large screens.
@@ -182,25 +170,15 @@ public class CellLayout extends ViewGroup {
         final Resources res = getResources();
 
         mNormalBackground = res.getDrawable(R.drawable.homescreen_blue_normal_holo);
-        mActiveBackground = res.getDrawable(R.drawable.homescreen_blue_strong_holo);
         mActiveGlowBackground = res.getDrawable(R.drawable.homescreen_blue_strong_holo);
 
-        mNormalBackgroundMini = res.getDrawable(R.drawable.homescreen_small_blue);
-        mNormalGlowBackgroundMini = res.getDrawable(R.drawable.homescreen_small_blue_strong);
-        mActiveBackgroundMini = res.getDrawable(R.drawable.homescreen_small_blue_strong);
-        mActiveGlowBackgroundMini = res.getDrawable(R.drawable.homescreen_small_blue_strong);
         mOverScrollLeft = res.getDrawable(R.drawable.overscroll_glow_left);
         mOverScrollRight = res.getDrawable(R.drawable.overscroll_glow_right);
         mForegroundPadding =
                 res.getDimensionPixelSize(R.dimen.workspace_overscroll_drawable_padding);
 
         mNormalBackground.setFilterBitmap(true);
-        mActiveBackground.setFilterBitmap(true);
         mActiveGlowBackground.setFilterBitmap(true);
-        mNormalBackgroundMini.setFilterBitmap(true);
-        mNormalGlowBackgroundMini.setFilterBitmap(true);
-        mActiveBackgroundMini.setFilterBitmap(true);
-        mActiveGlowBackgroundMini.setFilterBitmap(true);
 
         // Initialize the data structures used for the drag visualization.
 
@@ -276,9 +254,6 @@ public class CellLayout extends ViewGroup {
 
         mBackgroundRect = new Rect();
         mForegroundRect = new Rect();
-        mGlowBackgroundRect = new Rect();
-        setHoverScale(1.0f);
-        setHoverAlpha(1.0f);
 
         mChildren = new CellLayoutChildren(context);
         mChildren.setCellDimensions(mCellWidth, mCellHeight, mWidthGap, mHeightGap);
@@ -358,20 +333,6 @@ public class CellLayout extends ViewGroup {
         return null;
     }
 
-    public void setIsDefaultDropTarget(boolean isDefaultDropTarget) {
-        if (mIsDefaultDropTarget != isDefaultDropTarget) {
-            mIsDefaultDropTarget = isDefaultDropTarget;
-            invalidate();
-        }
-    }
-
-    void setIsDragOccuring(boolean isDragOccuring) {
-        if (mIsDragOccuring != isDragOccuring) {
-            mIsDragOccuring = isDragOccuring;
-            invalidate();
-        }
-    }
-
     void setIsDragOverlapping(boolean isDragOverlapping) {
         if (mIsDragOverlapping != isDragOverlapping) {
             mIsDragOverlapping = isDragOverlapping;
@@ -383,66 +344,21 @@ public class CellLayout extends ViewGroup {
         return mIsDragOverlapping;
     }
 
-    private void updateGlowRect() {
-        float marginFraction = (mGlowBackgroundScale - 1.0f) / 2.0f;
-        int marginX = (int) (marginFraction * (mBackgroundRect.right - mBackgroundRect.left));
-        int marginY = (int) (marginFraction * (mBackgroundRect.bottom - mBackgroundRect.top));
-        mGlowBackgroundRect.set(mBackgroundRect.left - marginX, mBackgroundRect.top - marginY,
-                mBackgroundRect.right + marginX, mBackgroundRect.bottom + marginY);
-        invalidate();
+    protected void setOverscrollTransformsDirty(boolean dirty) {
+        mScrollingTransformsDirty = dirty;
     }
 
-    public void setHoverScale(float scaleFactor) {
-        if (scaleFactor != mGlowBackgroundScale) {
-            mGlowBackgroundScale = scaleFactor;
-            updateGlowRect();
-            if (getParent() != null) {
-                ((View) getParent()).invalidate();
-            }
+    protected void resetOverscrollTransforms() {
+        if (mScrollingTransformsDirty) {
+            setOverscrollTransformsDirty(false);
+            setTranslationX(0);
+            setRotationY(0);
+            // It doesn't matter if we pass true or false here, the important thing is that we
+            // pass 0, which results in the overscroll drawable not being drawn any more.
+            setOverScrollAmount(0, false);
+            setPivotX(getMeasuredWidth() / 2);
+            setPivotY(getMeasuredHeight() / 2);
         }
-    }
-
-    public float getHoverScale() {
-        return mGlowBackgroundScale;
-    }
-
-    public float getHoverAlpha() {
-        return mGlowBackgroundAlpha;
-    }
-
-    public void setHoverAlpha(float alpha) {
-        mGlowBackgroundAlpha = alpha;
-        invalidate();
-    }
-
-    void animateDrop() {
-        Resources res = getResources();
-        float onDropScale = res.getInteger(R.integer.config_screenOnDropScalePercent) / 100.0f;
-        ObjectAnimator scaleUp = ObjectAnimator.ofFloat(this, "hoverScale", onDropScale);
-        scaleUp.setDuration(res.getInteger(R.integer.config_screenOnDropScaleUpDuration));
-        ObjectAnimator scaleDown = ObjectAnimator.ofFloat(this, "hoverScale", 1.0f);
-        scaleDown.setDuration(res.getInteger(R.integer.config_screenOnDropScaleDownDuration));
-        ObjectAnimator alphaFadeOut = ObjectAnimator.ofFloat(this, "hoverAlpha", 0.0f);
-
-        alphaFadeOut.setStartDelay(res.getInteger(R.integer.config_screenOnDropAlphaFadeDelay));
-        alphaFadeOut.setDuration(res.getInteger(R.integer.config_screenOnDropAlphaFadeDuration));
-
-        AnimatorSet bouncer = new AnimatorSet();
-        bouncer.play(scaleUp).before(scaleDown);
-        bouncer.play(scaleUp).with(alphaFadeOut);
-        bouncer.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationStart(Animator animation) {
-                setIsDragOverlapping(true);
-            }
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                setIsDragOverlapping(false);
-                setHoverScale(1.0f);
-                setHoverAlpha(1.0f);
-            }
-        });
-        bouncer.start();
     }
 
     @Override
@@ -454,47 +370,17 @@ public class CellLayout extends ViewGroup {
         // backgrounds
         if (mBackgroundAlpha > 0.0f) {
             Drawable bg;
-            boolean mini = getScaleX() < 0.5f;
 
             if (mIsDragOverlapping) {
                 // In the mini case, we draw the active_glow bg *over* the active background
-                bg = mini ? mActiveBackgroundMini : mActiveGlowBackground;
-            } else if (mIsDragOccuring && mAcceptsDrops) {
-                bg = mini ? mActiveBackgroundMini : mActiveBackground;
-            } else if (mIsDefaultDropTarget && mini) {
-                bg = mNormalGlowBackgroundMini;
+                bg = mActiveGlowBackground;
             } else {
-                bg = mini ? mNormalBackgroundMini : mNormalBackground;
+                bg = mNormalBackground;
             }
 
             bg.setAlpha((int) (mBackgroundAlpha * mBackgroundAlphaMultiplier * 255));
             bg.setBounds(mBackgroundRect);
             bg.draw(canvas);
-
-            if (mini && mIsDragOverlapping) {
-                boolean modifiedClipRect = false;
-                if (mGlowBackgroundScale > 1.0f) {
-                    // If the hover background's scale is greater than 1, we'll be drawing outside
-                    // the bounds of this CellLayout. Get around that by temporarily increasing the
-                    // size of the clip rect
-                    float marginFraction = (mGlowBackgroundScale - 1.0f) / 2.0f;
-                    Rect clipRect = canvas.getClipBounds();
-                    int marginX = (int) (marginFraction * (clipRect.right - clipRect.left));
-                    int marginY = (int) (marginFraction * (clipRect.bottom - clipRect.top));
-                    canvas.save(Canvas.CLIP_SAVE_FLAG);
-                    canvas.clipRect(-marginX, -marginY,
-                            getWidth() + marginX, getHeight() + marginY, Region.Op.REPLACE);
-                    modifiedClipRect = true;
-                }
-
-                mActiveGlowBackgroundMini.setAlpha(
-                        (int) (mBackgroundAlpha * mGlowBackgroundAlpha * 255));
-                mActiveGlowBackgroundMini.setBounds(mGlowBackgroundRect);
-                mActiveGlowBackgroundMini.draw(canvas);
-                if (modifiedClipRect) {
-                    canvas.restore();
-                }
-            }
         }
 
         if (mCrosshairsVisibility > 0.0f) {
@@ -689,13 +575,6 @@ public class CellLayout extends ViewGroup {
             return true;
         }
         return false;
-    }
-
-    public void setAcceptsDrops(boolean acceptsDrops) {
-        if (mAcceptsDrops != acceptsDrops) {
-            mAcceptsDrops = acceptsDrops;
-            invalidate();
-        }
     }
 
     @Override
@@ -1008,7 +887,6 @@ public class CellLayout extends ViewGroup {
         mBackgroundRect.set(0, 0, w, h);
         mForegroundRect.set(mForegroundPadding, mForegroundPadding,
                 w - 2 * mForegroundPadding, h - 2 * mForegroundPadding);
-        updateGlowRect();
     }
 
     @Override

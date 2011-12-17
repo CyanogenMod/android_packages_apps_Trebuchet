@@ -18,15 +18,18 @@
     xmlns:launcher="http://schemas.android.com/apk/res/com.android.launcher"
     android:background="#FF000000">
     <LinearLayout
+        android:id="@+id/apps_customize_content"
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:visibility="gone">
         <!-- The layout_width of the tab bar gets overriden to align the content
              with the text in the tabs in AppsCustomizeTabHost. -->
         <FrameLayout
             android:id="@+id/tabs_container"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/apps_customize_tab_bar_height"
+            android:layout_marginTop="@dimen/apps_customize_tab_bar_margin_top"
             android:layout_gravity="center_horizontal">
             <com.android.launcher2.FocusOnlyTabWidget
                 android:id="@android:id/tabs"
@@ -34,7 +37,8 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="left"
                 android:background="@drawable/tab_unselected_holo"
-                android:tabStripEnabled="false" />
+                android:tabStripEnabled="false"
+                android:divider="@null" />
             <include
                 android:id="@+id/market_button"
                 layout="@layout/market_button"
@@ -50,8 +54,8 @@
                 android:id="@+id/apps_customize_pane_content"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                launcher:cellCountX="@integer/apps_customize_cellCountX"
-                launcher:cellCountY="@integer/apps_customize_cellCountY"
+                launcher:maxAppCellCountX="@integer/apps_customize_maxCellCountX"
+                launcher:maxAppCellCountY="@integer/apps_customize_maxCellCountY"
                 launcher:pageLayoutWidthGap="@dimen/apps_customize_pageLayoutWidthGap"
                 launcher:pageLayoutHeightGap="@dimen/apps_customize_pageLayoutHeightGap"
                 launcher:pageLayoutPaddingTop="@dimen/apps_customize_pageLayoutPaddingTop"
@@ -65,10 +69,11 @@
                 launcher:clingFocusedX="@integer/apps_customize_cling_focused_x"
                 launcher:clingFocusedY="@integer/apps_customize_cling_focused_y"
                 launcher:maxGap="@dimen/workspace_max_gap" />
-            <ImageView
+            <FrameLayout
                 android:id="@+id/animation_buffer"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:background="#FF000000"
                 android:visibility="gone" />
 
             <include

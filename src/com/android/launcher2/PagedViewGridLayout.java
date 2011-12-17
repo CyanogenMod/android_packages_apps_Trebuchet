@@ -30,6 +30,7 @@ public class PagedViewGridLayout extends GridLayout implements Page {
 
     private int mCellCountX;
     private int mCellCountY;
+    private Runnable mOnLayoutListener;
 
     public PagedViewGridLayout(Context context, int cellCountX, int cellCountY) {
         super(context, null, 0);
@@ -45,6 +46,16 @@ public class PagedViewGridLayout extends GridLayout implements Page {
         return mCellCountY;
     }
 
+    /**
+     * Clears all the key listeners for the individual widgets.
+     */
+    public void resetChildrenOnKeyListeners() {
+        int childCount = getChildCount();
+        for (int j = 0; j < childCount; ++j) {
+            getChildAt(j).setOnKeyListener(null);
+        }
+    }
+
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         // PagedView currently has issues with different-sized pages since it calculates the
         // offset of each page to scroll to before it updates the actual size of each page
@@ -55,6 +66,23 @@ public class PagedViewGridLayout extends GridLayout implements Page {
         int widthSpecMode = MeasureSpec.EXACTLY;
         super.onMeasure(MeasureSpec.makeMeasureSpec(widthSpecSize, widthSpecMode),
                 heightMeasureSpec);
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        mOnLayoutListener = null;
+    }
+
+    public void setOnLayoutListener(Runnable r) {
+        mOnLayoutListener = r;
+    }
+
+    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+        super.onLayout(changed, left, top, right, bottom);
+        if (mOnLayoutListener != null) {
+            mOnLayoutListener.run();
+        }
     }
 
     @Override

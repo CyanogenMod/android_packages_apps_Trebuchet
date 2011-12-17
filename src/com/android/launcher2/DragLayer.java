@@ -32,6 +32,8 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewParent;
+import android.view.accessibility.AccessibilityEvent;
+import android.view.accessibility.AccessibilityManager;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
 import android.widget.FrameLayout;
@@ -65,6 +67,10 @@ public class DragLayer extends FrameLayout {
     private int[] mDropViewPos = new int[2];
     private float mDropViewScale;
     private float mDropViewAlpha;
+    private boolean mHoverPointClosesFolder = false;
+    private Rect mHitRect = new Rect();
+    private int mWorkspaceIndex = -1;
+    private int mQsbIndex = -1;
 
     /**
      * Used to create a new DragLayer from XML.
@@ -77,6 +83,7 @@ public class DragLayer extends FrameLayout {
 
         // Disable multitouch across the workspace/all apps/customize tray
         setMotionEventSplittingEnabled(false);
+        setChildrenDrawingOrderEnabled(true);
     }
 
     public void setup(Launcher launcher, DragController controller) {
@@ -87,6 +94,22 @@ public class DragLayer extends FrameLayout {
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
         return mDragController.dispatchKeyEvent(event) || super.dispatchKeyEvent(event);
+    }
+
+    private boolean isEventOverFolderTextRegion(Folder folder, MotionEvent ev) {
+        getDescendantRectRelativeToSelf(folder.getEditTextRegion(), mHitRect);
+        if (mHitRect.contains((int) ev.getX(), (int) ev.getY())) {
+            return true;
+        }
+        return false;
+    }
+
+    private boolean isEventOverFolder(Folder folder, MotionEvent ev) {
+        getDescendantRectRelativeToSelf(folder, mHitRect);
+        if (mHitRect.contains((int) ev.getX(), (int) ev.getY())) {
+            return true;
+        }
+        return false;
     }
 
     private boolean handleTouchDown(MotionEvent ev, boolean intercept) {
@@ -110,15 +133,14 @@ public class DragLayer extends FrameLayout {
         Folder currentFolder = mLauncher.getWorkspace().getOpenFolder();
         if (currentFolder != null && !mLauncher.isFolderClingVisible() && intercept) {
             if (currentFolder.isEditingName()) {
-                getDescendantRectRelativeToSelf(currentFolder.getEditTextRegion(), hitRect);
-                if (!hitRect.contains(x, y)) {
+                if (!isEventOverFolderTextRegion(currentFolder, ev)) {
                     currentFolder.dismissEditingName();
                     return true;
                 }
             }
 
             getDescendantRectRelativeToSelf(currentFolder, hitRect);
-            if (!hitRect.contains(x, y)) {
+            if (!isEventOverFolder(currentFolder, ev)) {
                 mLauncher.closeFolder();
                 return true;
             }
@@ -135,6 +157,62 @@ public class DragLayer extends FrameLayout {
         }
         clearAllResizeFrames();
         return mDragController.onInterceptTouchEvent(ev);
+    }
+
+    @Override
+    public boolean onInterceptHoverEvent(MotionEvent ev) {
+        Folder currentFolder = mLauncher.getWorkspace().getOpenFolder();
+        if (currentFolder == null) {
+            return false;
+        } else {
+            if (AccessibilityManager.getInstance(mContext).isTouchExplorationEnabled()) {
+                final int action = ev.getAction();
+                boolean isOverFolder;
+                switch (action) {
+                    case MotionEvent.ACTION_HOVER_ENTER:
+                        isOverFolder = isEventOverFolder(currentFolder, ev);
+                        if (!isOverFolder) {
+                            sendTapOutsideFolderAccessibilityEvent(currentFolder.isEditingName());
+                            mHoverPointClosesFolder = true;
+                            return true;
+                        } else if (isOverFolder) {
+                            mHoverPointClosesFolder = false;
+                        } else {
+                            return true;
+                        }
+                    case MotionEvent.ACTION_HOVER_MOVE:
+                        isOverFolder = isEventOverFolder(currentFolder, ev);
+                        if (!isOverFolder && !mHoverPointClosesFolder) {
+                            sendTapOutsideFolderAccessibilityEvent(currentFolder.isEditingName());
+                            mHoverPointClosesFolder = true;
+                            return true;
+                        } else if (isOverFolder) {
+                            mHoverPointClosesFolder = false;
+                        } else {
+                            return true;
+                        }
+                }
+            }
+        }
+        return false;
+    }
+
+    private void sendTapOutsideFolderAccessibilityEvent(boolean isEditingName) {
+        if (AccessibilityManager.getInstance(mContext).isEnabled()) {
+            int stringId = isEditingName ? R.string.folder_tap_to_rename : R.string.folder_tap_to_close;
+            AccessibilityEvent event = AccessibilityEvent.obtain(
+                    AccessibilityEvent.TYPE_VIEW_FOCUSED);
+            onInitializeAccessibilityEvent(event);
+            event.getText().add(mContext.getString(stringId));
+            AccessibilityManager.getInstance(mContext).sendAccessibilityEvent(event);
+        }
+    }
+
+    @Override
+    public boolean onHoverEvent(MotionEvent ev) {
+        // If we've received this, we've already done the necessary handling
+        // in onInterceptHoverEvent. Return true to consume the event.
+        return false;
     }
 
     @Override
@@ -531,6 +609,50 @@ public class DragLayer extends FrameLayout {
             }
         });
         mFadeOutAnim.start();
+    }
+
+    @Override
+    protected void onViewAdded(View child) {
+        super.onViewAdded(child);
+        updateChildIndices();
+    }
+
+    @Override
+    protected void onViewRemoved(View child) {
+        super.onViewRemoved(child);
+        updateChildIndices();
+    }
+
+    private void updateChildIndices() {
+        if (mLauncher != null) {
+            mWorkspaceIndex = indexOfChild(mLauncher.getWorkspace());
+            mQsbIndex = indexOfChild(mLauncher.getSearchBar());
+        }
+    }
+
+    @Override
+    protected int getChildDrawingOrder(int childCount, int i) {
+        // We don't want to prioritize the workspace drawing on top of the other children in
+        // landscape for the overscroll event.
+        if (LauncherApplication.isScreenLandscape(getContext())) {
+            return super.getChildDrawingOrder(childCount, i);
+        }
+
+        if (mWorkspaceIndex == -1 || mQsbIndex == -1 || 
+                mLauncher.getWorkspace().isDrawingBackgroundGradient()) {
+            return i;
+        }
+
+        // This ensures that the workspace is drawn above the hotseat and qsb,
+        // except when the workspace is drawing a background gradient, in which
+        // case we want the workspace to stay behind these elements.
+        if (i == mQsbIndex) {
+            return mWorkspaceIndex;
+        } else if (i == mWorkspaceIndex) {
+            return mQsbIndex;
+        } else {
+            return i;
+        }
     }
 
     @Override

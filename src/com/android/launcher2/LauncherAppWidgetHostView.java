@@ -17,9 +17,7 @@
 package com.android.launcher2;
 
 import android.appwidget.AppWidgetHostView;
-import android.appwidget.AppWidgetProviderInfo;
 import android.content.Context;
-import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -27,7 +25,6 @@ import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 
 import com.android.launcher.R;
-import com.android.launcher2.Launcher.Padding;
 
 /**
  * {@inheritDoc}
@@ -36,12 +33,10 @@ public class LauncherAppWidgetHostView extends AppWidgetHostView {
     private boolean mHasPerformedLongPress;
     private CheckForLongPress mPendingCheckForLongPress;
     private LayoutInflater mInflater;
-    private Launcher mLauncher;
 
     public LauncherAppWidgetHostView(Context context) {
         super(context);
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        mLauncher = (Launcher) context;
     }
 
     @Override

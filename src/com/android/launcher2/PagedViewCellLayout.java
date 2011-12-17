@@ -19,7 +19,6 @@ package com.android.launcher2;
 import android.content.Context;
 import android.content.res.Resources;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewDebug;
@@ -69,7 +68,7 @@ public class PagedViewCellLayout extends ViewGroup implements Page {
             resources.getDimensionPixelSize(R.dimen.apps_customize_cell_height);
         mCellCountX = LauncherModel.getCellCountX();
         mCellCountY = LauncherModel.getCellCountY();
-        mOriginalHeightGap = mOriginalHeightGap = mWidthGap = mHeightGap = -1;
+        mOriginalWidthGap = mOriginalHeightGap = mWidthGap = mHeightGap = -1;
         mMaxGap = resources.getDimensionPixelSize(R.dimen.apps_customize_max_gap);
 
         mChildren = new PagedViewCellLayoutChildren(context);
@@ -131,10 +130,6 @@ public class PagedViewCellLayout extends ViewGroup implements Page {
             child.setId(childId);
             mChildren.addView(child, index, lp);
 
-            if (child instanceof PagedViewIcon) {
-                PagedViewIcon pagedViewIcon = (PagedViewIcon) child;
-                pagedViewIcon.disableCache();
-            }
             return true;
         }
         return false;
@@ -149,6 +144,16 @@ public class PagedViewCellLayout extends ViewGroup implements Page {
     @Override
     public void removeViewOnPageAt(int index) {
         mChildren.removeViewAt(index);
+    }
+
+    /**
+     * Clears all the key listeners for the individual icons.
+     */
+    public void resetChildrenOnKeyListeners() {
+        int childCount = mChildren.getChildCount();
+        for (int j = 0; j < childCount; ++j) {
+            mChildren.getChildAt(j).setOnKeyListener(null);
+        }
     }
 
     @Override
@@ -294,8 +299,8 @@ public class PagedViewCellLayout extends ViewGroup implements Page {
     }
 
     public void setGap(int widthGap, int heightGap) {
-        mWidthGap = widthGap;
-        mHeightGap = heightGap;
+        mOriginalWidthGap = mWidthGap = widthGap;
+        mOriginalHeightGap = mHeightGap = heightGap;
         mChildren.setGap(widthGap, heightGap);
     }
 
@@ -325,10 +330,9 @@ public class PagedViewCellLayout extends ViewGroup implements Page {
      * Estimates the number of cells that the specified width would take up.
      */
     public int estimateCellHSpan(int width) {
-        // The space for a page assuming that we want to show half of a column of the previous and
-        // next pages is the width - left padding (current & next page) - right padding (previous &
-        // current page) - half cell width (for previous and next pages)
-        int availWidth = (int) (width - (2 * mPaddingLeft + 2 * mPaddingRight));
+        // We don't show the next/previous pages any more, so we use the full width, minus the
+        // padding
+        int availWidth = width - (mPaddingLeft + mPaddingRight);
 
         // We know that we have to fit N cells with N-1 width gaps, so we just juggle to solve for N
         int n = Math.max(1, (availWidth + mWidthGap) / (mCellWidth + mWidthGap));

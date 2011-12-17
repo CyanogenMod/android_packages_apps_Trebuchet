@@ -20,7 +20,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.graphics.Rect;
-import android.graphics.RectF;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Vibrator;
@@ -101,7 +100,6 @@ public class DragController {
     private int mScrollState = SCROLL_OUTSIDE_ZONE;
     private ScrollRunnable mScrollRunnable = new ScrollRunnable();
 
-    private RectF mDeleteRegion;
     private DropTarget mLastDropTarget;
 
     private InputMethodManager mInputMethodManager;
@@ -486,12 +484,6 @@ public class DragController {
         }
         mLastDropTarget = dropTarget;
 
-        // Scroll, maybe, but not if we're in the delete region.
-        boolean inDeleteRegion = false;
-        if (mDeleteRegion != null) {
-            inDeleteRegion = mDeleteRegion.contains(x, y);
-        }
-
         // After a scroll, the touch point will still be in the scroll region.
         // Rather than scrolling immediately, require a bit of twiddling to scroll again
         final int slop = ViewConfiguration.get(mLauncher).getScaledWindowTouchSlop();
@@ -500,7 +492,7 @@ public class DragController {
         mLastTouch[0] = x;
         mLastTouch[1] = y;
 
-        if (!inDeleteRegion && x < mScrollZone) {
+        if (x < mScrollZone) {
             if (mScrollState == SCROLL_OUTSIDE_ZONE && mDistanceSinceScroll > slop) {
                 mScrollState = SCROLL_WAITING_IN_ZONE;
                 if (mDragScroller.onEnterScrollArea(x, y, SCROLL_LEFT)) {
@@ -508,7 +500,7 @@ public class DragController {
                     mHandler.postDelayed(mScrollRunnable, SCROLL_DELAY);
                 }
             }
-        } else if (!inDeleteRegion && x > mScrollView.getWidth() - mScrollZone) {
+        } else if (x > mScrollView.getWidth() - mScrollZone) {
             if (mScrollState == SCROLL_OUTSIDE_ZONE && mDistanceSinceScroll > slop) {
                 mScrollState = SCROLL_WAITING_IN_ZONE;
                 if (mDragScroller.onEnterScrollArea(x, y, SCROLL_RIGHT)) {
@@ -667,15 +659,6 @@ public class DragController {
      */
     public void setScrollView(View v) {
         mScrollView = v;
-    }
-
-    /**
-     * Specifies the delete region.  We won't scroll on touch events over the delete region.
-     *
-     * @param region The rectangle in DragLayer coordinates of the delete region.
-     */
-    void setDeleteRegion(RectF region) {
-        mDeleteRegion = region;
     }
 
     DragView getDragView() {

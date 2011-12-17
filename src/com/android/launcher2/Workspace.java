@@ -26,6 +26,7 @@ import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.app.AlertDialog;
 import android.app.WallpaperManager;
+import android.appwidget.AppWidgetHostView;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProviderInfo;
 import android.content.ClipData;
@@ -57,6 +58,7 @@ import android.view.Display;
 import android.view.DragEvent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
@@ -108,7 +110,6 @@ public class Workspace extends SmoothPagedView
     private float mBackgroundAlpha = 0;
     private float mOverScrollMaxBackgroundAlpha = 0.0f;
     private int mOverScrollPageIndex = -1;
-    private AnimatorSet mDividerAnimator;
 
     private float mWallpaperScrollRatio = 1.0f;
 
@@ -177,6 +178,7 @@ public class Workspace extends SmoothPagedView
     private final Rect mTempRect = new Rect();
     private final int[] mTempXY = new int[2];
     private int mDragViewMultiplyColor;
+    private float mOverscrollFade = 0;
 
     // Paint used to draw external drop outline
     private final Paint mExternalDragOutlinePaint = new Paint();
@@ -194,7 +196,6 @@ public class Workspace extends SmoothPagedView
     private Runnable mDelayedResizeRunnable;
     private int mDisplayWidth;
     private int mDisplayHeight;
-    private boolean mIsStaticWallpaper;
     private int mWallpaperTravelWidth;
 
     // Variables relating to the creation of user folders by hovering shortcuts over shortcuts
@@ -326,6 +327,43 @@ public class Workspace extends SmoothPagedView
 
         // Disable multitouch across the workspace/all apps/customize tray
         setMotionEventSplittingEnabled(true);
+    }
+
+    // estimate the size of a widget with spans hSpan, vSpan. return MAX_VALUE for each
+    // dimension if unsuccessful
+    public int[] estimateItemSize(int hSpan, int vSpan,
+            PendingAddItemInfo pendingItemInfo, boolean springLoaded) {
+        int[] size = new int[2];
+        if (getChildCount() > 0) {
+            CellLayout cl = (CellLayout) mLauncher.getWorkspace().getChildAt(0);
+            RectF r = estimateItemPosition(cl, pendingItemInfo, 0, 0, hSpan, vSpan);
+            size[0] = (int) r.width();
+            size[1] = (int) r.height();
+            if (springLoaded) {
+                size[0] *= mSpringLoadedShrinkFactor;
+                size[1] *= mSpringLoadedShrinkFactor;
+            }
+            return size;
+        } else {
+            size[0] = Integer.MAX_VALUE;
+            size[1] = Integer.MAX_VALUE;
+            return size;
+        }
+    }
+    public RectF estimateItemPosition(CellLayout cl, ItemInfo pendingInfo,
+            int hCell, int vCell, int hSpan, int vSpan) {
+        RectF r = new RectF();
+        cl.cellToRect(hCell, vCell, hSpan, vSpan, r);
+        if (pendingInfo instanceof PendingAddWidgetInfo) {
+            PendingAddWidgetInfo widgetInfo = (PendingAddWidgetInfo) pendingInfo;
+            Rect p = AppWidgetHostView.getDefaultPaddingForWidget(mContext,
+                    widgetInfo.componentName, null);
+            r.top += p.top;
+            r.left += p.left;
+            r.right -= p.right;
+            r.bottom -= p.bottom;
+        }
+        return r;
     }
 
     public void buildPageHardwareLayers() {
@@ -666,7 +704,6 @@ public class Workspace extends SmoothPagedView
 
     protected void onPageBeginMoving() {
         super.onPageBeginMoving();
-        mIsStaticWallpaper = mWallpaperManager.getWallpaperInfo() == null;
 
         if (isHardwareAccelerated()) {
             updateChildrenLayersEnabled();
@@ -721,18 +758,12 @@ public class Workspace extends SmoothPagedView
     };
 
     @Override
-    protected void flashScrollingIndicator() {
+    protected void flashScrollingIndicator(boolean animated) {
         if (mFadeScrollingIndicator) {
-            super.flashScrollingIndicator();
+            super.flashScrollingIndicator(animated);
         } else {
             showScrollingIndicator(true);
         }
-    }
-
-    // As a ratio of screen height, the total distance we want the parallax effect to span
-    // vertically
-    private float wallpaperTravelToScreenHeightRatio(int width, int height) {
-        return 1.1f;
     }
 
     // As a ratio of screen height, the total distance we want the parallax effect to span
@@ -777,7 +808,7 @@ public class Workspace extends SmoothPagedView
         // parallax effects
         if (LauncherApplication.isScreenLarge()) {
             mWallpaperWidth = (int) (maxDim * wallpaperTravelToScreenWidthRatio(maxDim, minDim));
-            mWallpaperHeight = (int)(maxDim * wallpaperTravelToScreenHeightRatio(maxDim, minDim));
+            mWallpaperHeight = maxDim;
         } else {
             mWallpaperWidth = Math.max((int) (minDim * WALLPAPER_SCREENS_SPAN), maxDim);
             mWallpaperHeight = maxDim;
@@ -803,52 +834,31 @@ public class Workspace extends SmoothPagedView
     }
 
     private float wallpaperOffsetForCurrentScroll() {
-        final boolean overScrollWallpaper = LauncherApplication.isScreenLarge();
-        final boolean isStaticWallpaper = mIsStaticWallpaper;
         // The wallpaper travel width is how far, from left to right, the wallpaper will move
-        // at this orientation (for example, in portrait mode we don't move all the way to the
-        // edges of the wallpaper, or otherwise the parallax effect would be too strong)
-        int wallpaperTravelWidth = mWallpaperTravelWidth;
-        if (!overScrollWallpaper || !isStaticWallpaper) {
-            wallpaperTravelWidth = mWallpaperWidth;
+        // at this orientation. On tablets in portrait mode we don't move all the way to the
+        // edges of the wallpaper, or otherwise the parallax effect would be too strong.
+        int wallpaperTravelWidth = mWallpaperWidth;
+        if (LauncherApplication.isScreenLarge()) {
+            wallpaperTravelWidth = mWallpaperTravelWidth;
         }
 
         // Set wallpaper offset steps (1 / (number of screens - 1))
-        // We have 3 vertical offset states (centered, and then top/bottom aligned
-        // for all apps/customize)
-        if (LauncherApplication.isScreenLarge()) {
-            mWallpaperManager.setWallpaperOffsetSteps(1.0f / (getChildCount() - 1), 1.0f / (3 - 1));
-        } else {
-            mWallpaperManager.setWallpaperOffsetSteps(1.0f / (getChildCount() - 1), 1.0f);
-        }
+        mWallpaperManager.setWallpaperOffsetSteps(1.0f / (getChildCount() - 1), 1.0f);
 
-        // For the purposes of computing the scrollRange and overScrollOffset, we ignore
-        // assume that mLayoutScale is 1. This means that when we're in spring-loaded mode,
+        // For the purposes of computing the scrollRange and overScrollOffset, we assume
+        // that mLayoutScale is 1. This means that when we're in spring-loaded mode,
         // there's no discrepancy between the wallpaper offset for a given page.
         float layoutScale = mLayoutScale;
         mLayoutScale = 1f;
         int scrollRange = getScrollRange();
-        float scrollProgressOffset = 0;
-
-        // Account for over scroll: you only see the absolute edge of the wallpaper if
-        // you over scroll as far as you can in landscape mode. Only do this for static wallpapers
-        // because live wallpapers (and probably 3rd party wallpaper providers) rely on the offset
-        // being even intervals from 0 to 1 (eg [0, 0.25, 0.5, 0.75, 1])
-        if (isStaticWallpaper && overScrollWallpaper) {
-            int overScrollOffset = (int) (maxOverScroll() * mDisplayWidth);
-            scrollProgressOffset += overScrollOffset / (float) getScrollRange();
-            scrollRange += 2 * overScrollOffset;
-        }
 
         // Again, we adjust the wallpaper offset to be consistent between values of mLayoutScale
-
-        float adjustedScrollX = overScrollWallpaper ?
-                mScrollX : Math.max(0, Math.min(mScrollX, mMaxScrollX));
+        float adjustedScrollX = Math.max(0, Math.min(mScrollX, mMaxScrollX));
         adjustedScrollX *= mWallpaperScrollRatio;
         mLayoutScale = layoutScale;
 
         float scrollProgress =
-            adjustedScrollX / (float) scrollRange + scrollProgressOffset;
+            adjustedScrollX / (float) scrollRange;
         float offsetInDips = wallpaperTravelWidth * scrollProgress +
             (mWallpaperWidth - wallpaperTravelWidth) / 2; // center it
         float offset = offsetInDips / (float) mWallpaperWidth;
@@ -927,8 +937,6 @@ public class Workspace extends SmoothPagedView
         float mVerticalCatchupConstant = 0.35f;
 
         public WallpaperOffsetInterpolator() {
-            mVerticalWallpaperOffset = LauncherApplication.isScreenLarge() ? 0.5f : 0f;
-            mFinalVerticalWallpaperOffset = LauncherApplication.isScreenLarge() ? 0.5f : 0f;
         }
 
         public void setOverrideHorizontalCatchupConstant(boolean override) {
@@ -1169,6 +1177,8 @@ public class Workspace extends SmoothPagedView
     }
 
     private void screenScrolledLargeUI(int screenScroll) {
+        if (isSwitchingState()) return;
+        boolean isInOverscroll = false;
         int currentScreen = (int) Math.floor((double) (screenScroll / (float) getMeasuredWidth()));
         for (int i = currentScreen; i <= Math.min(getChildCount(), currentScreen + 1); i++) {
             CellLayout cl = (CellLayout) getChildAt(i);
@@ -1180,57 +1190,71 @@ public class Workspace extends SmoothPagedView
                 // If the current page (i) is being over scrolled, we use a different
                 // set of rules for setting the background alpha multiplier.
                 if (!isSmall()) {
-                    if ((mScrollX < 0 && i == 0) || (mScrollX > mMaxScrollX &&
-                            i == getChildCount() -1 )) {
+                    if ((mOverScrollX < 0 && i == 0) || (mOverScrollX > mMaxScrollX &&
+                            i == getChildCount() -1)) {
+                        isInOverscroll = true;
+                        rotation *= -1;
                         cl.setBackgroundAlphaMultiplier(
                                 overScrollBackgroundAlphaInterpolator(Math.abs(scrollProgress)));
                         mOverScrollPageIndex = i;
+                        cl.setOverScrollAmount(Math.abs(scrollProgress), i == 0);
+                        cl.setPivotX(cl.getMeasuredWidth() * (i == 0 ? 0.75f : 0.25f));
+                        cl.setPivotY(cl.getMeasuredHeight() * 0.5f);
+                        cl.setOverscrollTransformsDirty(true);
                     } else if (mOverScrollPageIndex != i) {
                         cl.setBackgroundAlphaMultiplier(
                                 backgroundAlphaInterpolator(Math.abs(scrollProgress)));
                     }
                 }
-                cl.setTranslationX(translationX);
-                cl.setRotationY(rotation);
+                cl.setFastTranslationX(translationX);
+                cl.setFastRotationY(rotation);
+                if (mFadeInAdjacentScreens && !isSmall()) {
+                    float alpha = 1 - Math.abs(scrollProgress);
+                    cl.setFastAlpha(alpha);
+                }
+                cl.fastInvalidate();
             }
         }
-    }
-
-    private void resetCellLayoutTransforms(CellLayout cl, boolean left) {
-        cl.setTranslationX(0);
-        cl.setRotationY(0);
-        cl.setOverScrollAmount(0, left);
-        cl.setPivotX(cl.getMeasuredWidth() / 2);
-        cl.setPivotY(cl.getMeasuredHeight() / 2);
+        if (!isSwitchingState() && !isInOverscroll) {
+            ((CellLayout) getChildAt(0)).resetOverscrollTransforms();
+            ((CellLayout) getChildAt(getChildCount() - 1)).resetOverscrollTransforms();
+        }
+        invalidate();
     }
 
     private void screenScrolledStandardUI(int screenScroll) {
-        if (mScrollX < 0 || mScrollX > mMaxScrollX) {
-            int index = mScrollX < 0 ? 0 : getChildCount() - 1;
+        if (mOverScrollX < 0 || mOverScrollX > mMaxScrollX) {
+            int index = mOverScrollX < 0 ? 0 : getChildCount() - 1;
             CellLayout cl = (CellLayout) getChildAt(index);
             float scrollProgress = getScrollProgress(screenScroll, cl, index);
             cl.setOverScrollAmount(Math.abs(scrollProgress), index == 0);
-            float translationX = index == 0 ? mScrollX : - (mMaxScrollX - mScrollX);
             float rotation = - WORKSPACE_OVERSCROLL_ROTATION * scrollProgress;
             cl.setCameraDistance(mDensity * CAMERA_DISTANCE);
             cl.setPivotX(cl.getMeasuredWidth() * (index == 0 ? 0.75f : 0.25f));
-            cl.setTranslationX(translationX);
+            cl.setPivotY(cl.getMeasuredHeight() * 0.5f);
             cl.setRotationY(rotation);
+            cl.setOverscrollTransformsDirty(true);
+            setFadeForOverScroll(Math.abs(scrollProgress));
         } else {
+            if (mOverscrollFade != 0) {
+                setFadeForOverScroll(0);
+            }
             // We don't want to mess with the translations during transitions
             if (!isSwitchingState()) {
-                resetCellLayoutTransforms((CellLayout) getChildAt(0), true);
-                resetCellLayoutTransforms((CellLayout) getChildAt(getChildCount() - 1), false);
+                ((CellLayout) getChildAt(0)).resetOverscrollTransforms();
+                ((CellLayout) getChildAt(getChildCount() - 1)).resetOverscrollTransforms();
             }
         }
     }
 
     @Override
     protected void screenScrolled(int screenScroll) {
-        super.screenScrolled(screenScroll);
         if (LauncherApplication.isScreenLarge()) {
+            // We don't call super.screenScrolled() here because we handle the adjacent pages alpha
+            // ourselves (for efficiency), and there are no scrolling indicators to update.
             screenScrolledLargeUI(screenScroll);
         } else {
+            super.screenScrolled(screenScroll);
             screenScrolledStandardUI(screenScroll);
         }
     }
@@ -1292,21 +1316,38 @@ public class Workspace extends SmoothPagedView
         super.onDraw(canvas);
     }
 
-    @Override
-    protected void dispatchDraw(Canvas canvas) {
+    boolean isDrawingBackgroundGradient() {
+        return (mBackground != null && mBackgroundAlpha > 0.0f && mDrawBackground);
+    }
+
+    public void scrollTo (int x, int y) {
+        super.scrollTo(x, y);
+        syncChildrenLayersEnabledOnVisiblePages();
+    }
+
+    // This method just applies the value mChildrenLayersEnabled to all the pages that
+    // will be rendered on the next frame.
+    // We do this because calling setChildrenLayersEnabled on a view that's not
+    // visible/rendered causes slowdowns on some graphics cards
+    private void syncChildrenLayersEnabledOnVisiblePages() {
         if (mChildrenLayersEnabled) {
             getVisiblePages(mTempVisiblePagesRange);
             final int leftScreen = mTempVisiblePagesRange[0];
             final int rightScreen = mTempVisiblePagesRange[1];
             if (leftScreen != -1 && rightScreen != -1) {
-                // calling setChildrenLayersEnabled on a view that's not visible/rendered
-                // causes slowdowns on some graphics cards, so we set it here to be sure
-                // it's only called when it's safe (ie when the view will be rendered)
                 for (int i = leftScreen; i <= rightScreen; i++) {
-                    ((ViewGroup)getPageAt(i)).setChildrenLayersEnabled(true);
+                    ViewGroup page = (ViewGroup) getPageAt(i);
+                    if (page.getVisibility() == VISIBLE &&
+                            page.getAlpha() > ViewConfiguration.ALPHA_THRESHOLD) {
+                        ((ViewGroup)getPageAt(i)).setChildrenLayersEnabled(true);
+                    }
                 }
             }
         }
+    }
+
+    @Override
+    protected void dispatchDraw(Canvas canvas) {
         super.dispatchDraw(canvas);
 
         if (mInScrollArea && !LauncherApplication.isScreenLarge()) {
@@ -1436,13 +1477,6 @@ public class Workspace extends SmoothPagedView
                 position[0], position[1], 0, null);
     }
 
-    @Override
-    protected void updateAdjacentPagesAlpha() {
-        if (!isSmall()) {
-            super.updateAdjacentPagesAlpha();
-        }
-    }
-
     /*
      * This interpolator emulates the rate at which the perceived scale of an object changes
      * as its distance from a camera increases. When this interpolator is applied to a scale
@@ -1520,19 +1554,13 @@ public class Workspace extends SmoothPagedView
         mDragOutline = createDragOutline(v, canvas, bitmapPadding);
     }
 
-    public void onDragStartedWithItemSpans(int spanX, int spanY, Bitmap b) {
-        onDragStartedWithItemSpans(spanX, spanY, b, null);
-    }
-
-    public void onDragStartedWithItemSpans(int spanX, int spanY, Bitmap b, Paint alphaClipPaint) {
+    public void onDragStartedWithItem(PendingAddItemInfo info, Bitmap b, Paint alphaClipPaint) {
         final Canvas canvas = new Canvas();
 
         // We need to add extra padding to the bitmap to make room for the glow effect
         final int bitmapPadding = HolographicOutlineHelper.MAX_OUTER_BLUR_RADIUS;
 
-        CellLayout cl = (CellLayout) getChildAt(0);
-
-        int[] size = cl.cellSpansToSize(spanX, spanY);
+        int[] size = estimateItemSize(info.spanX, info.spanY, info, false);
 
         // The outline is used to visualize where the item will land if dropped
         mDragOutline = createDragOutline(b, canvas, bitmapPadding, size[0], size[1], alphaClipPaint);
@@ -1582,6 +1610,9 @@ public class Workspace extends SmoothPagedView
     }
 
     void changeState(final State state, boolean animated, int delay) {
+        if (mState == state) {
+            return;
+        }
         if (mFirstLayout) {
             // (mFirstLayout == "first layout has not happened yet")
             // cancel any pending shrinks that were set earlier
@@ -1590,23 +1621,32 @@ public class Workspace extends SmoothPagedView
             return;
         }
 
-        if (mAnimator != null) {
-            mAnimator.cancel();
-        }
+        // Initialize animation arrays for the first time if necessary
+        initAnimationArrays();
+
+        // Cancel any running transition animations
+        if (mAnimator != null) mAnimator.cancel();
+        mAnimator = new AnimatorSet();
 
         // Stop any scrolling, move to the current page right away
         setCurrentPage((mNextPage != INVALID_PAGE) ? mNextPage : mCurrentPage);
 
-        float finalScaleFactor = 1.0f;
-        float finalBackgroundAlpha = (state == State.SPRING_LOADED) ? 1.0f : 0f;
-        boolean normalState = false;
-        State oldState = mState;
+        final State oldState = mState;
+        final boolean oldStateIsNormal = (oldState == State.NORMAL);
+        final boolean oldStateIsSmall = (oldState == State.SMALL);
         mState = state;
+        final boolean stateIsNormal = (state == State.NORMAL);
+        final boolean stateIsSpringLoaded = (state == State.SPRING_LOADED);
+        final boolean stateIsSmall = (state == State.SMALL);
+        float finalScaleFactor = 1.0f;
+        float finalBackgroundAlpha = stateIsSpringLoaded ? 1.0f : 0f;
+        float translationX = 0;
+        float translationY = 0;
         boolean zoomIn = true;
 
         if (state != State.NORMAL) {
-            finalScaleFactor = mSpringLoadedShrinkFactor - (state == State.SMALL ? 0.1f : 0);
-            if (oldState == State.NORMAL && state == State.SMALL) {
+            finalScaleFactor = mSpringLoadedShrinkFactor - (stateIsSmall ? 0.1f : 0);
+            if (oldStateIsNormal && stateIsSmall) {
                 zoomIn = false;
                 if (animated) {
                     hideScrollingIndicator(false, sScrollIndicatorFadeOutShortDuration);
@@ -1619,34 +1659,34 @@ public class Workspace extends SmoothPagedView
             }
         } else {
             setLayoutScale(1.0f);
-            normalState = true;
         }
-
-        float translationX = 0;
-        float translationY = 0;
-
-        mAnimator = new AnimatorSet();
-
-        final int screenCount = getChildCount();
-        initAnimationArrays();
 
         final int duration = zoomIn ? 
                 getResources().getInteger(R.integer.config_workspaceUnshrinkTime) :
                 getResources().getInteger(R.integer.config_appsCustomizeWorkspaceShrinkTime);
-        for (int i = 0; i < screenCount; i++) {
-            final CellLayout cl = (CellLayout)getChildAt(i);
-            float finalAlphaValue = 0f;
+        for (int i = 0; i < getChildCount(); i++) {
+            final CellLayout cl = (CellLayout) getChildAt(i);
             float rotation = 0f;
+            float initialAlpha = cl.getAlpha();
+            float finalAlphaMultiplierValue = 1f;
+            float finalAlpha = (!mFadeInAdjacentScreens || stateIsSpringLoaded ||
+                    (i == mCurrentPage)) ? 1f : 0f;
 
-            // Set the final alpha depending on whether we are fading side pages.  On phone ui,
-            // we don't do any of the rotation, or the fading alpha in portrait.  See the
-            // ctor and screenScrolled().
-            if (mFadeInAdjacentScreens && normalState) {
-                finalAlphaValue = (i == mCurrentPage) ? 1f : 0f;
-            } else {
-                finalAlphaValue = 1f;
+            // Determine the pages alpha during the state transition
+            if ((oldStateIsSmall && stateIsNormal) ||
+                (oldStateIsNormal && stateIsSmall)) {
+                // To/from workspace - only show the current page unless the transition is not
+                //                     animated and the animation end callback below doesn't run
+                if (i == mCurrentPage || !animated) {
+                    finalAlpha = 1f;
+                    finalAlphaMultiplierValue = 0f;
+                } else {
+                    initialAlpha = 0f;
+                    finalAlpha = 0f;
+                }
             }
 
+            // Update the rotation of the screen (don't apply rotation on Phone UI)
             if (LauncherApplication.isScreenLarge()) {
                 if (i < mCurrentPage) {
                     rotation = WORKSPACE_ROTATION;
@@ -1655,7 +1695,6 @@ public class Workspace extends SmoothPagedView
                 }
             }
 
-            float finalAlphaMultiplierValue = 1f;
             // If the screen is not xlarge, then don't rotate the CellLayouts
             // NOTE: If we don't update the side pages alpha, then we should not hide the side
             //       pages. see unshrink().
@@ -1663,8 +1702,8 @@ public class Workspace extends SmoothPagedView
                 translationX = getOffsetXForRotation(rotation, cl.getWidth(), cl.getHeight());
             }
 
-            mOldAlphas[i] = cl.getAlpha();
-            mNewAlphas[i] = finalAlphaValue;
+            mOldAlphas[i] = initialAlpha;
+            mNewAlphas[i] = finalAlpha;
             if (animated) {
                 mOldTranslationXs[i] = cl.getTranslationX();
                 mOldTranslationYs[i] = cl.getTranslationY();
@@ -1686,9 +1725,9 @@ public class Workspace extends SmoothPagedView
                 cl.setTranslationY(translationY);
                 cl.setScaleX(finalScaleFactor);
                 cl.setScaleY(finalScaleFactor);
-                cl.setBackgroundAlpha(0.0f);
+                cl.setBackgroundAlpha(finalBackgroundAlpha);
                 cl.setBackgroundAlphaMultiplier(finalAlphaMultiplierValue);
-                cl.setAlpha(finalAlphaValue);
+                cl.setAlpha(finalAlpha);
                 cl.setRotationY(rotation);
                 mChangeStateAnimationListener.onAnimationEnd(null);
             }
@@ -1702,6 +1741,21 @@ public class Workspace extends SmoothPagedView
                 animWithInterpolator.setInterpolator(mZoomInInterpolator);
             }
 
+            animWithInterpolator.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(android.animation.Animator animation) {
+                    // The above code to determine initialAlpha and finalAlpha will ensure that only
+                    // the current page is visible during (and subsequently, after) the transition
+                    // animation.  If fade adjacent pages is disabled, then re-enable the page
+                    // visibility after the transition animation.
+                    if (!mFadeInAdjacentScreens && stateIsNormal && oldStateIsSmall) {
+                        for (int i = 0; i < getChildCount(); i++) {
+                            final CellLayout cl = (CellLayout) getChildAt(i);
+                            cl.setAlpha(1f);
+                        }
+                    }
+                }
+            });
             animWithInterpolator.addUpdateListener(new LauncherAnimatorUpdateListener() {
                 public void onAnimationUpdate(float a, float b) {
                     mTransitionProgress = b;
@@ -1710,7 +1764,7 @@ public class Workspace extends SmoothPagedView
                         return;
                     }
                     invalidate();
-                    for (int i = 0; i < screenCount; i++) {
+                    for (int i = 0; i < getChildCount(); i++) {
                         final CellLayout cl = (CellLayout) getChildAt(i);
                         cl.fastInvalidate();
                         cl.setFastTranslationX(a * mOldTranslationXs[i] + b * mNewTranslationXs[i]);
@@ -1723,6 +1777,7 @@ public class Workspace extends SmoothPagedView
                                 b * mNewBackgroundAlphaMultipliers[i]);
                         cl.setFastAlpha(a * mOldAlphas[i] + b * mNewAlphas[i]);
                     }
+                    syncChildrenLayersEnabledOnVisiblePages();
                 }
             });
 
@@ -1735,7 +1790,7 @@ public class Workspace extends SmoothPagedView
                         // an optimization, but not required
                         return;
                     }
-                    for (int i = 0; i < screenCount; i++) {
+                    for (int i = 0; i < getChildCount(); i++) {
                         final CellLayout cl = (CellLayout) getChildAt(i);
                         cl.setFastRotationY(a * mOldRotationYs[i] + b * mNewRotationYs[i]);
                     }
@@ -1750,7 +1805,7 @@ public class Workspace extends SmoothPagedView
             mAnimator.start();
         }
 
-        if (state == State.SPRING_LOADED) {
+        if (stateIsSpringLoaded) {
             // Right now we're covered by Apps Customize
             // Show the background gradient immediately, so the gradient will
             // be showing once AppsCustomize disappears
@@ -1760,6 +1815,7 @@ public class Workspace extends SmoothPagedView
             // Fade the background gradient away
             animateBackgroundGradient(0f, true);
         }
+        syncChildrenLayersEnabledOnVisiblePages();
     }
 
     /**
@@ -1856,9 +1912,6 @@ public class Workspace extends SmoothPagedView
      * Returns a new bitmap to be used as the object outline, e.g. to visualize the drop location.
      * Responsibility for the bitmap is transferred to the caller.
      */
-    private Bitmap createDragOutline(Bitmap orig, Canvas canvas, int padding, int w, int h) {
-        return createDragOutline(orig, canvas, padding, w, h, null);
-    }
     private Bitmap createDragOutline(Bitmap orig, Canvas canvas, int padding, int w, int h,
             Paint alphaClipPaint) {
         final int outlineColor = getResources().getColor(android.R.color.holo_blue_light);
@@ -1875,9 +1928,7 @@ public class Workspace extends SmoothPagedView
         // center the image
         dst.offset((w - scaledWidth) / 2, (h - scaledHeight) / 2);
 
-        Paint p = new Paint();
-        p.setFilterBitmap(true);
-        canvas.drawBitmap(orig, src, dst, p);
+        canvas.drawBitmap(orig, src, dst, null);
         mOutlineHelper.applyMediumExpensiveOutlineWithBlur(b, canvas, outlineColor, outlineColor,
                 alphaClipPaint);
         canvas.setBitmap(null);
@@ -2038,9 +2089,18 @@ public class Workspace extends SmoothPagedView
                 return true;
             }
 
-
             // Don't accept the drop if there's no room for the item
             if (!mDragTargetLayout.findCellForSpanIgnoring(null, spanX, spanY, ignoreView)) {
+                // Don't show the message if we are dropping on the AllApps button and the hotseat
+                // is full
+                if (mTargetCell != null && mLauncher.isHotseatLayout(mDragTargetLayout)) {
+                    Hotseat hotseat = mLauncher.getHotseat();
+                    if (Hotseat.isAllAppsButtonRank(
+                            hotseat.getOrderInHotseat(mTargetCell[0], mTargetCell[1]))) {
+                        return false;
+                    }
+                }
+
                 mLauncher.showOutOfSpaceMessage();
                 return false;
             }
@@ -2350,6 +2410,7 @@ public class Workspace extends SmoothPagedView
             mDragTargetLayout.onDragExit();
         }
         mLastDragOverView = null;
+        mSpringLoadedDragController.cancel();
 
         if (!mIsPageMoving) {
             hideOutlines();
@@ -2429,7 +2490,6 @@ public class Workspace extends SmoothPagedView
 
             // Show the current page outlines to indicate that we can accept this drop
             showOutlines();
-            layout.setIsDragOccuring(true);
             layout.onDragEnter();
             layout.visualizeDropLocation(null, mDragOutline, x, y, 1, 1, null, null);
 
@@ -2459,7 +2519,9 @@ public class Workspace extends SmoothPagedView
                 if (isShortcut) {
                     final Intent intent = data.getItemAt(index).getIntent();
                     Object info = model.infoFromShortcutIntent(mContext, intent, data.getIcon());
-                    onDropExternal(new int[] { x, y }, info, layout, false);
+                    if (info != null) {
+                        onDropExternal(new int[] { x, y }, info, layout, false);
+                    }
                 } else {
                     if (widgets.size() == 1) {
                         // If there is only one item, then go ahead and add and configure
@@ -2490,7 +2552,6 @@ public class Workspace extends SmoothPagedView
         }
         case DragEvent.ACTION_DRAG_ENDED:
             // Hide the page outlines after the drop
-            layout.setIsDragOccuring(false);
             layout.onDragExit();
             hideOutlines();
             return true;
@@ -2625,7 +2686,7 @@ public class Workspace extends SmoothPagedView
                 return cl;
             }
 
-            if (!exact && overlaps(cl, dragView, (int) originX, (int) originY, mTempInverseMatrix)) {
+            if (!exact) {
                 // Get the center of the cell layout in screen coordinates
                 final float[] cellLayoutCenter = mTempCellLayoutCenterCoordinates;
                 cellLayoutCenter[0] = cl.getWidth()/2;
@@ -2711,7 +2772,7 @@ public class Workspace extends SmoothPagedView
                 }
             }
             if (layout == null) {
-                layout = findMatchingPageForDragOver(d.dragView, d.x, d.y, true);
+                layout = findMatchingPageForDragOver(d.dragView, d.x, d.y, false);
             }
             if (layout != mDragTargetLayout) {
                 // Cancel all intermediate folder states
@@ -2955,17 +3016,18 @@ public class Workspace extends SmoothPagedView
 
             // Now we animate the dragView, (ie. the widget or shortcut preview) into its final
             // location and size on the home screen.
+            RectF r = estimateItemPosition(cellLayout, pendingInfo,
+                    mTargetCell[0], mTargetCell[1], spanX, spanY);
             int loc[] = new int[2];
-            cellLayout.cellToPoint(mTargetCell[0], mTargetCell[1], loc);
-
-            RectF r = new RectF();
-            cellLayout.cellToRect(mTargetCell[0], mTargetCell[1], spanX, spanY, r);
+            loc[0] = (int) r.left;
+            loc[1] = (int) r.top;
             setFinalTransitionTransform(cellLayout);
             float cellLayoutScale =
                     mLauncher.getDragLayer().getDescendantCoordRelativeToSelf(cellLayout, loc);
             resetTransitionTransform(cellLayout);
 
-            float dragViewScale =  r.width() / d.dragView.getMeasuredWidth();
+            float dragViewScale =  Math.min(r.width() / d.dragView.getMeasuredWidth(),
+                    r.height() / d.dragView.getMeasuredHeight());
             // The animation will scale the dragView about its center, so we need to center about
             // the final location.
             loc[0] -= (d.dragView.getMeasuredWidth() - cellLayoutScale * r.width()) / 2;
@@ -3020,7 +3082,6 @@ public class Workspace extends SmoothPagedView
             addInScreen(view, container, screen, mTargetCell[0], mTargetCell[1], info.spanX,
                     info.spanY, insertAtFirst);
             cellLayout.onDropChild(view);
-            cellLayout.animateDrop();
             CellLayout.LayoutParams lp = (CellLayout.LayoutParams) view.getLayoutParams();
             cellLayout.getChildrenLayout().measureChild(view);
 
@@ -3499,81 +3560,20 @@ public class Workspace extends SmoothPagedView
         mLauncher.getDragLayer().getLocationInDragLayer(this, loc);
     }
 
-    void showDockDivider(boolean immediately) {
-        final ViewGroup parent = (ViewGroup) getParent();
-        final View qsbDivider = (ImageView) (parent.findViewById(R.id.qsb_divider));
-        final View dockDivider = (ImageView) (parent.findViewById(R.id.dock_divider));
-        if (qsbDivider != null && dockDivider != null) {
-            if (mShowSearchBar) {
-                qsbDivider.setVisibility(View.VISIBLE);
-            }
-            dockDivider.setVisibility(View.VISIBLE);
-            if (mDividerAnimator != null) {
-                mDividerAnimator.cancel();
-                mDividerAnimator = null;
-            }
-            if (immediately) {
-                if (mShowSearchBar) {
-                    qsbDivider.setAlpha(1f);
-                }
-                dockDivider.setAlpha(1f);
-            } else {
-                mDividerAnimator = new AnimatorSet();
-                if (mShowSearchBar) {
-                    mDividerAnimator.playTogether(ObjectAnimator.ofFloat(qsbDivider, "alpha", 1f),
-                            ObjectAnimator.ofFloat(dockDivider, "alpha", 1f));
-                } else {
-                    mDividerAnimator.play(ObjectAnimator.ofFloat(dockDivider, "alpha", 1f));
-                }
-                mDividerAnimator.setDuration(sScrollIndicatorFadeInDuration);
-                mDividerAnimator.start();
-            }
-        }
-    }
+    void setFadeForOverScroll(float fade) {
+        if (!isScrollingIndicatorEnabled()) return;
 
-    void hideDockDivider(boolean immediately) {
+        mOverscrollFade = fade;
+        float reducedFade = 0.5f + 0.5f * (1 - fade);
         final ViewGroup parent = (ViewGroup) getParent();
-        final View qsbDivider = (ImageView) (parent.findViewById(R.id.qsb_divider));
-        final View dockDivider = (ImageView) (parent.findViewById(R.id.dock_divider));
-        if (qsbDivider != null && dockDivider != null) {
-            if (mDividerAnimator != null) {
-                mDividerAnimator.cancel();
-                mDividerAnimator = null;
-            }
-            if (immediately) {
-                if (mShowSearchBar) {
-                    qsbDivider.setVisibility(View.GONE);
-                    qsbDivider.setAlpha(0f);
-                }
-                dockDivider.setVisibility(View.GONE);
-                dockDivider.setAlpha(0f);
-            } else {
-                mDividerAnimator = new AnimatorSet();
-                if (mShowSearchBar) {
-                    mDividerAnimator.playTogether(ObjectAnimator.ofFloat(qsbDivider, "alpha", 0f),
-                            ObjectAnimator.ofFloat(dockDivider, "alpha", 0f));
-                } else {
-                    mDividerAnimator.play(ObjectAnimator.ofFloat(dockDivider, "alpha", 0f));
-                }
-                mDividerAnimator.addListener(new AnimatorListenerAdapter() {
-                    private boolean cancelled = false;
-                    @Override
-                    public void onAnimationCancel(android.animation.Animator animation) {
-                        cancelled = true;
-                    }
-                    @Override
-                    public void onAnimationEnd(android.animation.Animator animation) {
-                        if (!cancelled) {
-                            if (mShowSearchBar) {
-                                qsbDivider.setVisibility(View.GONE);
-                            }
-                            dockDivider.setVisibility(View.GONE);
-                        }
-                    }
-                });
-                mDividerAnimator.setDuration(sScrollIndicatorFadeOutDuration);
-                mDividerAnimator.start();
-            }
-        }
+
+        final ImageView qsbDivider = (ImageView) (parent.findViewById(R.id.qsb_divider));
+        final ImageView dockDivider = (ImageView) (parent.findViewById(R.id.dock_divider));
+        final ImageView scrollIndicator = getScrollingIndicator();
+
+        cancelScrollingIndicatorAnimations();
+        if (qsbDivider != null && mShowSearchBar) qsbDivider.setAlpha(reducedFade);
+        if (dockDivider != null) dockDivider.setAlpha(reducedFade);
+        scrollIndicator.setAlpha(1 - fade);
     }
 }

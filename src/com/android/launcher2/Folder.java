@@ -37,6 +37,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.accessibility.AccessibilityEvent;
+import android.view.accessibility.AccessibilityManager;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.view.inputmethod.EditorInfo;
@@ -81,6 +83,7 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
     private FolderIcon mFolderIcon;
     private int mMaxCountX;
     private int mMaxCountY;
+    private int mMaxNumItems;
     private Rect mNewSize = new Rect();
     private Rect mIconRect = new Rect();
     private ArrayList<View> mItemsInReadingOrder = new ArrayList<View>();
@@ -95,7 +98,6 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
     private Alarm mReorderAlarm = new Alarm();
     private Alarm mOnExitAlarm = new Alarm();
     private int mFolderNameHeight;
-    private Rect mHitRect = new Rect();
     private Rect mTempRect = new Rect();
     private boolean mDragInProgress = false;
     private boolean mDeleteFolderOnDropCompleted = false;
@@ -120,13 +122,20 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
         setAlwaysDrawnWithCacheEnabled(false);
         mInflater = LayoutInflater.from(context);
         mIconCache = ((LauncherApplication)context.getApplicationContext()).getIconCache();
-        mMaxCountX = LauncherModel.getCellCountX();
-        mMaxCountY = LauncherModel.getCellCountY();
+
+        Resources res = getResources();
+        mMaxCountX = res.getInteger(R.integer.folder_max_count_x);
+        mMaxCountY = res.getInteger(R.integer.folder_max_count_y);
+        mMaxNumItems = res.getInteger(R.integer.folder_max_num_items);
+        if (mMaxCountX < 0 || mMaxCountY < 0 || mMaxNumItems < 0) {
+            mMaxCountX = LauncherModel.getCellCountX();
+            mMaxCountY = LauncherModel.getCellCountY();
+            mMaxNumItems = mMaxCountX * mMaxCountY;
+        }
 
         mInputMethodManager = (InputMethodManager)
                 mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
 
-        Resources res = getResources();
         mExpandDuration = res.getInteger(R.integer.config_folderAnimDuration);
 
         if (sDefaultFolderName == null) {
@@ -147,6 +156,7 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
         super.onFinishInflate();
         mContent = (CellLayout) findViewById(R.id.folder_content);
         mContent.setGridSize(0, 0);
+        mContent.getChildrenLayout().setMotionEventSplittingEnabled(false);
         mFolderName = (FolderEditText) findViewById(R.id.folder_name);
         mFolderName.setFolder(this);
         mFolderName.setOnFocusChangeListener(this);
@@ -240,9 +250,14 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
         mFolderName.setHint(sHintText);
         // Convert to a string here to ensure that no other state associated with the text field
         // gets saved.
-        mInfo.setTitle(mFolderName.getText().toString());
+        String newTitle = mFolderName.getText().toString();
+        mInfo.setTitle(newTitle);
         LauncherModel.updateItemInDatabase(mLauncher, mInfo);
 
+        if (commit) {
+            sendCustomAccessibilityEvent(AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED,
+                    String.format(mContext.getString(R.string.folder_renamed), newTitle));
+        }
         // In order to clear the focus from the text field, we set the focus on ourself. This
         // ensures that every time the field is clicked, focus is gained, giving reliable behavior.
         requestFocus();
@@ -281,6 +296,12 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
 
     void setFolderIcon(FolderIcon icon) {
         mFolderIcon = icon;
+    }
+
+    @Override
+    public boolean dispatchPopulateAccessibilityEvent(AccessibilityEvent event) {
+        // When the folder gets focus, we don't want to announce the list of items.
+        return true;
     }
 
     /**
@@ -398,6 +419,9 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
         oa.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationStart(Animator animation) {
+                sendCustomAccessibilityEvent(AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED,
+                        String.format(mContext.getString(R.string.folder_opened),
+                        mContent.getCountX(), mContent.getCountY()));
                 mState = STATE_ANIMATING;
             }
             @Override
@@ -413,6 +437,15 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
         });
         oa.setDuration(mExpandDuration);
         oa.start();
+    }
+
+    private void sendCustomAccessibilityEvent(int type, String text) {
+        if (AccessibilityManager.getInstance(mContext).isEnabled()) {
+            AccessibilityEvent event = AccessibilityEvent.obtain(type);
+            onInitializeAccessibilityEvent(event);
+            event.getText().add(text);
+            AccessibilityManager.getInstance(mContext).sendAccessibilityEvent(event);
+        }
     }
 
     private void setFocusOnFirstChild() {
@@ -460,6 +493,8 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
             }
             @Override
             public void onAnimationStart(Animator animation) {
+                sendCustomAccessibilityEvent(AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED,
+                        mContext.getString(R.string.folder_closed));
                 mState = STATE_ANIMATING;
             }
         });
@@ -720,7 +755,7 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
             int oldCountY = countY;
             if (countX * countY < count) {
                 // Current grid is too small, expand it
-                if (countX <= countY && countX < mMaxCountX) {
+                if ((countX <= countY || countY == mMaxCountY) && countX < mMaxCountX) {
                     countX++;
                 } else if (countY < mMaxCountY) {
                     countY++;
@@ -738,7 +773,7 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
     }
 
     public boolean isFull() {
-        return getItemCount() >= mMaxCountX * mMaxCountY;
+        return getItemCount() >= mMaxNumItems;
     }
 
     private void centerAboutIcon() {

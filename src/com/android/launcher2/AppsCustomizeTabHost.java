@@ -22,21 +22,21 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.DecelerateInterpolator;
-import android.widget.ImageView;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TabHost;
 import android.widget.TabWidget;
 import android.widget.TextView;
 
 import com.android.launcher.R;
 import com.android.launcher2.preference.PreferencesProvider;
+
+import java.util.ArrayList;
 
 public class AppsCustomizeTabHost extends TabHost implements LauncherTransitionable,
         TabHost.OnTabChangeListener  {
@@ -50,10 +50,12 @@ public class AppsCustomizeTabHost extends TabHost implements LauncherTransitiona
     private ViewGroup mTabsContainer;
     private AppsCustomizePagedView mAppsCustomizePane;
     private boolean mSuppressContentCallback = false;
-    private ImageView mAnimationBuffer;
+    private FrameLayout mAnimationBuffer;
+    private LinearLayout mContent;
 
     private boolean mInTransition;
     private boolean mResetAfterTransition;
+    private Animator mLauncherTransition;
 
     // Preferences
     private boolean mJoinWidgetsApps;
@@ -104,7 +106,8 @@ public class AppsCustomizeTabHost extends TabHost implements LauncherTransitiona
         mTabs = tabs;
         mTabsContainer = tabsContainer;
         mAppsCustomizePane = appsCustomizePane;
-        mAnimationBuffer = (ImageView) findViewById(R.id.animation_buffer);
+        mAnimationBuffer = (FrameLayout) findViewById(R.id.animation_buffer);
+        mContent = (LinearLayout) findViewById(R.id.apps_customize_content);
         if (tabs == null || mAppsCustomizePane == null) throw new Resources.NotFoundException();
 
         // Configure the tabs content factory to return the same paged view (that we change the
@@ -149,9 +152,8 @@ public class AppsCustomizeTabHost extends TabHost implements LauncherTransitiona
         // Set the width of the tab list to the content width
         if (remeasureTabWidth) {
             int contentWidth = mAppsCustomizePane.getPageContentWidth();
-            if (contentWidth > 0) {
-                // Set the width and show the tab bar (if we have a loading graphic, we can switch
-                // it off here)
+            if (contentWidth > 0 && mTabs.getLayoutParams().width != contentWidth) {
+                // Set the width and show the tab bar
                 mTabs.getLayoutParams().width = contentWidth;
                 post(new Runnable() {
                     public void run() {
@@ -180,7 +182,7 @@ public class AppsCustomizeTabHost extends TabHost implements LauncherTransitiona
 
     private void reloadCurrentPage() {
         if (!LauncherApplication.isScreenLarge()) {
-            mAppsCustomizePane.flashScrollingIndicator();
+            mAppsCustomizePane.flashScrollingIndicator(true);
         }
         mAppsCustomizePane.loadAssociatedPages(mAppsCustomizePane.getCurrentPage());
         mAppsCustomizePane.requestFocus();
@@ -199,7 +201,6 @@ public class AppsCustomizeTabHost extends TabHost implements LauncherTransitiona
         }
 
         if (!mAppsCustomizePane.isContentType(type) || mJoinWidgetsApps) {
-
             // Animate the changing of the tab content by fading pages in and out
             final Resources res = getResources();
             final int duration = res.getInteger(R.integer.config_tabTransitionDuration);
@@ -215,17 +216,45 @@ public class AppsCustomizeTabHost extends TabHost implements LauncherTransitiona
                         return;
                     }
 
-                    // Setup the animation buffer
-                    Bitmap b = Bitmap.createBitmap(mAppsCustomizePane.getMeasuredWidth(),
-                            mAppsCustomizePane.getMeasuredHeight(), Bitmap.Config.ARGB_8888);
-                    Canvas c = new Canvas(b);
-                    mAppsCustomizePane.draw(c);
-                    mAppsCustomizePane.setAlpha(0f);
-                    mAnimationBuffer.setImageBitmap(b);
-                    mAnimationBuffer.setAlpha(1f);
-                    mAnimationBuffer.setVisibility(View.VISIBLE);
-                    c.setBitmap(null);
-                    b = null;
+                    // Take the visible pages and re-parent them temporarily to mAnimatorBuffer
+                    // and then cross fade to the new pages
+                    int[] visiblePageRange = new int[2];
+                    mAppsCustomizePane.getVisiblePages(visiblePageRange);
+                    if (visiblePageRange[0] == -1 && visiblePageRange[1] == -1) {
+                        // If we can't get the visible page ranges, then just skip the animation
+                        reloadCurrentPage();
+                        return;
+                    }
+                    ArrayList<View> visiblePages = new ArrayList<View>();
+                    for (int i = visiblePageRange[0]; i <= visiblePageRange[1]; i++) {
+                        visiblePages.add(mAppsCustomizePane.getPageAt(i));
+                    }
+
+                    // We want the pages to be rendered in exactly the same way as they were when
+                    // their parent was mAppsCustomizePane -- so set the scroll on mAnimationBuffer
+                    // to be exactly the same as mAppsCustomizePane, and below, set the left/top
+                    // parameters to be correct for each of the pages
+                    mAnimationBuffer.scrollTo(mAppsCustomizePane.getScrollX(), 0);
+
+                    // mAppsCustomizePane renders its children in reverse order, so
+                    // add the pages to mAnimationBuffer in reverse order to match that behavior
+                    for (int i = visiblePages.size() - 1; i >= 0; i--) {
+                        View child = visiblePages.get(i);
+                        if (child instanceof PagedViewCellLayout) {
+                            ((PagedViewCellLayout) child).resetChildrenOnKeyListeners();
+                        } else if (child instanceof PagedViewGridLayout) {
+                            ((PagedViewGridLayout) child).resetChildrenOnKeyListeners();
+                        }
+                        PagedViewWidget.setDeletePreviewsWhenDetachedFromWindow(false);
+                        mAppsCustomizePane.removeView(child);
+                        PagedViewWidget.setDeletePreviewsWhenDetachedFromWindow(true);
+                        mAnimationBuffer.setAlpha(1f);
+                        mAnimationBuffer.setVisibility(View.VISIBLE);
+                        LayoutParams p = new FrameLayout.LayoutParams(child.getWidth(),
+                                child.getHeight());
+                        p.setMargins((int) child.getLeft(), (int) child.getTop(), 0, 0);
+                        mAnimationBuffer.addView(child, p);
+                    }
 
                     // Toggle the new content
                     onTabChangedStart();
@@ -237,7 +266,12 @@ public class AppsCustomizeTabHost extends TabHost implements LauncherTransitiona
                         @Override
                         public void onAnimationEnd(Animator animation) {
                             mAnimationBuffer.setVisibility(View.GONE);
-                            mAnimationBuffer.setImageBitmap(null);
+                            mAnimationBuffer.removeAllViews();
+                        }
+                        @Override
+                        public void onAnimationCancel(Animator animation) {
+                            mAnimationBuffer.setVisibility(View.GONE);
+                            mAnimationBuffer.removeAllViews();
                         }
                     });
                     ObjectAnimator inAnim = ObjectAnimator.ofFloat(mAppsCustomizePane, "alpha", 1f);
@@ -306,21 +340,54 @@ public class AppsCustomizeTabHost extends TabHost implements LauncherTransitiona
         }
     }
 
-    /* LauncherTransitionable overrides */
-    @Override
-    public void onLauncherTransitionStart(Launcher l, Animator animation, boolean toWorkspace) {
-        mInTransition = true;
+    private void enableAndBuildHardwareLayer() {
         // isHardwareAccelerated() checks if we're attached to a window and if that
         // window is HW accelerated-- we were sometimes not attached to a window
         // and buildLayer was throwing an IllegalStateException
-        if (animation != null && isHardwareAccelerated()) {
+        if (isHardwareAccelerated()) {
             // Turn on hardware layers for performance
             setLayerType(LAYER_TYPE_HARDWARE, null);
 
-            // force building the layer at the beginning of the animation, so you don't get a
-            // blip early in the animation
+            // force building the layer, so you don't get a blip early in an animation
+            // when the layer is created layer
             buildLayer();
         }
+    }
+
+    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+        super.onLayout(changed, left, top, right, bottom);
+        if (mLauncherTransition != null) {
+            enableAndBuildHardwareLayer();
+            mLauncherTransition.start();
+            mLauncherTransition = null;
+        }
+    }
+
+    /* LauncherTransitionable overrides */
+    @Override
+    public boolean onLauncherTransitionStart(Launcher l, Animator animation, boolean toWorkspace) {
+        mInTransition = true;
+        boolean delayLauncherTransitionUntilLayout = false;
+        boolean animated = (animation != null);
+        mLauncherTransition = null;
+
+        // if the content wasn't visible before, delay the launcher animation until after a call
+        // to layout -- this prevents a blip
+        if (animated && mContent.getVisibility() == GONE) {
+            mLauncherTransition = animation;
+            delayLauncherTransitionUntilLayout = true;
+        }
+        mContent.setVisibility(VISIBLE);
+
+        if (!toWorkspace) {
+            // Make sure the current page is loaded (we start loading the side pages after the
+            // transition to prevent slowing down the animation)
+            mAppsCustomizePane.loadAssociatedPages(mAppsCustomizePane.getCurrentPage(), true);
+        }
+        if (animated && !delayLauncherTransitionUntilLayout) {
+            enableAndBuildHardwareLayer();
+        }
+
         if (!toWorkspace && !LauncherApplication.isScreenLarge()) {
             mAppsCustomizePane.showScrollingIndicator(false);
         }
@@ -328,6 +395,7 @@ public class AppsCustomizeTabHost extends TabHost implements LauncherTransitiona
             mAppsCustomizePane.reset();
             mResetAfterTransition = false;
         }
+        return delayLauncherTransitionUntilLayout;
     }
 
     @Override
@@ -338,13 +406,34 @@ public class AppsCustomizeTabHost extends TabHost implements LauncherTransitiona
         }
 
         if (!toWorkspace) {
-            // Dismiss the cling if necessary
+            // Dismiss the workspace cling and show the all apps cling (if not already shown)
             l.dismissWorkspaceCling(null);
+            mAppsCustomizePane.showAllAppsCling();
+            // Make sure adjacent pages are loaded (we wait until after the transition to
+            // prevent slowing down the animation)
+            mAppsCustomizePane.loadAssociatedPages(mAppsCustomizePane.getCurrentPage());
 
             if (!LauncherApplication.isScreenLarge() && mFadeScrollingIndicator) {
                 mAppsCustomizePane.hideScrollingIndicator(false);
             }
         }
+    }
+
+    public void onResume() {
+        if (getVisibility() == VISIBLE) {
+            mContent.setVisibility(VISIBLE);
+            // We unload the widget previews when the UI is hidden, so need to reload pages
+            // Load the current page synchronously, and the neighboring pages asynchronously
+            mAppsCustomizePane.loadAssociatedPages(mAppsCustomizePane.getCurrentPage(), true);
+            mAppsCustomizePane.loadAssociatedPages(mAppsCustomizePane.getCurrentPage());
+        }
+    }
+
+    public void onTrimMemory() {
+        mContent.setVisibility(GONE);
+        // Clear the widget pages of all their subviews - this will trigger the widget previews
+        // to delete their bitmaps
+        mAppsCustomizePane.clearAllWidgetPages();
     }
 
     boolean isTransitioning() {

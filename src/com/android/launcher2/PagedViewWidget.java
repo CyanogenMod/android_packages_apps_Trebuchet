@@ -42,8 +42,7 @@ import com.android.launcher.R;
 public class PagedViewWidget extends LinearLayout implements Checkable {
     static final String TAG = "PagedViewWidgetLayout";
 
-    private static final int sPreviewFadeInDuration = 80;
-    private static final int sPreviewFadeInStaggerDuration = 20;
+    private static boolean sDeletePreviewsWhenDetachedFromWindow = true;
 
     private final Paint mPaint = new Paint();
     private Bitmap mHolographicOutline;
@@ -89,17 +88,23 @@ public class PagedViewWidget extends LinearLayout implements Checkable {
         setClipToPadding(false);
     }
 
+    public static void setDeletePreviewsWhenDetachedFromWindow(boolean value) {
+        sDeletePreviewsWhenDetachedFromWindow = value;
+    }
+
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
 
-        final ImageView image = (ImageView) findViewById(R.id.widget_preview);
-        if (image != null) {
-            FastBitmapDrawable preview = (FastBitmapDrawable) image.getDrawable();
-            if (preview != null && preview.getBitmap() != null) {
-                preview.getBitmap().recycle();
-            }
-            image.setImageDrawable(null);
+        if (sDeletePreviewsWhenDetachedFromWindow) {
+            final ImageView image = (ImageView) findViewById(R.id.widget_preview);
+            if (image != null) {
+                FastBitmapDrawable preview = (FastBitmapDrawable) image.getDrawable();
+                if (preview != null && preview.getBitmap() != null) {
+                    preview.getBitmap().recycle();
+                }
+                image.setImageDrawable(null);
+                }
         }
     }
 
@@ -135,16 +140,22 @@ public class PagedViewWidget extends LinearLayout implements Checkable {
         }
     }
 
-    void applyPreview(FastBitmapDrawable preview, int index, boolean scale) {
-        final ImageView image = (ImageView) findViewById(R.id.widget_preview);
+    public int[] getPreviewSize() {
+        final ImageView i = (ImageView) findViewById(R.id.widget_preview);
+        int[] maxSize = new int[2];
+        maxSize[0] = i.getWidth() - i.getPaddingLeft() - i.getPaddingRight();
+        maxSize[1] = i.getHeight() - i.getPaddingBottom() - i.getPaddingTop();
+        return maxSize;
+    }
+
+    void applyPreview(FastBitmapDrawable preview, int index) {
+        final PagedViewWidgetImageView image =
+                (PagedViewWidgetImageView) findViewById(R.id.widget_preview);
         if (preview != null) {
+            image.mAllowRequestLayout = false;
             image.setImageDrawable(preview);
-            image.setScaleType(scale ? ImageView.ScaleType.FIT_START : ImageView.ScaleType.MATRIX);
-            image.setAlpha(0f);
-            image.animate()
-                 .alpha(1f)
-                 .setDuration(sPreviewFadeInDuration + (index * sPreviewFadeInStaggerDuration))
-                 .start();
+            image.setAlpha(1f);
+            image.mAllowRequestLayout = true;
         }
     }
 
@@ -163,18 +174,6 @@ public class PagedViewWidget extends LinearLayout implements Checkable {
         // (it's the same view in that case).  This is not ideal, but to prevent more changes,
         // we just always mark the touch event as handled.
         return super.onTouchEvent(event) || true;
-    }
-
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        return FocusHelper.handleAppsCustomizeKeyEvent(this, keyCode, event)
-                || super.onKeyDown(keyCode, event);
-    }
-
-    @Override
-    public boolean onKeyUp(int keyCode, KeyEvent event) {
-        return FocusHelper.handleAppsCustomizeKeyEvent(this, keyCode, event)
-                || super.onKeyUp(keyCode, event);
     }
 
     @Override

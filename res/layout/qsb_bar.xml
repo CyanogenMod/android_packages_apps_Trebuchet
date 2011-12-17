@@ -17,8 +17,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:launcher="http://schemas.android.com/apk/res/com.android.launcher"
     style="@style/QSBBar"
-    android:focusable="false"
-    android:background="@drawable/search_bg_panel">
+    android:focusable="false">
 
     <!-- Search buttons container -->
     <include android:id="@+id/qsb_search_bar"
@@ -38,7 +37,7 @@
                 style="@style/DropTargetButton"
                 android:id="@+id/delete_target_text"
                 android:text="@string/delete_zone_label_workspace"
-                android:drawableLeft="@drawable/delete_target_selector" />
+                android:drawableLeft="@drawable/remove_target_selector" />
         </FrameLayout>
 
         <FrameLayout

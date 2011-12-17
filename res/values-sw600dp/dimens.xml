@@ -32,9 +32,10 @@
     <dimen name="app_icon_padding_top">4dp</dimen>
 
 <!-- AppsCustomize -->
-    <dimen name="apps_customize_tab_bar_height">56dp</dimen>
+    <dimen name="apps_customize_tab_bar_height">60dp</dimen>
+    <dimen name="apps_customize_tab_bar_margin_top">8dp</dimen>
     <dimen name="apps_customize_cell_width">96dp</dimen>
-    <dimen name="apps_customize_cell_height">96dp</dimen>
+    <dimen name="apps_customize_cell_height">98dp</dimen>
     <dimen name="apps_customize_widget_cell_width_gap">36dp</dimen>
     <dimen name="apps_customize_widget_cell_height_gap">36dp</dimen>
 
@@ -72,16 +73,9 @@
     <dimen name="dragViewOffsetX">0dp</dimen>
     <dimen name="dragViewOffsetY">-12dp</dimen>
 
-<!-- Workspace grid -->
-    <!-- Padding applied to AppWidgets -->
-    <dimen name="app_widget_padding_left">12dp</dimen>
-    <dimen name="app_widget_padding_right">12dp</dimen>
-    <dimen name="app_widget_padding_top">4dp</dimen>
-    <dimen name="app_widget_padding_bottom">20dp</dimen>
-
 <!-- Folders -->
     <!-- The size of the image which sits behind the preview of the folder contents -->
-    <dimen name="folder_preview_size">80dp</dimen>
+    <dimen name="folder_preview_size">78dp</dimen>
     <!-- The amount that the preview contents are inset from the preview background -->
     <dimen name="folder_preview_padding">4dp</dimen>
 </resources>

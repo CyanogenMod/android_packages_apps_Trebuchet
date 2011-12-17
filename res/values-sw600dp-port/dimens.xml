@@ -18,7 +18,6 @@
 <!-- AppsCustomize -->
     <dimen name="apps_customize_cell_width">96dp</dimen>
     <dimen name="apps_customize_cell_height">96dp</dimen>
-    <dimen name="workspace_page_spacing">64dp</dimen>
 
 <!-- Workspace -->
     <!-- the area at the edge of the screen that makes the workspace go left
@@ -31,13 +30,21 @@
     <dimen name="workspace_bottom_padding">25dip</dimen>
     <dimen name="workspace_width_gap">0dp</dimen>
     <dimen name="workspace_height_gap">32dp</dimen>
+    <dimen name="workspace_page_spacing">16dp</dimen>
 
     <dimen name="apps_customize_pageLayoutWidthGap">24dp</dimen>
     <dimen name="apps_customize_pageLayoutHeightGap">36dp</dimen>
     <dimen name="apps_customize_pageLayoutPaddingTop">25dp</dimen>
     <dimen name="apps_customize_pageLayoutPaddingBottom">10dp</dimen>
-    <dimen name="apps_customize_pageLayoutPaddingLeft">10dp</dimen>
-    <dimen name="apps_customize_pageLayoutPaddingRight">10dp</dimen>
+    <dimen name="apps_customize_pageLayoutPaddingLeft">30dp</dimen>
+    <dimen name="apps_customize_pageLayoutPaddingRight">30dp</dimen>
     <integer name="apps_customize_widget_cell_count_x">2</integer>
     <integer name="apps_customize_widget_cell_count_y">3</integer>
+    <integer name="apps_customize_cling_focused_x">2</integer>
+    <integer name="apps_customize_cling_focused_y">2</integer>
+
+<!-- Cling -->
+    <!-- The offset for the text in the cling -->
+    <dimen name="cling_text_block_offset_x">80dp</dimen>
+    <dimen name="cling_text_block_offset_y">160dp</dimen>
 </resources>

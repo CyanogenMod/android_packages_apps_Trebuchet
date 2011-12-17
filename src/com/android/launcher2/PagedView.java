@@ -61,8 +61,6 @@ public abstract class PagedView extends ViewGroup {
 
     // the min drag distance for a fling to register, to prevent random page shifts
     private static final int MIN_LENGTH_FOR_FLING = 25;
-    // The min drag distance to trigger a page shift (regardless of velocity)
-    private static final int MIN_LENGTH_FOR_MOVE = 200;
 
     private static final int PAGE_SNAP_ANIMATION_DURATION = 550;
     protected static final float NANOTIME_DIV = 1000000000.0f;
@@ -72,6 +70,8 @@ public abstract class PagedView extends ViewGroup {
     private static final int MINIMUM_SNAP_VELOCITY = 2200;
     private static final int MIN_FLING_VELOCITY = 250;
     private static final float RETURN_TO_ORIGINAL_PAGE_THRESHOLD = 0.33f;
+    // The page is moved more than halfway, automatically move to the next page on touch up.
+    private static final float SIGNIFICANT_MOVE_THRESHOLD = 0.4f;
 
     // the velocity at which a fling gesture will cause us to snap to the next page
     protected int mSnapVelocity = 500;
@@ -94,6 +94,9 @@ public abstract class PagedView extends ViewGroup {
     protected float mLastMotionY;
     protected float mTotalMotionX;
     private int mLastScreenScroll = -1;
+    private int[] mChildOffsets;
+    private int[] mChildRelativeOffsets;
+    private int[] mChildOffsetsWithLayoutScale;
 
     protected final static int TOUCH_STATE_REST = 0;
     protected final static int TOUCH_STATE_SCROLLING = 1;
@@ -102,6 +105,7 @@ public abstract class PagedView extends ViewGroup {
     protected final static float ALPHA_QUANTIZE_LEVEL = 0.0001f;
 
     protected int mTouchState = TOUCH_STATE_REST;
+    protected boolean mForceScreenScrolled = false;
 
     protected OnLongClickListener mLongClickListener;
 
@@ -125,6 +129,11 @@ public abstract class PagedView extends ViewGroup {
     protected int mUnboundedScrollX;
     protected int[] mTempVisiblePagesRange = new int[2];
 
+    // mOverScrollX is equal to mScrollX when we're within the normal scroll range. Otherwise
+    // it is equal to the scaled overscroll position. We use a separate value so as to prevent
+    // the screens from continuing to translate beyond the normal bounds.
+    protected int mOverScrollX;
+
     // parameter that adjusts the layout to be optimized for pages with that scale factor
     protected float mLayoutScale = 1.0f;
 
@@ -134,8 +143,7 @@ public abstract class PagedView extends ViewGroup {
 
     private PageSwitchListener mPageSwitchListener;
 
-    private ArrayList<Boolean> mDirtyPageContent;
-    private boolean mDirtyPageAlpha = true;
+    protected ArrayList<Boolean> mDirtyPageContent;
 
     // choice modes
     protected static final int CHOICE_MODE_NONE = 0;
@@ -197,7 +205,7 @@ public abstract class PagedView extends ViewGroup {
 
         TypedArray a = context.obtainStyledAttributes(attrs,
                 R.styleable.PagedView, defStyle, 0);
-        mPageSpacing = a.getDimensionPixelSize(R.styleable.PagedView_pageSpacing, 0);
+        setPageSpacing(a.getDimensionPixelSize(R.styleable.PagedView_pageSpacing, 0));
         mPageLayoutPaddingTop = a.getDimensionPixelSize(
                 R.styleable.PagedView_pageLayoutPaddingTop, 0);
         mPageLayoutPaddingBottom = a.getDimensionPixelSize(
@@ -375,6 +383,7 @@ public abstract class PagedView extends ViewGroup {
                 overScroll(x - mMaxScrollX);
             }
         } else {
+            mOverScrollX = x;
             super.scrollTo(x, y);
         }
 
@@ -387,13 +396,11 @@ public abstract class PagedView extends ViewGroup {
         if (mScroller.computeScrollOffset()) {
             // Don't bother scrolling if the page does not need to be moved
             if (mScrollX != mScroller.getCurrX() || mScrollY != mScroller.getCurrY()) {
-                mDirtyPageAlpha = true;
                 scrollTo(mScroller.getCurrX(), mScroller.getCurrY());
             }
             invalidate();
             return true;
         } else if (mNextPage != INVALID_PAGE) {
-            mDirtyPageAlpha = true;
             mCurrentPage = Math.max(0, Math.min(mNextPage, getPageCount() - 1));
             mNextPage = INVALID_PAGE;
             notifyPageSwitchListener();
@@ -491,11 +498,14 @@ public abstract class PagedView extends ViewGroup {
             heightSize = maxChildHeight + verticalPadding;
         }
 
-        updateScrollingIndicatorPosition();
-
         setMeasuredDimension(widthSize, heightSize);
 
-        // We can't call getChildOffset/getRelativeChildOffset until we set the measured dimensions
+        // We can't call getChildOffset/getRelativeChildOffset until we set the measured dimensions.
+        // We also wait until we set the measured dimensions before flushing the cache as well, to
+        // ensure that the cache is filled with good values.
+        invalidateCachedOffsets();
+        updateScrollingIndicatorPosition();
+
         if (childCount > 0) {
             mMaxScrollX = getChildOffset(childCount - 1) - getRelativeChildOffset(childCount - 1);
         } else {
@@ -520,6 +530,7 @@ public abstract class PagedView extends ViewGroup {
     // tightens the layout accordingly
     public void setLayoutScale(float childrenScale) {
         mLayoutScale = childrenScale;
+        invalidateCachedOffsets();
 
         // Now we need to do a re-layout, but preserving absolute X and Y coordinates
         int childCount = getChildCount();
@@ -547,6 +558,11 @@ public abstract class PagedView extends ViewGroup {
         scrollToNewPageWithoutMovingPages(mCurrentPage);
     }
 
+    public void setPageSpacing(int pageSpacing) {
+        mPageSpacing = pageSpacing;
+        invalidateCachedOffsets();
+    }
+
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         if (!mIsDataReady) {
@@ -564,7 +580,7 @@ public abstract class PagedView extends ViewGroup {
 
             // Calculate the variable page spacing if necessary
             if (mPageSpacing < 0) {
-                mPageSpacing = ((right - left) - getChildAt(0).getMeasuredWidth()) / 2;
+                setPageSpacing(((right - left) - getChildAt(0).getMeasuredWidth()) / 2);
             }
         }
 
@@ -599,78 +615,103 @@ public abstract class PagedView extends ViewGroup {
         }
     }
 
-    protected void forceUpdateAdjacentPagesAlpha() {
-        mDirtyPageAlpha = true;
-        updateAdjacentPagesAlpha();
-    }
-
-    protected void updateAdjacentPagesAlpha() {
+    protected void screenScrolled(int screenScroll) {
+        if (isScrollingIndicatorEnabled()) {
+            updateScrollingIndicator();
+        }
         if (mFadeInAdjacentScreens) {
-            if (mDirtyPageAlpha || (mTouchState == TOUCH_STATE_SCROLLING) || !mScroller.isFinished()) {
-                int screenWidth = getMeasuredWidth() - mPaddingLeft - mPaddingRight;
-                int halfScreenSize = screenWidth / 2;
-                int screenCenter = mScrollX + halfScreenSize + mPaddingLeft;
-                final int childCount = getChildCount();
-                for (int i = 0; i < childCount; ++i) {
-                    View layout = (View) getPageAt(i);
-                    int childWidth = getScaledMeasuredWidth(layout);
-                    int halfChildWidth = (childWidth / 2);
-                    int childCenter = getChildOffset(i) + halfChildWidth;
-
-                    // On the first layout, we may not have a width nor a proper offset, so for now
-                    // we should just assume full page width (and calculate the offset according to
-                    // that).
-                    if (childWidth <= 0) {
-                        childWidth = screenWidth;
-                        childCenter = (i * childWidth) + (childWidth / 2);
-                    }
-
-                    int d = halfChildWidth;
-                    int distanceFromScreenCenter = childCenter - screenCenter;
-                    if (distanceFromScreenCenter > 0) {
-                        if (i > 0) {
-                            d += getScaledMeasuredWidth(getPageAt(i - 1)) / 2;
-                        } else {
-                            continue;
-                        }
-                    } else {
-                        if (i < childCount - 1) {
-                            d += getScaledMeasuredWidth(getPageAt(i + 1)) / 2;
-                        } else {
-                            continue;
-                        }
-                    }
-                    d += mPageSpacing;
-
-                    // Preventing potential divide-by-zero
-                    d = Math.max(1, d);
-
-                    float dimAlpha = (float) (Math.abs(distanceFromScreenCenter)) / d;
-                    dimAlpha = Math.max(0.0f, Math.min(1.0f, (dimAlpha * dimAlpha)));
-                    float alpha = 1.0f - dimAlpha;
-
-                    if (alpha < ALPHA_QUANTIZE_LEVEL) {
-                        alpha = 0.0f;
-                    } else if (alpha > 1.0f - ALPHA_QUANTIZE_LEVEL) {
-                        alpha = 1.0f;
-                    }
-
-                    // Due to the way we're setting alpha on our children in PagedViewCellLayout,
-                    // this optimization causes alpha to not be properly updated sometimes (repro
-                    // case: in xlarge mode, swipe to second page in All Apps, then click on "My
-                    // Apps" tab. the page will have alpha 0 until you swipe it). Removing
-                    // optimization fixes the issue, but we should fix this in a better manner
-                    //if (Float.compare(alpha, layout.getAlpha()) != 0) {
-                        layout.setAlpha(alpha);
-                    //}
+            for (int i = 0; i < getChildCount(); i++) {
+                View child = getChildAt(i);
+                if (child != null) {
+                    float scrollProgress = getScrollProgress(screenScroll, child, i);
+                    float alpha = 1 - Math.abs(scrollProgress);
+                    child.setFastAlpha(alpha);
+                    child.fastInvalidate();
                 }
-                mDirtyPageAlpha = false;
             }
+            invalidate();
         }
     }
 
-    protected void screenScrolled(int screenScroll) {
-        updateScrollingIndicator();
+    @Override
+    protected void onViewAdded(View child) {
+        super.onViewAdded(child);
+
+        // This ensures that when children are added, they get the correct transforms / alphas
+        // in accordance with any scroll effects.
+        mForceScreenScrolled = true;
+        invalidate();
+        invalidateCachedOffsets();
+    }
+
+    protected void invalidateCachedOffsets() {
+        int count = getChildCount();
+        if (count == 0) {
+            mChildOffsets = null;
+            mChildRelativeOffsets = null;
+            mChildOffsetsWithLayoutScale = null;
+            return;
+        }
+
+        mChildOffsets = new int[count];
+        mChildRelativeOffsets = new int[count];
+        mChildOffsetsWithLayoutScale = new int[count];
+        for (int i = 0; i < count; i++) {
+            mChildOffsets[i] = -1;
+            mChildRelativeOffsets[i] = -1;
+            mChildOffsetsWithLayoutScale[i] = -1;
+        }
+    }
+
+    protected int getChildOffset(int index) {
+        int[] childOffsets = Float.compare(mLayoutScale, 1f) == 0 ?
+                mChildOffsets : mChildOffsetsWithLayoutScale;
+
+        if (childOffsets != null && childOffsets[index] != -1) {
+            return childOffsets[index];
+        } else {
+            if (getChildCount() == 0)
+                return 0;
+
+            int offset = getRelativeChildOffset(0);
+            for (int i = 0; i < index; ++i) {
+                offset += getScaledMeasuredWidth(getPageAt(i)) + mPageSpacing;
+            }
+            if (childOffsets != null) {
+                childOffsets[index] = offset;
+            }
+            return offset;
+        }
+    }
+
+    protected int getRelativeChildOffset(int index) {
+        if (mChildRelativeOffsets != null && mChildRelativeOffsets[index] != -1) {
+            return mChildRelativeOffsets[index];
+        } else {
+            final int padding = mPaddingLeft + mPaddingRight;
+            final int offset = mPaddingLeft +
+                    (getMeasuredWidth() - padding - getChildWidth(index)) / 2;
+            if (mChildRelativeOffsets != null) {
+                mChildRelativeOffsets[index] = offset;
+            }
+            return offset;
+        }
+    }
+
+    protected int getScaledRelativeChildOffset(int index) {
+        final int padding = mPaddingLeft + mPaddingRight;
+        final int offset = mPaddingLeft + (getMeasuredWidth() - padding -
+                getScaledMeasuredWidth(getPageAt(index))) / 2;
+        return offset;
+    }
+
+    protected int getScaledMeasuredWidth(View child) {
+        // This functions are called enough times that it actually makes a difference in the
+        // profiler -- so just inline the max() here
+        final int measuredWidth = child.getMeasuredWidth();
+        final int minWidth = mMinimumWidth;
+        final int maxWidth = (minWidth > measuredWidth) ? minWidth : measuredWidth;
+        return (int) (maxWidth * mLayoutScale + 0.5f);
     }
 
     protected void getVisiblePages(int[] range) {
@@ -690,7 +731,6 @@ public abstract class PagedView extends ViewGroup {
                 rightScreen++;
                 x += getScaledMeasuredWidth(getPageAt(rightScreen)) + mPageSpacing;
             }
-            rightScreen = Math.min(getChildCount() - 1, rightScreen);
             range[0] = leftScreen;
             range[1] = rightScreen;
         } else {
@@ -701,10 +741,10 @@ public abstract class PagedView extends ViewGroup {
 
     @Override
     protected void dispatchDraw(Canvas canvas) {
-        if (mScrollX != mLastScreenScroll) {
-            screenScrolled(mScrollX);
-            updateAdjacentPagesAlpha();
-            mLastScreenScroll = mScrollX;
+        if (mOverScrollX != mLastScreenScroll || mForceScreenScrolled) {
+            screenScrolled(mOverScrollX);
+            mLastScreenScroll = mOverScrollX;
+            mForceScreenScrolled = false;
         }
 
         // Find out which screens are visible; as an optimization we only call draw on them
@@ -713,17 +753,18 @@ public abstract class PagedView extends ViewGroup {
             getVisiblePages(mTempVisiblePagesRange);
             final int leftScreen = mTempVisiblePagesRange[0];
             final int rightScreen = mTempVisiblePagesRange[1];
+            if (leftScreen != -1 && rightScreen != -1) {
+                final long drawingTime = getDrawingTime();
+                // Clip to the bounds
+                canvas.save();
+                canvas.clipRect(mScrollX, mScrollY, mScrollX + mRight - mLeft,
+                        mScrollY + mBottom - mTop);
 
-            final long drawingTime = getDrawingTime();
-            // Clip to the bounds
-            canvas.save();
-            canvas.clipRect(mScrollX, mScrollY, mScrollX + mRight - mLeft,
-                    mScrollY + mBottom - mTop);
-
-            for (int i = rightScreen; i >= leftScreen; i--) {
-                drawChild(canvas, getPageAt(i), drawingTime);
+                for (int i = rightScreen; i >= leftScreen; i--) {
+                    drawChild(canvas, getPageAt(i), drawingTime);
+                }
+                canvas.restore();
             }
-            canvas.restore();
         }
     }
 
@@ -1047,9 +1088,11 @@ public abstract class PagedView extends ViewGroup {
 
         int overScrollAmount = (int) Math.round(f * screenSize);
         if (amount < 0) {
-            mScrollX = overScrollAmount;
+            mOverScrollX = overScrollAmount;
+            mScrollX = 0;
         } else {
-            mScrollX = mMaxScrollX + overScrollAmount;
+            mOverScrollX = mMaxScrollX + overScrollAmount;
+            mScrollX = mMaxScrollX;
         }
         invalidate();
     }
@@ -1069,9 +1112,11 @@ public abstract class PagedView extends ViewGroup {
 
         int overScrollAmount = (int) Math.round(OVERSCROLL_DAMP_FACTOR * f * screenSize);
         if (amount < 0) {
-            mScrollX = overScrollAmount;
+            mOverScrollX = overScrollAmount;
+            mScrollX = 0;
         } else {
-            mScrollX = mMaxScrollX + overScrollAmount;
+            mOverScrollX = mMaxScrollX + overScrollAmount;
+            mScrollX = mMaxScrollX;
         }
         invalidate();
     }
@@ -1157,23 +1202,24 @@ public abstract class PagedView extends ViewGroup {
                 velocityTracker.computeCurrentVelocity(1000, mMaximumVelocity);
                 int velocityX = (int) velocityTracker.getXVelocity(activePointerId);
                 final int deltaX = (int) (x - mDownMotionX);
-                boolean isSignificantMove = Math.abs(deltaX) > MIN_LENGTH_FOR_MOVE;
+                final int pageWidth = getScaledMeasuredWidth(getPageAt(mCurrentPage));
+                boolean isSignificantMove = Math.abs(deltaX) > pageWidth *
+                        SIGNIFICANT_MOVE_THRESHOLD;
                 final int snapVelocity = mSnapVelocity;
 
                 mTotalMotionX += Math.abs(mLastMotionX + mLastMotionXRemainder - x);
+
+                boolean isFling = mTotalMotionX > MIN_LENGTH_FOR_FLING &&
+                        Math.abs(velocityX) > snapVelocity;
 
                 // In the case that the page is moved far to one direction and then is flung
                 // in the opposite direction, we use a threshold to determine whether we should
                 // just return to the starting page, or if we should skip one further.
                 boolean returnToOriginalPage = false;
-                final int pageWidth = getScaledMeasuredWidth(getPageAt(mCurrentPage));
                 if (Math.abs(deltaX) > pageWidth * RETURN_TO_ORIGINAL_PAGE_THRESHOLD &&
-                        Math.signum(velocityX) != Math.signum(deltaX)) {
+                        Math.signum(velocityX) != Math.signum(deltaX) && isFling) {
                     returnToOriginalPage = true;
                 }
-
-                boolean isFling = mTotalMotionX > MIN_LENGTH_FOR_FLING &&
-                        Math.abs(velocityX) > snapVelocity;
 
                 int finalPage;
                 // We give flings precedence over large moves, which is why we short-circuit our
@@ -1323,49 +1369,12 @@ public abstract class PagedView extends ViewGroup {
         return -1;
     }
 
-    protected void setMinimumWidthOverride(int minimumWidth) {
-        mMinimumWidth = minimumWidth;
-    }
-    protected void resetMinimumWidthOverride() {
-        mMinimumWidth = 0;
-    }
-
     protected int getChildWidth(int index) {
         // This functions are called enough times that it actually makes a difference in the
         // profiler -- so just inline the max() here
         final int measuredWidth = getPageAt(index).getMeasuredWidth();
         final int minWidth = mMinimumWidth;
         return (minWidth > measuredWidth) ? minWidth : measuredWidth;
-    }
-
-    protected int getRelativeChildOffset(int index) {
-        int padding = mPaddingLeft + mPaddingRight;
-        return mPaddingLeft + (getMeasuredWidth() - padding - getChildWidth(index)) / 2;
-    }
-    protected int getScaledRelativeChildOffset(int index) {
-        int padding = mPaddingLeft + mPaddingRight;
-        return mPaddingLeft + (getMeasuredWidth() - padding -
-                getScaledMeasuredWidth(getPageAt(index))) / 2;
-    }
-
-    protected int getChildOffset(int index) {
-        if (getChildCount() == 0)
-            return 0;
-
-        int offset = getRelativeChildOffset(0);
-        for (int i = 0; i < index; ++i) {
-            offset += getScaledMeasuredWidth(getPageAt(i)) + mPageSpacing;
-        }
-        return offset;
-    }
-
-    protected int getScaledMeasuredWidth(View child) {
-        // This functions are called enough times that it actually makes a difference in the
-        // profiler -- so just inline the max() here
-        final int measuredWidth = child.getMeasuredWidth();
-        final int minWidth = mMinimumWidth;
-        final int maxWidth = (minWidth > measuredWidth) ? minWidth : measuredWidth;
-        return (int) (maxWidth * mLayoutScale + 0.5f);
     }
 
     int getPageNearestToCenterOfScreen() {
@@ -1727,13 +1736,11 @@ public abstract class PagedView extends ViewGroup {
 
             // Load any pages that are necessary for the current window of views
             loadAssociatedPages(mCurrentPage, immediateAndOnly);
-            mDirtyPageAlpha = true;
-            updateAdjacentPagesAlpha();
             requestLayout();
         }
     }
 
-    private ImageView getScrollingIndicator() {
+    protected ImageView getScrollingIndicator() {
         // We use mHasScrollIndicator to prevent future lookups if there is no sibling indicator
         // found
         if (mHasScrollIndicator && mScrollIndicator == null) {
@@ -1757,9 +1764,9 @@ public abstract class PagedView extends ViewGroup {
             hideScrollingIndicator(false);
         }
     };
-    protected void flashScrollingIndicator() {
+    protected void flashScrollingIndicator(boolean animated) {
         removeCallbacks(hideScrollingIndicatorRunnable);
-        showScrollingIndicator(false);
+        showScrollingIndicator(!animated);
         postDelayed(hideScrollingIndicatorRunnable, sScrollIndicatorFlashDuration);
     }
 
@@ -1776,9 +1783,7 @@ public abstract class PagedView extends ViewGroup {
             // Fade the indicator in
             updateScrollingIndicatorPosition();
             mScrollIndicator.setVisibility(View.VISIBLE);
-            if (mScrollIndicatorAnimator != null) {
-                mScrollIndicatorAnimator.cancel();
-            }
+            cancelScrollingIndicatorAnimations();
             if (immediately) {
                 mScrollIndicator.setAlpha(1f);
             } else {
@@ -1786,6 +1791,12 @@ public abstract class PagedView extends ViewGroup {
                 mScrollIndicatorAnimator.setDuration(duration);
                 mScrollIndicatorAnimator.start();
             }
+        }
+    }
+
+    protected void cancelScrollingIndicatorAnimations() {
+        if (mScrollIndicatorAnimator != null) {
+            mScrollIndicatorAnimator.cancel();
         }
     }
 
@@ -1801,11 +1812,9 @@ public abstract class PagedView extends ViewGroup {
         if (mScrollIndicator != null) {
             // Fade the indicator out
             updateScrollingIndicatorPosition();
-            if (mScrollIndicatorAnimator != null) {
-                mScrollIndicatorAnimator.cancel();
-            }
+            cancelScrollingIndicatorAnimations();
             if (immediately) {
-                mScrollIndicator.setVisibility(View.GONE);
+                mScrollIndicator.setVisibility(View.INVISIBLE);
                 mScrollIndicator.setAlpha(0f);
             } else {
                 mScrollIndicatorAnimator = ObjectAnimator.ofFloat(mScrollIndicator, "alpha", 0f);
@@ -1819,7 +1828,7 @@ public abstract class PagedView extends ViewGroup {
                     @Override
                     public void onAnimationEnd(Animator animation) {
                         if (!cancelled) {
-                            mScrollIndicator.setVisibility(View.GONE);
+                            mScrollIndicator.setVisibility(View.INVISIBLE);
                         }
                     }
                 });

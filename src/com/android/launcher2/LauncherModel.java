@@ -28,7 +28,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.Intent.ShortcutIconResource;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -56,7 +58,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * Maintains in-memory state of the Launcher. It is expected that there should be only one
@@ -175,10 +176,14 @@ public class LauncherModel extends BroadcastReceiver {
         // Ensure that we don't use the same workspace items data structure on the main thread
         // by making a copy of workspace items first.
         final ArrayList<ItemInfo> workspaceItems = new ArrayList<ItemInfo>(sWorkspaceItems);
+        final ArrayList<ItemInfo> appWidgets = new ArrayList<ItemInfo>(sAppWidgets);
         mHandler.post(new Runnable() {
             @Override
             public void run() {
                for (ItemInfo item : workspaceItems) {
+                   item.unbind();
+               }
+               for (ItemInfo item : appWidgets) {
                    item.unbind();
                }
             }
@@ -1228,7 +1233,6 @@ public class LauncherModel extends BroadcastReceiver {
                 }
             });
 
-            // Unbind previously bound workspace items to prevent a leak of AppWidgetHostViews.
             final ArrayList<ItemInfo> workspaceItems = unbindWorkspaceItemsOnMainThread();
 
             // Add the items to the workspace.
@@ -1345,7 +1349,7 @@ public class LauncherModel extends BroadcastReceiver {
 
             // shallow copy
             final ArrayList<ApplicationInfo> list
-                    = (ArrayList<ApplicationInfo>)mAllAppsList.data.clone();
+                    = (ArrayList<ApplicationInfo>) mAllAppsList.data.clone();
             mHandler.post(new Runnable() {
                 public void run() {
                     final long t = SystemClock.uptimeMillis();
@@ -1629,6 +1633,17 @@ public class LauncherModel extends BroadcastReceiver {
             return null;
         }
 
+        try {
+            PackageInfo pi = manager.getPackageInfo(componentName.getPackageName(), 0);
+            if (!pi.applicationInfo.enabled) {
+                // If we return null here, the corresponding item will be removed from the launcher
+                // db and will not appear in the workspace.
+                return null;
+            }
+        } catch (NameNotFoundException e) {
+            Log.d(TAG, "getPackInfo failed for package " + componentName.getPackageName());
+        }
+
         // TODO: See if the PackageManager knows about this case.  If it doesn't
         // then return null & delete this.
 
@@ -1759,6 +1774,9 @@ public class LauncherModel extends BroadcastReceiver {
     ShortcutInfo addShortcut(Context context, Intent data, long container, int screen,
             int cellX, int cellY, boolean notify) {
         final ShortcutInfo info = infoFromShortcutIntent(context, data, null);
+        if (info == null) {
+            return null;
+        }
         addItemToDatabase(context, info, container, screen, cellX, cellY, notify);
 
         return info;
@@ -1821,6 +1839,12 @@ public class LauncherModel extends BroadcastReceiver {
         Intent intent = data.getParcelableExtra(Intent.EXTRA_SHORTCUT_INTENT);
         String name = data.getStringExtra(Intent.EXTRA_SHORTCUT_NAME);
         Parcelable bitmap = data.getParcelableExtra(Intent.EXTRA_SHORTCUT_ICON);
+
+        if (intent == null) {
+            // If the intent is null, we can't construct a valid ShortcutInfo, so we return null
+            Log.e(TAG, "Can't construct ShorcutInfo with null intent");
+            return null;
+        }
 
         Bitmap icon = null;
         boolean customIcon = false;
