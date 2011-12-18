@@ -14,13 +14,27 @@
      limitations under the License.
 -->
 
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:launcher="http://schemas.android.com/apk/res/com.cyanogenmod.trebuchet">
     <!-- UI -->
     <PreferenceCategory android:title="@string/preferences_interface_title">
         <!-- Homescreen -->
         <PreferenceScreen android:key="ui_homescreen"
             android:title="@string/preferences_interface_homescreen_title">
             <PreferenceCategory android:title="@string/preferences_interface_homescreen_general_category">
+                <com.cyanogenmod.trebuchet.preference.NumberPickerPreference android:key="ui_homescreen_screens"
+                    android:title="@string/preferences_interface_homescreen_general_screens_title"
+                    android:summary="@string/preferences_interface_homescreen_general_screens_summary"
+                    android:defaultValue="5"
+                    launcher:max="7"
+                    launcher:min="1" />
+                <com.cyanogenmod.trebuchet.preference.NumberPickerPreference android:key="ui_homescreen_default_screen"
+                    android:title="@string/preferences_interface_homescreen_general_default_screen_title"
+                    android:summary="@string/preferences_interface_homescreen_general_default_screen_summary"
+                    android:defaultValue="3"
+                    launcher:maxExternal="ui_homescreen_screens"
+                    launcher:max="7"
+                    launcher:min="1" />
                 <CheckBoxPreference android:key="ui_homescreen_general_search"
                     android:title="@string/preferences_interface_homescreen_general_search_title"
                     android:summary="@string/preferences_interface_homescreen_general_search_summary"

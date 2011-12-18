@@ -20,11 +20,4 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:launcher="http://schemas.android.com/apk/res/com.cyanogenmod.trebuchet"
     android:paddingTop="@dimen/workspace_content_large_only_top_margin"
-    launcher:defaultScreen="2"
-    launcher:pageSpacing="@dimen/workspace_page_spacing">
-      <include android:id="@+id/cell1" layout="@layout/workspace_screen" />
-      <include android:id="@+id/cell2" layout="@layout/workspace_screen" />
-      <include android:id="@+id/cell3" layout="@layout/workspace_screen" />
-      <include android:id="@+id/cell4" layout="@layout/workspace_screen" />
-      <include android:id="@+id/cell5" layout="@layout/workspace_screen" />
-</com.cyanogenmod.trebuchet.Workspace>
+    launcher:pageSpacing="@dimen/workspace_page_spacing" />

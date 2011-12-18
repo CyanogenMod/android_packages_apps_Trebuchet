@@ -56,6 +56,7 @@ import android.util.Log;
 import android.util.Pair;
 import android.view.Display;
 import android.view.DragEvent;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
@@ -116,8 +117,6 @@ public class Workspace extends SmoothPagedView
     private final WallpaperManager mWallpaperManager;
     private IBinder mWindowToken;
     private static final float WALLPAPER_SCREENS_SPAN = 2f;
-
-    private int mDefaultPage;
 
     /**
      * CellInfo for the cell that is currently being dragged
@@ -240,6 +239,8 @@ public class Workspace extends SmoothPagedView
     private float mTransitionProgress;
 
     // Preferences
+    private int mNumberHomescreens;
+    private int mDefaultHomescreen;
     private boolean mShowSearchBar;
     private boolean mResizeAnyWidget;
     private boolean mShowScrollingIndicator;
@@ -310,13 +311,18 @@ public class Workspace extends SmoothPagedView
         // if the value is manually specified, use that instead
         cellCountX = a.getInt(R.styleable.Workspace_cellCountX, cellCountX);
         cellCountY = a.getInt(R.styleable.Workspace_cellCountY, cellCountY);
-        mDefaultPage = a.getInt(R.styleable.Workspace_defaultScreen, 1);
         a.recycle();
 
         LauncherModel.updateWorkspaceLayoutCells(cellCountX, cellCountY);
         setHapticFeedbackEnabled(false);
 
         // Preferences
+        mNumberHomescreens = PreferencesProvider.Interface.Homescreen.getNumberHomescreens(context);
+        mDefaultHomescreen = PreferencesProvider.Interface.Homescreen.getDefaultHomescreen(context,
+                mNumberHomescreens / 2);
+        if (mDefaultHomescreen >= mNumberHomescreens) {
+            mDefaultHomescreen = mNumberHomescreens / 2;
+        }
         mShowSearchBar = PreferencesProvider.Interface.Homescreen.getShowSearchBar(context);
         mResizeAnyWidget = PreferencesProvider.Interface.Homescreen.getResizeAnyWidget(context);
         mShowScrollingIndicator = PreferencesProvider.Interface.Homescreen.getShowScrollingIndicator(context);
@@ -393,7 +399,7 @@ public class Workspace extends SmoothPagedView
      */
     protected void initWorkspace() {
         Context context = getContext();
-        mCurrentPage = mDefaultPage;
+        mCurrentPage = mDefaultHomescreen;
         Launcher.setScreen(mCurrentPage);
         LauncherApplication app = (LauncherApplication)context.getApplicationContext();
         mIconCache = app.getIconCache();
@@ -402,6 +408,12 @@ public class Workspace extends SmoothPagedView
         setChildrenDrawnWithCacheEnabled(true);
 
         final Resources res = getResources();
+
+        LayoutInflater inflater =
+                (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        for (int i = 0; i < mNumberHomescreens; i++) {
+            inflater.inflate(R.layout.workspace_screen, this);
+        }
 
         try {
             mBackground = res.getDrawable(R.drawable.apps_customize_bg);
@@ -1226,15 +1238,17 @@ public class Workspace extends SmoothPagedView
         if (mOverScrollX < 0 || mOverScrollX > mMaxScrollX) {
             int index = mOverScrollX < 0 ? 0 : getChildCount() - 1;
             CellLayout cl = (CellLayout) getChildAt(index);
-            float scrollProgress = getScrollProgress(screenScroll, cl, index);
-            cl.setOverScrollAmount(Math.abs(scrollProgress), index == 0);
-            float rotation = - WORKSPACE_OVERSCROLL_ROTATION * scrollProgress;
-            cl.setCameraDistance(mDensity * CAMERA_DISTANCE);
-            cl.setPivotX(cl.getMeasuredWidth() * (index == 0 ? 0.75f : 0.25f));
-            cl.setPivotY(cl.getMeasuredHeight() * 0.5f);
-            cl.setRotationY(rotation);
-            cl.setOverscrollTransformsDirty(true);
-            setFadeForOverScroll(Math.abs(scrollProgress));
+            if (getChildCount() > 1) {
+                float scrollProgress = getScrollProgress(screenScroll, cl, index);
+                cl.setOverScrollAmount(Math.abs(scrollProgress), index == 0);
+                float rotation = - WORKSPACE_OVERSCROLL_ROTATION * scrollProgress;
+                cl.setCameraDistance(mDensity * CAMERA_DISTANCE);
+                cl.setPivotX(cl.getMeasuredWidth() * (index == 0 ? 0.75f : 0.25f));
+                cl.setPivotY(cl.getMeasuredHeight() * 0.5f);
+                cl.setRotationY(rotation);
+                cl.setOverscrollTransformsDirty(true);
+                setFadeForOverScroll(Math.abs(scrollProgress));
+            }
         } else {
             if (mOverscrollFade != 0) {
                 setFadeForOverScroll(0);
@@ -3533,12 +3547,12 @@ public class Workspace extends SmoothPagedView
     void moveToDefaultScreen(boolean animate) {
         if (!isSmall()) {
             if (animate) {
-                snapToPage(mDefaultPage);
+                snapToPage(mDefaultHomescreen);
             } else {
-                setCurrentPage(mDefaultPage);
+                setCurrentPage(mDefaultHomescreen);
             }
         }
-        getChildAt(mDefaultPage).requestFocus();
+        getChildAt(mDefaultHomescreen).requestFocus();
     }
 
     @Override
