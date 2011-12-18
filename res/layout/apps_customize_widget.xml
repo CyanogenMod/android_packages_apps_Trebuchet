@@ -13,9 +13,9 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<com.android.launcher2.PagedViewWidget
+<com.cyanogenmod.trebuchet.PagedViewWidget
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:launcher="http://schemas.android.com/apk/res/com.android.launcher"
+    xmlns:launcher="http://schemas.android.com/apk/res/com.cyanogenmod.trebuchet"
 
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -63,7 +63,7 @@
     </LinearLayout>
 
     <!-- The icon of the widget. -->
-    <com.android.launcher2.PagedViewWidgetImageView
+    <com.cyanogenmod.trebuchet.PagedViewWidgetImageView
         android:id="@+id/widget_preview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -71,4 +71,4 @@
         android:paddingTop="@dimen/app_widget_preview_padding_top"
         android:paddingLeft="@dimen/app_widget_preview_padding_left"
         android:scaleType="matrix" />
-</com.android.launcher2.PagedViewWidget>
+</com.cyanogenmod.trebuchet.PagedViewWidget>

@@ -13,9 +13,9 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<com.android.launcher2.SearchDropTargetBar
+<com.cyanogenmod.trebuchet.SearchDropTargetBar
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:launcher="http://schemas.android.com/apk/res/com.android.launcher"
+    xmlns:launcher="http://schemas.android.com/apk/res/com.cyanogenmod.trebuchet"
     style="@style/QSBBar"
     android:focusable="false">
 
@@ -33,7 +33,7 @@
             style="@style/DropTargetButtonContainer"
             android:layout_weight="1">
             <!-- Delete target -->
-            <com.android.launcher2.DeleteDropTarget
+            <com.cyanogenmod.trebuchet.DeleteDropTarget
                 style="@style/DropTargetButton"
                 android:id="@+id/delete_target_text"
                 android:text="@string/delete_zone_label_workspace"
@@ -44,11 +44,11 @@
             style="@style/DropTargetButtonContainer"
             android:layout_weight="1">
             <!-- Info target -->
-            <com.android.launcher2.InfoDropTarget
+            <com.cyanogenmod.trebuchet.InfoDropTarget
                 style="@style/DropTargetButton"
                 android:id="@+id/info_target_text"
                 android:text="@string/info_target_label"
                 android:drawableLeft="@drawable/info_target_selector" />
         </FrameLayout>
     </LinearLayout>
-</com.android.launcher2.SearchDropTargetBar>
+</com.cyanogenmod.trebuchet.SearchDropTargetBar>
