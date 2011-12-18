@@ -1460,60 +1460,66 @@ public class AppsCustomizePagedView extends PagedViewWithDraggableItems implemen
     protected void screenScrolled(int screenScroll) {
         super.screenScrolled(screenScroll);
 
-        int currentScreen = (int) Math.floor((double) (screenScroll / (float) getMeasuredWidth()));
-
-        for (int i = currentScreen; i <= Math.min(getChildCount(), currentScreen + 1); i++) {
+        for (int i = 0; i < getChildCount(); i++) {
             View v = getPageAt(i);
             if (v != null) {
                 float scrollProgress = getScrollProgress(screenScroll, v, i);
 
+                float interpolatedProgress =
+                        mZInterpolator.getInterpolation(Math.abs(Math.min(scrollProgress, 0)));
+                float scale = (1 - interpolatedProgress) +
+                        interpolatedProgress * TRANSITION_SCALE_FACTOR;
+                float translationX = Math.min(0, scrollProgress) * v.getMeasuredWidth();
+
+                float alpha;
+
+                if (!LauncherApplication.isScreenLarge() || scrollProgress < 0) {
+                    alpha = scrollProgress < 0 ? mAlphaInterpolator.getInterpolation(
+                        1 - Math.abs(scrollProgress)) : 1.0f;
+                } else {
+                    // On large screens we need to fade the page as it nears its leftmost position
+                    alpha = mLeftScreenAlphaInterpolator.getInterpolation(1 - scrollProgress);
+                }
+
+                v.setCameraDistance(mDensity * CAMERA_DISTANCE);
                 int pageWidth = v.getMeasuredWidth();
                 int pageHeight = v.getMeasuredHeight();
 
-                boolean overScrollLeft = i == 0 && scrollProgress < 0;
-                boolean overScrollRight = i == getChildCount() - 1 && scrollProgress > 0;
-                if (overScrollLeft || overScrollRight) {
-                    // Overscroll rotation
-                    v.setPivotX((overScrollLeft ? TRANSITION_PIVOT : 1 - TRANSITION_PIVOT) * pageWidth);
-                    v.setRotationY(-TRANSITION_MAX_ROTATION * scrollProgress);
-
-                    // On the first/last page, we don't want the page to have any lateral motion
-                    v.setTranslationX(scrollProgress * pageWidth);
-                } else {
-                    // Not in overscroll mode, reset and do normal transition
-                    v.setPivotY(pageHeight / 2.0f);
-                    v.setPivotX(pageWidth / 2.0f);
-                    v.setRotationY(0f);
-
-                    float interpolatedProgress =
-                            mZInterpolator.getInterpolation(Math.abs(Math.min(scrollProgress, 0)));
-                    float scale = (1 - interpolatedProgress) +
-                            interpolatedProgress * TRANSITION_SCALE_FACTOR;
-                    float translationX = Math.min(0, scrollProgress) * v.getMeasuredWidth();
-
-                    float alpha;
-
-                    if (!LauncherApplication.isScreenLarge() || scrollProgress < 0) {
-                        alpha = scrollProgress < 0 ? mAlphaInterpolator.getInterpolation(
-                                1 - Math.abs(scrollProgress)) : 1.0f;
+                if (PERFORM_OVERSCROLL_ROTATION) {
+                    if (i == 0 && scrollProgress < 0) {
+                        // Overscroll to the left
+                        v.setPivotX(TRANSITION_PIVOT * pageWidth);
+                        v.setRotationY(-TRANSITION_MAX_ROTATION * scrollProgress);
+                        scale = 1.0f;
+                        alpha = 1.0f;
+                        // On the first page, we don't want the page to have any lateral motion
+                        translationX = 0;
+                    } else if (i == getChildCount() - 1 && scrollProgress > 0) {
+                        // Overscroll to the right
+                        v.setPivotX((1 - TRANSITION_PIVOT) * pageWidth);
+                        v.setRotationY(-TRANSITION_MAX_ROTATION * scrollProgress);
+                        scale = 1.0f;
+                        alpha = 1.0f;
+                        // On the last page, we don't want the page to have any lateral motion.
+                        translationX = 0;
                     } else {
-                        // On large screens we need to fade the page as it nears its leftmost position
-                        alpha = mLeftScreenAlphaInterpolator.getInterpolation(1 - scrollProgress);
+                        v.setPivotY(pageHeight / 2.0f);
+                        v.setPivotX(pageWidth / 2.0f);
+                        v.setRotationY(0f);
                     }
+                }
 
+                v.setTranslationX(translationX);
+                v.setScaleX(scale);
+                v.setScaleY(scale);
+                v.setAlpha(alpha);
 
-                    v.setTranslationX(translationX);
-                    v.setAlpha(alpha);
-                    v.setScaleX(scale);
-                    v.setScaleY(scale);
-
-                    // If the view has 0 alpha, we set it to be invisible so as to prevent
-                    // it from accepting touches
-                    if (alpha < ViewConfiguration.ALPHA_THRESHOLD) {
-                        v.setVisibility(INVISIBLE);
-                    } else if (v.getVisibility() != VISIBLE) {
-                        v.setVisibility(VISIBLE);
-                    }
+                // If the view has 0 alpha, we set it to be invisible so as to prevent
+                // it from accepting touches
+                if (alpha < ViewConfiguration.ALPHA_THRESHOLD) {
+                    v.setVisibility(INVISIBLE);
+                } else if (v.getVisibility() != VISIBLE) {
+                    v.setVisibility(VISIBLE);
                 }
             }
         }
