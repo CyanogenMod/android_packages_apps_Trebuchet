@@ -465,14 +465,6 @@ public class AppsCustomizePagedView extends PagedViewWithDraggableItems implemen
         int page = getPageForComponent(mSaveInstanceStateItemIndex);
         invalidatePageData(Math.max(0, page), hostIsTransitioning);
 
-
-        int[] offset = new int[2];
-        int[] pos = mWidgetSpacingLayout.estimateCellPosition(mClingFocusedX, mClingFocusedY);
-        mLauncher.getDragLayer().getLocationInDragLayer(this, offset);
-        pos[0] += (getMeasuredWidth() - mWidgetSpacingLayout.getMeasuredWidth()) / 2 + offset[0];
-        pos[1] += (getMeasuredHeight() - mWidgetSpacingLayout.getMeasuredHeight()) / 2 + offset[1];
-        mLauncher.showFirstRunAllAppsCling(pos);
-
         // Show All Apps cling if we are finished transitioning, otherwise, we will try again when
         // the transition completes in AppsCustomizeTabHost (otherwise the wrong offsets will be
         // returned while animating)
