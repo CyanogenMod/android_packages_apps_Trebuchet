@@ -30,7 +30,7 @@ import com.cyanogenmod.trebuchet.R;
 
 public class UninstallShortcutReceiver extends BroadcastReceiver {
     private static final String ACTION_UNINSTALL_SHORTCUT =
-            "com.cyanogenmod.trebuchet.action.UNINSTALL_SHORTCUT";
+            "com.android.launcher.action.UNINSTALL_SHORTCUT";
 
     public void onReceive(Context context, Intent data) {
         if (!ACTION_UNINSTALL_SHORTCUT.equals(data.getAction())) {

@@ -27,11 +27,11 @@ import com.cyanogenmod.trebuchet.R;
 
 public class InstallShortcutReceiver extends BroadcastReceiver {
     public static final String ACTION_INSTALL_SHORTCUT =
-            "com.cyanogenmod.trebuchet.action.INSTALL_SHORTCUT";
+            "com.android.launcher.action.INSTALL_SHORTCUT";
 
     // A mime-type representing shortcut data
     public static final String SHORTCUT_MIMETYPE =
-            "com.cyanogenmod.trebuchet/shortcut";
+            "com.android.launcher/shortcut";
 
     private final int[] mCoordinates = new int[2];
 
