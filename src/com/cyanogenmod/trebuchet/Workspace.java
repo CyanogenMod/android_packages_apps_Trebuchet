@@ -3611,6 +3611,6 @@ public class Workspace extends SmoothPagedView
         cancelScrollingIndicatorAnimations();
         if (qsbDivider != null && mShowSearchBar) qsbDivider.setAlpha(reducedFade);
         if (dockDivider != null) dockDivider.setAlpha(reducedFade);
-        scrollIndicator.setAlpha(1 - fade);
+        if (scrollIndicator != null && mShowScrollingIndicator) scrollIndicator.setAlpha(1 - fade);
     }
 }
