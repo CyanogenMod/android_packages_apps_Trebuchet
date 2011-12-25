@@ -22,9 +22,6 @@ import android.view.animation.Interpolator;
 import android.widget.Scroller;
 
 public abstract class SmoothPagedView extends PagedView {
-    private static final float SMOOTHING_SPEED = 0.75f;
-    private static final float SMOOTHING_CONSTANT = (float) (0.016 / Math.log(SMOOTHING_SPEED));
-
     private float mBaseLineFlingVelocity;
     private float mFlingVelocityInfluence;
 
@@ -171,12 +168,8 @@ public abstract class SmoothPagedView extends PagedView {
             boolean scrollComputed = computeScrollHelper();
 
             if (!scrollComputed && mTouchState == TOUCH_STATE_SCROLLING) {
-                final float now = System.nanoTime() / NANOTIME_DIV;
-                final float e = (float) Math.exp((now - mSmoothingTime) / SMOOTHING_CONSTANT);
-
                 final float dx = mTouchX - mUnboundedScrollX;
-                scrollTo(Math.round(mUnboundedScrollX + dx * e), mScrollY);
-                mSmoothingTime = now;
+                scrollTo(Math.round(mUnboundedScrollX + dx), mScrollY);
 
                 // Keep generating points as long as we're more than 1px away from the target
                 if (dx > 1.f || dx < -1.f) {

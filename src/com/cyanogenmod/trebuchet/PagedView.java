@@ -63,7 +63,6 @@ public abstract class PagedView extends ViewGroup {
     private static final int MIN_LENGTH_FOR_FLING = 25;
 
     private static final int PAGE_SNAP_ANIMATION_DURATION = 550;
-    protected static final float NANOTIME_DIV = 1000000000.0f;
 
     private static final float OVERSCROLL_ACCELERATE_FACTOR = 2;
     private static final float OVERSCROLL_DAMP_FACTOR = 0.14f;
@@ -77,7 +76,6 @@ public abstract class PagedView extends ViewGroup {
     protected int mSnapVelocity = 500;
 
     protected float mDensity;
-    protected float mSmoothingTime;
     protected float mTouchX;
 
     protected boolean mFirstLayout = true;
@@ -391,7 +389,6 @@ public abstract class PagedView extends ViewGroup {
         }
 
         mTouchX = x;
-        mSmoothingTime = System.nanoTime() / NANOTIME_DIV;
     }
 
     // we moved this functionality to a helper function so SmoothPagedView can reuse it
@@ -1033,7 +1030,6 @@ public abstract class PagedView extends ViewGroup {
                 mLastMotionX = x;
                 mLastMotionXRemainder = 0;
                 mTouchX = mScrollX;
-                mSmoothingTime = System.nanoTime() / NANOTIME_DIV;
                 pageBeginMoving();
             }
             // Either way, cancel any pending longpress
@@ -1179,7 +1175,6 @@ public abstract class PagedView extends ViewGroup {
                 // scrolled position (which is discrete).
                 if (Math.abs(deltaX) >= 1.0f) {
                     mTouchX += deltaX;
-                    mSmoothingTime = System.nanoTime() / NANOTIME_DIV;
                     if (!mDeferScrollUpdate) {
                         scrollBy((int) deltaX, 0);
                         if (DEBUG) Log.d(TAG, "onTouchEvent().Scrolling: " + deltaX);
