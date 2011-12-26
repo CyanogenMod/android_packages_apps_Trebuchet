@@ -257,6 +257,7 @@ public final class Launcher extends Activity
 
     // Preferences
     private boolean mShowSearchBar;
+    private boolean mAutoRotate;
 
     private Runnable mBuildLayersRunnable = new Runnable() {
         public void run() {
@@ -293,6 +294,7 @@ public final class Launcher extends Activity
 
         // Preferences
         mShowSearchBar = PreferencesProvider.Interface.Homescreen.getShowSearchBar(this);
+        mAutoRotate = PreferencesProvider.Interface.General.getAutoRotate(this);
 
         if (PROFILE_STARTUP) {
             android.os.Debug.startMethodTracing(
@@ -359,10 +361,12 @@ public final class Launcher extends Activity
         }
         mSearchDropTargetBar.onSearchPackagesChanged(searchVisible, voiceVisible);
 
+        syncOrientation();
+    }
 
+    private void syncOrientation() {
         final UiModeManager uiModeManager = (UiModeManager) getSystemService(Context.UI_MODE_SERVICE);
-        if (PreferencesProvider.Interface.General.getAutoRotate(this) ||
-                uiModeManager.getCurrentModeType() != Configuration.UI_MODE_TYPE_NORMAL) {
+        if (mAutoRotate || uiModeManager.getCurrentModeType() != Configuration.UI_MODE_TYPE_NORMAL) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
         } else {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
@@ -3230,15 +3234,14 @@ public final class Launcher extends Activity
 
     public void lockScreenOrientationOnLargeUI() {
         if (LauncherApplication.isScreenLarge()) {
-            setRequestedOrientation(mapConfigurationOriActivityInfoOri(getResources()
-                    .getConfiguration().orientation));
+            setRequestedOrientation(mapConfigurationOriActivityInfoOri(getCurrentOrientation()));
         }
     }
     public void unlockScreenOrientationOnLargeUI() {
         if (LauncherApplication.isScreenLarge()) {
             mHandler.postDelayed(new Runnable() {
                 public void run() {
-                    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
+                    syncOrientation();
                 }
             }, mRestoreScreenOrientationDelay);
         }
