@@ -163,7 +163,6 @@ public abstract class PagedView extends ViewGroup {
     protected boolean mUsePagingTouchSlop = true;
 
     // If true, the subclass should directly update mScrollX itself in its computeScroll method
-    // (SmoothPagedView does this)
     protected boolean mDeferScrollUpdate = false;
 
     protected boolean mIsPageMoving = false;
@@ -391,15 +390,14 @@ public abstract class PagedView extends ViewGroup {
         mTouchX = x;
     }
 
-    // we moved this functionality to a helper function so SmoothPagedView can reuse it
-    protected boolean computeScrollHelper() {
+    @Override
+    public void computeScroll() {
         if (mScroller.computeScrollOffset()) {
             // Don't bother scrolling if the page does not need to be moved
             if (mScrollX != mScroller.getCurrX() || mScrollY != mScroller.getCurrY()) {
                 scrollTo(mScroller.getCurrX(), mScroller.getCurrY());
             }
             invalidate();
-            return true;
         } else if (mNextPage != INVALID_PAGE) {
             mCurrentPage = Math.max(0, Math.min(mNextPage, getPageCount() - 1));
             mNextPage = INVALID_PAGE;
@@ -424,14 +422,7 @@ public abstract class PagedView extends ViewGroup {
                 ev.getText().add(getCurrentPageDescription());
                 sendAccessibilityEventUnchecked(ev);
             }
-            return true;
         }
-        return false;
-    }
-
-    @Override
-    public void computeScroll() {
-        computeScrollHelper();
     }
 
     @Override
