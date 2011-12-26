@@ -1786,6 +1786,31 @@ public final class Launcher extends Activity
         popupMenu.show();
     }
 
+    public void onLongClickAppsTab(View v) {
+        final PopupMenu popupMenu = new PopupMenu(this, v);
+        final Menu menu = popupMenu.getMenu();
+        popupMenu.inflate(R.menu.apps_tab);
+        AppsCustomizePagedView.SortMode sortMode = mAppsCustomizeContent.getSortMode();
+        if (sortMode == AppsCustomizePagedView.SortMode.Title) {
+            menu.findItem(R.id.apps_sort_title).setChecked(true);
+        } else if (sortMode == AppsCustomizePagedView.SortMode.InstallDate) {
+            menu.findItem(R.id.apps_sort_install_date).setChecked(true);
+        }
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                public boolean onMenuItemClick(MenuItem item) {
+                    switch (item.getItemId()) {
+                        case R.id.apps_sort_title:
+                            mAppsCustomizeContent.setSortMode(AppsCustomizePagedView.SortMode.Title);
+                            break;
+                        case R.id.apps_sort_install_date:
+                            mAppsCustomizeContent.setSortMode(AppsCustomizePagedView.SortMode.InstallDate);
+                            break;
+                    }
+                    return true;
+                }
+        });
+        popupMenu.show();
+    }
 
     void startApplicationDetailsActivity(ComponentName componentName) {
         String packageName = componentName.getPackageName();
