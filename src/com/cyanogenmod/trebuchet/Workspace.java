@@ -1204,8 +1204,7 @@ public class Workspace extends PagedView
     private void screenScrolledLargeUI(int screenScroll) {
         if (isSwitchingState()) return;
         boolean isInOverscroll = false;
-        int currentScreen = (int) Math.floor((double) (screenScroll / (float) getMeasuredWidth()));
-        for (int i = currentScreen; i <= Math.min(getChildCount(), currentScreen + 1); i++) {
+        for (int i = 0; i < getChildCount(); i++) {
             CellLayout cl = (CellLayout) getChildAt(i);
             if (cl != null) {
                 float scrollProgress = getScrollProgress(screenScroll, cl, i);
