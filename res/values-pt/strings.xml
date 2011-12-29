@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- 
+<!--
 /*
 * Copyright (C) 2008 The Android Open Source Project
 *
@@ -7,7 +7,7 @@
 * you may not use this file except in compliance with the License.
 * You may obtain a copy of the License at
 *
-*      http://www.apache.org/licenses/LICENSE-2.0
+* http://www.apache.org/licenses/LICENSE-2.0
 *
 * Unless required by applicable law or agreed to in writing, software
 * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,7 +15,7 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 */
- -->
+-->
 
 <resources xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
@@ -102,4 +102,51 @@
     <string name="folder_closed" msgid="3130534551370511932">"Pasta fechada"</string>
     <string name="folder_renamed" msgid="781234745487414781">"Pasta renomeada para %1$s"</string>
     <string name="folder_name_format" msgid="4513766553514769310">"Pasta: %1$s"</string>
+    <string name="preferences_title">Preferências</string>
+    <!-- UI -->
+    <string name="preferences_interface_title">Interface</string>
+    <!-- Application -->
+    <string name="preferences_application_title">Aplicação</string>
+
+    <!-- UI -->
+    <!-- Homescreen -->
+    <string name="preferences_interface_homescreen_title">Tela Inicial</string>
+    <string name="preferences_interface_homescreen_general_category">Geral</string>
+    <string name="preferences_interface_homescreen_general_screens_title">Telas Iniciais</string>
+    <string name="preferences_interface_homescreen_general_screens_summary">Número de telas na Tela Inicial</string>
+    <string name="preferences_interface_homescreen_general_default_screen_title">Tela Padrão</string>
+    <string name="preferences_interface_homescreen_general_default_screen_summary">Escolha a tela padrão</string>
+    <string name="preferences_interface_homescreen_general_search_title">Barra de Pesquisa</string>
+    <string name="preferences_interface_homescreen_general_search_summary">Ativar Barra de Pesquisa persistente</string>
+    <string name="preferences_interface_homescreen_general_resize_any_widget_title">Redimensionar Widgets</string>
+    <string name="preferences_interface_homescreen_general_resize_any_widget_summary">Permite redimensionamento de Widgets que normalmente não são redimensionáveis</string>
+    <string name="preferences_interface_homescreen_scrolling_category">Rolagem</string>
+    <string name="preferences_interface_homescreen_scrolling_scroll_wallpaper_title">Rolar Papel de Parede</string>
+    <string name="preferences_interface_homescreen_scrolling_scroll_wallpaper_summary">Rola o Papel de Parede na mudança de telas</string>
+    <string name="preferences_interface_homescreen_indicator_category">Indicador</string>
+    <string name="preferences_interface_homescreen_indicator_enable_title">Mostrar Indicador de Página</string>
+    <string name="preferences_interface_homescreen_indicator_enable_summary">Mostra o indicador da página atual no final da tela</string>
+    <string name="preferences_interface_homescreen_indicator_fade_title">Esmaecer Indicador</string>
+    <string name="preferences_interface_homescreen_indicator_fade_summary">Esmaece o indicador após a troca da tela inicial</string>
+
+    <!-- Drawer -->
+    <string name="preferences_interface_drawer_title">Grade de Apps</string>
+    <string name="preferences_interface_drawer_widgets_category">Widgets</string>
+    <string name="preferences_interface_drawer_widgets_join_apps_title">Unir com Apps</string>
+    <string name="preferences_interface_drawer_widgets_join_apps_summary">Deslize da Grade de Apps para os Widgets sem trocar de abas</string>
+    <string name="preferences_interface_drawer_indicator_category">Indicador</string>
+    <string name="preferences_interface_drawer_indicator_enable_title">Mostrar Indicador de Página</string>
+    <string name="preferences_interface_drawer_indicator_enable_summary">Mostra o indicador da página atual no final da tela</string>
+    <string name="preferences_interface_drawer_indicator_fade_title">Esmaecer Indicador</string>
+    <string name="preferences_interface_drawer_indicator_fade_summary">Esmaece o indicador após a troca da tela inicial</string>
+
+    <!-- Dock -->
+    <string name="preferences_interface_dock_title">Dock</string>
+
+    <!-- Icons -->
+    <string name="preferences_interface_icons_title">Ícones</string>
+
+    <!-- General -->
+    <string name="preferences_interface_general_title">Geral</string>
+    <string name="preferences_interface_general_orientation_title">Auto Rotacionar Tela</string>
 </resources>
