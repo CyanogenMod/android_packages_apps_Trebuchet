@@ -29,17 +29,21 @@ public class Cling extends FrameLayout {
 
     static final String WORKSPACE_CLING_DISMISSED_KEY = "cling.workspace.dismissed";
     static final String ALLAPPS_CLING_DISMISSED_KEY = "cling.allapps.dismissed";
+    static final String ALLAPPS_SORT_CLING_DISMISSED_KEY = "cling.allappssort.dismissed";
     static final String FOLDER_CLING_DISMISSED_KEY = "cling.folder.dismissed";
 
     private static String WORKSPACE_PORTRAIT = "workspace_portrait";
     private static String WORKSPACE_LANDSCAPE = "workspace_landscape";
     private static String ALLAPPS_PORTRAIT = "all_apps_portrait";
     private static String ALLAPPS_LANDSCAPE = "all_apps_landscape";
+    private static String ALLAPPS_SORT_PORTRAIT = "all_apps_sort_portrait";
+    private static String ALLAPPS_SORT_LANDSCAPE = "all_apps_sort_landscape";
     private static String FOLDER_PORTRAIT = "folder_portrait";
     private static String FOLDER_LANDSCAPE = "folder_landscape";
     private static String WORKSPACE_LARGE = "workspace_large";
     private static String FOLDER_LARGE = "folder_large";
     private static String ALLAPPS_LARGE = "all_apps_large";
+    private static String ALLAPPS_SORT_LARGE = "all_apps_sort_large";
 
     private Launcher mLauncher;
     private boolean mIsInitialized;
@@ -52,6 +56,7 @@ public class Cling extends FrameLayout {
     private int mButtonBarHeight;
     private float mRevealRadius;
     private int[] mPositionData;
+    private boolean mDismissed;
 
     private Paint mErasePaint;
 
@@ -75,6 +80,7 @@ public class Cling extends FrameLayout {
         if (!mIsInitialized) {
             mLauncher = l;
             mPositionData = positionData;
+            mDismissed = false;
 
             Resources r = getContext().getResources();
             mPunchThroughGraphic = r.getDrawable(R.drawable.cling);
@@ -93,6 +99,14 @@ public class Cling extends FrameLayout {
         }
     }
 
+    void dismiss() {
+        mDismissed = true;
+    }
+
+    boolean isDismissed() {
+        return mDismissed;
+    }
+
     void cleanup() {
         mBackground = null;
         mPunchThroughGraphic = null;
@@ -105,6 +119,10 @@ public class Cling extends FrameLayout {
             return new int[]{getMeasuredWidth() / 2, getMeasuredHeight() - (mButtonBarHeight / 2)};
         } else if (mDrawIdentifier.equals(WORKSPACE_LANDSCAPE)) {
             return new int[]{getMeasuredWidth() - (mButtonBarHeight / 2), getMeasuredHeight() / 2};
+        } else if (mDrawIdentifier.equals(ALLAPPS_SORT_PORTRAIT) ||
+                   mDrawIdentifier.equals(ALLAPPS_SORT_LANDSCAPE) ||
+                   mDrawIdentifier.equals(ALLAPPS_SORT_LARGE)) {
+            return new int[]{mButtonBarHeight / 2, mButtonBarHeight / 2};
         } else if (mDrawIdentifier.equals(WORKSPACE_LARGE)) {
             final float scale = LauncherApplication.getScreenDensity();
             final int cornerXOffset = (int) (scale * 15);
@@ -125,7 +143,10 @@ public class Cling extends FrameLayout {
             mDrawIdentifier.equals(WORKSPACE_LARGE) ||
             mDrawIdentifier.equals(ALLAPPS_PORTRAIT) ||
             mDrawIdentifier.equals(ALLAPPS_LANDSCAPE) ||
-            mDrawIdentifier.equals(ALLAPPS_LARGE)) {
+            mDrawIdentifier.equals(ALLAPPS_LARGE) ||
+            mDrawIdentifier.equals(ALLAPPS_SORT_PORTRAIT) ||
+            mDrawIdentifier.equals(ALLAPPS_SORT_LANDSCAPE) ||
+            mDrawIdentifier.equals(ALLAPPS_SORT_LARGE)) {
             int[] pos = getPunchThroughPosition();
             double diff = Math.sqrt(Math.pow(event.getX() - pos[0], 2) +
                     Math.pow(event.getY() - pos[1], 2));
