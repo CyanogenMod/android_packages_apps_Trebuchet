@@ -16,11 +16,7 @@
 
 package com.cyanogenmod.trebuchet;
 
-import android.animation.Animator;
-import android.animation.AnimatorInflater;
-import android.animation.AnimatorListenerAdapter;
-import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
+import android.animation.*;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
@@ -29,15 +25,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.ActionMode;
-import android.view.InputDevice;
-import android.view.KeyEvent;
-import android.view.MotionEvent;
-import android.view.VelocityTracker;
-import android.view.View;
-import android.view.ViewConfiguration;
-import android.view.ViewGroup;
-import android.view.ViewParent;
+import android.view.*;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityManager;
 import android.view.accessibility.AccessibilityNodeInfo;
@@ -45,8 +33,6 @@ import android.view.animation.Interpolator;
 import android.widget.Checkable;
 import android.widget.ImageView;
 import android.widget.Scroller;
-
-import com.cyanogenmod.trebuchet.R;
 
 import java.util.ArrayList;
 
@@ -100,7 +86,6 @@ public abstract class PagedView extends ViewGroup {
     protected final static int TOUCH_STATE_SCROLLING = 1;
     protected final static int TOUCH_STATE_PREV_PAGE = 2;
     protected final static int TOUCH_STATE_NEXT_PAGE = 3;
-    protected final static float ALPHA_QUANTIZE_LEVEL = 0.0001f;
 
     protected int mTouchState = TOUCH_STATE_REST;
     protected boolean mForceScreenScrolled = false;
@@ -458,7 +443,7 @@ public abstract class PagedView extends ViewGroup {
         for (int i = 0; i < childCount; i++) {
             // disallowing padding in paged view (just pass 0)
             final View child = getPageAt(i);
-            final LayoutParams lp = (LayoutParams) child.getLayoutParams();
+            final LayoutParams lp = child.getLayoutParams();
 
             int childWidthMode;
             if (lp.width == LayoutParams.WRAP_CONTENT) {
@@ -510,7 +495,7 @@ public abstract class PagedView extends ViewGroup {
 
         final int pageCount = getChildCount();
         for (int i = 0; i < pageCount; i++) {
-            View page = (View) getPageAt(i);
+            View page = getPageAt(i);
             page.setX(page.getX() + delta);
         }
         setCurrentPage(newCurrentPage);
@@ -1076,7 +1061,7 @@ public abstract class PagedView extends ViewGroup {
             f /= Math.abs(f);
         }
 
-        int overScrollAmount = (int) Math.round(f * screenSize);
+        int overScrollAmount = Math.round(f * screenSize);
         if (amount < 0) {
             mOverScrollX = overScrollAmount;
             mScrollX = 0;
@@ -1100,7 +1085,7 @@ public abstract class PagedView extends ViewGroup {
             f /= Math.abs(f);
         }
 
-        int overScrollAmount = (int) Math.round(OVERSCROLL_DAMP_FACTOR * f * screenSize);
+        int overScrollAmount = Math.round(OVERSCROLL_DAMP_FACTOR * f * screenSize);
         if (amount < 0) {
             mOverScrollX = overScrollAmount;
             mScrollX = 0;
@@ -1113,14 +1098,6 @@ public abstract class PagedView extends ViewGroup {
 
     protected void overScroll(float amount) {
         dampedOverScroll(amount);
-    }
-
-    protected float maxOverScroll() {
-        // Using the formula in overScroll, assuming that f = 1.0 (which it should generally not
-        // exceed). Used to find out how much extra wallpaper we need for the over scroll effect
-        float f = 1.0f;
-        f = f / (Math.abs(f)) * (overScrollInfluenceCurve(Math.abs(f)));
-        return OVERSCROLL_DAMP_FACTOR * f;
     }
 
     @Override
@@ -1372,7 +1349,7 @@ public abstract class PagedView extends ViewGroup {
         int screenCenter = mScrollX + (getMeasuredWidth() / 2);
         final int childCount = getChildCount();
         for (int i = 0; i < childCount; ++i) {
-            View layout = (View) getPageAt(i);
+            View layout = getPageAt(i);
             int childWidth = getScaledMeasuredWidth(layout);
             int halfChildWidth = (childWidth / 2);
             int childCenter = getChildOffset(i) + halfChildWidth;
@@ -1667,8 +1644,7 @@ public abstract class PagedView extends ViewGroup {
     protected void resetCheckedGrandchildren() {
         // loop through children, and set all of their children to _not_ be checked
         final ArrayList<Checkable> checked = getCheckedGrandchildren();
-        for (int i = 0; i < checked.size(); ++i) {
-            final Checkable c = checked.get(i);
+        for (final Checkable c : checked) {
             c.setChecked(false);
         }
     }
@@ -1885,12 +1861,6 @@ public abstract class PagedView extends ViewGroup {
         }
         mScrollIndicator.setTranslationX(indicatorPos);
         mScrollIndicator.invalidate();
-    }
-
-    public void showScrollIndicatorTrack() {
-    }
-
-    public void hideScrollIndicatorTrack() {
     }
 
     /* Accessibility */

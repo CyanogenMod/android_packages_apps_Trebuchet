@@ -16,11 +16,7 @@
 
 package com.cyanogenmod.trebuchet;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.animation.ObjectAnimator;
-import android.animation.TimeInterpolator;
-import android.animation.ValueAnimator;
+import android.animation.*;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.content.Context;
 import android.content.res.Resources;
@@ -38,8 +34,6 @@ import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
 import android.widget.FrameLayout;
 import android.widget.TextView;
-
-import com.cyanogenmod.trebuchet.R;
 
 import java.util.ArrayList;
 
@@ -98,18 +92,12 @@ public class DragLayer extends FrameLayout {
 
     private boolean isEventOverFolderTextRegion(Folder folder, MotionEvent ev) {
         getDescendantRectRelativeToSelf(folder.getEditTextRegion(), mHitRect);
-        if (mHitRect.contains((int) ev.getX(), (int) ev.getY())) {
-            return true;
-        }
-        return false;
+        return mHitRect.contains((int) ev.getX(), (int) ev.getY());
     }
 
     private boolean isEventOverFolder(Folder folder, MotionEvent ev) {
         getDescendantRectRelativeToSelf(folder, mHitRect);
-        if (mHitRect.contains((int) ev.getX(), (int) ev.getY())) {
-            return true;
-        }
-        return false;
+        return mHitRect.contains((int) ev.getX(), (int) ev.getY());
     }
 
     private boolean handleTouchDown(MotionEvent ev, boolean intercept) {
@@ -175,10 +163,8 @@ public class DragLayer extends FrameLayout {
                             sendTapOutsideFolderAccessibilityEvent(currentFolder.isEditingName());
                             mHoverPointClosesFolder = true;
                             return true;
-                        } else if (isOverFolder) {
-                            mHoverPointClosesFolder = false;
                         } else {
-                            return true;
+                            mHoverPointClosesFolder = false;
                         }
                     case MotionEvent.ACTION_HOVER_MOVE:
                         isOverFolder = isEventOverFolder(currentFolder, ev);
@@ -293,8 +279,8 @@ public class DragLayer extends FrameLayout {
             pt[1] += view.getTop() - view.getScrollY();
             viewParent = view.getParent();
         }
-        coord[0] = (int) Math.round(pt[0]);
-        coord[1] = (int) Math.round(pt[1]);
+        coord[0] = Math.round(pt[0]);
+        coord[1] = Math.round(pt[1]);
         return scale;
     }
 
@@ -420,7 +406,7 @@ public class DragLayer extends FrameLayout {
         final int fromY = r.top;
 
         animateViewIntoPosition(dragView, fromX, fromY, pos[0], pos[1], scale,
-                onFinishRunnable, true, -1);
+                onFinishRunnable, -1);
     }
 
     public void animateViewIntoPosition(DragView dragView, final View child,
@@ -450,7 +436,7 @@ public class DragLayer extends FrameLayout {
 
             // Center in the y coordinate about the target's drawable
             toY += Math.round(scale * tv.getPaddingTop());
-            toY -= (dragView.getHeight() - (int) Math.round(scale * d.getIntrinsicHeight())) / 2;
+            toY -= (dragView.getHeight() - Math.round(scale * d.getIntrinsicHeight())) / 2;
             // Center in the x coordinate about the target's drawable
             toX -= (dragView.getMeasuredWidth() - Math.round(scale * child.getMeasuredWidth())) / 2;
         } else if (child instanceof FolderIcon) {
@@ -485,12 +471,12 @@ public class DragLayer extends FrameLayout {
             }
         };
         animateViewIntoPosition(dragView, fromX, fromY, toX, toY, scale,
-                onCompleteRunnable, true, duration);
+                onCompleteRunnable, duration);
     }
 
     private void animateViewIntoPosition(final View view, final int fromX, final int fromY,
             final int toX, final int toY, float finalScale, Runnable onCompleteRunnable,
-            boolean fadeOut, int duration) {
+            int duration) {
         Rect from = new Rect(fromX, fromY, fromX +
                 view.getMeasuredWidth(), fromY + view.getMeasuredHeight());
         Rect to = new Rect(toX, toY, toX + view.getMeasuredWidth(), toY + view.getMeasuredHeight());
@@ -565,8 +551,8 @@ public class DragLayer extends FrameLayout {
                 float motionPercent = motionInterpolator == null ? percent :
                         motionInterpolator.getInterpolation(percent);
 
-                mDropViewPos[0] = from.left + (int) Math.round(((to.left - from.left) * motionPercent));
-                mDropViewPos[1] = from.top + (int) Math.round(((to.top - from.top) * motionPercent));
+                mDropViewPos[0] = from.left + Math.round(((to.left - from.left) * motionPercent));
+                mDropViewPos[1] = from.top + Math.round(((to.top - from.top) * motionPercent));
                 mDropViewScale = percent * finalScale + (1 - percent);
                 mDropViewAlpha = alphaPercent * finalAlpha + (1 - alphaPercent) * initialAlpha;
                 invalidate(mDropViewPos[0], mDropViewPos[1],

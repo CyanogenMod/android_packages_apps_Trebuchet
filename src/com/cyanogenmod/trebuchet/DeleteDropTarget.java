@@ -29,8 +29,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
 
-import com.cyanogenmod.trebuchet.R;
-
 public class DeleteDropTarget extends ButtonDropTarget {
 
     private static int DELETE_ANIMATION_DURATION = 250;
@@ -178,8 +176,8 @@ public class DeleteDropTarget extends ButtonDropTarget {
                 to.left + getPaddingLeft() + width, to.bottom);
 
         // Center the destination rect about the trash icon
-        int xOffset = (int) -(d.dragView.getMeasuredWidth() - width) / 2;
-        int yOffset = (int) -(d.dragView.getMeasuredHeight() - height) / 2;
+        int xOffset = -(d.dragView.getMeasuredWidth() - width) / 2;
+        int yOffset = -(d.dragView.getMeasuredHeight() - height) / 2;
         to.offset(xOffset, yOffset);
 
         mSearchDropTargetBar.deferOnDragEnd();

@@ -17,16 +17,6 @@
 -->
 
 <resources>
-    <!-- Orientation of a widget. -->
-    <attr name="direction">
-        <!-- Vertical widget. -->
-        <enum name="vertical" value="0" />
-        <!-- Horizontal widget. -->
-        <enum name="horizontal" value="1" />
-    </attr>
-
-    <skip />
-
     <!-- Cling specific attributes. These attributes are used to customize
          the cling in XML files. -->
     <declare-styleable name="Cling">
@@ -66,16 +56,6 @@
         <attr name="heightGap" format="dimension" />
         <!-- The max gap size for each dimension -->
         <attr name="maxGap" format="dimension" />
-    </declare-styleable>
-
-    <!-- StrokedTextView specific attributes. -->
-    <declare-styleable name="StrokedTextView">
-        <!-- The color of the stroke outline -->
-        <attr name="strokeColor" format="color" />
-        <!-- The color of the text -->
-        <attr name="strokeTextColor" format="color" />
-        <!-- The width of the stroke -->
-        <attr name="strokeWidth" format="float" />
     </declare-styleable>
 
     <!-- HolographicLinearLayout specific attributes. -->
@@ -139,13 +119,6 @@
         <attr name="clingFocusedX" format="integer" />
         <!-- The y index of the item to be focused in the cling -->
         <attr name="clingFocusedY" format="integer" />
-    </declare-styleable>
-
-    <!-- HandleView specific attributes. These attributes are used to customize
-         a HandleView view in XML files. -->
-    <declare-styleable name="HandleView">
-        <!-- Orientation of the handle. -->
-        <attr name="direction" />
     </declare-styleable>
 
     <!-- XML attributes used by default_workspace.xml -->

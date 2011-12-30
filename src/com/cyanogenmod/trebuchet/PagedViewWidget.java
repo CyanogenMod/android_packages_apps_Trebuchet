@@ -27,14 +27,11 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.util.AttributeSet;
-import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.widget.Checkable;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import com.cyanogenmod.trebuchet.R;
 
 /**
  * The linear layout used strictly for the widget/wallpaper tab of the customization tray
@@ -148,7 +145,7 @@ public class PagedViewWidget extends LinearLayout implements Checkable {
         return maxSize;
     }
 
-    void applyPreview(FastBitmapDrawable preview, int index) {
+    void applyPreview(FastBitmapDrawable preview) {
         final PagedViewWidgetImageView image =
                 (PagedViewWidgetImageView) findViewById(R.id.widget_preview);
         if (preview != null) {
@@ -210,8 +207,8 @@ public class PagedViewWidget extends LinearLayout implements Checkable {
     }
     @Override
     public void setAlpha(float alpha) {
-        final float viewAlpha = mHolographicOutlineHelper.viewAlphaInterpolator(alpha);
-        final float holographicAlpha = mHolographicOutlineHelper.highlightAlphaInterpolator(alpha);
+        final float viewAlpha = HolographicOutlineHelper.viewAlphaInterpolator(alpha);
+        final float holographicAlpha = HolographicOutlineHelper.highlightAlphaInterpolator(alpha);
         int newViewAlpha = (int) (viewAlpha * 255);
         int newHolographicAlpha = (int) (holographicAlpha * 255);
         if ((mAlpha != newViewAlpha) || (mHolographicAlpha != newHolographicAlpha)) {

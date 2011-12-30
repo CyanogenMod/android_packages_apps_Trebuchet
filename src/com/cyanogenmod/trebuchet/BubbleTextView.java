@@ -18,19 +18,12 @@ package com.cyanogenmod.trebuchet;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Rect;
-import android.graphics.Region;
+import android.graphics.*;
 import android.graphics.Region.Op;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.widget.TextView;
-
-import com.cyanogenmod.trebuchet.R;
 
 /**
  * TextView that draws a bubble behind the text. We cannot use a LineBackgroundSpan
@@ -38,13 +31,11 @@ import com.cyanogenmod.trebuchet.R;
  * too aggressive.
  */
 public class BubbleTextView extends TextView {
-    static final float CORNER_RADIUS = 4.0f;
     static final float SHADOW_LARGE_RADIUS = 4.0f;
     static final float SHADOW_SMALL_RADIUS = 1.75f;
     static final float SHADOW_Y_OFFSET = 2.0f;
     static final int SHADOW_LARGE_COLOUR = 0xDD000000;
     static final int SHADOW_SMALL_COLOUR = 0xCC000000;
-    static final float PADDING_H = 8.0f;
     static final float PADDING_V = 3.0f;
 
     private Paint mPaint;

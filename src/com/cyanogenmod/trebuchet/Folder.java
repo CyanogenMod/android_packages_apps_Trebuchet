@@ -16,11 +16,7 @@
 
 package com.cyanogenmod.trebuchet;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.animation.ObjectAnimator;
-import android.animation.PropertyValuesHolder;
-import android.animation.ValueAnimator;
+import android.animation.*;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.content.Context;
 import android.content.res.Resources;
@@ -28,15 +24,8 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.text.InputType;
 import android.text.Selection;
-import android.text.Spannable;
 import android.util.AttributeSet;
-import android.view.ActionMode;
-import android.view.KeyEvent;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.MotionEvent;
-import android.view.View;
+import android.view.*;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityManager;
 import android.view.animation.AccelerateInterpolator;
@@ -45,8 +34,6 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import com.cyanogenmod.trebuchet.R;
 import com.cyanogenmod.trebuchet.FolderInfo.FolderListener;
 
 import java.util.ArrayList;
@@ -262,7 +249,7 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
         // ensures that every time the field is clicked, focus is gained, giving reliable behavior.
         requestFocus();
 
-        Selection.setSelection((Spannable) mFolderName.getText(), 0, 0);
+        Selection.setSelection(mFolderName.getText(), 0, 0);
         mIsEditingName = false;
     }
 
@@ -317,8 +304,7 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
         ArrayList<ShortcutInfo> overflow = new ArrayList<ShortcutInfo>();
         setupContentForNumItems(children.size());
         int count = 0;
-        for (int i = 0; i < children.size(); i++) {
-            ShortcutInfo child = (ShortcutInfo) children.get(i);
+        for (ShortcutInfo child : children) {
             if (!createAndAddShortcut(child)) {
                 overflow.add(child);
             } else {
@@ -552,9 +538,8 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
 
         CellLayout.LayoutParams lp =
             new CellLayout.LayoutParams(item.cellX, item.cellY, item.spanX, item.spanY);
-        boolean insert = false;
         textView.setOnKeyListener(new FolderKeyEventListener());
-        mContent.addViewToCellLayout(textView, insert ? 0 : -1, (int)item.id, lp, true);
+        mContent.addViewToCellLayout(textView, -1, (int)item.id, lp, true);
         return true;
     }
 
@@ -571,11 +556,7 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
     };
 
     boolean readingOrderGreaterThan(int[] v1, int[] v2) {
-        if (v1[1] > v2[1] || (v1[1] == v2[1] && v1[0] > v2[0])) {
-            return true;
-        } else {
-            return false;
-        }
+        return v1[1] > v2[1] || (v1[1] == v2[1] && v1[0] > v2[0]);
     }
 
     private void realTimeReorder(int[] empty, int[] target) {
@@ -721,11 +702,10 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
 
     private void updateItemLocationsInDatabase() {
         ArrayList<View> list = getItemsInReadingOrder();
-        for (int i = 0; i < list.size(); i++) {
-            View v = list.get(i);
+        for (View v : list) {
             ItemInfo info = (ItemInfo) v.getTag();
             LauncherModel.moveItemInDatabase(mLauncher, info, mInfo.id, 0,
-                        info.cellX, info.cellY);
+                    info.cellX, info.cellY);
         }
     }
 
@@ -866,8 +846,7 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
         }
         mContent.removeAllViews();
 
-        for (int i = 0; i < list.size(); i++) {
-            View v = list.get(i);
+        for (View v : list) {
             mContent.getVacantCell(vacant, 1, 1);
             CellLayout.LayoutParams lp = (CellLayout.LayoutParams) v.getLayoutParams();
             lp.cellX = vacant[0];
@@ -879,8 +858,7 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
                 LauncherModel.addOrMoveItemInDatabase(mLauncher, info, mInfo.id, 0,
                         info.cellX, info.cellY);
             }
-            boolean insert = false;
-            mContent.addViewToCellLayout(v, insert ? 0 : -1, (int)info.id, lp, true);
+            mContent.addViewToCellLayout(v, -1, (int) info.id, lp, true);
         }
         mItemsInvalidated = true;
     }
@@ -896,7 +874,7 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
     private void onCloseComplete() {
         DragLayer parent = (DragLayer) getParent();
         parent.removeView(this);
-        mDragController.removeDropTarget((DropTarget) this);
+        mDragController.removeDropTarget(this);
         clearFocus();
         mFolderIcon.requestFocus();
 

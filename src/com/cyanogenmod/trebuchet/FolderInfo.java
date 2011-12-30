@@ -16,9 +16,9 @@
 
 package com.cyanogenmod.trebuchet;
 
-import java.util.ArrayList;
-
 import android.content.ContentValues;
+
+import java.util.ArrayList;
 
 /**
  * Represents a folder containing shortcuts or apps.
@@ -53,8 +53,8 @@ class FolderInfo extends ItemInfo {
      */
     public void add(ShortcutInfo item) {
         contents.add(item);
-        for (int i = 0; i < listeners.size(); i++) {
-            listeners.get(i).onAdd(item);
+        for (FolderListener listener : listeners) {
+            listener.onAdd(item);
         }
         itemsChanged();
     }
@@ -66,16 +66,16 @@ class FolderInfo extends ItemInfo {
      */
     public void remove(ShortcutInfo item) {
         contents.remove(item);
-        for (int i = 0; i < listeners.size(); i++) {
-            listeners.get(i).onRemove(item);
+        for (FolderListener listener : listeners) {
+            listener.onRemove(item);
         }
         itemsChanged();
     }
 
     public void setTitle(CharSequence title) {
         this.title = title;
-        for (int i = 0; i < listeners.size(); i++) {
-            listeners.get(i).onTitleChanged(title);
+        for (FolderListener listener : listeners) {
+            listener.onTitleChanged(title);
         }
     }
 
@@ -96,8 +96,8 @@ class FolderInfo extends ItemInfo {
     }
 
     void itemsChanged() {
-        for (int i = 0; i < listeners.size(); i++) {
-            listeners.get(i).onItemsChanged();
+        for (FolderListener listener : listeners) {
+            listener.onItemsChanged();
         }
     }
 

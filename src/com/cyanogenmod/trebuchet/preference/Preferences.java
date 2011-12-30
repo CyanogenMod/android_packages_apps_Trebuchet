@@ -21,7 +21,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
-
 import com.cyanogenmod.trebuchet.R;
 
 public class Preferences extends PreferenceActivity {

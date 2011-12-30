@@ -80,7 +80,6 @@ public class FocusOnlyTabWidget extends TabWidget {
     public void onFocusChange(android.view.View v, boolean hasFocus) {
         if (v == this && hasFocus && getTabCount() > 0) {
             getSelectedTab().requestFocus();
-            return;
         }
     }
 }

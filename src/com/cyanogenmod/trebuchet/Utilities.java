@@ -16,26 +16,13 @@
 
 package com.cyanogenmod.trebuchet;
 
-import java.util.Random;
-
 import android.content.Context;
 import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BlurMaskFilter;
-import android.graphics.Canvas;
-import android.graphics.ColorMatrix;
-import android.graphics.ColorMatrixColorFilter;
-import android.graphics.Paint;
-import android.graphics.PaintFlagsDrawFilter;
-import android.graphics.PorterDuff;
-import android.graphics.Rect;
-import android.graphics.TableMaskFilter;
+import android.graphics.*;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.PaintDrawable;
 import android.util.DisplayMetrics;
-
-import com.cyanogenmod.trebuchet.R;
 
 /**
  * Various utilities shared amongst the Launcher's classes.
@@ -143,15 +130,6 @@ final class Utilities {
             final int left = (textureWidth-width) / 2;
             final int top = (textureHeight-height) / 2;
 
-            if (false) {
-                // draw a big box for the icon for debugging
-                canvas.drawColor(sColors[sColorIndex]);
-                if (++sColorIndex >= sColors.length) sColorIndex = 0;
-                Paint debugPaint = new Paint();
-                debugPaint.setColor(0xffcccc00);
-                canvas.drawRect(left, top, left+width, top+height, debugPaint);
-            }
-
             sOldBounds.set(icon.getBounds());
             icon.setBounds(left, top, left+width, top+height);
             icon.draw(canvas);
@@ -159,30 +137,6 @@ final class Utilities {
             canvas.setBitmap(null);
 
             return bitmap;
-        }
-    }
-
-    static void drawSelectedAllAppsBitmap(Canvas dest, int destWidth, int destHeight,
-            boolean pressed, Bitmap src) {
-        synchronized (sCanvas) { // we share the statics :-(
-            if (sIconWidth == -1) {
-                // We can't have gotten to here without src being initialized, which
-                // comes from this file already.  So just assert.
-                //initStatics(context);
-                throw new RuntimeException("Assertion failed: Utilities not initialized");
-            }
-
-            dest.drawColor(0, PorterDuff.Mode.CLEAR);
-
-            int[] xy = new int[2];
-            Bitmap mask = src.extractAlpha(sBlurPaint, xy);
-
-            float px = (destWidth - src.getWidth()) / 2;
-            float py = (destHeight - src.getHeight()) / 2;
-            dest.drawBitmap(mask, px + xy[0], py + xy[1],
-                    pressed ? sGlowColorPressedPaint : sGlowColorFocusedPaint);
-
-            mask.recycle();
         }
     }
 
@@ -247,28 +201,5 @@ final class Utilities {
         cm.setSaturation(0.2f);
         sDisabledPaint.setColorFilter(new ColorMatrixColorFilter(cm));
         sDisabledPaint.setAlpha(0x88);
-    }
-
-    /** Only works for positive numbers. */
-    static int roundToPow2(int n) {
-        int orig = n;
-        n >>= 1;
-        int mask = 0x8000000;
-        while (mask != 0 && (n & mask) == 0) {
-            mask >>= 1;
-        }
-        while (mask != 0) {
-            n |= mask;
-            mask >>= 1;
-        }
-        n += 1;
-        if (n != orig) {
-            n <<= 1;
-        }
-        return n;
-    }
-
-    static int generateRandomId() {
-        return new Random(System.currentTimeMillis()).nextInt(1 << 24);
     }
 }

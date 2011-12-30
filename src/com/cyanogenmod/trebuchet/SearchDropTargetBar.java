@@ -28,8 +28,6 @@ import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.FrameLayout;
-
-import com.cyanogenmod.trebuchet.R;
 import com.cyanogenmod.trebuchet.preference.PreferencesProvider;
 
 /*

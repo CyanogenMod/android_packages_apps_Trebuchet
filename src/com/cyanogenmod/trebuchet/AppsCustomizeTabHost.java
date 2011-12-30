@@ -27,13 +27,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
-import android.widget.TabHost;
-import android.widget.TabWidget;
-import android.widget.TextView;
-
-import com.cyanogenmod.trebuchet.R;
+import android.widget.*;
 import com.cyanogenmod.trebuchet.preference.PreferencesProvider;
 
 import java.util.ArrayList;
@@ -266,7 +260,7 @@ public class AppsCustomizeTabHost extends TabHost implements LauncherTransitiona
                         mAnimationBuffer.setVisibility(View.VISIBLE);
                         LayoutParams p = new FrameLayout.LayoutParams(child.getWidth(),
                                 child.getHeight());
-                        p.setMargins((int) child.getLeft(), (int) child.getTop(), 0, 0);
+                        p.setMargins(child.getLeft(), child.getTop(), 0, 0);
                         mAnimationBuffer.addView(child, p);
                     }
 

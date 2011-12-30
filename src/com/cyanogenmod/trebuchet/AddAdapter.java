@@ -27,8 +27,6 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import com.cyanogenmod.trebuchet.R;
-
 /**
  * Adapter showing the types of items that can be added to a {@link Workspace}.
  */

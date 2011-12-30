@@ -17,36 +17,19 @@
 
 package com.cyanogenmod.trebuchet;
 
-import android.animation.Animator;
+import android.animation.*;
 import android.animation.Animator.AnimatorListener;
-import android.animation.AnimatorListenerAdapter;
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
-import android.animation.TimeInterpolator;
-import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.app.AlertDialog;
 import android.app.WallpaperManager;
 import android.appwidget.AppWidgetHostView;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProviderInfo;
-import android.content.ClipData;
-import android.content.ClipDescription;
-import android.content.ComponentName;
-import android.content.Context;
-import android.content.Intent;
+import android.content.*;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
-import android.graphics.Bitmap;
-import android.graphics.Camera;
-import android.graphics.Canvas;
-import android.graphics.Matrix;
-import android.graphics.Paint;
-import android.graphics.Point;
-import android.graphics.PorterDuff;
-import android.graphics.Rect;
-import android.graphics.RectF;
+import android.graphics.*;
 import android.graphics.Region.Op;
 import android.graphics.drawable.Drawable;
 import android.os.IBinder;
@@ -55,19 +38,11 @@ import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.Pair;
-import android.view.Display;
-import android.view.DragEvent;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.ViewConfiguration;
-import android.view.ViewGroup;
+import android.view.*;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.cyanogenmod.trebuchet.R;
 import com.cyanogenmod.trebuchet.FolderIcon.FolderRingAnimator;
 import com.cyanogenmod.trebuchet.InstallWidgetReceiver.WidgetMimeTypeHandlerData;
 import com.cyanogenmod.trebuchet.preference.PreferencesProvider;
@@ -2956,7 +2931,7 @@ public class Workspace extends PagedView
      */
     public boolean addExternalItemToScreen(ItemInfo dragInfo, CellLayout layout) {
         if (layout.findCellForSpan(mTempEstimate, dragInfo.spanX, dragInfo.spanY)) {
-            onDropExternal(dragInfo.dropPos, (ItemInfo) dragInfo, (CellLayout) layout, false);
+            onDropExternal(dragInfo.dropPos, dragInfo, layout, false);
             return true;
         }
         mLauncher.showOutOfSpaceMessage();
@@ -3065,7 +3040,7 @@ public class Workspace extends PagedView
                     dragViewScale * cellLayoutScale, onAnimationCompleteRunnable);
         } else {
             // This is for other drag/drop cases, like dragging from All Apps
-            View view = null;
+            View view;
 
             switch (info.itemType) {
             case LauncherSettings.Favorites.ITEM_TYPE_APPLICATION:
@@ -3438,8 +3413,8 @@ public class Workspace extends PagedView
 
         final HashSet<String> packageNames = new HashSet<String>();
         final int appCount = apps.size();
-        for (int i = 0; i < appCount; i++) {
-            packageNames.add(apps.get(i).componentName.getPackageName());
+        for (ApplicationInfo app : apps) {
+            packageNames.add(app.componentName.getPackageName());
         }
 
         ArrayList<CellLayout> cellLayouts = getWorkspaceAndHotseatCellLayouts();
@@ -3477,13 +3452,12 @@ public class Workspace extends PagedView
                             final ArrayList<ShortcutInfo> appsToRemoveFromFolder =
                                     new ArrayList<ShortcutInfo>();
 
-                            for (int k = 0; k < contentsCount; k++) {
-                                final ShortcutInfo appInfo = contents.get(k);
+                            for (final ShortcutInfo appInfo : contents) {
                                 final Intent intent = appInfo.intent;
                                 final ComponentName name = intent.getComponent();
 
                                 if (Intent.ACTION_MAIN.equals(intent.getAction()) && name != null) {
-                                    for (String packageName: packageNames) {
+                                    for (String packageName : packageNames) {
                                         if (packageName.equals(name.getPackageName())) {
                                             appsToRemoveFromFolder.add(appInfo);
                                         }
@@ -3546,14 +3520,13 @@ public class Workspace extends PagedView
                     if (info.itemType == LauncherSettings.Favorites.ITEM_TYPE_APPLICATION &&
                             Intent.ACTION_MAIN.equals(intent.getAction()) && name != null) {
                         final int appCount = apps.size();
-                        for (int k = 0; k < appCount; k++) {
-                            ApplicationInfo app = apps.get(k);
+                        for (ApplicationInfo app : apps) {
                             if (app.componentName.equals(name)) {
                                 info.setIcon(mIconCache.getIcon(info.intent));
-                                ((TextView)view).setCompoundDrawablesWithIntrinsicBounds(null,
+                                ((TextView) view).setCompoundDrawablesWithIntrinsicBounds(null,
                                         new FastBitmapDrawable(info.getIcon(mIconCache)),
                                         null, null);
-                                }
+                            }
                         }
                     }
                 }

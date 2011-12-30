@@ -20,7 +20,6 @@ public class SpringLoadedDragController implements OnAlarmListener {
     // how long the user must hover over a mini-screen before it unshrinks
     final long ENTER_SPRING_LOAD_HOVER_TIME = 550;
     final long ENTER_SPRING_LOAD_CANCEL_HOVER_TIME = 950;
-    final long EXIT_SPRING_LOAD_HOVER_TIME = 200;
 
     Alarm mAlarm;
 

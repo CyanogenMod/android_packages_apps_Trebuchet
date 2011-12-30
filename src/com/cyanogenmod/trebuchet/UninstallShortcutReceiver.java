@@ -17,16 +17,14 @@
 package com.cyanogenmod.trebuchet;
 
 import android.content.BroadcastReceiver;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.ContentResolver;
 import android.database.Cursor;
 import android.net.Uri;
 import android.widget.Toast;
 
 import java.net.URISyntaxException;
-
-import com.cyanogenmod.trebuchet.R;
 
 public class UninstallShortcutReceiver extends BroadcastReceiver {
     private static final String ACTION_UNINSTALL_SHORTCUT =
