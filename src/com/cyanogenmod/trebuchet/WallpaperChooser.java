@@ -16,8 +16,6 @@
 
 package com.cyanogenmod.trebuchet;
 
-import com.cyanogenmod.trebuchet.R;
-
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.app.Fragment;

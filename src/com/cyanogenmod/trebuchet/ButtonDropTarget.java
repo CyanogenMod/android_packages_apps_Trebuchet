@@ -22,8 +22,6 @@ import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
-import com.cyanogenmod.trebuchet.R;
-
 
 /**
  * Implements a DropTarget.
@@ -34,7 +32,6 @@ public class ButtonDropTarget extends TextView implements DropTarget, DragContro
 
     protected Launcher mLauncher;
     private int mBottomDragPadding;
-    protected TextView mText;
     protected SearchDropTargetBar mSearchDropTargetBar;
 
     /** Whether this drop target is active for the current drag */

@@ -21,10 +21,6 @@ import java.util.ArrayList;
 public interface AllAppsView {
     public void setup(Launcher launcher, DragController dragController);
 
-    public boolean isVisible();
-
-    public boolean isAnimating();
-
     public void setApps(ArrayList<ApplicationInfo> list);
 
     public void addApps(ArrayList<ApplicationInfo> list);

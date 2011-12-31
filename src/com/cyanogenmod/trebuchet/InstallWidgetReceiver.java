@@ -16,8 +16,6 @@
 
 package com.cyanogenmod.trebuchet;
 
-import java.util.List;
-
 import android.appwidget.AppWidgetProviderInfo;
 import android.content.ClipData;
 import android.content.Context;
@@ -33,7 +31,7 @@ import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
-import com.cyanogenmod.trebuchet.R;
+import java.util.List;
 
 
 /**

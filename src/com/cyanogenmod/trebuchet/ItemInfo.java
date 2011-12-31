@@ -16,12 +16,12 @@
 
 package com.cyanogenmod.trebuchet;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-
 import android.content.ContentValues;
 import android.graphics.Bitmap;
 import android.util.Log;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
 /**
  * Represents an item in the launcher.

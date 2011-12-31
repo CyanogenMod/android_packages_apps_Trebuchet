@@ -16,12 +16,12 @@
 
 package com.cyanogenmod.trebuchet;
 
-import java.util.LinkedList;
-
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.os.MessageQueue;
+
+import java.util.LinkedList;
 
 /**
  * Queue of things to run on a looper thread.  Items posted with {@link #post} will not
@@ -31,7 +31,7 @@ import android.os.MessageQueue;
  * This class is fifo.
  */
 public class DeferredHandler {
-    private LinkedList<Runnable> mQueue = new LinkedList<Runnable>();
+    private final LinkedList<Runnable> mQueue = new LinkedList<Runnable>();
     private MessageQueue mMessageQueue = Looper.myQueue();
     private Impl mHandler = new Impl();
 

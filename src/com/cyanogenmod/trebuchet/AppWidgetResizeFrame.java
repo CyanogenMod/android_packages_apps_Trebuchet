@@ -12,8 +12,6 @@ import android.graphics.Rect;
 import android.view.Gravity;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-
-import com.cyanogenmod.trebuchet.R;
 import com.cyanogenmod.trebuchet.preference.PreferencesProvider;
 
 public class AppWidgetResizeFrame extends FrameLayout {

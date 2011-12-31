@@ -24,8 +24,6 @@ import android.view.ViewParent;
 import android.widget.TabHost;
 import android.widget.TabWidget;
 
-import com.cyanogenmod.trebuchet.R;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -54,7 +52,7 @@ class FolderKeyEventListener implements View.OnKeyListener {
 class HotseatIconKeyEventListener implements View.OnKeyListener {
     public boolean onKey(View v, int keyCode, KeyEvent event) {
         final Configuration configuration = v.getResources().getConfiguration();
-        return FocusHelper.handleHotseatButtonKeyEvent(v, keyCode, event, configuration.orientation);
+        return FocusHelper.handleHotseatButtonKeyEvent(v, keyCode, event);
     }
 }
 
@@ -145,7 +143,7 @@ public class FocusHelper {
         final TabWidget tabs = (TabWidget) tabHost.findViewById(com.android.internal.R.id.tabs);
         final int widgetIndex = parent.indexOfChild(w);
         final int widgetCount = parent.getChildCount();
-        final int pageIndex = ((PagedView) container).indexToPage(container.indexOfChild(parent));
+        final int pageIndex = container.indexToPage(container.indexOfChild(parent));
         final int pageCount = container.getChildCount();
         final int cellCountX = parent.getCellCountX();
         final int cellCountY = parent.getCellCountY();
@@ -154,7 +152,7 @@ public class FocusHelper {
 
         final int action = e.getAction();
         final boolean handleKeyEvent = (action != KeyEvent.ACTION_UP);
-        ViewGroup newParent = null;
+        ViewGroup newParent;
         // Now that we load items in the bg asynchronously, we can't just focus
         // child siblings willy-nilly
         View child = null;
@@ -305,7 +303,7 @@ public class FocusHelper {
         final TabWidget tabs = (TabWidget) tabHost.findViewById(com.android.internal.R.id.tabs);
         final int iconIndex = itemContainer.indexOfChild(v);
         final int itemCount = itemContainer.getChildCount();
-        final int pageIndex = ((PagedView) container).indexToPage(container.indexOfChild(parentLayout));
+        final int pageIndex = container.indexToPage(container.indexOfChild(parentLayout));
         final int pageCount = container.getChildCount();
 
         final int x = iconIndex % countX;
@@ -313,10 +311,10 @@ public class FocusHelper {
 
         final int action = e.getAction();
         final boolean handleKeyEvent = (action != KeyEvent.ACTION_UP);
-        ViewGroup newParent = null;
+        ViewGroup newParent;
         // Side pages do not always load synchronously, so check before focusing child siblings
         // willy-nilly
-        View child = null;
+        View child;
         boolean wasHandled = false;
         switch (keyCode) {
             case KeyEvent.KEYCODE_DPAD_LEFT:
@@ -497,7 +495,7 @@ public class FocusHelper {
     /**
      * Handles key events in the workspace hotseat (bottom of the screen).
      */
-    static boolean handleHotseatButtonKeyEvent(View v, int keyCode, KeyEvent e, int orientation) {
+    static boolean handleHotseatButtonKeyEvent(View v, int keyCode, KeyEvent e) {
         final ViewGroup parent = (ViewGroup) v.getParent();
         final ViewGroup launcher = (ViewGroup) parent.getParent();
         final Workspace workspace = (Workspace) launcher.findViewById(R.id.workspace);

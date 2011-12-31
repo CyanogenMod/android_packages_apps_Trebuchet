@@ -24,8 +24,6 @@ import android.view.View;
 import android.view.ViewDebug;
 import android.view.ViewGroup;
 
-import com.cyanogenmod.trebuchet.R;
-
 /**
  * An abstraction of the original CellLayout which supports laying out items
  * which span multiple cells into a grid-like layout.  Also supports dimming
@@ -317,16 +315,6 @@ public class PagedViewCellLayout extends ViewGroup implements Page {
     }
 
     /**
-     * Start dragging the specified child
-     *
-     * @param child The child that is being dragged
-     */
-    void onDragChild(View child) {
-        PagedViewCellLayout.LayoutParams lp = (PagedViewCellLayout.LayoutParams) child.getLayoutParams();
-        lp.isDragging = true;
-    }
-
-    /**
      * Estimates the number of cells that the specified width would take up.
      */
     public int estimateCellHSpan(int width) {
@@ -425,11 +413,6 @@ public class PagedViewCellLayout extends ViewGroup implements Page {
          */
         @ViewDebug.ExportedProperty
         public int cellVSpan;
-
-        /**
-         * Is this item currently being dragged
-         */
-        public boolean isDragging;
 
         // a data object that you can bind to this layout params
         private Object mTag;

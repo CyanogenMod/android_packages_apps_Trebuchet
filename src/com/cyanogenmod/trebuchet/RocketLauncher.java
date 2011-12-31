@@ -30,16 +30,13 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.os.Bundle;
 import android.os.Handler;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-
-import com.cyanogenmod.trebuchet.R;
 
 import java.util.HashMap;
 import java.util.Random;
@@ -194,7 +191,7 @@ public class RocketLauncher extends Activity {
                 boardCenterY = (Board.this.getHeight() - getHeight()) / 2;
                 setX(boardCenterX);
                 setY(boardCenterY);
-                fuse = (float) Math.max(boardCenterX, boardCenterY);
+                fuse = Math.max(boardCenterX, boardCenterY);
                 setRotation(180-angle);
                 setScaleX(0f);
                 setScaleY(0f);
@@ -332,7 +329,6 @@ public class RocketLauncher extends Activity {
         protected void onAttachedToWindow() {
             super.onAttachedToWindow();
             setLayerType(View.LAYER_TYPE_HARDWARE, null);
-            setSystemUiVisibility(View.STATUS_BAR_HIDDEN);
 
             reset();
             mAnim.start();
@@ -391,6 +387,17 @@ public class RocketLauncher extends Activity {
 
             return false;
         }
+    }
+
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+       super.onCreate(savedInstanceState);
+
+       // Hide the window title.
+       requestWindowFeature(Window.FEATURE_NO_TITLE);
+       getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
     }
 
     @Override

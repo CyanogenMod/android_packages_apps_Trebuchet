@@ -25,10 +25,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 
-import com.cyanogenmod.trebuchet.R;
-
 public class Hotseat extends FrameLayout {
-    private static final String TAG = "Hotseat";
     private static final int sAllAppsButtonRank = 2; // In the middle of the dock
 
     private Launcher mLauncher;
@@ -102,7 +99,6 @@ public class Hotseat extends FrameLayout {
                 inflater.inflate(R.layout.application, mContent, false);
         allAppsButton.setCompoundDrawablesWithIntrinsicBounds(null,
                 context.getResources().getDrawable(R.drawable.all_apps_button_icon), null, null);
-        // allAppsButton.setText(context.getString(R.string.all_apps_button_label));
         allAppsButton.setContentDescription(context.getString(R.string.all_apps_button_label));
         allAppsButton.setOnTouchListener(new View.OnTouchListener() {
             @Override

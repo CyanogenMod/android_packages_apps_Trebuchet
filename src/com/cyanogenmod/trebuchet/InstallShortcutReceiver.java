@@ -16,14 +16,12 @@
 
 package com.cyanogenmod.trebuchet;
 
-import java.util.ArrayList;
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.widget.Toast;
 
-import com.cyanogenmod.trebuchet.R;
+import java.util.ArrayList;
 
 public class InstallShortcutReceiver extends BroadcastReceiver {
     public static final String ACTION_INSTALL_SHORTCUT =
@@ -95,10 +93,10 @@ public class InstallShortcutReceiver extends BroadcastReceiver {
         boolean[][] occupied = new boolean[xCount][yCount];
 
         ArrayList<ItemInfo> items = LauncherModel.getItemsInLocalCoordinates(context);
-        ItemInfo item = null;
+        ItemInfo item;
         int cellX, cellY, spanX, spanY;
-        for (int i = 0; i < items.size(); ++i) {
-            item = items.get(i);
+        for (ItemInfo item1 : items) {
+            item = item1;
             if (item.container == LauncherSettings.Favorites.CONTAINER_DESKTOP) {
                 if (item.screen == screen) {
                     cellX = item.cellX;

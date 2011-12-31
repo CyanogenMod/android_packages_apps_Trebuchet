@@ -26,8 +26,6 @@ import android.util.AttributeSet;
 import android.widget.Checkable;
 import android.widget.TextView;
 
-import com.cyanogenmod.trebuchet.R;
-
 
 /**
  * An icon on a PagedView, specifically for items in the launcher's paged view (with compound
@@ -87,7 +85,7 @@ public class PagedViewIcon extends TextView implements Checkable {
         return mHolographicOutline;
     }
 
-    public void applyFromApplicationInfo(ApplicationInfo info, boolean scaleUp,
+    public void applyFromApplicationInfo(ApplicationInfo info,
             HolographicOutlineHelper holoOutlineHelper) {
         mHolographicOutlineHelper = holoOutlineHelper;
         mIcon = info.iconBitmap;

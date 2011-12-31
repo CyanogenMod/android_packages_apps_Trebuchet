@@ -17,7 +17,6 @@
 package com.cyanogenmod.trebuchet;
 
 import android.view.View;
-
 import com.cyanogenmod.trebuchet.DropTarget.DragObject;
 
 /**

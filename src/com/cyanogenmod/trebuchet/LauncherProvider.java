@@ -20,13 +20,7 @@ import android.app.SearchManager;
 import android.appwidget.AppWidgetHost;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProviderInfo;
-import android.content.ComponentName;
-import android.content.ContentProvider;
-import android.content.ContentResolver;
-import android.content.ContentUris;
-import android.content.ContentValues;
-import android.content.Context;
-import android.content.Intent;
+import android.content.*;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
@@ -46,11 +40,8 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.Xml;
-
 import com.android.internal.util.XmlUtils;
-import com.cyanogenmod.trebuchet.R;
 import com.cyanogenmod.trebuchet.LauncherSettings.Favorites;
-
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -114,8 +105,8 @@ public class LauncherProvider extends ContentProvider {
         return result;
     }
 
-    private static long dbInsertAndCheck(DatabaseHelper helper,
-            SQLiteDatabase db, String table, String nullColumnHack, ContentValues values) {
+    private static long dbInsertAndCheck(SQLiteDatabase db, String table,
+            String nullColumnHack, ContentValues values) {
         if (!values.containsKey(LauncherSettings.Favorites._ID)) {
             throw new RuntimeException("Error: attempting to add item without specifying an id");
         }
@@ -133,7 +124,7 @@ public class LauncherProvider extends ContentProvider {
         SqlArguments args = new SqlArguments(uri);
 
         SQLiteDatabase db = mOpenHelper.getWritableDatabase();
-        final long rowId = dbInsertAndCheck(mOpenHelper, db, args.table, null, initialValues);
+        final long rowId = dbInsertAndCheck(db, args.table, null, initialValues);
         if (rowId <= 0) return null;
 
         uri = ContentUris.withAppendedId(uri, rowId);
@@ -151,7 +142,7 @@ public class LauncherProvider extends ContentProvider {
         try {
             int numValues = values.length;
             for (int i = 0; i < numValues; i++) {
-                if (dbInsertAndCheck(mOpenHelper, db, args.table, null, values[i]) < 0) {
+                if (dbInsertAndCheck(db, args.table, null, values[i]) < 0) {
                     return 0;
                 }
             }
@@ -352,7 +343,7 @@ public class LauncherProvider extends ContentProvider {
             try {
                 int numValues = rows.length;
                 for (i = 0; i < numValues; i++) {
-                    if (dbInsertAndCheck(this, db, TABLE_FAVORITES, null, rows[i]) < 0) {
+                    if (dbInsertAndCheck(db, TABLE_FAVORITES, null, rows[i]) < 0) {
                         return 0;
                     } else {
                         total++;
@@ -859,7 +850,7 @@ public class LauncherProvider extends ContentProvider {
                 values.put(Favorites.SPANX, 1);
                 values.put(Favorites.SPANY, 1);
                 values.put(Favorites._ID, generateNewId());
-                if (dbInsertAndCheck(this, db, TABLE_FAVORITES, null, values) < 0) {
+                if (dbInsertAndCheck(db, TABLE_FAVORITES, null, values) < 0) {
                     return -1;
                 }
             } catch (PackageManager.NameNotFoundException e) {
@@ -875,7 +866,7 @@ public class LauncherProvider extends ContentProvider {
             values.put(Favorites.SPANY, 1);
             long id = generateNewId();
             values.put(Favorites._ID, id);
-            if (dbInsertAndCheck(this, db, TABLE_FAVORITES, null, values) <= 0) {
+            if (dbInsertAndCheck(db, TABLE_FAVORITES, null, values) <= 0) {
                 return -1;
             } else {
                 return id;
@@ -898,9 +889,8 @@ public class LauncherProvider extends ContentProvider {
             AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(mContext);
             List<AppWidgetProviderInfo> providers = appWidgetManager.getInstalledProviders();
             if (providers == null) return null;
-            final int providerCount = providers.size();
-            for (int i = 0; i < providerCount; i++) {
-                ComponentName provider = providers.get(i).provider;
+            for (AppWidgetProviderInfo provider1 : providers) {
+                ComponentName provider = provider1.provider;
                 if (provider != null && provider.getPackageName().equals(packageName)) {
                     return provider;
                 }
@@ -966,7 +956,7 @@ public class LauncherProvider extends ContentProvider {
                 values.put(Favorites.SPANY, spanY);
                 values.put(Favorites.APPWIDGET_ID, appWidgetId);
                 values.put(Favorites._ID, generateNewId());
-                dbInsertAndCheck(this, db, TABLE_FAVORITES, null, values);
+                dbInsertAndCheck(db, TABLE_FAVORITES, null, values);
 
                 allocatedAppWidgets = true;
                 
@@ -1012,7 +1002,7 @@ public class LauncherProvider extends ContentProvider {
             values.put(Favorites.ICON_RESOURCE, r.getResourceName(iconResId));
             values.put(Favorites._ID, id);
 
-            if (dbInsertAndCheck(this, db, TABLE_FAVORITES, null, values) < 0) {
+            if (dbInsertAndCheck(db, TABLE_FAVORITES, null, values) < 0) {
                 return -1;
             }
             return id;

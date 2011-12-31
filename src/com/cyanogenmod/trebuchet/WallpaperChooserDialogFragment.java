@@ -34,14 +34,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.BaseAdapter;
-import android.widget.Gallery;
-import android.widget.ImageView;
-import android.widget.ListAdapter;
-import android.widget.SpinnerAdapter;
-
-import com.cyanogenmod.trebuchet.R;
+import android.widget.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
