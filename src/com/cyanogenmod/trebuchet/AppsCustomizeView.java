@@ -18,8 +18,45 @@ package com.cyanogenmod.trebuchet;
 
 import java.util.ArrayList;
 
-public interface AllAppsView {
+public interface AppsCustomizeView {
+
+    public enum ContentType {
+        Apps,
+        Widgets
+    }
+
+    public enum SortMode {
+        Title,
+        InstallDate
+    }
+
     public void setup(Launcher launcher, DragController dragController);
+
+    public ContentType getContentType();
+
+    public void setContentType(ContentType type);
+
+    public boolean isContentType(ContentType type);
+
+    public SortMode getSortMode();
+
+    public void showIndicator(boolean immediately);
+
+    public void hideIndicator(boolean immediately);
+
+    public void loadContent();
+
+    public void loadContent(boolean immediately);
+
+    public void onTabChanged(ContentType type);
+
+    public void showAllAppsCling();
+
+    public void setCurrentToApps();
+
+    public void setCurrentToWidgets();
+
+    public void setSortMode(SortMode mode);
 
     public void setApps(ArrayList<ApplicationInfo> list);
 
@@ -29,7 +66,15 @@ public interface AllAppsView {
 
     public void updateApps(ArrayList<ApplicationInfo> list);
 
+    public void onPackagesUpdated();
+
     public void reset();
+
+    public void clearAllWidgetPreviews();
+
+    public int getSaveInstanceStateIndex();
+
+    public void restore(int restoreIndex);
 
     public void dumpState();
 

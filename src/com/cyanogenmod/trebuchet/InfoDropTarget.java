@@ -66,7 +66,7 @@ public class InfoDropTarget extends ButtonDropTarget {
     }
 
     private boolean isAllAppsApplication(DragSource source, Object info) {
-        return (source instanceof AppsCustomizePagedView) && (info instanceof ApplicationInfo);
+        return (source instanceof AppsCustomizeView) && (info instanceof ApplicationInfo);
     }
 
     @Override

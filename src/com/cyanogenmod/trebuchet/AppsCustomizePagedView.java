@@ -16,6 +16,8 @@
 
 package com.cyanogenmod.trebuchet;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
@@ -39,11 +41,15 @@ import android.util.Log;
 import android.view.*;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.FrameLayout;
 import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
 import com.cyanogenmod.trebuchet.DropTarget.DragObject;
 import com.cyanogenmod.trebuchet.preference.PreferencesProvider;
+
+import static com.cyanogenmod.trebuchet.AppsCustomizeView.ContentType;
+import static com.cyanogenmod.trebuchet.AppsCustomizeView.SortMode;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -119,7 +125,7 @@ class AsyncTaskPageData {
  * A generic template for an async task used in AppsCustomize.
  */
 class AppsCustomizeAsyncTask extends AsyncTask<AsyncTaskPageData, Void, AsyncTaskPageData> {
-    AppsCustomizeAsyncTask(int p, AppsCustomizePagedView.ContentType t, AsyncTaskPageData.Type ty) {
+    AppsCustomizeAsyncTask(int p, AppsCustomizeView.ContentType t, AsyncTaskPageData.Type ty) {
         page = p;
         pageContentType = t;
         threadPriority = Process.THREAD_PRIORITY_DEFAULT;
@@ -148,7 +154,7 @@ class AppsCustomizeAsyncTask extends AsyncTask<AsyncTaskPageData, Void, AsyncTas
     // The page that this async task is associated with
     AsyncTaskPageData.Type dataType;
     int page;
-    AppsCustomizePagedView.ContentType pageContentType;
+    AppsCustomizeView.ContentType pageContentType;
     int threadPriority;
 }
 
@@ -156,24 +162,8 @@ class AppsCustomizeAsyncTask extends AsyncTask<AsyncTaskPageData, Void, AsyncTas
  * The Apps/Customize page that displays all the applications, widgets, and shortcuts.
  */
 public class AppsCustomizePagedView extends PagedViewWithDraggableItems implements
-        AllAppsView, View.OnClickListener, View.OnKeyListener, DragSource {
+        AppsCustomizeView, View.OnClickListener, View.OnKeyListener, DragSource {
     static final String LOG_TAG = "AppsCustomizePagedView";
-
-    /**
-     * The different content types that this paged view can show.
-     */
-    public enum ContentType {
-        Applications,
-        Widgets
-    }
-
-    /**
-     * The sorting mode of the apps.
-     */
-    public enum SortMode {
-        Title,
-        InstallDate
-    }
 
     // Refs
     private Launcher mLauncher;
@@ -238,7 +228,7 @@ public class AppsCustomizePagedView extends PagedViewWithDraggableItems implemen
         super(context, attrs);
         mLayoutInflater = LayoutInflater.from(context);
         mPackageManager = context.getPackageManager();
-        mContentType = ContentType.Applications;
+        mContentType = ContentType.Apps;
         mApps = new ArrayList<ApplicationInfo>();
         mWidgets = new ArrayList<Object>();
         mIconCache = ((LauncherApplication) context.getApplicationContext()).getIconCache();
@@ -330,7 +320,7 @@ public class AppsCustomizePagedView extends PagedViewWithDraggableItems implemen
                 }
             } else {
                 switch (mContentType) {
-                case Applications: {
+                case Apps: {
                      PagedViewCellLayout layout = (PagedViewCellLayout) getPageAt(currentPage);
                      PagedViewCellLayoutChildren childrenLayout = layout.getChildrenLayout();
                     int numItemsPerPage = mCellCountX * mCellCountY;
@@ -354,7 +344,7 @@ public class AppsCustomizePagedView extends PagedViewWithDraggableItems implemen
     }
 
     /** Get the index of the item to restore to if we need to restore the current page. */
-    int getSaveInstanceStateIndex() {
+    public int getSaveInstanceStateIndex() {
         if (mSaveInstanceStateItemIndex == -1) {
             mSaveInstanceStateItemIndex = getMiddleComponentIndexOnCurrentPage();
         }
@@ -376,7 +366,7 @@ public class AppsCustomizePagedView extends PagedViewWithDraggableItems implemen
             }
         } else {
             switch (mContentType) {
-            case Applications: {
+            case Apps: {
                 int numItemsPerPage = mCellCountX * mCellCountY;
                 return (index / numItemsPerPage);
             }
@@ -392,9 +382,9 @@ public class AppsCustomizePagedView extends PagedViewWithDraggableItems implemen
      * This differs from isDataReady as this is the test done if isDataReady is not set.
      */
     private boolean testDataReady() {
-        // We only do this test once, and we default to the Applications page, so we only really
+        // We only do this test once, and we default to the Apps page, so we only really
         // have to wait for there to be apps.
-        if (mContentType == AppsCustomizePagedView.ContentType.Widgets || mJoinWidgetsApps) {
+        if (mContentType == ContentType.Widgets || mJoinWidgetsApps) {
             return !mApps.isEmpty() && !mWidgets.isEmpty();
         } else {
             return !mApps.isEmpty();
@@ -402,7 +392,8 @@ public class AppsCustomizePagedView extends PagedViewWithDraggableItems implemen
     }
 
     /** Restores the page for an item at the specified index */
-    void restorePageForIndex(int index) {
+    public void restore(int index) {
+        loadAssociatedPages(mCurrentPage);
         if (index < 0) return;
         mSaveInstanceStateItemIndex = index;
     }
@@ -470,7 +461,7 @@ public class AppsCustomizePagedView extends PagedViewWithDraggableItems implemen
         }
     }
 
-    void showAllAppsCling() {
+    public void showAllAppsCling() {
         Cling allAppsCling = (Cling) getTabHost().findViewById(R.id.all_apps_cling);
         if (!mHasShownAllAppsCling && isDataReady() && testDataReady()) {
             mHasShownAllAppsCling = true;
@@ -717,7 +708,7 @@ public class AppsCustomizePagedView extends PagedViewWithDraggableItems implemen
         cancelAllTasks();
     }
 
-    public void clearAllWidgetPages() {
+    public void clearAllWidgetPreviews() {
         cancelAllTasks();
         int count = getChildCount();
         for (int i = 0; i < count; i++) {
@@ -739,16 +730,20 @@ public class AppsCustomizePagedView extends PagedViewWithDraggableItems implemen
         }
     }
 
+    public ContentType getContentType() {
+        return mContentType;
+    }
+
     public void setContentType(ContentType type) {
+        mContentType = type;
         if (mJoinWidgetsApps) {
             if (type == ContentType.Widgets) {
                 invalidatePageData(mNumAppsPages, true);
-            } else if (type == ContentType.Applications) {
+            } else if (type == ContentType.Apps) {
                 invalidatePageData(0, true);
             }
         } else {
-            mContentType = type;
-            invalidatePageData(0, (type != ContentType.Applications));
+            invalidatePageData(0, (type != ContentType.Apps));
         }
     }
 
@@ -780,8 +775,8 @@ public class AppsCustomizePagedView extends PagedViewWithDraggableItems implemen
                         !tag.equals(tabHost.getTabTagForContentType(ContentType.Widgets))) {
                     tabHost.setCurrentTabFromContent(ContentType.Widgets);
                 } else if (currentPage < mNumAppsPages &&
-                        !tag.equals(tabHost.getTabTagForContentType(ContentType.Applications))) {
-                    tabHost.setCurrentTabFromContent(ContentType.Applications);
+                        !tag.equals(tabHost.getTabTagForContentType(ContentType.Apps))) {
+                    tabHost.setCurrentTabFromContent(ContentType.Apps);
                 }
             }
         }
@@ -791,8 +786,123 @@ public class AppsCustomizePagedView extends PagedViewWithDraggableItems implemen
         return (mContentType == type);
     }
 
-    public void setCurrentPageToWidgets() {
+    public void setCurrentToApps() {
+    }
+
+    public void setCurrentToWidgets() {
         invalidatePageData(0);
+    }
+
+    public void reloadCurrentPage() {
+        if (!LauncherApplication.isScreenLarge()) {
+            flashScrollingIndicator(true);
+        }
+        loadAssociatedPages(mCurrentPage);
+        requestFocus();
+    }
+
+    public void loadContent() {
+        loadAssociatedPages(mCurrentPage);
+    }
+
+    public void loadContent(boolean immediately) {
+        loadAssociatedPages(mCurrentPage, immediately);
+    }
+
+    public void onTabChanged(final ContentType type) {
+        if (!isContentType(type) || mJoinWidgetsApps) {
+            // Animate the changing of the tab content by fading pages in and out
+            final Resources res = getResources();
+            final int duration = res.getInteger(R.integer.config_tabTransitionDuration);
+
+            // We post a runnable here because there is a delay while the first page is loading and
+            // the feedback from having changed the tab almost feels better than having it stick
+            post(new Runnable() {
+                @Override
+                public void run() {
+                    if (getMeasuredWidth() <= 0 ||
+                            getMeasuredHeight() <= 0) {
+                        reloadCurrentPage();
+                        return;
+                    }
+
+                    // Take the visible pages and re-parent them temporarily to mAnimatorBuffer
+                    // and then cross fade to the new pages
+                    int[] visiblePageRange = new int[2];
+                    getVisiblePages(visiblePageRange);
+                    if (visiblePageRange[0] == -1 && visiblePageRange[1] == -1) {
+                        // If we can't get the visible page ranges, then just skip the animation
+                        reloadCurrentPage();
+                        return;
+                    }
+                    ArrayList<View> visiblePages = new ArrayList<View>();
+                    for (int i = visiblePageRange[0]; i <= visiblePageRange[1]; i++) {
+                        visiblePages.add(getPageAt(i));
+                    }
+
+                    final FrameLayout animationBuffer =
+                            (FrameLayout) getTabHost().findViewById(R.id.animation_buffer);
+                    final AppsCustomizePagedView self =
+                            (AppsCustomizePagedView) getTabHost().findViewById(R.id.apps_customize_pane_content);
+
+                    // We want the pages to be rendered in exactly the same way as they were when
+                    // their parent was mAppsCustomizePane -- so set the scroll on animationBuffer
+                    // to be exactly the same as mAppsCustomizePane, and below, set the left/top
+                    // parameters to be correct for each of the pages
+                    animationBuffer.scrollTo(getScrollX(), 0);
+
+                    // mAppsCustomizePane renders its children in reverse order, so
+                    // add the pages to animationBuffer in reverse order to match that behavior
+                    for (int i = visiblePages.size() - 1; i >= 0; i--) {
+                        View child = visiblePages.get(i);
+                        if (child instanceof PagedViewCellLayout) {
+                            ((PagedViewCellLayout) child).resetChildrenOnKeyListeners();
+                        } else if (child instanceof PagedViewGridLayout) {
+                            ((PagedViewGridLayout) child).resetChildrenOnKeyListeners();
+                        }
+                        PagedViewWidget.setDeletePreviewsWhenDetachedFromWindow(false);
+                        removeView(child);
+                        PagedViewWidget.setDeletePreviewsWhenDetachedFromWindow(true);
+                        animationBuffer.setAlpha(1f);
+                        animationBuffer.setVisibility(View.VISIBLE);
+                        FrameLayout.LayoutParams p = new FrameLayout.LayoutParams(child.getWidth(),
+                                child.getHeight());
+                        p.setMargins((int) child.getLeft(), (int) child.getTop(), 0, 0);
+                        animationBuffer.addView(child, p);
+                    }
+
+                    // Toggle the new content
+                    hideScrollingIndicator(false);
+                    setContentType(type);
+
+                    // Animate the transition
+                    ObjectAnimator outAnim = ObjectAnimator.ofFloat(animationBuffer, "alpha", 0f);
+                    outAnim.addListener(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            animationBuffer.setVisibility(View.GONE);
+                            animationBuffer.removeAllViews();
+                        }
+                        @Override
+                        public void onAnimationCancel(Animator animation) {
+                            animationBuffer.setVisibility(View.GONE);
+                            animationBuffer.removeAllViews();
+                        }
+                    });
+                    ObjectAnimator inAnim = ObjectAnimator.ofFloat(self, "alpha", 1f);
+                    inAnim.addListener(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            reloadCurrentPage();
+                        }
+                    });
+                    AnimatorSet animSet = new AnimatorSet();
+                    animSet.playTogether(outAnim, inAnim);
+                    animSet.setDuration(duration);
+                    animSet.start();
+                }
+            });
+        }
     }
 
     /*
@@ -1386,7 +1496,7 @@ public class AppsCustomizePagedView extends PagedViewWithDraggableItems implemen
             }
         } else {
             switch (mContentType) {
-            case Applications:
+            case Apps:
                 syncAppsPages();
                 break;
             case Widgets:
@@ -1406,7 +1516,7 @@ public class AppsCustomizePagedView extends PagedViewWithDraggableItems implemen
             }
         } else {
             switch (mContentType) {
-            case Applications:
+            case Apps:
                 syncAppsPageItems(page, immediate);
                 break;
             case Widgets:
@@ -1530,7 +1640,7 @@ public class AppsCustomizePagedView extends PagedViewWithDraggableItems implemen
     }
 
     /*
-     * AllAppsView implementation
+     * AppsCustomizeView implementation
      */
     @Override
     public void setup(Launcher launcher, DragController dragController) {
@@ -1560,12 +1670,24 @@ public class AppsCustomizePagedView extends PagedViewWithDraggableItems implemen
                syncAppsPageItems(i, true);
             }
         } else {
-            if (mContentType == ContentType.Applications) {
+            if (mContentType == ContentType.Apps) {
                 for (int i = 0; i < getChildCount(); i++) {
                     syncAppsPageItems(i, true);
                 }
             }
         }
+    }
+
+    public void showIndicator(boolean immediately) {
+        showScrollingIndicator(immediately);
+    }
+
+    public void hideIndicator(boolean immediately) {
+        hideScrollingIndicator(immediately);
+    }
+
+    public void flashIndicator(boolean immediately) {
+        flashScrollingIndicator(!immediately);
     }
 
     @Override
@@ -1646,12 +1768,12 @@ public class AppsCustomizePagedView extends PagedViewWithDraggableItems implemen
             AppsCustomizeTabHost tabHost = getTabHost();
             String tag = tabHost.getCurrentTabTag();
             if (tag != null) {
-                if (!tag.equals(tabHost.getTabTagForContentType(ContentType.Applications))) {
-                    tabHost.setCurrentTabFromContent(ContentType.Applications);
+                if (!tag.equals(tabHost.getTabTagForContentType(ContentType.Apps))) {
+                    tabHost.setCurrentTabFromContent(ContentType.Apps);
                 }
             }
         } else {
-            if (mContentType != ContentType.Applications) {
+            if (mContentType != ContentType.Apps) {
                 // Reset to the first page of the Apps pane
                 AppsCustomizeTabHost tabs = (AppsCustomizeTabHost)
                         mLauncher.findViewById(R.id.apps_customize_pane);
@@ -1744,7 +1866,7 @@ public class AppsCustomizePagedView extends PagedViewWithDraggableItems implemen
             return String.format(mContext.getString(stringId), page + 1, count);
         } else {
             switch (mContentType) {
-            case Applications:
+            case Apps:
                 stringId = R.string.apps_customize_apps_scroll_format;
                 break;
             case Widgets:
