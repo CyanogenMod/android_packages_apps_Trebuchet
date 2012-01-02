@@ -10,6 +10,7 @@
   public void onClickOverflowMenuButton(android.view.View);
   public void dismissWorkspaceCling(android.view.View);
   public void dismissAllAppsCling(android.view.View);
+  public void dismissAllAppsSortCling(android.view.View);
 }
 
 -keep class com.cyanogenmod.trebuchet.CellLayout {
