@@ -18,7 +18,11 @@ package com.cyanogenmod.trebuchet;
 
 import android.appwidget.AppWidgetHostView;
 import android.content.Context;
-import android.view.*;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewConfiguration;
+import android.view.ViewGroup;
 
 /**
  * {@inheritDoc}

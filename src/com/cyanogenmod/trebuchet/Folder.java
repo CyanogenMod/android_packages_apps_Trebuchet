@@ -16,7 +16,11 @@
 
 package com.cyanogenmod.trebuchet;
 
-import android.animation.*;
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ObjectAnimator;
+import android.animation.PropertyValuesHolder;
+import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.content.Context;
 import android.content.res.Resources;
@@ -24,8 +28,15 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.text.InputType;
 import android.text.Selection;
+import android.text.Spannable;
 import android.util.AttributeSet;
-import android.view.*;
+import android.view.ActionMode;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityManager;
 import android.view.animation.AccelerateInterpolator;
@@ -34,6 +45,7 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import com.cyanogenmod.trebuchet.FolderInfo.FolderListener;
 
 import java.util.ArrayList;

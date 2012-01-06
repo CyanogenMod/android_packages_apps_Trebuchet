@@ -34,7 +34,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
-import android.view.*;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
