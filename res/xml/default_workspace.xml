@@ -18,14 +18,6 @@
     <!-- Far-left screen [0] -->
 
     <!-- Left screen [1] -->
-    <appwidget
-        launcher:packageName="com.android.settings"
-        launcher:className="com.android.settings.widget.SettingsAppWidgetProvider"
-        launcher:screen="1"
-        launcher:x="0"
-        launcher:y="3"
-        launcher:spanX="4"
-        launcher:spanY="1" />
 
     <!-- Middle screen [2] -->
     <appwidget
@@ -42,20 +34,14 @@
         launcher:screen="2"
         launcher:x="0"
         launcher:y="3" />
-
-    <!-- Right screen [3] -->
     <favorite
         launcher:packageName="com.android.gallery3d"
         launcher:className="com.android.gallery3d.app.Gallery"
-        launcher:screen="3"
-        launcher:x="1"
+        launcher:screen="2"
+        launcher:x="3"
         launcher:y="3" />
-    <favorite
-        launcher:packageName="com.android.settings"
-        launcher:className="com.android.settings.Settings"
-        launcher:screen="3"
-        launcher:x="2"
-        launcher:y="3" />
+
+    <!-- Right screen [3] -->
 
     <!-- Far-right screen [4] -->
 
