@@ -152,7 +152,7 @@ public final class Launcher extends Activity
 
     private SearchDropTargetBar mSearchDropTargetBar;
     private AppsCustomizeTabHost mAppsCustomizeTabHost;
-    private AppsCustomizePagedView mAppsCustomizeContent;
+    private AppsCustomizeView mAppsCustomizeContent;
     private boolean mAutoAdvanceRunning = false;
 
     private Bundle mSavedState;
@@ -275,7 +275,7 @@ public final class Launcher extends Activity
         }
 
         if (!mModel.isAllAppsLoaded()) {
-            ViewGroup appsCustomizeContentParent = (ViewGroup) mAppsCustomizeContent.getParent();
+            ViewGroup appsCustomizeContentParent = (ViewGroup) ((View) mAppsCustomizeContent).getParent();
             mInflater.inflate(R.layout.apps_customize_progressbar, appsCustomizeContentParent);
         }
 
@@ -703,12 +703,10 @@ public final class Launcher extends Activity
                 mAppsCustomizeContent.setContentType(
                         mAppsCustomizeTabHost.getContentTypeForTabTag(curTab));
                 mAppsCustomizeTabHost.setCurrentTabByTag(curTab);
-                mAppsCustomizeContent.loadAssociatedPages(
-                        mAppsCustomizeContent.getCurrentPage());
             }
 
             int currentIndex = savedState.getInt("apps_customize_currentIndex");
-            mAppsCustomizeContent.restorePageForIndex(currentIndex);
+            mAppsCustomizeContent.restore(currentIndex);
         }
     }
 
@@ -749,7 +747,7 @@ public final class Launcher extends Activity
         // Setup AppsCustomize
         mAppsCustomizeTabHost = (AppsCustomizeTabHost)
                 findViewById(R.id.apps_customize_pane);
-        mAppsCustomizeContent = (AppsCustomizePagedView)
+        mAppsCustomizeContent = (AppsCustomizeView)
                 mAppsCustomizeTabHost.findViewById(R.id.apps_customize_pane_content);
         mAppsCustomizeContent.setup(this, dragController);
 
@@ -1739,25 +1737,30 @@ public final class Launcher extends Activity
         final Menu menu = popupMenu.getMenu();
         dismissAllAppsSortCling(null);
         popupMenu.inflate(R.menu.apps_tab);
-        AppsCustomizePagedView.SortMode sortMode = mAppsCustomizeContent.getSortMode();
-        if (sortMode == AppsCustomizePagedView.SortMode.Title) {
-            menu.findItem(R.id.apps_sort_title).setChecked(true);
-        } else if (sortMode == AppsCustomizePagedView.SortMode.InstallDate) {
-            menu.findItem(R.id.apps_sort_install_date).setChecked(true);
+        AppsCustomizeView.SortMode sortMode = mAppsCustomizeContent.getSortMode();
+        switch (sortMode) {
+            case Title:
+                menu.findItem(R.id.apps_sort_title).setChecked(true);
+                break;
+            case InstallDate:
+                menu.findItem(R.id.apps_sort_install_date).setChecked(true);
+                break;
         }
+
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                 public boolean onMenuItemClick(MenuItem item) {
                     switch (item.getItemId()) {
                         case R.id.apps_sort_title:
-                            mAppsCustomizeContent.setSortMode(AppsCustomizePagedView.SortMode.Title);
+                            mAppsCustomizeContent.setSortMode(AppsCustomizeView.SortMode.Title);
                             break;
                         case R.id.apps_sort_install_date:
-                            mAppsCustomizeContent.setSortMode(AppsCustomizePagedView.SortMode.InstallDate);
+                            mAppsCustomizeContent.setSortMode(AppsCustomizeView.SortMode.InstallDate);
                             break;
                     }
                     return true;
                 }
         });
+
         popupMenu.show();
     }
 

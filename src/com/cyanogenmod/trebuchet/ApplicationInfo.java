@@ -28,7 +28,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * Represents an app in AllAppsView.
+ * Represents an app in AppsCustomizeView.
  */
 class ApplicationInfo extends ItemInfo {
     private static final String TAG = "Launcher.ApplicationInfo";

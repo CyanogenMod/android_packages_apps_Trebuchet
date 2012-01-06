@@ -79,10 +79,10 @@ public class DeleteDropTarget extends ButtonDropTarget {
     }
 
     private boolean isAllAppsApplication(DragSource source, Object info) {
-        return (source instanceof AppsCustomizePagedView) && (info instanceof ApplicationInfo);
+        return (source instanceof AppsCustomizeView) && (info instanceof ApplicationInfo);
     }
     private boolean isAllAppsWidget(DragSource source, Object info) {
-        return (source instanceof AppsCustomizePagedView) && (info instanceof PendingAddWidgetInfo);
+        return (source instanceof AppsCustomizeView) && (info instanceof PendingAddWidgetInfo);
     }
     private boolean isDragSourceWorkspaceOrFolder(DragObject d) {
         return (d.dragSource instanceof Workspace) || (d.dragSource instanceof Folder);
