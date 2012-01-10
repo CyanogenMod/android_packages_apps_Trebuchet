@@ -122,9 +122,11 @@ public final class Launcher extends Activity
     static final boolean DEBUG_WIDGETS = false;
 
     private static final int MENU_GROUP_WALLPAPER = 1;
+    private static final int MENU_GROUP_MARKET = MENU_GROUP_WALLPAPER + 1;
     private static final int MENU_WALLPAPER_SETTINGS = Menu.FIRST + 1;
     private static final int MENU_MANAGE_APPS = MENU_WALLPAPER_SETTINGS + 1;
-    private static final int MENU_PREFERENCES = MENU_MANAGE_APPS + 1;
+    private static final int MENU_MARKET = MENU_MANAGE_APPS + 1;
+    private static final int MENU_PREFERENCES = MENU_MARKET + 1;
     private static final int MENU_SYSTEM_SETTINGS = MENU_PREFERENCES + 1;
     private static final int MENU_HELP = MENU_SYSTEM_SETTINGS + 1;
 
@@ -1378,6 +1380,14 @@ public final class Launcher extends Activity
             .setIcon(android.R.drawable.ic_menu_manage)
             .setIntent(manageApps)
             .setAlphabeticShortcut('M');
+        menu.add(MENU_GROUP_MARKET, MENU_MARKET, 0, R.string.menu_market)
+            .setAlphabeticShortcut('A')
+            .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                    public boolean onMenuItemClick(MenuItem item) {
+                        onClickAppMarketButton(null);
+                        return true;
+                    }
+            });
         if (!getResources().getBoolean(R.bool.config_cyanogenmod)) {
             menu.add(0, MENU_PREFERENCES, 0, R.string.menu_preferences)
                 .setIcon(android.R.drawable.ic_menu_preferences)
@@ -1406,6 +1416,9 @@ public final class Launcher extends Activity
         }
         boolean allAppsVisible = (mAppsCustomizeTabHost.getVisibility() == View.VISIBLE);
         menu.setGroupVisible(MENU_GROUP_WALLPAPER, !allAppsVisible);
+        menu.setGroupVisible(MENU_GROUP_MARKET, allAppsVisible &&
+                !ViewConfiguration.get(this).hasPermanentMenuKey() &&
+                mAppMarketIntent != null);
 
         return true;
     }
