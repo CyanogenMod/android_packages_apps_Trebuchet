@@ -62,6 +62,9 @@ public class IconCache {
             } else if (density == DisplayMetrics.DENSITY_XHIGH) {
                 // We'll need to use a denser icon, or some sort of a mipmap
                 mIconDpi = DisplayMetrics.DENSITY_XHIGH;
+            } else {
+                // Non-standard dpi, default to prevent crash
+                mIconDpi = DisplayMetrics.DENSITY_HIGH;
             }
         } else {
             mIconDpi = context.getResources().getDisplayMetrics().densityDpi;
