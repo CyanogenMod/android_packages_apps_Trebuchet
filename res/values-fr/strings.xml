@@ -102,4 +102,54 @@
     <string name="folder_closed" msgid="3130534551370511932">"Dossier fermé"</string>
     <string name="folder_renamed" msgid="781234745487414781">"Nouveau nom du dossier : %1$s"</string>
     <string name="folder_name_format" msgid="4513766553514769310">"Dossier : %1$s"</string>
+
+    <!--             -->
+    <!-- Preferences -->
+    <!--             -->
+    <string name="menu_preferences">Préférences Trebuchet</string>
+
+    <string name="preferences_title">Préférences Trebuchet</string>
+    <!-- UI -->
+    <string name="preferences_interface_title">Interface</string>
+    <!-- Application -->
+    <string name="preferences_application_title">Application</string>
+
+    <!-- UI -->
+    <!-- Homescreen -->
+    <string name="preferences_interface_homescreen_title">Ecrans d\'accueil</string>
+    <string name="preferences_interface_homescreen_general_category">Général</string>
+    <string name="preferences_interface_homescreen_general_screens_title">Pages</string>
+    <string name="preferences_interface_homescreen_general_screens_summary">Nombre de pages sur l\'écran d\'accueil</string>
+    <string name="preferences_interface_homescreen_general_default_screen_title">Ecran par défaut</string>
+    <string name="preferences_interface_homescreen_general_default_screen_summary">Sélectionnez l\'écran par défaut</string>
+    <string name="preferences_interface_homescreen_general_search_title">Barre de recherche</string>
+    <string name="preferences_interface_homescreen_general_search_summary">Activer la barre de recherche persistante</string>
+    <string name="preferences_interface_homescreen_general_resize_any_widget_title">Redimensionner les widgets</string>
+    <string name="preferences_interface_homescreen_general_resize_any_widget_summary">Permettre de redimensionner les widgets qui normalement n\'en sont pas capables</string>
+    <string name="preferences_interface_homescreen_indicator_category">Indicateur</string>
+    <string name="preferences_interface_homescreen_indicator_enable_title">Indicateur de page</string>
+    <string name="preferences_interface_homescreen_indicator_enable_summary">Afficher l\'indicateur en bas de l\'écran</string>
+    <string name="preferences_interface_homescreen_indicator_fade_title">Fondu</string>
+    <string name="preferences_interface_homescreen_indicator_fade_summary">Faire disparaître l\'indicateur après le changement d\'écran</string>
+
+    <!-- Drawer -->
+    <string name="preferences_interface_drawer_title">Applications</string>
+    <string name="preferences_interface_drawer_widgets_category">Widgets</string>
+    <string name="preferences_interface_drawer_widgets_join_apps_title">Inclure dans les applications</string>
+    <string name="preferences_interface_drawer_widgets_join_apps_summary">Sauter des applications aux widgets sans changer d\'onglet (swipe)</string>
+    <string name="preferences_interface_drawer_indicator_category">Indicateur</string>
+    <string name="preferences_interface_drawer_indicator_enable_title">Indicateur de page</string>
+    <string name="preferences_interface_drawer_indicator_enable_summary">Afficher l\'indicateur en bas de l\'écran</string>
+    <string name="preferences_interface_drawer_indicator_fade_title">Fondu</string>
+    <string name="preferences_interface_drawer_indicator_fade_summary">Faire disparaître l\'indicateur après le changement de page</string>
+
+    <!-- Dock -->
+    <string name="preferences_interface_dock_title">Barre de Dock</string>
+
+    <!-- Icons -->
+    <string name="preferences_interface_icons_title">Icônes</string>
+
+    <!-- General -->
+    <string name="preferences_interface_general_title">Autres options</string>
+    <string name="preferences_interface_general_orientation_title">Auto-rotation</string>
 </resources>
