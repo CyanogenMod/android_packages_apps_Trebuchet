@@ -121,6 +121,8 @@ public class AppWidgetResizeFrame extends FrameLayout {
         // Resize any widget
         if (PreferencesProvider.Interface.Homescreen.getResizeAnyWidget(context)) {
             mResizeMode = AppWidgetProviderInfo.RESIZE_BOTH;
+            mMinHSpan = 1;
+            mMinVSpan = 1;
         }
 
         if (mResizeMode == AppWidgetProviderInfo.RESIZE_HORIZONTAL) {
