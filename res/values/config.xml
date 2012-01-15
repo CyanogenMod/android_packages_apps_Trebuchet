@@ -1,6 +1,7 @@
 <resources>
     <bool name="config_hardwareAccelerated">true</bool>
     <bool name="config_largeHeap">false</bool>
+    <bool name="config_defaultAutoRotate">false</bool>
 
     <bool name="config_cyanogenmod">false</bool>
 

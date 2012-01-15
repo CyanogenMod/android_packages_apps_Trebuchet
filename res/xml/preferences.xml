@@ -114,7 +114,8 @@
         <PreferenceScreen android:key="ui_general"
             android:title="@string/preferences_interface_general_title">
             <CheckBoxPreference android:key="ui_general_orientation"
-                android:title="@string/preferences_interface_general_orientation_title" />
+                android:title="@string/preferences_interface_general_orientation_title"
+                android:defaultValue="@bool/config_defaultAutoRotate" />
         </PreferenceScreen>
     </PreferenceCategory>
 
