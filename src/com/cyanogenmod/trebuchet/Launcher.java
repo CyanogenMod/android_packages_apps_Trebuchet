@@ -795,13 +795,15 @@ public final class Launcher extends Activity
         // Get the search/delete bar
         mSearchDropTargetBar = (SearchDropTargetBar) mDragLayer.findViewById(R.id.qsb_bar);
 
+        final View qsbDivider = findViewById(R.id.qsb_divider);
+        final View dockDivider = findViewById(R.id.dock_divider);
         // Hide the search divider if we are hiding search bar
-        if (!mShowSearchBar && getCurrentOrientation() == Configuration.ORIENTATION_LANDSCAPE) {
-            ((View) findViewById(R.id.qsb_divider)).setVisibility(View.GONE);
+        if (!mShowSearchBar && qsbDivider != null) {
+            qsbDivider.setVisibility(View.GONE);
         }
 
-        if (!mShowDockDivider) {
-            ((View) findViewById(R.id.dock_divider)).setVisibility(View.GONE);
+        if (!mShowDockDivider && dockDivider != null) {
+            dockDivider.setVisibility(View.GONE);
         }
 
         // Setup AppsCustomize
