@@ -101,9 +101,9 @@ public final class PreferencesProvider {
         }
 
         public static class General {
-            public static boolean getAutoRotate(Context context) {
+            public static boolean getAutoRotate(Context context, boolean def) {
                 final SharedPreferences preferences = context.getSharedPreferences(PREFERENCES_KEY, 0);
-                return preferences.getBoolean("ui_general_orientation", false);
+                return preferences.getBoolean("ui_general_orientation", def);
             }
         }
     }

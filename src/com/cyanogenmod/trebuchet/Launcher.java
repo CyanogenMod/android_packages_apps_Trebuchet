@@ -1,4 +1,3 @@
-
 /*
  * Copyright (C) 2008 The Android Open Source Project
  *
@@ -298,7 +297,7 @@ public final class Launcher extends Activity
         // Preferences
         mShowSearchBar = PreferencesProvider.Interface.Homescreen.getShowSearchBar(this);
         mShowDockDivider = PreferencesProvider.Interface.Homescreen.Indicator.getShowDockDivider(this);
-        mAutoRotate = PreferencesProvider.Interface.General.getAutoRotate(this);
+        mAutoRotate = PreferencesProvider.Interface.General.getAutoRotate(this, getResources().getBoolean(R.bool.config_defaultAutoRotate));
 
         if (PROFILE_STARTUP) {
             android.os.Debug.startMethodTracing(
