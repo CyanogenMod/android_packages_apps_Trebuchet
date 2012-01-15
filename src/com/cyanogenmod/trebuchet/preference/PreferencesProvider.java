@@ -19,6 +19,8 @@ package com.cyanogenmod.trebuchet.preference;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import static com.cyanogenmod.trebuchet.Workspace.TransitionEffect;
+
 public final class PreferencesProvider {
     public static final String PREFERENCES_KEY = "com.cyanogenmod.trebuchet_preferences";
 
@@ -46,6 +48,15 @@ public final class PreferencesProvider {
                 public static boolean getScrollWallpaper(Context context) {
                     final SharedPreferences preferences = context.getSharedPreferences(PREFERENCES_KEY, 0);
                     return preferences.getBoolean("ui_homescreen_scrolling_scroll_wallpaper", true);
+                }
+                public static TransitionEffect getTransitionEffect(Context context, String def) {
+                    final SharedPreferences preferences = context.getSharedPreferences(PREFERENCES_KEY, 0);
+                    return TransitionEffect.valueOf(
+                            preferences.getString("ui_homescreen_scrolling_transition_effect", def));
+                }
+                public static boolean getFadeInAdjacentScreens(Context context, boolean def) {
+                    final SharedPreferences preferences = context.getSharedPreferences(PREFERENCES_KEY, 0);
+                    return preferences.getBoolean("ui_homescreen_scrolling_fade_adjacent_screens", def);
                 }
             }
             public static class Indicator {

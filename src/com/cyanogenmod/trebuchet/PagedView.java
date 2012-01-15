@@ -155,6 +155,9 @@ public abstract class PagedView extends ViewGroup {
     // If true, modify alpha of neighboring pages as user scrolls left/right
     protected boolean mFadeInAdjacentScreens = true;
 
+    // If true, mFadeInAdjacentScreens will be handled manually
+    protected boolean mHandleFadeInAdjacentScreens = false;
+
     // It true, use a different slop parameter (pagingTouchSlop = 2 * touchSlop) for deciding
     // to switch to a new page
     protected boolean mUsePagingTouchSlop = true;
@@ -607,7 +610,7 @@ public abstract class PagedView extends ViewGroup {
         if (isScrollingIndicatorEnabled()) {
             updateScrollingIndicator();
         }
-        if (mFadeInAdjacentScreens) {
+        if (mFadeInAdjacentScreens && !mHandleFadeInAdjacentScreens) {
             for (int i = 0; i < getChildCount(); i++) {
                 View child = getChildAt(i);
                 if (child != null) {
