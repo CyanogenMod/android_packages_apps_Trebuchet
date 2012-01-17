@@ -1817,7 +1817,8 @@ public class Workspace extends PagedView
                 }
             }
 
-            if (mTransitionEffect == TransitionEffect.Tablet && stateIsNormal) {
+            if ((mTransitionEffect == TransitionEffect.Tablet && stateIsNormal) ||
+                    (LauncherApplication.isScreenLarge() && (stateIsSmall || stateIsSpringLoaded))) {
                 translationX = getOffsetXForRotation(rotation, cl.getWidth(), cl.getHeight());
             }
 
