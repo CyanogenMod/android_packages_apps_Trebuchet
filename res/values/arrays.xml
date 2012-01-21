@@ -23,6 +23,8 @@
         <item>Tablet</item>
         <item>Zoom In</item>
         <item>Zoom Out</item>
+        <item>Cube In</item>
+        <item>Cube Out</item>
         <item>Stack</item>
     </string-array>
     <string-array name="preferences_interface_homescreen_scrolling_transition_effect_values">
@@ -30,6 +32,8 @@
         <item>Tablet</item>
         <item>ZoomIn</item>
         <item>ZoomOut</item>
+        <item>CubeIn</item>
+        <item>CubeOut</item>
         <item>Stack</item>
     </string-array>
 </resources>

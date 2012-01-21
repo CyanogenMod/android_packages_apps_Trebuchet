@@ -352,6 +352,7 @@ public class CellLayout extends ViewGroup {
             setOverscrollTransformsDirty(false);
             setTranslationX(0);
             setRotationY(0);
+            setCameraDistance(1280 * LauncherApplication.getScreenDensity());
             // It doesn't matter if we pass true or false here, the important thing is that we
             // pass 0, which results in the overscroll drawable not being drawn any more.
             setOverScrollAmount(0, false);
