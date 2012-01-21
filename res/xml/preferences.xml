@@ -48,7 +48,7 @@
                     android:title="@string/preferences_interface_homescreen_scrolling_transition_effect_title"
                     android:summary="@string/preferences_interface_homescreen_scrolling_transition_effect_summary"
                     android:entries="@array/preferences_interface_homescreen_scrolling_transition_effect_entries"
-                    android:entryValues="@array/preferences_interface_homescreen_scrolling_transition_effect_entries"
+                    android:entryValues="@array/preferences_interface_homescreen_scrolling_transition_effect_values"
                     android:defaultValue="@string/config_workspaceDefaultTransitionEffect" />
                 <CheckBoxPreference android:key="ui_homescreen_scrolling_fade_adjacent_screens"
                     android:title="@string/preferences_interface_homescreen_scrolling_fade_adjacent_screens_title"

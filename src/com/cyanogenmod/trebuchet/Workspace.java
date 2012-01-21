@@ -243,6 +243,8 @@ public class Workspace extends PagedView
     public enum TransitionEffect {
         Standard,
         Tablet,
+        ZoomIn,
+        ZoomOut,
         Stack
     }
 
@@ -1270,6 +1272,31 @@ public class Workspace extends PagedView
         invalidate();
     }
 
+    private void screenScrolledZoom(int screenScroll, boolean in) {
+        boolean isInOverscroll = false;
+        for (int i = 0; i < getChildCount(); i++) {
+            CellLayout cl = (CellLayout) getChildAt(i);
+            if (cl != null) {
+                float scrollProgress = getScrollProgress(screenScroll, cl, i);
+                float scale = 1.0f + (in ? -0.2f : 0.1f) * Math.abs(scrollProgress);
+
+                // Extra translation to account for the increase in size
+                if (!in) {
+                    float translationX = getMeasuredWidth() * 0.1f * -scrollProgress;
+                    cl.setFastTranslationX(translationX);
+                }
+
+                cl.setFastScaleX(scale);
+                cl.setFastScaleY(scale);
+                if (mFadeInAdjacentScreens && !isSmall()) {
+                    float alpha = 1 - Math.abs(scrollProgress);
+                    cl.setFastAlpha(alpha);
+                }
+                cl.fastInvalidate();
+            }
+        }
+    }
+
     private void screenScrolledStack(int screenScroll) {
         boolean isInOverscroll = false;
         for (int i = 0; i < getChildCount(); i++) {
@@ -1354,6 +1381,12 @@ public class Workspace extends PagedView
                     break;
                 case Tablet:
                     screenScrolledTablet(screenScroll);
+                    break;
+                case ZoomIn:
+                    screenScrolledZoom(screenScroll, true);
+                    break;
+                case ZoomOut:
+                    screenScrolledZoom(screenScroll, false);
                     break;
                 case Stack:
                     screenScrolledStack(screenScroll);
