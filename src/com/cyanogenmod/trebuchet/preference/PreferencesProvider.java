@@ -19,7 +19,8 @@ package com.cyanogenmod.trebuchet.preference;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import static com.cyanogenmod.trebuchet.Workspace.TransitionEffect;
+import com.cyanogenmod.trebuchet.Workspace;
+import com.cyanogenmod.trebuchet.AppsCustomizePagedView;
 
 public final class PreferencesProvider {
     public static final String PREFERENCES_KEY = "com.cyanogenmod.trebuchet_preferences";
@@ -49,9 +50,9 @@ public final class PreferencesProvider {
                     final SharedPreferences preferences = context.getSharedPreferences(PREFERENCES_KEY, 0);
                     return preferences.getBoolean("ui_homescreen_scrolling_scroll_wallpaper", true);
                 }
-                public static TransitionEffect getTransitionEffect(Context context, String def) {
+                public static Workspace.TransitionEffect getTransitionEffect(Context context, String def) {
                     final SharedPreferences preferences = context.getSharedPreferences(PREFERENCES_KEY, 0);
-                    return TransitionEffect.valueOf(
+                    return Workspace.TransitionEffect.valueOf(
                             preferences.getString("ui_homescreen_scrolling_transition_effect", def));
                 }
                 public static boolean getFadeInAdjacentScreens(Context context, boolean def) {
@@ -79,6 +80,17 @@ public final class PreferencesProvider {
             public static boolean getJoinWidgetsApps(Context context) {
                 final SharedPreferences preferences = context.getSharedPreferences(PREFERENCES_KEY, 0);
                 return preferences.getBoolean("ui_drawer_widgets_join_apps", true);
+            }
+            public static class Scrolling {
+                public static AppsCustomizePagedView.TransitionEffect getTransitionEffect(Context context, String def) {
+                    final SharedPreferences preferences = context.getSharedPreferences(PREFERENCES_KEY, 0);
+                    return AppsCustomizePagedView.TransitionEffect.valueOf(
+                            preferences.getString("ui_drawer_scrolling_transition_effect", def));
+                }
+                public static boolean getFadeInAdjacentScreens(Context context) {
+                    final SharedPreferences preferences = context.getSharedPreferences(PREFERENCES_KEY, 0);
+                    return preferences.getBoolean("ui_drawer_scrolling_fade_adjacent_screens", false);
+                }
             }
             public static class Indicator {
                 public static boolean getShowScrollingIndicator(Context context) {

@@ -85,6 +85,17 @@
                     android:summary="@string/preferences_interface_drawer_widgets_join_apps_summary"
                     android:defaultValue="true" />
             </PreferenceCategory>
+            <PreferenceCategory android:title="@string/preferences_interface_drawer_scrolling_category">
+                <ListPreference android:key="ui_drawer_scrolling_transition_effect"
+                    android:title="@string/preferences_interface_drawer_scrolling_transition_effect_title"
+                    android:summary="@string/preferences_interface_drawer_scrolling_transition_effect_summary"
+                    android:entries="@array/preferences_interface_drawer_scrolling_transition_effect_entries"
+                    android:entryValues="@array/preferences_interface_drawer_scrolling_transition_effect_values"
+                    android:defaultValue="@string/config_drawerDefaultTransitionEffect" />
+                <CheckBoxPreference android:key="ui_drawer_scrolling_fade_adjacent_screens"
+                    android:title="@string/preferences_interface_drawer_scrolling_fade_adjacent_screens_title"
+                    android:summary="@string/preferences_interface_drawer_scrolling_fade_adjacent_screens_summary" />
+            </PreferenceCategory>
             <PreferenceCategory android:title="@string/preferences_interface_drawer_indicator_category">
                 <CheckBoxPreference android:key="ui_drawer_indicator_enable"
                     android:title="@string/preferences_interface_drawer_indicator_enable_title"

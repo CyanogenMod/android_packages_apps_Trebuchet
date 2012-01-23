@@ -6,6 +6,8 @@
     <bool name="config_cyanogenmod">false</bool>
 
 <!-- AllApps/Customize/AppsCustomize -->
+    <!-- Which default transition effect to use on the AppsCustomize -->
+    <string name="config_drawerDefaultTransitionEffect">Stack</string>
     <!-- The alpha of the AppsCustomize bg in spring loaded mode -->
     <integer name="config_appsCustomizeSpringLoadedBgAlpha">45</integer>
     <!-- Fade in/out duration of icons being dragged from the trays -->
