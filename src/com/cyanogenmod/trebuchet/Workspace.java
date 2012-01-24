@@ -2050,7 +2050,9 @@ public class Workspace extends PagedView
                     }
                     for (int i = 0; i < getChildCount(); i++) {
                         final CellLayout cl = (CellLayout) getPageAt(i);
-                        cl.setRotation(a * mOldRotations[i] + b * mNewRotations[i]);
+                        if (mOldRotations[i] != mNewRotations[i]) {
+                            cl.setRotation(a * mOldRotations[i] + b * mNewRotations[i]);
+                        }
                         cl.setFastRotationY(a * mOldRotationYs[i] + b * mNewRotationYs[i]);
                     }
                 }
