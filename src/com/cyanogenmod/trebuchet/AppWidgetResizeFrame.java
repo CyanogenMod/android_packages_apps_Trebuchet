@@ -9,6 +9,7 @@ import android.appwidget.AppWidgetHostView;
 import android.appwidget.AppWidgetProviderInfo;
 import android.content.Context;
 import android.graphics.Rect;
+import android.os.Build;
 import android.view.Gravity;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -111,8 +112,17 @@ public class AppWidgetResizeFrame extends FrameLayout {
                 Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM);
         addView(mBottomHandle, lp);
 
-        Rect p = AppWidgetHostView.getDefaultPaddingForWidget(context,
-                widgetView.getAppWidgetInfo().provider, null);
+        Rect p;
+
+        // Public api for widget padding was added in 4.0.3
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+            p = AppWidgetHostView.getDefaultPaddingForWidget(context,
+                    widgetView.getAppWidgetInfo().provider, null);
+        } else {
+            p = mLauncher.getDefaultPaddingForWidget(
+                    widgetView.getAppWidgetInfo().provider);
+        }
+
         mWidgetPaddingLeft = p.left;
         mWidgetPaddingTop = p.top;
         mWidgetPaddingRight = p.right;

@@ -952,12 +952,32 @@ public final class Launcher extends Activity
         }
     }
 
+    Rect getDefaultPaddingForWidget(ComponentName component) {
+        Rect p = new Rect();
+
+        Resources r = getResources();
+        p.left = r.getDimensionPixelSize(R.dimen.app_widget_padding_left);
+        p.right = r.getDimensionPixelSize(R.dimen.app_widget_padding_right);
+        p.top = r.getDimensionPixelSize(R.dimen.app_widget_padding_top);
+        p.bottom = r.getDimensionPixelSize(R.dimen.app_widget_padding_bottom);
+
+        return p;
+    }
+
     int[] getSpanForWidget(ComponentName component, int minWidth, int minHeight, int[] spanXY) {
         if (spanXY == null) {
             spanXY = new int[2];
         }
 
-        Rect padding = AppWidgetHostView.getDefaultPaddingForWidget(this, component, null);
+        Rect padding;
+
+        // Public api for widget padding was added in 4.0.3
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+            padding = AppWidgetHostView.getDefaultPaddingForWidget(this, component, null);
+        } else {
+            padding = getDefaultPaddingForWidget(component);
+        }
+
         // We want to account for the extra amount of padding that we are adding to the widget
         // to ensure that it gets the full amount of space that it has requested
         int requiredWidth = minWidth + padding.left + padding.right;
