@@ -389,7 +389,7 @@ public class Workspace extends PagedView
         cl.cellToRect(hCell, vCell, hSpan, vSpan, r);
         if (pendingInfo instanceof PendingAddWidgetInfo) {
             PendingAddWidgetInfo widgetInfo = (PendingAddWidgetInfo) pendingInfo;
-            Rect p = AppWidgetHostView.getDefaultPaddingForWidget(mContext,
+            Rect p = mLauncher.getDefaultPaddingForWidget(mContext,
                     widgetInfo.componentName, null);
             r.top += p.top;
             r.left += p.left;

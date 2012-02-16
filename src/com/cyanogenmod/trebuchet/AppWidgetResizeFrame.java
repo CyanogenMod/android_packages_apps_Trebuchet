@@ -112,16 +112,8 @@ public class AppWidgetResizeFrame extends FrameLayout {
                 Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM);
         addView(mBottomHandle, lp);
 
-        Rect p;
-
-        // Public api for widget padding was added in 4.0.3
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-            p = AppWidgetHostView.getDefaultPaddingForWidget(context,
+        Rect p = mLauncher.getDefaultPaddingForWidget(context,
                     widgetView.getAppWidgetInfo().provider, null);
-        } else {
-            p = mLauncher.getDefaultPaddingForWidget(
-                    widgetView.getAppWidgetInfo().provider);
-        }
 
         mWidgetPaddingLeft = p.left;
         mWidgetPaddingTop = p.top;
