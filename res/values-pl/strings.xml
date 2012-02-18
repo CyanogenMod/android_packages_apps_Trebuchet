@@ -102,4 +102,80 @@
     <string name="folder_closed" msgid="3130534551370511932">"Folder zamknięty"</string>
     <string name="folder_renamed" msgid="781234745487414781">"Nazwa folderu zmieniona na %1$s"</string>
     <string name="folder_name_format" msgid="4513766553514769310">"Folder: %1$s"</string>
+
+    <!-- **** CYANOGENMOD EDITS START **** -->
+    <!-- Noun, menu item used to show the launcher preferences -->
+    <string name="menu_preferences">Ustawienia launchera</string>
+
+    <!-- Noun, menu item used to sort apps by name -->
+    <string name="menu_apps_sort_title">Według nazwy</string>
+    <!-- Noun, menu item used to sort apps by install date -->
+    <string name="menu_apps_sort_install_date">Według daty</string>
+
+    <string name="all_apps_sort_cling_title">Sortuj swoje aplikacje</string>
+    <!-- The description of how to pick sort apps in the drawer [CHAR_LIMIT=none] -->
+    <string name="all_apps_sort_cling_add_item">Dotknij i przytrzymaj kartę Aplikacje, by wybrać sposób sortowania</string>
+
+    <!--             -->
+    <!-- Preferences -->
+    <!--             -->
+    <string name="preferences_title">Ustawienia</string>
+    <!-- UI -->
+    <string name="preferences_interface_title">Interfejs</string>
+    <!-- Application -->
+    <string name="preferences_application_title">Aplikacja</string>
+
+    <!-- UI -->
+    <!-- Homescreen -->
+    <string name="preferences_interface_homescreen_title">Ekran główny</string>
+    <string name="preferences_interface_homescreen_general_category">Ogólne</string>
+    <string name="preferences_interface_homescreen_general_screens_title">Liczba ekranów</string>
+    <string name="preferences_interface_homescreen_general_screens_summary">Wybierz liczbę ekranów</string>
+    <string name="preferences_interface_homescreen_general_default_screen_title">Ekran domyślny</string>
+    <string name="preferences_interface_homescreen_general_default_screen_summary">Wybierz ekran domyślny</string>
+    <string name="preferences_interface_homescreen_general_search_title">Pasek wyszukiwania</string>
+    <string name="preferences_interface_homescreen_general_search_summary">Włącz pasek wyszukiwania na wszystkich ekranach</string>
+    <string name="preferences_interface_homescreen_general_resize_any_widget_title">Rozmiar wszystkich widżetów</string>
+    <string name="preferences_interface_homescreen_general_resize_any_widget_summary">Zmień rozmiar widżetów, które normalnie na to nie pozwalają</string>
+    <string name="preferences_interface_homescreen_scrolling_category">Przewijanie</string>
+    <string name="preferences_interface_homescreen_scrolling_transition_effect_title">Efekt przejścia</string>
+    <string name="preferences_interface_homescreen_scrolling_transition_effect_summary">Zmień efekt podczas zmiany ekranu</string>
+    <string name="preferences_interface_homescreen_scrolling_fade_adjacent_screens_title">Wygaś boczny ekran</string>
+    <string name="preferences_interface_homescreen_scrolling_fade_adjacent_screens_summary">Wygaś ekrany po bokach podczas przewijania</string>
+    <string name="preferences_interface_homescreen_scrolling_scroll_wallpaper_title">Przewiń tapetę</string>
+    <string name="preferences_interface_homescreen_scrolling_scroll_wallpaper_summary">Przewiń tapętę podczas przewijania ekranów</string>
+    <string name="preferences_interface_homescreen_indicator_category">Wskaźnik</string>
+    <string name="preferences_interface_homescreen_indicator_enable_title">Pokaż wskaźnik ekranu</string>
+    <string name="preferences_interface_homescreen_indicator_enable_summary">Pokaż wskaźnik obecnego ekranu na dole</string>
+    <string name="preferences_interface_homescreen_indicator_fade_title">Wygaś wskaźnik</string>
+    <string name="preferences_interface_homescreen_indicator_fade_summary">Wygaś wskaźnik po zmianie ekranu</string>
+    <string name="preferences_interface_homescreen_indicator_background_title">Pokaż separator docku</string>
+    <string name="preferences_interface_homescreen_indicator_background_summary">Pokaż tło pod wskaźnikiem ekranu</string>
+
+    <!-- Drawer -->
+    <string name="preferences_interface_drawer_title">Siatka aplikacji</string>
+    <string name="preferences_interface_drawer_widgets_category">Widżety</string>
+    <string name="preferences_interface_drawer_widgets_join_apps_title">Połącz z aplikacjami</string>
+    <string name="preferences_interface_drawer_widgets_join_apps_summary">Przejdź z aplikacji do widżetów bez zmiany karty</string>
+    <string name="preferences_interface_drawer_scrolling_category">Przewijanie</string>
+    <string name="preferences_interface_drawer_scrolling_transition_effect_title">Efekt przejścia</string>
+    <string name="preferences_interface_drawer_scrolling_transition_effect_summary">Zmień efekt podczas zmiany strony</string>
+    <string name="preferences_interface_drawer_scrolling_fade_adjacent_screens_title">Wygaś boczną stronę</string>
+    <string name="preferences_interface_drawer_scrolling_fade_adjacent_screens_summary">Wygaś strony po bokach podczas przewijania</string>
+    <string name="preferences_interface_drawer_indicator_category">Wskaźnik</string>
+    <string name="preferences_interface_drawer_indicator_enable_title">Pokaż wskaźnik strony</string>
+    <string name="preferences_interface_drawer_indicator_enable_summary">Pokaż wskaźnik obecnej strony na dole ekranu</string>
+    <string name="preferences_interface_drawer_indicator_fade_title">Wygaś wskaźnik</string>
+    <string name="preferences_interface_drawer_indicator_fade_summary">Wygaś wskaźnik po zmianie ekranu</string>
+
+    <!-- Dock -->
+    <string name="preferences_interface_dock_title">Dock</string>
+
+    <!-- Icons -->
+    <string name="preferences_interface_icons_title">Ikony</string>
+
+    <!-- General -->
+    <string name="preferences_interface_general_title">Ogólne</string>
+    <string name="preferences_interface_general_orientation_title">Autoobracanie ekranu</string>
+    <!-- **** CYANOGENMOD EDITS END **** -->
 </resources>
