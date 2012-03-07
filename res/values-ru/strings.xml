@@ -28,6 +28,7 @@
     <string name="widgets_tab_label" msgid="9145860100000983599">"Виджеты"</string>
     <string name="long_press_widget_to_add" msgid="7395697462851217506">"Чтобы выбрать виджет, нажмите на значок и удерживайте его."</string>
     <string name="market" msgid="2652226429823445833">"Маркет"</string>
+    <string name="menu">Меню</string>
     <string name="external_drop_widget_error" msgid="127440783198670829">"Не удалось добавить элемент на главный экран."</string>
     <string name="external_drop_widget_pick_title" msgid="7040647073452295370">"Выберите виджет"</string>
     <string name="rename_folder_label" msgid="5646236631298452787">"Название папки"</string>
@@ -51,6 +52,7 @@
     <string name="delete_zone_label_workspace" msgid="7153615831493049150">"Удалить"</string>
     <string name="delete_zone_label_all_apps" msgid="6664588234817475108">"Удалить"</string>
     <string name="delete_target_label" msgid="665300185123139530">"Удалить"</string>
+    <string name="cancel_target_label">Отменить</string>
     <string name="delete_target_uninstall_label" msgid="748894921183769150">"Удалить"</string>
     <string name="info_target_label" msgid="4019495079517426980">"Сведения о приложении"</string>
     <string name="accessibility_search_button" msgid="816822994629942611">"Поиск"</string>
@@ -60,11 +62,15 @@
     <string name="delete_zone_label_all_apps_system_app" msgid="3683920959591819044">"Удалить обновление"</string>
     <string name="menu_add" msgid="3065046628354640854">"Добавить"</string>
     <string name="menu_manage_apps" msgid="2308685199463588895">"Приложения"</string>
+    <string name="menu_market">Маркет</string>
     <string name="menu_wallpaper" msgid="5837429080911269832">"Обои"</string>
     <string name="menu_search" msgid="4826514464423239041">"Поиск"</string>
     <string name="menu_notifications" msgid="6424587053194766192">"Уведомления"</string>
     <string name="menu_settings" msgid="3946232973327980394">"Настройки"</string>
+    <string name="menu_preferences">Настройки Trebuchet</string>
     <string name="menu_help" msgid="4901160661634590633">"Справка"</string>
+    <string name="menu_apps_sort_title">Имя</string>
+    <string name="menu_apps_sort_install_date">Дата установки</string>
     <string name="cab_menu_delete_app" msgid="4089398025537640349">"Удалить"</string>
     <string name="cab_menu_app_info" msgid="914548323652698884">"О приложении"</string>
     <string name="cab_app_selection_text" msgid="6378522164293415735">"Выбрано 1 приложение"</string>
@@ -92,6 +98,8 @@
     <string name="workspace_cling_open_all_apps" msgid="2459977609848572588">"Чтобы открыть список приложений, нажмите на круг."</string>
     <string name="all_apps_cling_title" msgid="2559734712581447107">"Выберите приложения"</string>
     <string name="all_apps_cling_add_item" msgid="5665035103260318891">"Чтобы добавить приложение на главный экран, нажмите на значок и удерживайте его."</string>
+    <string name="all_apps_sort_cling_title">Сортировка приложений</string>
+    <string name="all_apps_sort_cling_add_item">Нажмите и удерживайте вкладку Приложения, чтобы выбрать режим сортировки</string>
     <string name="folder_cling_title" msgid="4308949882377840953">"Разложите все по папкам"</string>
     <string name="folder_cling_move_item" msgid="270598675060435169">"Чтобы переместить значок приложения, нажмите на него и удерживайте."</string>
     <string name="folder_cling_create_folder" msgid="8352867485656129478">"Чтобы создать папку на главном экране, перенесите одно приложение на другое."</string>
@@ -102,4 +110,77 @@
     <string name="folder_closed" msgid="3130534551370511932">"Папка закрыта"</string>
     <string name="folder_renamed" msgid="781234745487414781">"Новое название папки: %1$s"</string>
     <string name="folder_name_format" msgid="4513766553514769310">"Папка: %1$s"</string>
+
+    <!--             -->
+    <!-- Preferences -->
+    <!--             -->
+    <string name="preferences_title">Настройки</string>
+    <!-- UI -->
+    <string name="preferences_interface_title">Интерфейс</string>
+    <!-- Application -->
+    <string name="preferences_application_title">Приложение</string>
+
+    <!-- UI -->
+    <!-- Homescreen -->
+    <string name="preferences_interface_homescreen_title">Домашний экран</string>
+    <string name="preferences_interface_homescreen_general_category">Основные</string>
+    <string name="preferences_interface_homescreen_general_screens_title">Домашние экраны</string>
+    <string name="preferences_interface_homescreen_general_screens_summary">Количество экранов на рабочем столе</string>
+    <string name="preferences_interface_homescreen_general_default_screen_title">Экран по умолчанию</string>
+    <string name="preferences_interface_homescreen_general_default_screen_summary">Выбор рабочего стола по умолчанию</string>
+    <string name="preferences_interface_homescreen_general_grid_title">Размер сетки</string>
+    <string name="preferences_interface_homescreen_general_grid_summary">Выбор числа строк/столбцов на рабочем столе</string>
+    <string name="preferences_interface_homescreen_general_grid_rows_title">Строки</string>
+    <string name="preferences_interface_homescreen_general_grid_columns_title">Столбцы</string>
+    <string name="preferences_interface_homescreen_general_screen_padding_vertical_title">Вертикальное растягивание</string>
+    <string name="preferences_interface_homescreen_general_screen_padding_vertical_summary">Дополнительно пространство по вертикали на рабочем столе</string>
+    <string name="preferences_interface_homescreen_general_screen_padding_horizontal_title">Горизонтальное растягивание</string>
+    <string name="preferences_interface_homescreen_general_screen_padding_horizontal_summary">Дополнительное пространство по горизонтали на рабочем столе</string>
+    <string name="preferences_interface_homescreen_general_search_title">Строка поиска</string>
+    <string name="preferences_interface_homescreen_general_search_summary">Включить постоянную строку поиска</string>
+    <string name="preferences_interface_homescreen_general_resize_any_widget_title">Изменение размера любого виджета</string>
+    <string name="preferences_interface_homescreen_general_resize_any_widget_summary">Изменение размера виджетов, которые изначально не изменяемые</string>
+    <string name="preferences_interface_homescreen_general_hide_icon_labels_title">Скрыть названия иконок</string>
+    <string name="preferences_interface_homescreen_general_hide_icon_labels_summary">Скрывать названия иконок на рабочем столе</string>
+    <string name="preferences_interface_homescreen_scrolling_category">Прокрутка</string>
+    <string name="preferences_interface_homescreen_scrolling_transition_effect_title">Эффект перехода</string>
+    <string name="preferences_interface_homescreen_scrolling_transition_effect_summary">Эффект перехода при перелистывании рабочих экранов</string>
+    <string name="preferences_interface_homescreen_scrolling_fade_adjacent_screens_title">Затухание страниц</string>
+    <string name="preferences_interface_homescreen_scrolling_fade_adjacent_screens_summary">Затухание страниц при перелистывании рабочих экранов</string>
+    <string name="preferences_interface_homescreen_scrolling_scroll_wallpaper_title">Прокрутка обоев</string>
+    <string name="preferences_interface_homescreen_scrolling_scroll_wallpaper_summary">Прокрутка обоев при перелистывании рабочих экранов</string>
+    <string name="preferences_interface_homescreen_indicator_category">Индикатор</string>
+    <string name="preferences_interface_homescreen_indicator_enable_title">Показывать индикатор страниц</string>
+    <string name="preferences_interface_homescreen_indicator_enable_summary">Показывать индикатор текущей страницы в нижней части экрана</string>
+    <string name="preferences_interface_homescreen_indicator_fade_title">Скрыть индикатор</string>
+    <string name="preferences_interface_homescreen_indicator_fade_summary">Скрыть индикатор после смены рабочих экранов</string>
+    <string name="preferences_interface_homescreen_indicator_background_title">Показывать разделитель</string>
+    <string name="preferences_interface_homescreen_indicator_background_summary">Показывать фон за индикатором</string>
+
+    <!-- Drawer -->
+    <string name="preferences_interface_drawer_title">Главное меню</string>
+    <string name="preferences_interface_drawer_widgets_category">Виджеты</string>
+    <string name="preferences_interface_drawer_widgets_join_apps_title">Объединить с приложениями</string>
+    <string name="preferences_interface_drawer_widgets_join_apps_summary">Пролистывать из главного меню в меню виджетов без смены вкладок</string>
+    <string name="preferences_interface_drawer_scrolling_category">Прокрутка</string>
+    <string name="preferences_interface_drawer_scrolling_transition_effect_title">Эффект перехода</string>
+    <string name="preferences_interface_drawer_scrolling_transition_effect_summary">Эффект перехода при пролистывании экранов</string>
+    <string name="preferences_interface_drawer_scrolling_fade_adjacent_screens_title">Затухание страниц</string>
+    <string name="preferences_interface_drawer_scrolling_fade_adjacent_screens_summary">Затухание страниц при пролистывании экранов</string>
+    <string name="preferences_interface_drawer_indicator_category">Индикатор</string>
+    <string name="preferences_interface_drawer_indicator_enable_title">Показывать индикатор страниц</string>
+    <string name="preferences_interface_drawer_indicator_enable_summary">Показывать индикатор текущей страницы в нижней части экрана</string>
+    <string name="preferences_interface_drawer_indicator_fade_title">Скрыть индикатор</string>
+    <string name="preferences_interface_drawer_indicator_fade_summary">Скрыть индикатор после смены страниц</string>
+
+    <!-- Dock -->
+    <string name="preferences_interface_dock_title">Нижняя панель</string>
+
+    <!-- Icons -->
+    <string name="preferences_interface_icons_title">Иконки</string>
+
+    <!-- General -->
+    <string name="preferences_interface_general_title">Основные</string>
+    <string name="preferences_interface_general_orientation_title">Авто-поворот экрана</string>
+
 </resources>
