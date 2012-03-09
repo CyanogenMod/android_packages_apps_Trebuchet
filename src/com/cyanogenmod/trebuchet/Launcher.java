@@ -2905,10 +2905,14 @@ public final class Launcher extends Activity
         // Find the app market activity by resolving an intent.
         // (If multiple app markets are installed, it will return the ResolverActivity.)
         ComponentName activityName = intent.resolveActivity(getPackageManager());
+
+        if (activityName != null) {
+            mAppMarketIntent = intent;
+        }
+
         if (activityName != null && (ViewConfiguration.get(this).hasPermanentMenuKey() ||
                 getResources().getBoolean(R.bool.config_cyanogenmod))) {
             int coi = getCurrentOrientationIndexForGlobalIcons();
-            mAppMarketIntent = intent;
             sAppMarketIcon[coi] = updateTextButtonWithIconFromExternalActivity(
                     R.id.market_button, activityName, R.drawable.ic_launcher_market_holo);
             marketButton.setVisibility(View.VISIBLE);
