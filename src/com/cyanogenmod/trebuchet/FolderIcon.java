@@ -37,8 +37,10 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import com.cyanogenmod.trebuchet.DropTarget.DragObject;
 import com.cyanogenmod.trebuchet.FolderInfo.FolderListener;
+import com.cyanogenmod.trebuchet.preference.PreferencesProvider;
 
 import java.util.ArrayList;
 
@@ -112,7 +114,9 @@ public class FolderIcon extends LinearLayout implements FolderListener {
         FolderIcon icon = (FolderIcon) LayoutInflater.from(launcher).inflate(resId, group, false);
 
         icon.mFolderName = (BubbleTextView) icon.findViewById(R.id.folder_icon_name);
-        icon.mFolderName.setText(folderInfo.title);
+        if (!PreferencesProvider.Interface.Homescreen.getHideIconLabels(launcher)) {
+            icon.mFolderName.setText(folderInfo.title);
+        }
         icon.mPreviewBackground = (ImageView) icon.findViewById(R.id.preview_background);
 
         icon.setTag(folderInfo);
