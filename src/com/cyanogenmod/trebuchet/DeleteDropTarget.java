@@ -28,6 +28,7 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.util.AttributeSet;
+import android.view.HapticFeedbackConstants;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
@@ -59,6 +60,7 @@ public class DeleteDropTarget extends ButtonDropTarget {
 
     private final Runnable mShowUninstaller = new Runnable() {
         public void run() {
+            performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
             switchToUninstallTarget();
         }
     };
