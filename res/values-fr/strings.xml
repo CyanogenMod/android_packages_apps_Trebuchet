@@ -103,6 +103,9 @@
     <string name="folder_renamed" msgid="781234745487414781">"Nouveau nom du dossier : %1$s"</string>
     <string name="folder_name_format" msgid="4513766553514769310">"Dossier : %1$s"</string>
 
+    <!-- Trebuchet -->
+    <string name="cancel_target_label">Annuler</string>
+
     <!--             -->
     <!-- Preferences -->
     <!--             -->
@@ -122,10 +125,23 @@
     <string name="preferences_interface_homescreen_general_screens_summary">Nombre de pages sur l\'écran d\'accueil</string>
     <string name="preferences_interface_homescreen_general_default_screen_title">Ecran par défaut</string>
     <string name="preferences_interface_homescreen_general_default_screen_summary">Sélectionnez l\'écran par défaut</string>
+    <string name="preferences_interface_homescreen_general_screen_padding_vertical_title">Padding vertical</string>
+    <string name="preferences_interface_homescreen_general_screen_padding_vertical_summary">Espacement supplémentaire vertical</string>
+    <string name="preferences_interface_homescreen_general_screen_padding_horizontal_title">Padding horizontal</string>
+    <string name="preferences_interface_homescreen_general_screen_padding_horizontal_summary">Espacement supplémentaire horizontal</string>
     <string name="preferences_interface_homescreen_general_search_title">Barre de recherche</string>
     <string name="preferences_interface_homescreen_general_search_summary">Activer la barre de recherche persistante</string>
     <string name="preferences_interface_homescreen_general_resize_any_widget_title">Redimensionner les widgets</string>
     <string name="preferences_interface_homescreen_general_resize_any_widget_summary">Permettre de redimensionner les widgets qui normalement n\'en sont pas capables</string>
+    <string name="preferences_interface_homescreen_general_hide_icon_labels_title">Icônes sans libellé</string>
+    <string name="preferences_interface_homescreen_general_hide_icon_labels_summary">Cacher le libellé des icônes sur l\'écran d\'accueil</string>
+    <string name="preferences_interface_homescreen_scrolling_category">Défilement</string>
+    <string name="preferences_interface_homescreen_scrolling_transition_effect_title">Effet de transition</string>
+    <string name="preferences_interface_homescreen_scrolling_transition_effect_summary">Style de transition entre les écrans</string>
+    <string name="preferences_interface_homescreen_scrolling_fade_adjacent_screens_title">Fondu entre les écrans</string>
+    <string name="preferences_interface_homescreen_scrolling_fade_adjacent_screens_summary">Effet de fondu entre deux écrans adjacents</string>
+    <string name="preferences_interface_homescreen_scrolling_scroll_wallpaper_title">Défilement du fond d\'écran</string>
+    <string name="preferences_interface_homescreen_scrolling_scroll_wallpaper_summary">Faire glisser le fond d\'écran avec les écrans</string>
     <string name="preferences_interface_homescreen_indicator_category">Indicateur</string>
     <string name="preferences_interface_homescreen_indicator_enable_title">Indicateur de page</string>
     <string name="preferences_interface_homescreen_indicator_enable_summary">Afficher l\'indicateur en bas de l\'écran</string>
@@ -136,7 +152,12 @@
     <string name="preferences_interface_drawer_title">Applications</string>
     <string name="preferences_interface_drawer_widgets_category">Widgets</string>
     <string name="preferences_interface_drawer_widgets_join_apps_title">Inclure dans les applications</string>
-    <string name="preferences_interface_drawer_widgets_join_apps_summary">Sauter des applications aux widgets sans changer d\'onglet (swipe)</string>
+    <string name="preferences_interface_drawer_widgets_join_apps_summary">Sauter des applications aux widgets sans changer d\'onglet</string>
+    <string name="preferences_interface_drawer_scrolling_category">Défilement</string>
+    <string name="preferences_interface_drawer_scrolling_transition_effect_title">Effet de transition</string>
+    <string name="preferences_interface_drawer_scrolling_transition_effect_summary">Style de transition entre les pages</string>
+    <string name="preferences_interface_drawer_scrolling_fade_adjacent_screens_title">Fondu entre les pages</string>
+    <string name="preferences_interface_drawer_scrolling_fade_adjacent_screens_summary">Effet de fondu entre les pages lors du défilement</string>
     <string name="preferences_interface_drawer_indicator_category">Indicateur</string>
     <string name="preferences_interface_drawer_indicator_enable_title">Indicateur de page</string>
     <string name="preferences_interface_drawer_indicator_enable_summary">Afficher l\'indicateur en bas de l\'écran</string>
@@ -145,6 +166,8 @@
 
     <!-- Dock -->
     <string name="preferences_interface_dock_title">Barre de Dock</string>
+    <string name="preferences_interface_homescreen_indicator_background_title">Pas de séparateur horizontal</string>
+    <string name="preferences_interface_homescreen_indicator_background_summary">Ne pas afficher la ligne entre la barre de dock et l\'écran d\'accueil</string>
 
     <!-- Icons -->
     <string name="preferences_interface_icons_title">Icônes</string>
