@@ -133,8 +133,6 @@
     <string name="preferences_interface_homescreen_general_search_summary">Activer la barre de recherche persistante</string>
     <string name="preferences_interface_homescreen_general_resize_any_widget_title">Redimensionner les widgets</string>
     <string name="preferences_interface_homescreen_general_resize_any_widget_summary">Permettre de redimensionner les widgets qui normalement n\'en sont pas capables</string>
-    <string name="preferences_interface_homescreen_general_hide_icon_labels_title">Icônes sans libellé</string>
-    <string name="preferences_interface_homescreen_general_hide_icon_labels_summary">Cacher le libellé des icônes sur l\'écran d\'accueil</string>
     <string name="preferences_interface_homescreen_scrolling_category">Défilement</string>
     <string name="preferences_interface_homescreen_scrolling_transition_effect_title">Effet de transition</string>
     <string name="preferences_interface_homescreen_scrolling_transition_effect_summary">Style de transition entre les écrans</string>
@@ -166,11 +164,13 @@
 
     <!-- Dock -->
     <string name="preferences_interface_dock_title">Barre de Dock</string>
-    <string name="preferences_interface_homescreen_indicator_background_title">Pas de séparateur horizontal</string>
-    <string name="preferences_interface_homescreen_indicator_background_summary">Ne pas afficher la ligne entre la barre de dock et l\'écran d\'accueil</string>
+    <string name="preferences_interface_homescreen_indicator_background_title">Séparateur horizontal</string>
+    <string name="preferences_interface_homescreen_indicator_background_summary">Afficher la ligne entre la barre de dock et l\'écran d\'accueil</string>
 
     <!-- Icons -->
     <string name="preferences_interface_icons_title">Icônes</string>
+    <string name="preferences_interface_homescreen_general_hide_icon_labels_title">Sans libellés</string>
+    <string name="preferences_interface_homescreen_general_hide_icon_labels_summary">Cacher le libellé des icônes de l\'écran d\'accueil</string>
 
     <!-- General -->
     <string name="preferences_interface_general_title">Autres options</string>
