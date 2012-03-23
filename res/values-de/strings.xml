@@ -102,4 +102,76 @@
     <string name="folder_closed" msgid="3130534551370511932">"Ordner wurde geschlossen"</string>
     <string name="folder_renamed" msgid="781234745487414781">"Ordner umbenannt in %1$s"</string>
     <string name="folder_name_format" msgid="4513766553514769310">"Ordner: %1$s"</string>
+
+    <!--             -->
+    <!-- Preferences -->
+    <!--             -->
+    <string name="preferences_title">Launcher-Einstellungen</string>
+    <!-- UI -->
+    <string name="preferences_interface_title">Oberfläche</string>
+    <!-- Application -->
+    <string name="preferences_application_title">Launcher-Version</string>
+
+    <!-- UI -->
+    <!-- Homescreen -->
+    <string name="preferences_interface_homescreen_title">Seiten</string>
+    <string name="preferences_interface_homescreen_general_category">Allgemein</string>
+    <string name="preferences_interface_homescreen_general_screens_title">Seitenzahl</string>
+    <string name="preferences_interface_homescreen_general_screens_summary">Anzahl der verwendbaren und wechselbaren Seiten für Icons und Widgets</string>
+    <string name="preferences_interface_homescreen_general_default_screen_title">Standardseite</string>
+    <string name="preferences_interface_homescreen_general_default_screen_summary">Aktive Seite nach Neustart des Geräts</string>
+    <string name="preferences_interface_homescreen_general_grid_title">Rastergröße</string>
+    <string name="preferences_interface_homescreen_general_grid_summary">Anzahl der für Icons verfügbaren Reihen / Spalten</string>
+    <string name="preferences_interface_homescreen_general_grid_rows_title">Reihen</string>
+    <string name="preferences_interface_homescreen_general_grid_columns_title">Spalten</string>
+    <string name="preferences_interface_homescreen_general_screen_padding_vertical_title">Vertikaler Seitenrand</string>
+    <string name="preferences_interface_homescreen_general_screen_padding_vertical_summary">Einige Pixel Rand oben und unten auf jeder Seite</string>
+    <string name="preferences_interface_homescreen_general_screen_padding_horizontal_title">Horizontaler Seitenrand</string>
+    <string name="preferences_interface_homescreen_general_screen_padding_horizontal_summary">Einige Pixel Rand rechts und links auf jeder Seite</string>
+    <string name="preferences_interface_homescreen_general_search_title">Suchleiste</string>
+    <string name="preferences_interface_homescreen_general_search_summary">Dauerhafte Anzeige der Suchleiste</string>
+    <string name="preferences_interface_homescreen_general_resize_any_widget_title">Größe aller Widgets anpassbar</string>
+    <string name="preferences_interface_homescreen_general_resize_any_widget_summary">Größe statischer Widgets auch anpassbar machen</string>
+    <string name="preferences_interface_homescreen_scrolling_category">Scrollen</string>
+    <string name="preferences_interface_homescreen_scrolling_transition_effect_title">Übergangseffekt</string>
+    <string name="preferences_interface_homescreen_scrolling_transition_effect_summary">Animation bei Seitenwechsel</string>
+    <string name="preferences_interface_homescreen_scrolling_fade_adjacent_screens_title">Verblassen</string>
+    <string name="preferences_interface_homescreen_scrolling_fade_adjacent_screens_summary">Seiten verblassen bei Seitenwechsel</string>
+    <string name="preferences_interface_homescreen_scrolling_scroll_wallpaper_title">Hintergrundbild scrollen</string>
+    <string name="preferences_interface_homescreen_scrolling_scroll_wallpaper_summary">Hintergrundbild bei Seitenwechsel scrollen</string>
+    <string name="preferences_interface_homescreen_indicator_category">Seitenindikator</string>
+    <string name="preferences_interface_homescreen_indicator_enable_title">Anzeigen</string>
+    <string name="preferences_interface_homescreen_indicator_enable_summary">Seitenindikator anzeigen</string>
+    <string name="preferences_interface_homescreen_indicator_fade_title">Automatisch ausblenden</string>
+    <string name="preferences_interface_homescreen_indicator_fade_summary">Indikator nach Seitenwechsel ausblenden</string>
+
+    <!-- Drawer -->
+    <string name="preferences_interface_drawer_title">Apps</string>
+    <string name="preferences_interface_drawer_widgets_category">Widget-Seiten</string>
+    <string name="preferences_interface_drawer_widgets_join_apps_title">Mit App-Seiten verbinden</string>
+    <string name="preferences_interface_drawer_widgets_join_apps_summary">Blättern auch zwischen App- und Widget-Seiten</string>
+    <string name="preferences_interface_drawer_scrolling_category">Scrollen</string>
+    <string name="preferences_interface_drawer_scrolling_transition_effect_title">Übergangseffekt</string>
+    <string name="preferences_interface_drawer_scrolling_transition_effect_summary">Animation bei Seitenwechsel</string>
+    <string name="preferences_interface_drawer_scrolling_fade_adjacent_screens_title">Verblassen</string>
+    <string name="preferences_interface_drawer_scrolling_fade_adjacent_screens_summary">Seiten verblassen bei Seitenwechsel</string>
+    <string name="preferences_interface_drawer_indicator_category">Seitenindikator</string>
+    <string name="preferences_interface_drawer_indicator_enable_title">Anzeigen</string>
+    <string name="preferences_interface_drawer_indicator_enable_summary">Seitenindikator anzeigen</string>
+    <string name="preferences_interface_drawer_indicator_fade_title">Automatisch ausblenden</string>
+    <string name="preferences_interface_drawer_indicator_fade_summary">Indikator nach Seitenwechsel ausblenden</string>
+
+    <!-- Dock -->
+    <string name="preferences_interface_dock_title">Dock</string>
+    <string name="preferences_interface_homescreen_indicator_background_title">Dock-Abtrennung anzeigen</string>
+    <string name="preferences_interface_homescreen_indicator_background_summary">Linie über dem Dock zeichnen</string>
+
+    <!-- Icons -->
+    <string name="preferences_interface_icons_title">Icons</string>
+    <string name="preferences_interface_homescreen_general_hide_icon_labels_title">Beschriftung nicht anzeigen</string>
+    <string name="preferences_interface_homescreen_general_hide_icon_labels_summary">Beschriftung unterhalb der Icons nicht anzeigen</string>
+
+    <!-- General -->
+    <string name="preferences_interface_general_title">Allgemein</string>
+    <string name="preferences_interface_general_orientation_title">Automatische Seitenausrichtung</string>
 </resources>
