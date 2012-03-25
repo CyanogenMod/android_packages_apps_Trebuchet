@@ -35,6 +35,17 @@
                     launcher:maxExternal="ui_homescreen_screens"
                     launcher:max="7"
                     launcher:min="1" />
+                <com.cyanogenmod.trebuchet.preference.DoubleNumberPickerPreference android:key="ui_homescreen_grid"
+                    android:title="@string/preferences_interface_homescreen_general_grid_title"
+                    android:summary="@string/preferences_interface_homescreen_general_grid_summary"
+                    launcher:pickerTitle1="@string/preferences_interface_homescreen_general_grid_rows_title"
+                    launcher:pickerTitle2="@string/preferences_interface_homescreen_general_grid_columns_title"
+                    launcher:defaultValue1="4"
+                    launcher:defaultValue2="4"
+                    launcher:max1="7"
+                    launcher:min1="3"
+                    launcher:max2="7"
+                    launcher:min2="3" />
                 <com.cyanogenmod.trebuchet.preference.NumberPickerPreference android:key="ui_homescreen_screen_padding_vertical"
                     android:title="@string/preferences_interface_homescreen_general_screen_padding_vertical_title"
                     android:summary="@string/preferences_interface_homescreen_general_screen_padding_vertical_summary"

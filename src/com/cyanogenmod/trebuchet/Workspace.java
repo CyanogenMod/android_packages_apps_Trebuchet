@@ -306,26 +306,9 @@ public class Workspace extends PagedView
 
         final Resources res = context.getResources();
         if (LauncherApplication.isScreenLarge()) {
-            // Determine number of rows/columns dynamically
-            // TODO: This code currently fails on tablets with an aspect ratio < 1.3.
-            // Around that ratio we should make cells the same size in portrait and
-            // landscape
-            TypedArray actionBarSizeTypedArray =
-                context.obtainStyledAttributes(new int[] { android.R.attr.actionBarSize });
-            final float actionBarHeight = actionBarSizeTypedArray.getDimension(0, 0f);
-            final float systemBarHeight = res.getDimension(R.dimen.status_bar_height);
-            final float smallestScreenDim = res.getConfiguration().smallestScreenWidthDp;
-
-            cellCountX = 1;
-            while (CellLayout.widthInPortrait(res, cellCountX + 1) <= smallestScreenDim) {
-                cellCountX++;
-            }
-
-            cellCountY = 1;
-            while (actionBarHeight + CellLayout.heightInLandscape(res, cellCountY + 1)
-                <= smallestScreenDim - systemBarHeight) {
-                cellCountY++;
-            }
+            int[] cellCount = getCellCountsForLarge(context);
+            cellCountX = cellCount[0];
+            cellCountY = cellCount[1];
         }
 
         mSpringLoadedShrinkFactor =
@@ -336,6 +319,12 @@ public class Workspace extends PagedView
         cellCountX = a.getInt(R.styleable.Workspace_cellCountX, cellCountX);
         cellCountY = a.getInt(R.styleable.Workspace_cellCountY, cellCountY);
         a.recycle();
+
+        // if there is a value set it the preferences, use that instead
+        if (!LauncherApplication.isScreenLarge()) {
+            cellCountX = PreferencesProvider.Interface.Homescreen.getCellCountX(context, cellCountX);
+            cellCountY = PreferencesProvider.Interface.Homescreen.getCellCountY(context, cellCountY);
+        }
 
         LauncherModel.updateWorkspaceLayoutCells(cellCountX, cellCountY);
         setHapticFeedbackEnabled(false);
@@ -366,6 +355,33 @@ public class Workspace extends PagedView
 
         // Disable multitouch across the workspace/all apps/customize tray
         setMotionEventSplittingEnabled(true);
+    }
+
+    public static int[] getCellCountsForLarge(Context context) {
+        int[] cellCount = new int[2];
+
+        final Resources res = context.getResources();
+        // Determine number of rows/columns dynamically
+        // TODO: This code currently fails on tablets with an aspect ratio < 1.3.
+        // Around that ratio we should make cells the same size in portrait and
+        // landscape
+        TypedArray actionBarSizeTypedArray =
+            context.obtainStyledAttributes(new int[] { android.R.attr.actionBarSize });
+        final float actionBarHeight = actionBarSizeTypedArray.getDimension(0, 0f);
+        final float systemBarHeight = res.getDimension(R.dimen.status_bar_height);
+        final float smallestScreenDim = res.getConfiguration().smallestScreenWidthDp;
+
+        cellCount[0] = 1;
+        while (CellLayout.widthInPortrait(res, cellCount[0] + 1) <= smallestScreenDim) {
+            cellCount[0]++;
+        }
+
+        cellCount[1] = 1;
+        while (actionBarHeight + CellLayout.heightInLandscape(res, cellCount[1] + 1)
+                <= smallestScreenDim - systemBarHeight) {
+            cellCount[1]++;
+        }
+        return cellCount;
     }
 
     // estimate the size of a widget with spans hSpan, vSpan. return MAX_VALUE for each
