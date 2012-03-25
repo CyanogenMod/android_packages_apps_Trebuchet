@@ -21,6 +21,10 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
+import android.preference.PreferenceGroup;
+
+import com.cyanogenmod.trebuchet.LauncherApplication;
+
 import com.cyanogenmod.trebuchet.R;
 
 public class Preferences extends PreferenceActivity {
@@ -37,6 +41,18 @@ public class Preferences extends PreferenceActivity {
         SharedPreferences.Editor editor = prefs.edit();
                 editor.putBoolean(PreferencesProvider.PREFERENCES_CHANGED, true);
                 editor.commit();
+
+        // Remove some preferences on large screens
+        if (LauncherApplication.isScreenLarge()) {
+            PreferenceGroup homescreen = (PreferenceGroup) findPreference("ui_homescreen");
+            homescreen.removePreference(findPreference("ui_homescreen_grid"));
+            homescreen.removePreference(findPreference("ui_homescreen_screen_padding_vertical"));
+            homescreen.removePreference(findPreference("ui_homescreen_screen_padding_horizontal"));
+            homescreen.removePreference(findPreference("ui_homescreen_indicator"));
+
+            PreferenceGroup drawer = (PreferenceGroup) findPreference("ui_drawer");
+            drawer.removePreference(findPreference("ui_drawer_indicator"));
+        }
 
         Preference version = findPreference("application_version");
         version.setTitle(getString(R.string.application_name) + " " + getString(R.string.application_version));
