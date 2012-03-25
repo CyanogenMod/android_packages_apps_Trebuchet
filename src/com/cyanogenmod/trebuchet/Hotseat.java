@@ -35,6 +35,9 @@ public class Hotseat extends FrameLayout {
     private int mCellCountY;
     private boolean mIsLandscape;
 
+    private static final int DEFAULT_CELL_COUNT_X = 5;
+    private static final int DEFAULT_CELL_COUNT_Y = 1;
+
     public Hotseat(Context context) {
         this(context, null);
     }
@@ -81,8 +84,8 @@ public class Hotseat extends FrameLayout {
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        if (mCellCountX < 0) mCellCountX = LauncherModel.getCellCountX();
-        if (mCellCountY < 0) mCellCountY = LauncherModel.getCellCountY();
+        if (mCellCountX < 0) mCellCountX = DEFAULT_CELL_COUNT_X;
+        if (mCellCountY < 0) mCellCountY = DEFAULT_CELL_COUNT_Y;
         mContent = (CellLayout) findViewById(R.id.layout);
         mContent.setGridSize(mCellCountX, mCellCountY);
 
