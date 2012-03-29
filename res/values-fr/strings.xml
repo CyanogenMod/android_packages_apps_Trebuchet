@@ -171,6 +171,10 @@
     <string name="preferences_interface_icons_title">Icônes</string>
     <string name="preferences_interface_homescreen_general_hide_icon_labels_title">Sans libellés</string>
     <string name="preferences_interface_homescreen_general_hide_icon_labels_summary">Cacher le libellé des icônes de l\'écran d\'accueil</string>
+    <string name="preferences_interface_homescreen_general_grid_title">Taille de la grille</string>
+    <string name="preferences_interface_homescreen_general_grid_summary">Définir le nombre de rangées et de colonnes sur l\'écran d\'accueil</string>
+    <string name="preferences_interface_homescreen_general_grid_rows_title">Rangées</string>
+    <string name="preferences_interface_homescreen_general_grid_columns_title">Colonnes</string>
 
     <!-- General -->
     <string name="preferences_interface_general_title">Autres options</string>
