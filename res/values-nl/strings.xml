@@ -1,22 +1,19 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!-- 
-/*
-* Copyright (C) 2008 The Android Open Source Project
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*      http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
- -->
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (C) 2008 The Android Open Source Project
+     Copyright (C) 2012 The CyanogenMod Project
 
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
 <resources xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="uid_name" msgid="3371120195364560632">"Android-kerntoepassingen"</string>
@@ -102,4 +99,57 @@
     <string name="folder_closed" msgid="3130534551370511932">"Map gesloten"</string>
     <string name="folder_renamed" msgid="781234745487414781">"De naam van de map is gewijzigd in %1$s"</string>
     <string name="folder_name_format" msgid="4513766553514769310">"Map: %1$s"</string>
+
+    <string name="preferences_title">Voorkeuren</string>
+    <string name="preferences_interface_title">Uiterlijk</string>
+    <string name="preferences_application_title">Applicatie</string>
+
+    <string name="preferences_interface_homescreen_title">Startscherm</string>
+    <string name="preferences_interface_homescreen_general_category">Algemeen</string>
+    <string name="preferences_interface_homescreen_general_screens_title">Startschermen</string>
+    <string name="preferences_interface_homescreen_general_screens_summary">Aantal startschermen</string>
+    <string name="preferences_interface_homescreen_general_default_screen_title">Standaardscherm</string>
+    <string name="preferences_interface_homescreen_general_default_screen_summary">Kies het standaard startscherm</string>
+    <string name="preferences_interface_homescreen_general_search_title">Zoekbalk</string>
+    <string name="preferences_interface_homescreen_general_search_summary">Schakel blijvende zoekbalk in</string>
+    <string name="preferences_interface_homescreen_general_resize_any_widget_title">Verander grootte van elke widget</string>
+    <string name="preferences_interface_homescreen_general_resize_any_widget_summary">Staat toe om de grootte van alle widgets te veranderen</string>
+    <string name="preferences_interface_homescreen_scrolling_category">Scrollen</string>
+    <string name="preferences_interface_homescreen_scrolling_transition_effect_title">Overgangseffect</string>
+    <string name="preferences_interface_homescreen_scrolling_transition_effect_summary">Scrolleffect bij het scrollen door startschermen</string>
+    <string name="preferences_interface_homescreen_scrolling_fade_adjacent_screens_title">Vervaag paginagrenzen</string>
+    <string name="preferences_interface_homescreen_scrolling_fade_adjacent_screens_summary">Vervaag paginagrenzen bij het scrollen door startschermen</string>
+    <string name="preferences_interface_homescreen_scrolling_scroll_wallpaper_title">Achtergrond scrollen</string>
+    <string name="preferences_interface_homescreen_scrolling_scroll_wallpaper_summary">Achtergrond scrolt mee bij het scrollen door startschermen</string>
+    <string name="preferences_interface_homescreen_indicator_category">Indicator</string>
+    <string name="preferences_interface_homescreen_indicator_enable_title">Toon pagina-indicator</string>
+    <string name="preferences_interface_homescreen_indicator_enable_summary">Toon huidige pagina-indicator onderin het scherm</string>
+    <string name="preferences_interface_homescreen_indicator_fade_title">Vervaag indicator</string>
+    <string name="preferences_interface_homescreen_indicator_fade_summary">Vervaag de indicator nadat het startscherm veranderd is</string>
+    <string name="preferences_interface_homescreen_indicator_background_title">Toon dockverdeler</string>
+    <string name="preferences_interface_homescreen_indicator_background_summary">Toon achtergrond achter de indicator</string>
+
+    <!-- Drawer -->
+    <string name="preferences_interface_drawer_title">Appdrawer</string>
+    <string name="preferences_interface_drawer_widgets_category">Widgets</string>
+    <string name="preferences_interface_drawer_widgets_join_apps_title">Automatisch overgaan</string>
+    <string name="preferences_interface_drawer_widgets_join_apps_summary">Ga van apps direct over naar widgets zonder van tabblad te wisselen</string>
+    <string name="preferences_interface_drawer_scrolling_category">Scrollen</string>
+    <string name="preferences_interface_drawer_scrolling_transition_effect_title">Overgangseffect</string>
+    <string name="preferences_interface_drawer_scrolling_transition_effect_summary">Scrolleffect bij het scrollen door schermen</string>
+    <string name="preferences_interface_drawer_scrolling_fade_adjacent_screens_title">Vervaag paginagrenzen</string>
+    <string name="preferences_interface_drawer_scrolling_fade_adjacent_screens_summary">Vervaag paginagrenzen bij het scrollen door schermen</string>
+    <string name="preferences_interface_drawer_indicator_category">Indicator</string>
+    <string name="preferences_interface_drawer_indicator_enable_title">Toon pagina-indicator</string>
+    <string name="preferences_interface_drawer_indicator_enable_summary">Toon huidige pagina-indicator onderin het scherm</string>
+    <string name="preferences_interface_drawer_indicator_fade_title">Vervaag indicator</string>
+    <string name="preferences_interface_drawer_indicator_fade_summary">Vervaag de indicator nadat de pagina veranderd is</string>
+
+    <string name="preferences_interface_dock_title">Dock</string>
+
+    <string name="preferences_interface_icons_title">Iconen</string>
+
+    <string name="preferences_interface_general_title">Algemeen</string>
+    <string name="preferences_interface_general_orientation_title">Automatische schermoriëntatie</string>
+
 </resources>
