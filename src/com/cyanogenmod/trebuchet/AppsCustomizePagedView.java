@@ -493,7 +493,9 @@ public class AppsCustomizePagedView extends PagedViewWithDraggableItems implemen
     }
 
     public void showAllAppsCling() {
-        Cling allAppsCling = (Cling) getTabHost().findViewById(R.id.all_apps_cling);
+        AppsCustomizeTabHost tabHost = getTabHost();
+        if (tabHost == null) return;
+        Cling allAppsCling = (Cling) tabHost.findViewById(R.id.all_apps_cling);
         if (!mHasShownAllAppsCling && isDataReady() && testDataReady()) {
             mHasShownAllAppsCling = true;
             // Calculate the position for the cling punch through
