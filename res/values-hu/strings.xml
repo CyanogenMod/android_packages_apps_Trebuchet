@@ -28,6 +28,7 @@
     <string name="widgets_tab_label" msgid="9145860100000983599">"Modulok"</string>
     <string name="long_press_widget_to_add" msgid="7395697462851217506">"Modul felvételéhez érintse meg, és tartsa lenyomva"</string>
     <string name="market" msgid="2652226429823445833">"Bolt"</string>
+    <string name="menu">Menü</string>
     <string name="external_drop_widget_error" msgid="127440783198670829">"Nem lehet elemeket dobni erre a Kezdőképernyőre."</string>
     <string name="external_drop_widget_pick_title" msgid="7040647073452295370">"A létrehozáshoz válasszon modult"</string>
     <string name="rename_folder_label" msgid="5646236631298452787">"Mappa neve"</string>
@@ -51,6 +52,7 @@
     <string name="delete_zone_label_workspace" msgid="7153615831493049150">"Eltávolítás"</string>
     <string name="delete_zone_label_all_apps" msgid="6664588234817475108">"Eltávolítás"</string>
     <string name="delete_target_label" msgid="665300185123139530">"Eltávolítás"</string>
+    <string name="cancel_target_label">Mégsem</string>
     <string name="delete_target_uninstall_label" msgid="748894921183769150">"Eltávolítás"</string>
     <string name="info_target_label" msgid="4019495079517426980">"Alkalmazásinformáció"</string>
     <string name="accessibility_search_button" msgid="816822994629942611">"Keresés"</string>
@@ -60,11 +62,15 @@
     <string name="delete_zone_label_all_apps_system_app" msgid="3683920959591819044">"Eltávolítja a frissítést"</string>
     <string name="menu_add" msgid="3065046628354640854">"Hozzáadás"</string>
     <string name="menu_manage_apps" msgid="2308685199463588895">"Alkalmazások kezelése"</string>
+    <string name="menu_market">Bolt</string>
     <string name="menu_wallpaper" msgid="5837429080911269832">"Háttérkép"</string>
     <string name="menu_search" msgid="4826514464423239041">"Keresés"</string>
     <string name="menu_notifications" msgid="6424587053194766192">"Értesítések"</string>
     <string name="menu_settings" msgid="3946232973327980394">"Rendszerbeállítások"</string>
+    <string name="menu_preferences">Trebuchet beállítások</string>
     <string name="menu_help" msgid="4901160661634590633">"Súgó"</string>
+    <string name="menu_apps_sort_title">Név</string>
+    <string name="menu_apps_sort_install_date">Telepítés ideje</string>
     <string name="cab_menu_delete_app" msgid="4089398025537640349">"Alkalmazás eltávolítása"</string>
     <string name="cab_menu_app_info" msgid="914548323652698884">"Az alkalmazás adatai"</string>
     <string name="cab_app_selection_text" msgid="6378522164293415735">"1 kiválasztott alkalmazás"</string>
@@ -92,6 +98,8 @@
     <string name="workspace_cling_open_all_apps" msgid="2459977609848572588">"Az összes saját alkalmazás megtekintéséhez érintse meg a kört."</string>
     <string name="all_apps_cling_title" msgid="2559734712581447107">"Válasszon ki néhány alkalmazást"</string>
     <string name="all_apps_cling_add_item" msgid="5665035103260318891">"Ha egy alkalmazást el szeretne helyezni a kezdőképernyőn, érintse meg, és tartsa lenyomva."</string>
+    <string name="all_apps_sort_cling_title">Rendezze sorba alkalmazásait</string>
+    <string name="all_apps_sort_cling_add_item">"Ha sorba szeretné rendezni alkalmazásait, érintse meg, és tartsa lenyomva az Alkalmazások lapfület."</string>
     <string name="folder_cling_title" msgid="4308949882377840953">"Rendezze alkalmazásait mappákba"</string>
     <string name="folder_cling_move_item" msgid="270598675060435169">"Ha egy alkalmazást át szeretne helyezni, érintse meg, és tartsa lenyomva."</string>
     <string name="folder_cling_create_folder" msgid="8352867485656129478">"Ha egy új mappát szeretne létrehozni a kezdőképernyőn, helyezzen egymásra két alkalmazást."</string>
@@ -102,4 +110,59 @@
     <string name="folder_closed" msgid="3130534551370511932">"Mappa lezárva"</string>
     <string name="folder_renamed" msgid="781234745487414781">"Mappa átnevezve a következőre: %1$s"</string>
     <string name="folder_name_format" msgid="4513766553514769310">"Mappa: %1$s"</string>
+    <string name="preferences_title">Beállítások</string>
+    <string name="preferences_interface_title">Felület</string>
+    <string name="preferences_application_title">Alkalmazás</string>
+    <string name="preferences_interface_homescreen_title">Kezdőképernyő</string>
+    <string name="preferences_interface_homescreen_general_category">Általános</string>
+    <string name="preferences_interface_homescreen_general_screens_title">Kezdőképernyők</string>
+    <string name="preferences_interface_homescreen_general_screens_summary">Képernyők száma a kezdőképernyőn</string>
+    <string name="preferences_interface_homescreen_general_default_screen_title">Alapértelmezett kezdőképernyő</string>
+    <string name="preferences_interface_homescreen_general_default_screen_summary">Válasszon képernyőt</string>
+    <string name="preferences_interface_homescreen_general_grid_title">Rács méret</string>
+    <string name="preferences_interface_homescreen_general_grid_summary">Válassza ki hány sor/oszlop legyen a kezdőképernyőn</string>
+    <string name="preferences_interface_homescreen_general_grid_rows_title">Sor</string>
+    <string name="preferences_interface_homescreen_general_grid_columns_title">Oszlop</string>
+    <string name="preferences_interface_homescreen_general_screen_padding_vertical_title">Függőleges kitöltés</string>
+    <string name="preferences_interface_homescreen_general_screen_padding_vertical_summary">Extra függőleges helykitöltés a kezdőképernyőn</string>
+    <string name="preferences_interface_homescreen_general_screen_padding_horizontal_title">Vízszintes kitöltés</string>
+    <string name="preferences_interface_homescreen_general_screen_padding_horizontal_summary">Extra vízszintes helykitöltés a kezdőképernyőn</string>
+    <string name="preferences_interface_homescreen_general_search_title">Keresősáv</string>
+    <string name="preferences_interface_homescreen_general_search_summary">Állandó keresősáv engedélyezése</string>
+    <string name="preferences_interface_homescreen_general_resize_any_widget_title">Átméretezhető modulok</string>
+    <string name="preferences_interface_homescreen_general_resize_any_widget_summary">Modulok átméretezésének engedélyezése a kezdőképernyőn</string>
+    <string name="preferences_interface_homescreen_general_hide_icon_labels_title">Ikon feliratok elrejtése</string>
+    <string name="preferences_interface_homescreen_general_hide_icon_labels_summary">Elrejti a kezdőképernyőn lévő ikonok nevét</string>
+    <string name="preferences_interface_homescreen_scrolling_category">Kinézet</string>
+    <string name="preferences_interface_homescreen_scrolling_transition_effect_title">Lapozás</string>
+    <string name="preferences_interface_homescreen_scrolling_transition_effect_summary">Válassza ki, milyen effekttel váltson a kezdőképernyők közt</string>
+    <string name="preferences_interface_homescreen_scrolling_fade_adjacent_screens_title">Elhalványuló váltás</string>
+    <string name="preferences_interface_homescreen_scrolling_fade_adjacent_screens_summary">Váltáskor elhalványulnak az egymás melletti kezdőképernyők</string>
+    <string name="preferences_interface_homescreen_scrolling_scroll_wallpaper_title">Háttérkép görgetése</string>
+    <string name="preferences_interface_homescreen_scrolling_scroll_wallpaper_summary">Háttérkép görgetése a kezdőképernyők közti váltások során</string>
+    <string name="preferences_interface_homescreen_indicator_category">Értesítések</string>
+    <string name="preferences_interface_homescreen_indicator_enable_title">Aktuális képernyő</string>
+    <string name="preferences_interface_homescreen_indicator_enable_summary">Aktuális képernyő jelzése a oldal alján</string>
+    <string name="preferences_interface_homescreen_indicator_fade_title">Képernyőjelölő</string>
+    <string name="preferences_interface_homescreen_indicator_fade_summary">Csak képernyőváltáskor látszik</string>
+    <string name="preferences_interface_homescreen_indicator_background_title">Tálca elválasztó</string>
+    <string name="preferences_interface_homescreen_indicator_background_summary">Tálca és a képernyő közti elválasztó vonal</string>
+    <string name="preferences_interface_drawer_title">Alkalmazás képernyők</string>
+    <string name="preferences_interface_drawer_widgets_category">Általános</string>
+    <string name="preferences_interface_drawer_widgets_join_apps_title">Folyamatos lapozás</string>
+    <string name="preferences_interface_drawer_widgets_join_apps_summary">Alkalmazások és modulok között folyamatos lapozással való váltás</string>
+    <string name="preferences_interface_drawer_scrolling_category">Kinézet</string>
+    <string name="preferences_interface_drawer_scrolling_transition_effect_title">Lapozás</string>
+    <string name="preferences_interface_drawer_scrolling_transition_effect_summary">Válassza ki, milyen effekttel váltson az alkalmazás képernyők közt</string>
+    <string name="preferences_interface_drawer_scrolling_fade_adjacent_screens_title">Elhalványuló váltás</string>
+    <string name="preferences_interface_drawer_scrolling_fade_adjacent_screens_summary">Váltáskor elhalványulnak az egymás melletti alkalmazás képernyők</string>
+    <string name="preferences_interface_drawer_indicator_category">Értesítések</string>
+    <string name="preferences_interface_drawer_indicator_enable_title">Aktuális oldal</string>
+    <string name="preferences_interface_drawer_indicator_enable_summary">Aktuális oldal jelölése a lap alján</string>
+    <string name="preferences_interface_drawer_indicator_fade_title">Képernyőjelölő</string>
+    <string name="preferences_interface_drawer_indicator_fade_summary">Csak képernyőváltáskor látszik</string>
+    <string name="preferences_interface_dock_title">Tálca</string>
+    <string name="preferences_interface_icons_title">Ikonok</string>
+    <string name="preferences_interface_general_title">Általános</string>
+    <string name="preferences_interface_general_orientation_title">Automatikus elforgatás</string>
 </resources>
