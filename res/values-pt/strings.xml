@@ -53,6 +53,7 @@
     <string name="delete_target_label" msgid="665300185123139530">"Remover"</string>
     <string name="delete_target_uninstall_label" msgid="748894921183769150">"Desinstalar"</string>
     <string name="info_target_label" msgid="4019495079517426980">"Informações do aplicativo"</string>
+    <string name="cancel_target_label">Cancelar</string>
     <string name="accessibility_search_button" msgid="816822994629942611">"Pesquisar"</string>
     <string name="accessibility_voice_search_button" msgid="3938249215065842475">"Pesquisa por voz"</string>
     <string name="accessibility_all_apps_button" msgid="8803738611398979849">"Aplicativos"</string>
@@ -116,10 +117,20 @@
     <string name="preferences_interface_homescreen_general_screens_summary">Número de telas na Tela Inicial</string>
     <string name="preferences_interface_homescreen_general_default_screen_title">Tela Padrão</string>
     <string name="preferences_interface_homescreen_general_default_screen_summary">Escolha a tela padrão</string>
+    <string name="preferences_interface_homescreen_general_grid_title">Tamanho da grade</string>
+    <string name="preferences_interface_homescreen_general_grid_summary">Escolha o numero de linhas/colunas na tela inicial</string>
+    <string name="preferences_interface_homescreen_general_grid_rows_title">Linhas</string>
+    <string name="preferences_interface_homescreen_general_grid_columns_title">Colunas</string>
+    <string name="preferences_interface_homescreen_general_screen_padding_vertical_title">Preenchimento vertical</string>
+    <string name="preferences_interface_homescreen_general_screen_padding_vertical_summary">Espaçamento vertical extra na tela inicial</string>
+    <string name="preferences_interface_homescreen_general_screen_padding_horizontal_title">Preenchimento horizontal</string>
+    <string name="preferences_interface_homescreen_general_screen_padding_horizontal_summary">Espaçamento horizontal extra na tela inicial</string>
     <string name="preferences_interface_homescreen_general_search_title">Barra de Pesquisa</string>
     <string name="preferences_interface_homescreen_general_search_summary">Ativar Barra de Pesquisa persistente</string>
     <string name="preferences_interface_homescreen_general_resize_any_widget_title">Redimensionar Widgets</string>
     <string name="preferences_interface_homescreen_general_resize_any_widget_summary">Permite redimensionamento de Widgets que normalmente não são redimensionáveis</string>
+    <string name="preferences_interface_homescreen_general_hide_icon_labels_title">Ocultar rótulos dos icones</string>
+    <string name="preferences_interface_homescreen_general_hide_icon_labels_summary">Ocultar rótulos dos ícones na tela inicial</string>
     <string name="preferences_interface_homescreen_scrolling_category">Rolagem</string>
     <string name="preferences_interface_homescreen_scrolling_scroll_wallpaper_title">Rolar Papel de Parede</string>
     <string name="preferences_interface_homescreen_scrolling_scroll_wallpaper_summary">Rola o Papel de Parede na mudança de telas</string>
@@ -128,6 +139,12 @@
     <string name="preferences_interface_homescreen_indicator_enable_summary">Mostra o indicador da página atual no final da tela</string>
     <string name="preferences_interface_homescreen_indicator_fade_title">Esmaecer Indicador</string>
     <string name="preferences_interface_homescreen_indicator_fade_summary">Esmaece o indicador após a troca da tela inicial</string>
+    <string name="preferences_interface_homescreen_indicator_background_title">Mostrar divisor do dock</string>
+    <string name="preferences_interface_homescreen_indicator_background_summary">Mostrar a linha de fundo do indicador</string>
+    <string name="preferences_interface_homescreen_scrolling_transition_effect_title">Efeito de transição</string>
+    <string name="preferences_interface_homescreen_scrolling_transition_effect_summary">Efeito de rolagem da tela inicial</string>
+    <string name="preferences_interface_homescreen_scrolling_fade_adjacent_screens_title">Esmaecer páginas laterais</string>
+    <string name="preferences_interface_homescreen_scrolling_fade_adjacent_screens_summary">Esmaecer páginas laterais quando rolar tela inicial</string>
 
     <!-- Drawer -->
     <string name="preferences_interface_drawer_title">Grade de Apps</string>
@@ -139,6 +156,11 @@
     <string name="preferences_interface_drawer_indicator_enable_summary">Mostra o indicador da página atual no final da tela</string>
     <string name="preferences_interface_drawer_indicator_fade_title">Esmaecer Indicador</string>
     <string name="preferences_interface_drawer_indicator_fade_summary">Esmaece o indicador após a troca da tela inicial</string>
+    <string name="preferences_interface_drawer_scrolling_category">Rolagem</string>
+    <string name="preferences_interface_drawer_scrolling_transition_effect_title">Efeito de transição</string>
+    <string name="preferences_interface_drawer_scrolling_transition_effect_summary">Efeito de rolagem ao mudar tela</string>
+    <string name="preferences_interface_drawer_scrolling_fade_adjacent_screens_title">Esmaecer páginas laterais</string>
+    <string name="preferences_interface_drawer_scrolling_fade_adjacent_screens_summary">Esmaecer páginas laterais quando rolar tela</string>
 
     <!-- Dock -->
     <string name="preferences_interface_dock_title">Dock</string>
