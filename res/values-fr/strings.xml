@@ -179,4 +179,8 @@
     <!-- General -->
     <string name="preferences_interface_general_title">Autres options</string>
     <string name="preferences_interface_general_orientation_title">Auto-rotation</string>
+
+    <!-- menu item used to sort apps -->
+    <string name="menu_apps_sort_title">Nom</string>
+    <string name="menu_apps_sort_install_date">Date d\'installation</string>
 </resources>
