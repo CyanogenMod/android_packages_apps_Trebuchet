@@ -164,7 +164,7 @@ public final class Launcher extends Activity
     // Type: long
     private static final String RUNTIME_STATE_PENDING_FOLDER_RENAME_ID = "launcher.rename_folder_id";
 
-    private static final String TOOLBAR_ICON_METADATA_NAME = "com.cyanogenmod.trebuchet.toolbar_icon";
+    private static final String TOOLBAR_ICON_METADATA_NAME = "com.android.launcher.toolbar_icon";
 
     /** The different states that Launcher can be in. */
     private enum State { WORKSPACE, APPS_CUSTOMIZE, APPS_CUSTOMIZE_SPRING_LOADED };
