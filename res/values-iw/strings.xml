@@ -102,4 +102,90 @@
     <string name="folder_closed" msgid="3130534551370511932">"התיקייה נסגרה"</string>
     <string name="folder_renamed" msgid="781234745487414781">"שם התיקייה שונה ל-%1$s"</string>
     <string name="folder_name_format" msgid="4513766553514769310">"תיקייה: %1$s"</string>
+    <string-array name="preferences_interface_homescreen_scrolling_transition_effect_entries">
+        <item>רגיל</item>
+        <item>טאבלט</item>
+        <item>זום פנימה</item>
+        <item>זום החוצה</item>
+        <item>סיבוב מעלה</item>
+        <item>סיבוב מטה</item>
+        <item>קוביה פנימה</item>
+        <item>קוביה החוצה</item>
+        <item>ערימה</item>
+  </string-array>
+    <string-array name="preferences_interface_drawer_scrolling_transition_effect_entries">
+        <item>רגיל</item>
+        <item>טאבלט</item>
+        <item>זום פנימה</item>
+        <item>זום החוצה</item>
+        <item>סיבוב מעלה</item>
+        <item>סיבוב מטה</item>
+        <item>קוביה פנימה</item>
+        <item>קוביה החוצה</item>
+        <item>ערימה</item>
+  </string-array>
+    <string name="all_apps_sort_cling_add_item">"גע והחזק בטאב היישומים כדי לבחור את צורת הסידור"</string>
+    <string name="all_apps_sort_cling_title">"סדר את היישומים"</string>
+    <string name="cancel_target_label">"ביטול"</string>
+    <string name="menu">"תפריט"</string>
+    <string name="menu_apps_sort_install_date">תאריך התקנה</string>
+    <string name="menu_apps_sort_title">שם</string>
+    <string name="menu_market">חנות</string>
+    <string name="menu_preferences">"הגדרות הלאנצ'ר"</string>
+    <string name="preferences_application_title">יישום</string>
+    <string name="preferences_interface_dock_title">עגינה</string>
+    <string name="preferences_interface_drawer_indicator_category">סמן</string>
+    <string name="preferences_interface_drawer_indicator_enable_summary">הראה סמן של עמוד נוכחי בתחתית המסך</string>
+    <string name="preferences_interface_drawer_indicator_enable_title">הראה סמן עמוד</string>
+    <string name="preferences_interface_drawer_indicator_fade_summary">אפשר דהייה של הסמן אחרי שהעמוד התחלף</string>
+    <string name="preferences_interface_drawer_indicator_fade_title">דהיית סמן</string>
+    <string name="preferences_interface_drawer_scrolling_category">גלילה</string>
+    <string name="preferences_interface_drawer_scrolling_fade_adjacent_screens_summary">אפשר דהייה של צידי העמודים כשגוללים בין מסכים</string>
+    <string name="preferences_interface_drawer_scrolling_fade_adjacent_screens_title">דהיית צידי עמודים</string>
+    <string name="preferences_interface_drawer_scrolling_transition_effect_summary">אפקט גלילה בין מסכים</string>
+    <string name="preferences_interface_drawer_scrolling_transition_effect_title">אפקט מעבר</string>
+    <string name="preferences_interface_drawer_widgets_category">"ווידג'טים"</string>
+    <string name="preferences_interface_drawer_widgets_join_apps_summary">"דפדף בין היישומים לווידג'טים בלי לשנות טאבים"</string>
+    <string name="preferences_interface_drawer_widgets_join_apps_title">צרף ליישומים</string>
+    <string name="preferences_interface_general_orientation_title">סיבוב מסך אוטומטי</string>
+    <string name="preferences_interface_general_title">כללי</string>
+    <string name="preferences_interface_homescreen_general_category">כללי</string>
+    <string name="preferences_interface_homescreen_general_default_screen_summary">בחר את מסך הבית כברירת מחדל</string>
+    <string name="preferences_interface_homescreen_general_default_screen_title">מסך ברירת חדל</string>
+    <string name="preferences_interface_homescreen_general_grid_columns_title">עמודות</string>
+    <string name="preferences_interface_homescreen_general_grid_rows_title">שורות</string>
+    <string name="preferences_interface_homescreen_general_grid_summary">בחר את מספר העמודות\שורות שבמסך הבית</string>
+    <string name="preferences_interface_homescreen_general_grid_title">"גודל הרשת"</string>
+    <string name="preferences_interface_homescreen_general_hide_icon_labels_summary">הסתר תוויות סמלים במסך הבית</string>
+    <string name="preferences_interface_homescreen_general_hide_icon_labels_title">הסתר תווים סמלים</string>
+    <string name="preferences_interface_homescreen_general_resize_any_widget_summary">"אפשר שינוי גודל של ווידג'טים שבד"כ לא ניתנים לשינוי"</string>
+    <string name="preferences_interface_homescreen_general_resize_any_widget_title">"שנה גודל לכל ווידג'ט"</string>
+    <string name="preferences_interface_homescreen_general_screen_padding_horizontal_summary">מרווח אופקי נוסף במסך הבית</string>
+    <string name="preferences_interface_homescreen_general_screen_padding_horizontal_title">מרווח אופקי</string>
+    <string name="preferences_interface_homescreen_general_screen_padding_vertical_summary">מרווח אנכי נוסף במסך הבית</string>
+    <string name="preferences_interface_homescreen_general_screen_padding_vertical_title">מרווח אנכי</string>
+    <string name="preferences_interface_homescreen_general_screens_summary">מספר מסכים במסך הבית</string>
+    <string name="preferences_interface_homescreen_general_screens_title">מסכי בית</string>
+    <string name="preferences_interface_homescreen_general_search_summary">אפשר שורת חיפוש קבועה</string>
+    <string name="preferences_interface_homescreen_general_search_title">שורת חיפוש</string>
+    <string name="preferences_interface_homescreen_indicator_background_summary">הראה את הרקע מאחורי הסמן</string>
+    <string name="preferences_interface_homescreen_indicator_background_title">הראה מפריד בעגינה</string>
+    <string name="preferences_interface_homescreen_indicator_category">סמן</string>
+    <string name="preferences_interface_homescreen_indicator_enable_summary">הראה סמן של עמוד נוכחי בתחתית העמוד</string>
+    <string name="preferences_interface_homescreen_indicator_enable_title">הראה סמן עמוד</string>
+    <string name="preferences_interface_homescreen_indicator_fade_summary">אפשר דהיית סמן לאחר שהמסך השתנה</string>
+    <string name="preferences_interface_homescreen_indicator_fade_title">דהיית סמן</string>
+    <string name="preferences_interface_homescreen_scrolling_category">גלילה</string>
+    <string name="preferences_interface_homescreen_scrolling_fade_adjacent_screens_summary">אפשר דהייה של צידי העמודים כשגוללים בין מסכים</string>
+    <string name="preferences_interface_homescreen_scrolling_fade_adjacent_screens_title">דהיית צידי עמודים</string>
+    <string name="preferences_interface_homescreen_scrolling_scroll_wallpaper_summary">גלול את הרקע בגלילת מסכי בית</string>
+    <string name="preferences_interface_homescreen_scrolling_scroll_wallpaper_title">גלול רקע</string>
+    <string name="preferences_interface_homescreen_scrolling_transition_effect_summary">אפקט גלילה בין מסכים</string>
+    <string name="preferences_interface_homescreen_scrolling_transition_effect_title">אפקט מעבר</string>
+    <string name="preferences_interface_homescreen_title">מסך בית</string>
+    <string name="preferences_interface_icons_title">סמלים</string>
+    <string name="preferences_interface_title">ממשק</string>
+    <string name="preferences_title">העדפות</string>
+    <string name="preferences_interface_drawer_title">מגירת יישומים</string>
+    <string name="application_copyright">"כל הזכויות שמורות \u00A9 CyanogenMod 2012"</string>
 </resources>
