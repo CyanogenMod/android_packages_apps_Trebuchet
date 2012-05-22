@@ -153,9 +153,6 @@ public class Workspace extends PagedView
     private SpringLoadedDragController mSpringLoadedDragController;
     private float mSpringLoadedShrinkFactor;
 
-    private static final int DEFAULT_CELL_COUNT_X = 4;
-    private static final int DEFAULT_CELL_COUNT_Y = 4;
-
     // State variable that indicates whether the pages are small (ie when you're
     // in all apps or customize mode)
 
@@ -298,8 +295,8 @@ public class Workspace extends PagedView
 
         mWallpaperManager = WallpaperManager.getInstance(context);
 
-        int cellCountX = DEFAULT_CELL_COUNT_X;
-        int cellCountY = DEFAULT_CELL_COUNT_Y;
+        int cellCountX = context.getResources().getInteger(R.integer.config_workspaceColumns);
+        int cellCountY = context.getResources().getInteger(R.integer.config_workspaceRows);
 
         TypedArray a = context.obtainStyledAttributes(attrs,
                 R.styleable.Workspace, defStyle, 0);
