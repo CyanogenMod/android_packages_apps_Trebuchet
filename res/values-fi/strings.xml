@@ -102,4 +102,49 @@
     <string name="folder_closed" msgid="3130534551370511932">"Kansio on suljettu"</string>
     <string name="folder_renamed" msgid="781234745487414781">"Kansio nimetty uudelleen: %1$s"</string>
     <string name="folder_name_format" msgid="4513766553514769310">"Kansio: %1$s"</string>
+    <string name="preferences_title">Asetukset</string>
+    <string name="preferences_interface_title">Käyttöliittymä</string>
+    <string name="preferences_application_title">Sovellus</string>
+    <string name="preferences_interface_homescreen_title">Kotinäyttö</string>
+    <string name="preferences_interface_homescreen_general_category">Yleiset</string>
+    <string name="preferences_interface_homescreen_general_screens_title">Kotinäyttöjä</string>
+    <string name="preferences_interface_homescreen_general_screens_summary">Kotinäyttöjen lukumäärä</string>
+    <string name="preferences_interface_homescreen_general_default_screen_title">Oletusnäyttö</string>
+    <string name="preferences_interface_homescreen_general_default_screen_summary">Valitse oletus kotinäyttö</string>
+    <string name="preferences_interface_homescreen_general_search_title">Hakupalkki</string>
+    <string name="preferences_interface_homescreen_general_search_summary">Salli pysyvä hakupalkki</string>
+    <string name="preferences_interface_homescreen_general_resize_any_widget_title">Vapaa widgetin koko</string>
+    <string name="preferences_interface_homescreen_general_resize_any_widget_summary">Sallii widgetien koon muuttamisen vaikka koon muuttaminen olisi estetty</string>
+    <string name="preferences_interface_homescreen_scrolling_category">Selaaminen</string>
+    <string name="preferences_interface_homescreen_scrolling_transition_effect_title">Siirtymisefekti</string>
+    <string name="preferences_interface_homescreen_scrolling_transition_effect_summary">Kotinäyttöjen selaamisen siirtymisefekti</string>
+    <string name="preferences_interface_homescreen_scrolling_fade_adjacent_screens_title">Häivytä näytöt</string>
+    <string name="preferences_interface_homescreen_scrolling_fade_adjacent_screens_summary">Häivyttää edellisen näytön kun siirrytään näytöillä</string>
+    <string name="preferences_interface_homescreen_scrolling_scroll_wallpaper_title">Vieritä taustakuvaa</string>
+    <string name="preferences_interface_homescreen_scrolling_scroll_wallpaper_summary">Vierittää taustakuvaa kun siirrytään näytöillä</string>
+    <string name="preferences_interface_homescreen_indicator_category">Osoitin</string>
+    <string name="preferences_interface_homescreen_indicator_enable_title">Näytä sivunosoitin</string>
+    <string name="preferences_interface_homescreen_indicator_enable_summary">Näyttää tämänhetkisen näytön osoittimen näytön alalaidassa</string>
+    <string name="preferences_interface_homescreen_indicator_fade_title">Häivytä osoitin</string>
+    <string name="preferences_interface_homescreen_indicator_fade_summary">Häivyttää osoittimen kun kotinäyttö on vaihtunut</string>
+    <string name="preferences_interface_homescreen_indicator_background_title">Näytä alapalkin jakaja</string>
+    <string name="preferences_interface_homescreen_indicator_background_summary">Näyttää osoittimen taustan</string>
+    <string name="preferences_interface_drawer_title">Sovellusvalikko</string>
+    <string name="preferences_interface_drawer_widgets_category">Widgetit</string>
+    <string name="preferences_interface_drawer_widgets_join_apps_title">Yhdistä sovelluksiin</string>
+    <string name="preferences_interface_drawer_widgets_join_apps_summary">Mahdollistaa pyyhkäisyn suoraan sovellusvalikosta widget-valikkoon ilman välilehden vaihtamista</string>
+    <string name="preferences_interface_drawer_scrolling_category">Selaus</string>
+    <string name="preferences_interface_drawer_scrolling_transition_effect_title">Siirtymisefekti</string>
+    <string name="preferences_interface_drawer_scrolling_transition_effect_summary">Sivujen selaamisen siirtymisefekti</string>
+    <string name="preferences_interface_drawer_scrolling_fade_adjacent_screens_title">Häivytä sivut</string>
+    <string name="preferences_interface_drawer_scrolling_fade_adjacent_screens_summary">Häivyttää edellisen sivun kun siirrytään sovellussivuilla</string>
+    <string name="preferences_interface_drawer_indicator_category">Osoitin</string>
+    <string name="preferences_interface_drawer_indicator_enable_title">Näytä sivunosoitin</string>
+    <string name="preferences_interface_drawer_indicator_enable_summary">Näyttää tämänhetkisen sivun osoittimen näytön alalaidassa</string>
+    <string name="preferences_interface_drawer_indicator_fade_title">Häivytä osoitin</string>
+    <string name="preferences_interface_drawer_indicator_fade_summary">Häivyttää osoittimen kun sivu on vaihtunut</string>
+    <string name="preferences_interface_dock_title">Alapalkki</string>
+    <string name="preferences_interface_icons_title">Kuvakkeet</string>
+    <string name="preferences_interface_general_title">Yleiset</string>
+    <string name="preferences_interface_general_orientation_title">Autom. näytönkääntö</string>
 </resources>
