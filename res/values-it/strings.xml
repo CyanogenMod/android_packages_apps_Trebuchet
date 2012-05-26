@@ -127,7 +127,7 @@
     <string name="preferences_interface_homescreen_general_screen_padding_horizontal_title">Spaziatura orizzontale</string>
     <string name="preferences_interface_homescreen_general_screen_padding_horizontal_summary">Aumenta la spaziatura orizzontale nella Home</string>
     <string name="preferences_interface_homescreen_general_search_title">Barra di ricerca</string>
-    <string name="preferences_interface_homescreen_general_search_summary">Abilità la barra di ricerca persistente</string>
+    <string name="preferences_interface_homescreen_general_search_summary">Abilita la barra di ricerca persistente</string>
     <string name="preferences_interface_homescreen_general_resize_any_widget_title">Ridimensiona tutti i widget</string>
     <string name="preferences_interface_homescreen_general_resize_any_widget_summary">Permette di ridimensionare i widget che normalmente non lo sarebbero</string>
     <string name="preferences_interface_homescreen_general_hide_icon_labels_title">Nascondi etichette</string>
@@ -135,7 +135,7 @@
     <string name="preferences_interface_homescreen_scrolling_category">Scorrimento</string>
     <string name="preferences_interface_homescreen_scrolling_transition_effect_title">Effetti di transizione</string>
     <string name="preferences_interface_homescreen_scrolling_transition_effect_summary">Effetti di transizione quando scorri nella Home</string>
-    <string name="preferences_interface_homescreen_scrolling_fade_adjacent_screens_title">Dissolvenza pag. laterali</string>
+    <string name="preferences_interface_homescreen_scrolling_fade_adjacent_screens_title">Dissolvenza pagine laterali</string>
     <string name="preferences_interface_homescreen_scrolling_fade_adjacent_screens_summary">Dissolvi le pagine laterali quando scorri nella Home</string>
     <string name="preferences_interface_homescreen_scrolling_scroll_wallpaper_title">Scorrimento sfondo</string>
     <string name="preferences_interface_homescreen_scrolling_scroll_wallpaper_summary">Muovi lo sfondo quando scorri nella Home</string>
