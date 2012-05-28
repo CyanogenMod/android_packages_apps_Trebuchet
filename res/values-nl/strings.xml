@@ -48,6 +48,7 @@
     <string name="delete_zone_label_workspace" msgid="7153615831493049150">"Verwijderen"</string>
     <string name="delete_zone_label_all_apps" msgid="6664588234817475108">"Verwijderen"</string>
     <string name="delete_target_label" msgid="665300185123139530">"Verwijderen"</string>
+    <string name="cancel_target_label">"Annuleren"</string>
     <string name="delete_target_uninstall_label" msgid="748894921183769150">"Installatie ongedaan maken"</string>
     <string name="info_target_label" msgid="4019495079517426980">"App-info"</string>
     <string name="accessibility_search_button" msgid="816822994629942611">"Zoeken"</string>
@@ -61,7 +62,10 @@
     <string name="menu_search" msgid="4826514464423239041">"Zoeken"</string>
     <string name="menu_notifications" msgid="6424587053194766192">"Meldingen"</string>
     <string name="menu_settings" msgid="3946232973327980394">"Systeeminstellingen"</string>
+    <string name="menu_preferences">"Trebuchet-instellingen"</string>
     <string name="menu_help" msgid="4901160661634590633">"Help"</string>
+    <string name="menu_apps_sort_title">"Naam"</string>
+    <string name="menu_apps_sort_install_date">"Installatiedatum"</string>
     <string name="cab_menu_delete_app" msgid="4089398025537640349">"App verwijderen"</string>
     <string name="cab_menu_app_info" msgid="914548323652698884">"App-details"</string>
     <string name="cab_app_selection_text" msgid="6378522164293415735">"1 app geselecteerd"</string>
@@ -89,6 +93,8 @@
     <string name="workspace_cling_open_all_apps" msgid="2459977609848572588">"Als u al uw apps wilt bekijken, raakt u de cirkel aan."</string>
     <string name="all_apps_cling_title" msgid="2559734712581447107">"Enkele apps selecteren"</string>
     <string name="all_apps_cling_add_item" msgid="5665035103260318891">"Als u een app wilt toevoegen aan het startscherm, blijft u de app aanraken."</string>
+    <string name="all_apps_sort_cling_title">"Sorteer uw apps"</string>
+    <string name="all_apps_sort_cling_add_item">"Blijf de apps-tab aanraken om de sorteermodus te wijzigen."</string>
     <string name="folder_cling_title" msgid="4308949882377840953">"Uw apps ordenen met mappen"</string>
     <string name="folder_cling_move_item" msgid="270598675060435169">"Als u een app wilt verplaatsen, blijft u de app aanraken."</string>
     <string name="folder_cling_create_folder" msgid="8352867485656129478">"Als u een nieuwe map op het startscherm wilt maken, stapelt u een app boven op een andere app."</string>
@@ -110,10 +116,20 @@
     <string name="preferences_interface_homescreen_general_screens_summary">Aantal startschermen</string>
     <string name="preferences_interface_homescreen_general_default_screen_title">Standaardscherm</string>
     <string name="preferences_interface_homescreen_general_default_screen_summary">Kies het standaard startscherm</string>
+    <string name="preferences_interface_homescreen_general_grid_title">Roostergrootte</string>
+    <string name="preferences_interface_homescreen_general_grid_summary">Kies het aantal rijen/kolommen op het startscherm</string>
+    <string name="preferences_interface_homescreen_general_grid_rows_title">Rijen</string>
+    <string name="preferences_interface_homescreen_general_grid_columns_title">Kolommen</string>
+    <string name="preferences_interface_homescreen_general_screen_padding_vertical_title">Verticale opvulling</string>
+    <string name="preferences_interface_homescreen_general_screen_padding_vertical_summary">Extra verticale opvulling op het startscherm</string>
+    <string name="preferences_interface_homescreen_general_screen_padding_horizontal_title">Horizontale opvulling</string>
+    <string name="preferences_interface_homescreen_general_screen_padding_horizontal_summary">Extra horizontale opvulling op het startscherm</string>
     <string name="preferences_interface_homescreen_general_search_title">Zoekbalk</string>
     <string name="preferences_interface_homescreen_general_search_summary">Schakel blijvende zoekbalk in</string>
     <string name="preferences_interface_homescreen_general_resize_any_widget_title">Verander grootte van elke widget</string>
     <string name="preferences_interface_homescreen_general_resize_any_widget_summary">Staat toe om de grootte van alle widgets te veranderen</string>
+    <string name="preferences_interface_homescreen_general_hide_icon_labels_title">Verberg labels</string>
+    <string name="preferences_interface_homescreen_general_hide_icon_labels_summary">Verberg de labels onder iconen</string>
     <string name="preferences_interface_homescreen_scrolling_category">Scrollen</string>
     <string name="preferences_interface_homescreen_scrolling_transition_effect_title">Overgangseffect</string>
     <string name="preferences_interface_homescreen_scrolling_transition_effect_summary">Scrolleffect bij het scrollen door startschermen</string>
