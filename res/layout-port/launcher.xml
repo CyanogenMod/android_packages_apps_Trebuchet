@@ -46,8 +46,6 @@
         android:layout_height="match_parent"
         android:paddingTop="@dimen/qsb_bar_height_inset"
         android:paddingBottom="@dimen/button_bar_height"
-        launcher:cellCountX="4"
-        launcher:cellCountY="4"
         launcher:pageSpacing="@dimen/workspace_page_spacing"
         launcher:scrollIndicatorPaddingLeft="@dimen/workspace_divider_padding_left"
         launcher:scrollIndicatorPaddingRight="@dimen/workspace_divider_padding_right" />
