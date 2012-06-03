@@ -187,5 +187,7 @@
     <!-- General -->
     <string name="preferences_interface_general_title">Ogólne</string>
     <string name="preferences_interface_general_orientation_title">Autoobracanie ekranu</string>
+    <string name="cancel_target_label">Anuluj</string>
+
     <!-- **** CYANOGENMOD EDITS END **** -->
 </resources>
