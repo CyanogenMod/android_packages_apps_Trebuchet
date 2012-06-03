@@ -157,7 +157,7 @@
     <string name="preferences_interface_homescreen_general_grid_summary">בחר את מספר העמודות/שורות שבמסך הבית</string>
     <string name="preferences_interface_homescreen_general_grid_title">"גודל הרשת"</string>
     <string name="preferences_interface_homescreen_general_hide_icon_labels_summary">הסתר תוויות סמלים במסך הבית</string>
-    <string name="preferences_interface_homescreen_general_hide_icon_labels_title">הסתר תווים סמלים</string>
+    <string name="preferences_interface_homescreen_general_hide_icon_labels_title">הסתר תוויות סמלים</string>
     <string name="preferences_interface_homescreen_general_resize_any_widget_summary">"אפשר שינוי גודל של ווידג'טים שבדרך כלל לא ניתנים לשינוי"</string>
     <string name="preferences_interface_homescreen_general_resize_any_widget_title">"שנה גודל לכל ווידג'ט"</string>
     <string name="preferences_interface_homescreen_general_screen_padding_horizontal_summary">מרווח אופקי נוסף במסך הבית</string>
@@ -189,3 +189,4 @@
     <string name="preferences_interface_drawer_title">מגירת יישומים</string>
     <string name="application_copyright">"כל הזכויות שמורות \u00A9 CyanogenMod 2012"</string>
 </resources>
+
