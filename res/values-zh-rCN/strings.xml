@@ -102,4 +102,76 @@
     <string name="folder_closed" msgid="3130534551370511932">"文件夹已关闭"</string>
     <string name="folder_renamed" msgid="781234745487414781">"已将文件夹重命名为“%1$s”"</string>
     <string name="folder_name_format" msgid="4513766553514769310">"文件夹：%1$s"</string>
+    
+     <!--             -->
+    <!-- Preferences -->
+    <!--             -->
+    <string name="preferences_title">喜好</string>
+    <!-- UI -->
+    <string name="preferences_interface_title">接口</string>
+    <!-- Application -->
+    <string name="preferences_application_title">应用</string>
+
+    <!-- UI -->
+    <!-- Homescreen -->
+    <string name="preferences_interface_homescreen_title">主屏幕</string>
+    <string name="preferences_interface_homescreen_general_category">一般</string>
+    <string name="preferences_interface_homescreen_general_screens_title">主屏幕</string>
+    <string name="preferences_interface_homescreen_general_screens_summary">主屏幕上的页面数量</string>
+    <string name="preferences_interface_homescreen_general_default_screen_title">默认屏幕</string>
+    <string name="preferences_interface_homescreen_general_default_screen_summary">选择默认的主屏幕</string>
+    <string name="preferences_interface_homescreen_general_grid_title">网格大小</string>
+    <string name="preferences_interface_homescreen_general_grid_summary">选择主屏幕上的行/列数</string>
+    <string name="preferences_interface_homescreen_general_grid_rows_title">行</string>
+    <string name="preferences_interface_homescreen_general_grid_columns_title">列</string>
+    <string name="preferences_interface_homescreen_general_screen_padding_vertical_title">垂直间距</string>
+    <string name="preferences_interface_homescreen_general_screen_padding_vertical_summary">在主屏幕上的额外的垂直间距</string>
+    <string name="preferences_interface_homescreen_general_screen_padding_horizontal_title">水平填充</string>
+    <string name="preferences_interface_homescreen_general_screen_padding_horizontal_summary">在主屏幕上的额外的水平间距</string>
+    <string name="preferences_interface_homescreen_general_search_title">搜索栏</string>
+    <string name="preferences_interface_homescreen_general_search_summary">启用搜索栏</string>
+    <string name="preferences_interface_homescreen_general_resize_any_widget_title">调整任何部件的大小</string>
+    <string name="preferences_interface_homescreen_general_resize_any_widget_summary">允许小部件的大小</string>
+    <string name="preferences_interface_homescreen_general_hide_icon_labels_title">隐藏图标标签</string>
+    <string name="preferences_interface_homescreen_general_hide_icon_labels_summary">隐藏主屏幕图标标签</string>
+    <string name="preferences_interface_homescreen_scrolling_category">滚动</string>
+    <string name="preferences_interface_homescreen_scrolling_transition_effect_title">过渡效果</string>
+    <string name="preferences_interface_homescreen_scrolling_transition_effect_summary">主屏幕滚动时的效果</string>
+    <string name="preferences_interface_homescreen_scrolling_fade_adjacent_screens_title">淡出边界</string>
+    <string name="preferences_interface_homescreen_scrolling_fade_adjacent_screens_summary">滚动屏幕时淡出边界</string>
+    <string name="preferences_interface_homescreen_scrolling_scroll_wallpaper_title">滚动壁纸</string>
+    <string name="preferences_interface_homescreen_scrolling_scroll_wallpaper_summary">主屏幕滚动时滚动壁纸</string>
+    <string name="preferences_interface_homescreen_indicator_category">指示器</string>
+    <string name="preferences_interface_homescreen_indicator_enable_title">显示页面的指标</string>
+    <string name="preferences_interface_homescreen_indicator_enable_summary">在屏幕的底部显示当前页指示器</string>
+    <string name="preferences_interface_homescreen_indicator_fade_title">淡出指示器</string>
+    <string name="preferences_interface_homescreen_indicator_fade_summary">淡出后改变主屏幕的指示器</string>
+    <string name="preferences_interface_homescreen_indicator_background_title">显示底座分隔</string>
+    <string name="preferences_interface_homescreen_indicator_background_summary">显示指标背后的背景</string>
+
+    <!-- Drawer -->
+    <string name="preferences_interface_drawer_title">抽屉</string>
+    <string name="preferences_interface_drawer_widgets_category">部件</string>
+    <string name="preferences_interface_drawer_widgets_join_apps_title">关联应用</string>
+    <string name="preferences_interface_drawer_widgets_join_apps_summary">应用程序直接滑动道小部件</string>
+    <string name="preferences_interface_drawer_scrolling_category">滚动</string>
+    <string name="preferences_interface_drawer_scrolling_transition_effect_title">过渡效果</string>
+    <string name="preferences_interface_drawer_scrolling_transition_effect_summary">滚动效果时滚动屏幕</string>
+    <string name="preferences_interface_drawer_scrolling_fade_adjacent_screens_title">淡出边界</string>
+    <string name="preferences_interface_drawer_scrolling_fade_adjacent_screens_summary">滚动屏幕时淡出边界</string>
+    <string name="preferences_interface_drawer_indicator_category">指示器</string>
+    <string name="preferences_interface_drawer_indicator_enable_title">显示页面的指标</string>
+    <string name="preferences_interface_drawer_indicator_enable_summary">在屏幕的底部显示当前页指示器</string>
+    <string name="preferences_interface_drawer_indicator_fade_title">淡出指示器</string>
+    <string name="preferences_interface_drawer_indicator_fade_summary">淡出后改变主屏幕的指示器</string>
+
+    <!-- Dock -->
+    <string name="preferences_interface_dock_title">底座</string>
+
+    <!-- Icons -->
+    <string name="preferences_interface_icons_title">图标</string>
+
+    <!-- General -->
+    <string name="preferences_interface_general_title">一般</string>
+    <string name="preferences_interface_general_orientation_title">自动旋转屏幕</string>
 </resources>
