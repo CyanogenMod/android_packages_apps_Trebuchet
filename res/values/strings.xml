@@ -21,7 +21,7 @@
     <!-- General -->
     <skip />
     <!-- Application name -->
-    <string name="application_name" translateable="false">Trebuchet</string>
+    <string name="application_name" translatable="false">Trebuchet</string>
     <!-- Application copyright -->
     <string name="application_copyright">Copyright \u00A9 CyanogenMod 2012</string>
     <!-- Application version -->
