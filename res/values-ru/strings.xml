@@ -52,7 +52,7 @@
     <string name="delete_zone_label_workspace" msgid="7153615831493049150">"Удалить"</string>
     <string name="delete_zone_label_all_apps" msgid="6664588234817475108">"Удалить"</string>
     <string name="delete_target_label" msgid="665300185123139530">"Удалить"</string>
-    <string name="cancel_target_label">Отменить</string>
+    <string name="cancel_target_label">Отмена</string>
     <string name="delete_target_uninstall_label" msgid="748894921183769150">"Удалить"</string>
     <string name="info_target_label" msgid="4019495079517426980">"Сведения о приложении"</string>
     <string name="accessibility_search_button" msgid="816822994629942611">"Поиск"</string>
