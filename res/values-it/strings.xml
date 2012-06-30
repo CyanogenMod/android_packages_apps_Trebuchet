@@ -118,7 +118,7 @@
     <string name="preferences_interface_homescreen_general_screens_summary">Numero di schermate nella Home</string>
     <string name="preferences_interface_homescreen_general_default_screen_title">Schermata predefinita</string>
     <string name="preferences_interface_homescreen_general_default_screen_summary">Scegli la schermata predefinita nella Home</string>
-    <string name="preferences_interface_homescreen_general_grid_title">Dimensioni Griglia</string>
+    <string name="preferences_interface_homescreen_general_grid_title">Dimensioni griglia</string>
     <string name="preferences_interface_homescreen_general_grid_summary">Scegli il numero di righe/colonne nella schermata Home</string>
     <string name="preferences_interface_homescreen_general_grid_rows_title">Righe</string>
     <string name="preferences_interface_homescreen_general_grid_columns_title">Colonne</string>
