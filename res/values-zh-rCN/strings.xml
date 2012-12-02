@@ -172,6 +172,8 @@
 
     <!-- Dock -->
     <string name="preferences_interface_dock_title">底座</string>
+    <string name="preferences_interface_dock_size_title">底座图标数</string>
+    <string name="preferences_interface_dock_size_summary">选择底座上的图标数量</string>
 
     <!-- Icons -->
     <string name="preferences_interface_icons_title">图标</string>
