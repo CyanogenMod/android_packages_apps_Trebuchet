@@ -159,6 +159,8 @@
     <string name="preferences_interface_drawer_indicator_fade_title">Dissolvenza indicatore</string>
     <string name="preferences_interface_drawer_indicator_fade_summary">Dissolvi l\'indicatore dopo aver cambiato pagina</string>
     <string name="preferences_interface_dock_title">Dock</string>
+    <string name="preferences_interface_dock_size_title">Icone nella dock</string>
+    <string name="preferences_interface_dock_size_summary">Numero di icone nella barra dock</string>
     <string name="preferences_interface_icons_title">Icone</string>
     <string name="preferences_interface_general_title">Generale</string>
     <string name="preferences_interface_general_orientation_title">Rotazione schermo</string>
