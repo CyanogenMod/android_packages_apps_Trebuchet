@@ -212,6 +212,8 @@
 
     <!-- Dock -->
     <string name="preferences_interface_dock_title">Dock</string>
+    <string name="preferences_interface_dock_size_title">Dock-Icons</string>
+    <string name="preferences_interface_dock_size_summary">Anzahl der Icons im Dock auswählen</string>
 
     <!-- Icons -->
     <string name="preferences_interface_icons_title">Icons</string>
