@@ -638,9 +638,6 @@ public class Workspace extends SmoothPagedView
 
         addFullScreenPage(customScreen);
 
-        // Ensure that the current page and default page are maintained.
-        mDefaultPage = mOriginalDefaultPage + 1;
-
         // Update the custom content hint
         if (mRestorePage != INVALID_RESTORE_PAGE) {
             mRestorePage = mRestorePage + 1;
@@ -665,9 +662,6 @@ public class Workspace extends SmoothPagedView
         }
 
         mCustomContentCallbacks = null;
-
-        // Ensure that the current page and default page are maintained.
-        mDefaultPage = mOriginalDefaultPage - 1;
 
         // Update the custom content hint
         if (mRestorePage != INVALID_RESTORE_PAGE) {
@@ -2134,6 +2128,10 @@ public class Workspace extends SmoothPagedView
         showOutlines();
         // Reordering handles its own animations, disable the automatic ones.
         disableLayoutTransitions();
+
+        mLauncher.getOverviewPanel().animate()
+                .alpha(0f)
+                .start();
     }
 
     protected void onEndReordering() {
@@ -2156,6 +2154,13 @@ public class Workspace extends SmoothPagedView
 
         // Re-enable auto layout transitions for page deletion.
         enableLayoutTransitions();
+
+        // Show the default screen button
+        updateDefaultScreenButton();
+
+        mLauncher.getOverviewPanel().animate()
+                .alpha(1f)
+                .start();
     }
 
     public boolean isInOverviewMode() {

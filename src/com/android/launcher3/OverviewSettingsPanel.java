@@ -124,7 +124,9 @@ public class OverviewSettingsPanel {
         defaultScreenButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                mLauncher.getWorkspace().onClickDefaultScreenButton();
+                if (!mLauncher.getWorkspace().isSwitchingState()) {
+                    mLauncher.getWorkspace().onClickDefaultScreenButton();
+                }
             }
         });
 
