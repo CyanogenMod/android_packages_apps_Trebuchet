@@ -1294,6 +1294,7 @@ public class Workspace extends SmoothPagedView
         int ccIndex = getPageIndexForScreenId(CUSTOM_CONTENT_SCREEN_ID);
         if (hasCustomContent() && getNextPage() == ccIndex && !mCustomContentShowing) {
             mCustomContentShowing = true;
+
             if (mCustomContentCallbacks != null) {
                 mCustomContentCallbacks.onShow(false);
                 mCustomContentShowTime = System.currentTimeMillis();
@@ -1340,7 +1341,7 @@ public class Workspace extends SmoothPagedView
         int customPageIndex = getPageIndexForScreenId(CUSTOM_CONTENT_SCREEN_ID);
         if (hasCustomContent() && whichPage == customPageIndex && !mCustomContentShowing) {
             if(!isInOverviewMode()) {
-                mLauncher.onCustomContentLaunch();
+                mCustomContentShowing = true;
             }
         }
     }
@@ -1434,6 +1435,7 @@ public class Workspace extends SmoothPagedView
             int firstIndex = numCustomPages();
             // Exclude the last extra empty screen (if we have > MIN_PARALLAX_PAGE_SPAN pages)
             int lastIndex = getChildCount() - 1 - emptyExtraPages;
+
             if (isLayoutRtl()) {
                 int temp = firstIndex;
                 firstIndex = lastIndex;
@@ -1667,7 +1669,13 @@ public class Workspace extends SmoothPagedView
     }
 
     public int numCustomPages() {
-        return hasCustomContent() ? 1 : 0;
+        // GEL integration is a special case (not a *real* screen) and should
+        // not be counted as custom content.
+        if(mLauncher.isGelIntegrationEnabled()) {
+            return 0;
+        } else {
+            return hasCustomContent() ? 1 : 0;
+        }
     }
 
     public boolean isOnOrMovingToCustomContent() {
@@ -2156,6 +2164,11 @@ public class Workspace extends SmoothPagedView
     private void getOverviewModePages(int[] range) {
         int start = numCustomPages();
         int end = getChildCount() - 1;
+
+        // For GEL integration, do not include the first page (GEL)
+        if(mLauncher.isGelIntegrationEnabled()) {
+            start += 1;
+        }
 
         range[0] = Math.max(0, Math.min(start, getChildCount() - 1));
         range[1] = Math.max(0,  end);

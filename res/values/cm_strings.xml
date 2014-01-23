@@ -49,6 +49,10 @@
     <string name="grid_size_custom">Custom (<xliff:g id="rows">%1$d</xliff:g> \u00d7 <xliff:g id="columns">%2$d</xliff:g>)</string>
     <string name="preferences_interface_homescreen_custom">Select custom size</string>
 
+    <!-- Settings toast messages -->
+    <string name="preferences_search_screen_left_unsupported_toast">You must have a supported search app and CyanogenMod to use this feature.</string>
+
+
     <!-- Folder titles -->
     <string name="google_title" translatable="false">Google</string>
     <string name="play_folder_title">Play</string>
@@ -76,6 +80,9 @@
 
     <!-- Protected apps -->
     <string name="protected_app_settings">Protected apps</string>
+
+    <!-- Text for hiding/showing search screen on left (if installed) -->
+    <string name="search_screen_left_text">Search panel</string>
 
     <!-- Dialog -->
     <string name="dialog_confirm">Confirm</string>

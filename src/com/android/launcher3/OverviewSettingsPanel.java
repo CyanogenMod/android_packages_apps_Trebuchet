@@ -23,6 +23,7 @@ public class OverviewSettingsPanel {
     private View mOverviewPanel;
     private SettingsPinnedHeaderAdapter mSettingsAdapter;
     private PinnedHeaderListView mListView;
+    private String[] mValues;
 
     OverviewSettingsPanel(Launcher launcher, View overviewPanel) {
         mLauncher = launcher;
@@ -177,7 +178,7 @@ public class OverviewSettingsPanel {
                     res.getString(R.string.scrolling_wallpaper),
                     res.getString(R.string.grid_size_text)};
             mSettingsAdapter.changeCursor(0, createCursor(res
-                    .getString(R.string.home_screen_settings), values));
+                    .getString(R.string.home_screen_settings), mValues));
         }
 
         // Make sure overview panel is drawn above apps customize and collapsed
