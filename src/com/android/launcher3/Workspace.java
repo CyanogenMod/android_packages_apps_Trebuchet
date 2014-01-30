@@ -2227,7 +2227,7 @@ public class Workspace extends SmoothPagedView
         if (mState != State.NORMAL) {
             return false;
         }
-        return true;
+        return mShowSearchBar;
     }
 
     public void updateInteractionForState() {
