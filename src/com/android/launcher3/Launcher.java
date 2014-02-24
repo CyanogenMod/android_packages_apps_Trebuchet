@@ -61,6 +61,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -116,6 +117,7 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.launcher.home.Home;
 import com.android.launcher3.DropTarget.DragObject;
 import com.android.launcher3.PagedView.PageSwitchListener;
 import com.android.launcher3.compat.AppWidgetManagerCompat;
@@ -328,6 +330,9 @@ public class Launcher extends Activity
     private AppsCustomizePagedView mAppsCustomizeContent;
     private boolean mAutoAdvanceRunning = false;
     private View mQsb;
+    private View mQsbBar;
+    private ImageView mQsbBarSearch;
+    private ImageView mQsbBarVoice;
 
     private Bundle mSavedState;
     // We set the state in both onCreate and then onNewIntent in some cases, which causes both
@@ -623,6 +628,16 @@ public class Launcher extends Activity
         mIconCache.flushInvalidIcons(mGrid);
     }
 
+    protected void onUserLeaveHint() {
+        super.onUserLeaveHint();
+        sPausedFromUserAction = true;
+    }
+
+    /** To be overridden by subclasses to hint to Launcher that we have custom content */
+    protected boolean hasCustomSearchSupport() {
+        return false;
+    }
+
     /** To be overriden by subclasses to hint to Launcher that we have custom content */
     protected boolean hasCustomContentToLeft() {
         return false;
@@ -671,6 +686,15 @@ public class Launcher extends Activity
         } else if (mWorkspace.hasCustomContent() && !hasCustomContentToLeft()) {
             mWorkspace.removeCustomContentPage();
         }
+    }
+
+    /** To be overriden by subclasses to hint to Launcher that we have custom content and
+     * support {@link #hasCustomSearchSupport()}
+     * @see com.android.launcher.home.Home#MODE_SEARCH_TEXT
+     * @see com.android.launcher.home.Home#MODE_SEARCH_VOICE
+     * */
+    protected void requestSearch(int mode) {
+        // To be implemented
     }
 
     private void updateGlobalIcons() {
@@ -2951,8 +2975,12 @@ public class Launcher extends Activity
      * @param v The view that was clicked.
      */
     public void onClickSearchButton(View v) {
-        v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
+        if (hasCustomSearchSupport()) {
+            requestSearch(Home.MODE_SEARCH_TEXT);
+            return;
+        }
 
+        v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
         onSearchRequested();
     }
 
@@ -2962,8 +2990,12 @@ public class Launcher extends Activity
      * @param v The view that was clicked.
      */
     public void onClickVoiceButton(View v) {
-        v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
+        if (hasCustomSearchSupport()) {
+            requestSearch(Home.MODE_SEARCH_VOICE);
+            return;
+        }
 
+        v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
         startVoice();
     }
 
@@ -4678,6 +4710,20 @@ public class Launcher extends Activity
             mSearchDropTargetBar.addView(mQsb);
         }
         return mQsb;
+    }
+
+    public ImageView getQsbBarSearchButton() {
+        if (mQsbBarSearch == null && getQsbBar() != null) {
+            return (ImageView) getQsbBar().findViewById(R.id.search_button);
+        }
+        return mQsbBarSearch;
+    }
+
+    public ImageView getQsbBarVoiceButton() {
+        if (mQsbBarVoice == null && getQsbBar() != null) {
+            return (ImageView) getQsbBar().findViewById(R.id.voice_button);
+        }
+        return mQsbBarVoice;
     }
 
     protected boolean updateGlobalSearchIcon() {
