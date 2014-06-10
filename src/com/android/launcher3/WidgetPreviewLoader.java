@@ -66,7 +66,7 @@ public class WidgetPreviewLoader {
     private final IconCache mIconCache;
     private final UserManagerCompat mUserManager;
     private final AppWidgetManagerCompat mManager;
-    private final CacheDb mDb;
+    private CacheDb mDb;
     private final int mProfileBadgeMargin;
 
     private final MainThreadExecutor mMainThreadExecutor = new MainThreadExecutor();
@@ -81,6 +81,13 @@ public class WidgetPreviewLoader {
         mWorkerHandler = new Handler(LauncherModel.getWorkerLooper());
         mProfileBadgeMargin = context.getResources()
                 .getDimensionPixelSize(R.dimen.profile_badge_margin);
+    }
+
+    public void recreateWidgetPreviewDb() {
+        if (mDb != null) {
+            mDb.close();
+        }
+        mDb = new CacheDb(mContext);
     }
 
     /**

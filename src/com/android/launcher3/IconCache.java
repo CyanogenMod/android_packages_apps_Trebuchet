@@ -94,7 +94,7 @@ public class IconCache {
     private final HashMap<ComponentKey, CacheEntry> mCache =
             new HashMap<ComponentKey, CacheEntry>(INITIAL_ICON_CACHE_CAPACITY);
     private final int mIconDpi;
-    @Thunk final IconDB mIconDb;
+    @Thunk IconDB mIconDb;
 
     @Thunk final Handler mWorkerHandler;
 
@@ -197,6 +197,17 @@ public class IconCache {
      */
     public synchronized void remove(ComponentName componentName, UserHandleCompat user) {
         mCache.remove(new ComponentKey(componentName, user));
+    }
+
+    /**
+     * Empty out the cache.
+     */
+    public synchronized void flush() {
+        mCache.clear();
+        if (mIconDb != null) {
+            mIconDb.close();
+        }
+        mIconDb = new IconDB(mContext);
     }
 
     /**
