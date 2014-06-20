@@ -68,7 +68,13 @@
     <permission
         android:name="com.android.launcher3.permission.RECEIVE_FIRST_LOAD_BROADCAST"
         android:protectionLevel="signatureOrSystem" />
+    <permission
+        android:name="com.google.android.apps.dashclock.permission.READ_EXTENSION_DATA"
+        android:label="@string/permission_label_read_extension_data"
+        android:description="@string/permission_desc_read_extension_data"
+        android:protectionLevel="normal" />
 
+    <uses-permission android:name="com.google.android.apps.dashclock.permission.READ_EXTENSION_DATA" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.SET_WALLPAPER" />
     <uses-permission android:name="android.permission.SET_WALLPAPER_HINTS" />
@@ -99,7 +105,7 @@
         android:supportsRtl="true" >
 
         <activity
-            android:name="org.cyanogenmod.trebuchet.TrebuchetLauncher"
+            android:name="org.cyanogenmod.trebuchet.CustomHomeLauncher"
             android:launchMode="singleTask"
             android:clearTaskOnLaunch="true"
             android:stateNotNeeded="true"

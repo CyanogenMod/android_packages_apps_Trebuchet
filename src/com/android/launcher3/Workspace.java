@@ -1331,6 +1331,20 @@ public class Workspace extends SmoothPagedView
         snapToPage(whichPage, SLOW_PAGE_SNAP_ANIMATION_DURATION, r);
     }
 
+    @Override
+    protected void snapToPage(int whichPage, int delta, int duration, boolean immediate,
+                              TimeInterpolator interpolator) {
+        super.snapToPage(whichPage, delta, duration, immediate, interpolator);
+
+        // Trigger onCustomContentLaunch if we have just snapped to the custom page.
+        int customPageIndex = getPageIndexForScreenId(CUSTOM_CONTENT_SCREEN_ID);
+        if (hasCustomContent() && whichPage == customPageIndex && !mCustomContentShowing) {
+            if(!isInOverviewMode()) {
+                mLauncher.onCustomContentLaunch();
+            }
+        }
+    }
+
     protected void snapToPage(int whichPage, int duration, Runnable r) {
         if (mDelayedSnapToPageRunnable != null) {
             mDelayedSnapToPageRunnable.run();
@@ -1836,10 +1850,14 @@ public class Workspace extends SmoothPagedView
         int customPageIndex = getPageIndexForScreenId(CUSTOM_CONTENT_SCREEN_ID);
         // mCustomContentShowing can be lost if the Activity is recreated,
         // So make sure it is set to the right value.
+        boolean restoreCustomContentShowing = ((customPageIndex == getCurrentPage())
+                                                || (customPageIndex == getNextPage()))
+                                              && hasCustomContent();
         mCustomContentShowing = mCustomContentShowing
-                                || (customPageIndex == getCurrentPage()
-                                    && hasCustomContent());
-        if (mCustomContentShowing && mLauncher.isGelIntegrationEnabled()) {
+                                || restoreCustomContentShowing;
+        if (mCustomContentShowing
+            && (mLauncher.getCustomContentMode() == Launcher.CustomContentMode.GEL)
+            && !isInOverviewMode()) {
             moveToScreen((customPageIndex + 1), true);
         }
     }
@@ -5353,7 +5371,15 @@ public class Workspace extends SmoothPagedView
     }
 
     void moveToDefaultScreen(boolean animate) {
-        moveToScreen(getPageIndexForScreenId(mDefaultScreenId), animate);
+        // Do not use the custom page or index -1 as default,
+        // if GEL integration is enabled.
+        int idx = getPageIndexForScreenId(mDefaultScreenId);
+        int ccIndex = getPageIndexForScreenId(CUSTOM_CONTENT_SCREEN_ID);
+        if(hasCustomContent() && (idx == ccIndex || idx == -1)
+           && !isInOverviewMode()) {
+            idx = 1;
+        }
+        moveToScreen(idx, animate);
     }
 
     void moveToCustomContentScreen(boolean animate) {

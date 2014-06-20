@@ -97,7 +97,6 @@ public class SettingsPinnedHeaderAdapter extends PinnedHeaderListAdapter {
 
         Resources res = mLauncher.getResources();
 
-
         boolean current = false;
         String state = "";
 
@@ -225,6 +224,24 @@ public class SettingsPinnedHeaderAdapter extends PinnedHeaderListAdapter {
                 break;
             case Pager:
                 state = mLauncher.getResources().getString(R.string.drawer_type_pager);
+                break;
+        }
+        ((TextView) v.findViewById(R.id.item_state)).setText(state);
+    }
+
+    public void updateSearchPanelItem(View v) {
+        String state = "";
+        switch (mLauncher.getCustomContentMode()) {
+            case DISABLED:
+                state = mLauncher.getResources().getString(
+                        R.string.setting_state_off);
+                break;
+            case GEL:
+                state = mLauncher.getResources().getString(R.string.search_panel_gel);
+                break;
+            default:
+                state = mLauncher.getResources().getString(
+                        R.string.search_panel_custom_home);
                 break;
         }
         ((TextView) v.findViewById(R.id.item_state)).setText(state);
@@ -451,5 +468,27 @@ public class SettingsPinnedHeaderAdapter extends PinnedHeaderListAdapter {
         }
 
         return isDisabled;
+    }
+
+    private void onClickSearchPanelButton() {
+        int searchPanelVal = SettingsProvider.getIntCustomDefault(mLauncher,
+                SettingsProvider.SETTINGS_UI_HOMESCREEN_SEARCH_PANEL_LEFT,
+                Launcher.CustomContentMode.DISABLED.getValue());
+
+        Launcher.CustomContentMode nextCCMode =
+            Launcher.CustomContentMode.getModeForValue(searchPanelVal + 1);
+        if(nextCCMode == Launcher.CustomContentMode.GEL && !mLauncher.isGelIntegrationSupported()) {
+            // GEL is not supported, skip that option
+            searchPanelVal++;
+        }
+
+        searchPanelVal = (searchPanelVal + 1) % Launcher.CustomContentMode.values().length;
+        mLauncher.setCustomContentMode(Launcher.CustomContentMode.getModeForValue(searchPanelVal));
+
+        SettingsProvider.putInt(mLauncher,
+                                SettingsProvider.SETTINGS_UI_HOMESCREEN_SEARCH_PANEL_LEFT,
+                                searchPanelVal);
+
+        notifyDataSetChanged();
     }
 }

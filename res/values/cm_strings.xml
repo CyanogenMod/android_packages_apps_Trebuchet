@@ -28,6 +28,10 @@
     <string name="setting_state_on">ON</string>
     <string name="setting_state_off">OFF</string>
 
+    <!-- Search Panel states -->
+    <string name="search_panel_gel">Google Now</string>
+    <string name="search_panel_custom_home">CM Home</string>
+
     <!-- Themes button -->
     <string name="themes_button_text">Themes</string>
 
@@ -89,4 +93,8 @@
 
     <!-- App not available toast text -->
     <string name="app_not_available">App not available</string>
+
+    <!-- Dashclock permission info (for CMHome) -->
+    <string name="permission_desc_read_extension_data">Allows requesting DashClock extension data</string>
+    <string name="permission_label_read_extension_data">Request DashClock extension data</string>
 </resources>
