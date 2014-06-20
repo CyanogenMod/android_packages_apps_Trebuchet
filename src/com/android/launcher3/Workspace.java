@@ -4354,12 +4354,7 @@ public class Workspace extends SmoothPagedView
     }
 
     public int getCurrentPageOffsetFromCustomContent() {
-        int numCustomPages = numCustomPages();
-        // Special case where the Gel Integration page must be counted below
-        if(mLauncher.isGelIntegrationEnabled() && mLauncher.isGelIntegrationSupported()) {
-            numCustomPages += 1;
-        }
-        return getNextPage() - numCustomPages;
+        return getNextPage() - numCustomPages();
     }
 
     /**
