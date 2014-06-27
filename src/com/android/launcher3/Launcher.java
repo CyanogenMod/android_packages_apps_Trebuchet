@@ -640,7 +640,35 @@ public class Launcher extends Activity
 
     /** To be overriden by subclasses to hint to Launcher that we have custom content */
     protected boolean hasCustomContentToLeft() {
-        return false;
+       return isGelIntegrationSupported() && isGelIntegrationEnabled();
+    }
+
+    public boolean isGelIntegrationSupported() {
+        final SearchManager searchManager =
+            (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        ComponentName globalSearchActivity = searchManager.getGlobalSearchActivity();
+
+        // Currently the only custom content available is the GEL launcher integration,
+        // only supported on CyanogenMod.
+        return globalSearchActivity != null && isCM();
+    }
+
+    public boolean isGelIntegrationEnabled() {
+        return mGelIntegrationEnabled;
+    }
+
+    public void onCustomContentLaunch() {
+        if(isGelIntegrationEnabled() && isGelIntegrationSupported()) {
+            GelIntegrationHelper.getInstance().registerSwipeBackGestureListenerAndStartGel(this, mWorkspace.isLayoutRtl());
+        }
+    }
+
+    /**
+     * Check if the device running this application is running CyanogenMod.
+     * @return true if this device is running CM.
+     */
+    protected boolean isCM() {
+        return getPackageManager().hasSystemFeature("com.cyanogenmod.android");
     }
 
     /**
