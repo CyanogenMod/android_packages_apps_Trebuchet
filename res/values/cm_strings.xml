@@ -14,7 +14,7 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <!-- Application name -->
     <string name="cm_application_name" translatable="false">Trebuchet</string>
     <!-- App version -->
@@ -68,7 +68,7 @@
     <string name="grid_size_comfortable">Comfortable</string>
     <string name="grid_size_cozy">Cozy</string>
     <string name="grid_size_condensed">Condensed</string>
-    <string name="grid_size_custom">Custom</string>
+    <string name="grid_size_custom">Custom (<xliff:g id="rows">%1$d</xliff:g> \u00d7 <xliff:g id="columns">%2$d</xliff:g>)</string>
     <string name="preferences_interface_homescreen_custom">Select custom size</string>
     <string name="preferences_interface_homescreen_rows_title">Number of rows</string>
     <string name="preferences_interface_homescreen_columns_title">Number of columns</string>
