@@ -2482,9 +2482,9 @@ public class Workspace extends SmoothPagedView
             if (overviewToWorkspace || stateIsNormal) {
                 ((SlidingUpPanelLayout) overviewPanel).collapsePane();
                 overviewPanel.setScaleY(1.0f);
-                mOverviewPanelSlideScale = 2.5f;
+                mOverviewPanelSlideScale = 3.0f;
             } else if (workspaceToOverview || stateIsOverview) {
-                overviewPanel.setScaleY(2.5f);
+                overviewPanel.setScaleY(3.0f);
                 mOverviewPanelSlideScale = 1.0f;
             }
 
