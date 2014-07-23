@@ -42,11 +42,11 @@ public class BubbleTextView extends TextView {
 
     private static SparseArray<Theme> sPreloaderThemes = new SparseArray<>(2);
 
-    private static final float SHADOW_LARGE_RADIUS = 4.0f;
-    private static final float SHADOW_SMALL_RADIUS = 1.75f;
-    private static final float SHADOW_Y_OFFSET = 2.0f;
-    private static final int SHADOW_LARGE_COLOUR = 0xDD000000;
-    private static final int SHADOW_SMALL_COLOUR = 0xCC000000;
+    public static final float SHADOW_LARGE_RADIUS = 4.0f;
+    public static final float SHADOW_SMALL_RADIUS = 1.75f;
+    public static final float SHADOW_Y_OFFSET = 2.0f;
+    public static final int SHADOW_LARGE_COLOUR = 0xDD000000;
+    public static final int SHADOW_SMALL_COLOUR = 0xCC000000;
     static final float PADDING_V = 3.0f;
 
     private HolographicOutlineHelper mOutlineHelper;
