@@ -45,6 +45,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.util.Log;
 import android.util.Pair;
 import android.view.ActionMode;
@@ -89,6 +90,7 @@ public class WallpaperPickerActivity extends WallpaperCropActivity {
     private static final String OLD_DEFAULT_WALLPAPER_THUMBNAIL_FILENAME = "default_thumb.jpg";
     private static final String DEFAULT_WALLPAPER_THUMBNAIL_FILENAME = "default_thumb2.jpg";
     private static final int FLAG_POST_DELAY_MILLIS = 200;
+    private static final String INTENT_EXTRA_PACKAGE_NAME = "packagename";
 
     private View mSelectedTile;
     private boolean mIgnoreNextTap;
@@ -107,6 +109,8 @@ public class WallpaperPickerActivity extends WallpaperCropActivity {
     private WallpaperInfo mLiveWallpaperInfoOnPickerLaunch;
     private int mSelectedIndex = -1;
     private WallpaperInfo mLastClickedLiveWallpaperInfo;
+    private String mSpecificPackage;
+    private Context mResPackageCtx = null;
 
     public static abstract class WallpaperTileInfo {
         protected View mView;
@@ -378,6 +382,20 @@ public class WallpaperPickerActivity extends WallpaperCropActivity {
         mCropView = (CropView) findViewById(R.id.cropView);
         mCropView.setVisibility(View.INVISIBLE);
 
+        Intent intent = getIntent();
+        if (intent != null) {
+            mSpecificPackage = intent.getStringExtra(INTENT_EXTRA_PACKAGE_NAME);
+        }
+
+        try {
+            if (!TextUtils.isEmpty(mSpecificPackage)) {
+                mResPackageCtx = createPackageContext(mSpecificPackage,
+                        Context.CONTEXT_IGNORE_SECURITY);
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Create third party package resources failed.");
+        }
+
         mWallpaperStrip = findViewById(R.id.wallpaper_strip);
         mCropView.setTouchCallback(new CropView.TouchCallback() {
             ViewPropertyAnimator mAnim;
@@ -459,8 +477,14 @@ public class WallpaperPickerActivity extends WallpaperCropActivity {
             }
         };
 
-        // Populate the built-in wallpapers
-        ArrayList<WallpaperTileInfo> wallpapers = findBundledWallpapers();
+        // Populate the built-in wallpapers or load all wallpapers from a specific package
+        ArrayList<WallpaperTileInfo> wallpapers;
+        if (mResPackageCtx == null) {
+            wallpapers = findBundledWallpapers();
+        } else {
+            wallpapers = findSpecificPackageWallpapers();
+        }
+
         mWallpapersView = (LinearLayout) findViewById(R.id.wallpaper_list);
         SimpleWallpapersAdapter ia = new SimpleWallpapersAdapter(this, wallpapers);
         populateWallpapersFromAdapter(mWallpapersView, ia, false);
@@ -650,6 +674,32 @@ public class WallpaperPickerActivity extends WallpaperCropActivity {
                 mActionMode = null;
             }
         };
+    }
+
+    private ArrayList<WallpaperTileInfo> findSpecificPackageWallpapers() {
+        Resources resources = null;
+        int wallpaperId = 0;
+        int extraWallpaperId = 0;
+
+        if (null != mResPackageCtx) {
+            Log.i(TAG, "resPackageCtx = " + mResPackageCtx);
+            resources = mResPackageCtx.getResources();
+            wallpaperId = resources.getIdentifier("wallpapers", "array", mSpecificPackage);
+            extraWallpaperId = resources.getIdentifier("extra_wallpapers", "array",
+                    mSpecificPackage);
+        }
+
+        // Context.getPackageName() may return the "original" package name,
+        // com.android.launcher2; Resources needs the real package name,
+        // com.android.launcher. So we ask Resources for what it thinks the
+        // package name should be.
+        final String packageName = resources.getResourcePackageName(wallpaperId);
+
+        ArrayList<WallpaperTileInfo> wallpapers = new ArrayList<WallpaperTileInfo>();
+        addWallpapers(wallpapers, resources, packageName, wallpaperId);
+        addWallpapers(wallpapers, resources, packageName, extraWallpaperId);
+
+        return wallpapers;
     }
 
     private void selectTile(View v) {
