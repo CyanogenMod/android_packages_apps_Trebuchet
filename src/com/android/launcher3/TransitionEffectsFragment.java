@@ -89,7 +89,6 @@ public class TransitionEffectsFragment extends Fragment {
                 : R.string.preferences_interface_homescreen_scrolling_transition_effect;
 
         mTransitionIcon = (ImageView) v.findViewById(R.id.settings_transition_image);
-        mListView = (ListView) v.findViewById(R.id.settings_transitions_list);
         TextView title = (TextView) v.findViewById(R.id.transition_effect_title);
         title.setText(getResources().getString(R.string.scroll_effect_text));
         LinearLayout titleLayout = (LinearLayout) v.findViewById(R.id.transition_title);

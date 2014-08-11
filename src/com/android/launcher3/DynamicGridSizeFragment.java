@@ -38,6 +38,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -90,6 +91,14 @@ public class DynamicGridSizeFragment extends Fragment
                 Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.dynamic_grid_size_screen, container, false);
         mDynamicGrid = (GridSizeView) v.findViewById(R.id.dynamic_grid_size_image);
+        mListView = (ListView) v.findViewById(R.id.dynamic_grid_list);
+
+        Launcher launcher = (Launcher) getActivity();
+        LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams)
+                mListView.getLayoutParams();
+        lp.bottomMargin = ((FrameLayout.LayoutParams) launcher.getOverviewPanel()
+                .findViewById(R.id.settings_container).getLayoutParams()).bottomMargin;
+        mListView.setLayoutParams(lp);
 
         LinearLayout titleLayout = (LinearLayout) v.findViewById(R.id.dynamic_grid_title);
         titleLayout.setOnClickListener(new View.OnClickListener() {
@@ -109,7 +118,6 @@ public class DynamicGridSizeFragment extends Fragment
 
         updateGridMetrics();
 
-        mListView = (ListView) v.findViewById(R.id.dynamic_grid_list);
         Resources res = getResources();
         int[] valueResIds = {
             R.string.grid_size_comfortable,
