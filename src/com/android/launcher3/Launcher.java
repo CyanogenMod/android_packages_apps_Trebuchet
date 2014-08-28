@@ -2684,6 +2684,8 @@ public class Launcher extends Activity
             if (mAppsCustomizeContent.getContentType() ==
                     AppsCustomizePagedView.ContentType.Applications) {
                 showWorkspace(true);
+                // Background was set to gradient in onPause(), restore to black if in all apps.
+                setWorkspaceBackground(mState == State.WORKSPACE);
             } else {
                 showOverviewMode(true);
             }
