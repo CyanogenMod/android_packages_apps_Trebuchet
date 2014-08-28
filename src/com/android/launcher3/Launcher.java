@@ -2783,6 +2783,9 @@ public class Launcher extends Activity
             }
             else {
                 showWorkspace(true);
+                // Background was set to gradient in onPause(), restore to black if in all apps.
+                setWorkspaceBackground(mState == State.WORKSPACE ? WORKSPACE_BACKGROUND_GRADIENT
+                        : WORKSPACE_BACKGROUND_TRANSPARENT);
             }
         } else if (mWorkspace.getOpenFolder() != null) {
             Folder openFolder = mWorkspace.getOpenFolder();
