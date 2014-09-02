@@ -17,5 +17,13 @@
 
 <resources>
     <string-array name="wallpapers" translatable="false">
+        <!-- This special drawable references the platform's private
+             default_wallpaper resource so the user can always choose it. -->
+        <item>default_wallpaper</item>
+
+        <!-- If you want additional bitmap drawable resources to appear in the
+             wallpaper picker, add them to this list. For each foo.jpg be sure
+             to include a foo_small.jpg to be used as a thumbnail in the
+             scrolling gallery widget. -->
     </string-array>
 </resources>
