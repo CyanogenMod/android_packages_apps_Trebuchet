@@ -4,7 +4,6 @@
 
      Copyright (C) 2009 The Android Open Source Project
 
-
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
      You may obtain a copy of the License at
@@ -20,106 +19,233 @@
 
 <favorites xmlns:launcher="http://schemas.android.com/apk/res-auto/com.android.launcher3">
     <!-- Far-left screen [0] -->
-
     <!-- Left screen [1] -->
-    <appwidget
-        launcher:packageName="com.android.settings"
-        launcher:className="com.android.settings.widget.SettingsAppWidgetProvider"
-        launcher:screen="1"
+    <!-- Middle screen [2] -->
+    <appwidget launcher:className="com.dolby.DolbyWidgetSmallProvider"
+        launcher:packageName="com.dolby"
+        launcher:container="-100"
+        launcher:screen="2"
+        launcher:x="0"
+        launcher:y="0"
+        launcher:spanX="4"
+        launcher:spanY="2" />
+    <folder launcher:container="-100"
+        launcher:screen="2"
         launcher:x="0"
         launcher:y="3"
-        launcher:spanX="4"
-        launcher:spanY="1" />
-
-    <!-- Middle screen [2] -->
-    <appwidget
-        launcher:packageName="com.android.deskclock"
-        launcher:className="com.android.alarmclock.AnalogAppWidgetProvider"
+        launcher:title="@string/foldname_smartworld">
+        <favorite launcher:className="com.smartfren.SplashActivity"
+            launcher:packageName="com.smartfren"
+            launcher:container="10"
+            launcher:screen="0"
+            launcher:x="0"
+            launcher:y="0" />
+        <favorite launcher:className="com.mfino.bsim.SplashScreen"
+            launcher:packageName="com.mfino.bsim"
+            launcher:container="10"
+            launcher:screen="0"
+            launcher:x="1"
+            launcher:y="0" />
+        <favorite launcher:className="com.smartfren.app.excite.Main"
+            launcher:packageName="com.smartfren.app.excite"
+            launcher:container="10"
+            launcher:screen="0"
+            launcher:x="0"
+            launcher:y="1" />
+        <favorite launcher:className="rocket.zalora.view.SplashScreen"
+            launcher:packageName="com.zalora.android"
+            launcher:container="10"
+            launcher:screen="0"
+            launcher:x="1"
+            launcher:y="1" />
+    </folder>
+    <folder launcher:container="-100"
         launcher:screen="2"
-        launcher:x="1"
-        launcher:y="0"
-        launcher:spanX="2"
-        launcher:spanY="2" />
-
-    <!--UX_Enhance_Middle screen [2]-->
-    <favorite
-        launcher:packageName="com.android.email"
-        launcher:className="com.android.email.activity.Welcome"
+        launcher:x="3"
+        launcher:y="3"
+        launcher:title="@string/foldname_music">
+        <favorite launcher:className="com.foreverapps.smartfren.Activity"
+            launcher:packageName="com.foreverapps.smartfren"
+            launcher:container="27"
+            launcher:screen="0"
+            launcher:x="0"
+            launcher:y="0" />
+        <favorite launcher:className="com.melon.http.Splash"
+            launcher:packageName="com.smartfren.melon"
+            launcher:container="27"
+            launcher:screen="0"
+            launcher:x="1"
+            launcher:y="0" />
+        <favorite launcher:className="com.android.music.MusicBrowserActivity"
+            launcher:packageName="com.android.music"
+            launcher:container="27"
+            launcher:screen="0"
+            launcher:x="0"
+            launcher:y="1" />
+    </folder>
+    <favorite launcher:className="com.iguanasms.smartfrenstore.MainActivity"
+        launcher:packageName="com.iguanasms.smartfrenstore"
+        launcher:container="-100"
         launcher:screen="2"
         launcher:x="0"
         launcher:y="4" />
-    <favorite
-        launcher:packageName="com.android.calendar"
-        launcher:className="com.android.calendar.AllInOneActivity"
+    <favorite launcher:className="com.linkit360.funbox.WelcomeActivity"
+        launcher:packageName="com.linkit360.funbox"
+        launcher:container="-100"
         launcher:screen="2"
         launcher:x="1"
         launcher:y="4" />
-    <favorite
-        launcher:packageName="com.android.settings"
-        launcher:className="com.android.settings.Settings"
-        launcher:screen="2"
-        launcher:x="2"
-        launcher:y="4" />
-    <favorite
+    <favorite launcher:className="com.android.vending.AssetBrowserActivity"
         launcher:packageName="com.android.vending"
-        launcher:className="com.google.android.finsky.activities.MainActivity"
+        launcher:container="-100"
+        launcher:screen="2"
+        launcher:x="2"
+        launcher:y="4" />
+    <favorite launcher:className="com.baidu.browser.inter.SplashActivity"
+        launcher:packageName="com.baidu.browser.inter"
+        launcher:container="-100"
         launcher:screen="2"
         launcher:x="3"
         launcher:y="4" />
 
-    <!-- UX_Enhance_screen [3] -->
-    <favorite
-        launcher:packageName="com.android.gallery3d"
-        launcher:className="com.android.camera.Camera"
+    <!-- Right screen [3] -->
+    <appwidget launcher:className="com.smartfren.widget.CustomerInfoWidget"
+        launcher:packageName="com.smartfren"
+        launcher:container="-100"
+        launcher:screen="3"
+        launcher:x="0"
+        launcher:y="0"
+        launcher:spanX="4"
+        launcher:spanY="3" />
+    <favorite launcher:className="com.bbm.ui.activities.StartupActivity"
+        launcher:packageName="com.bbm"
+        launcher:container="-100"
         launcher:screen="3"
         launcher:x="0"
         launcher:y="4" />
-    <favorite
-        launcher:packageName="com.android.gallery3d"
-        launcher:className="com.android.gallery3d.app.Gallery"
+    <favorite launcher:className="com.caf.fmradio.FMRadio"
+        launcher:packageName="com.caf.fmradio"
+        launcher:container="-100"
         launcher:screen="3"
         launcher:x="1"
         launcher:y="4" />
-    <favorite
-        launcher:packageName="com.android.music"
-        launcher:className="com.android.music.VideoBrowserActivity"
+    <favorite launcher:className="com.saraswati.gamesantigalau.activity.Splash"
+        launcher:packageName="com.saraswati.gamesantigalau"
+        launcher:container="-100"
         launcher:screen="3"
         launcher:x="2"
         launcher:y="4" />
-   <favorite
-        launcher:packageName="com.android.music"
-        launcher:className="com.android.music.MusicBrowserActivity"
+    <favorite launcher:className="com.saraswati.lipstiktv.activity.Splash"
+        launcher:packageName="com.saraswati.lipstiktv"
+        launcher:container="-100"
         launcher:screen="3"
         launcher:x="3"
         launcher:y="4" />
+    <!-- Far-right screen [4] -->
 
-    <!-- Hotseat (We use the screen as the position of the item in the hotseat) -->
-    <favorite
+    <!-- Hot Seat -->
+    <favorite launcher:className="com.android.dialer.DialtactsActivity"
         launcher:packageName="com.android.dialer"
-        launcher:className="com.android.dialer.DialtactsActivity"
         launcher:container="-101"
         launcher:screen="0"
         launcher:x="0"
         launcher:y="0" />
-    <favorite
-        launcher:packageName="com.android.contacts"
-        launcher:className="com.android.contacts.activities.PeopleActivity"
+    <favorite launcher:className="com.android.mms.ui.ConversationList"
+        launcher:packageName="com.android.mms"
         launcher:container="-101"
         launcher:screen="1"
         launcher:x="1"
         launcher:y="0" />
-    <favorite
-        launcher:packageName="com.android.mms"
-        launcher:className="com.android.mms.ui.ConversationList"
+    <favorite launcher:className="com.android.camera.CameraActivity"
+        launcher:packageName="com.android.camera2"
         launcher:container="-101"
         launcher:screen="3"
         launcher:x="3"
         launcher:y="0" />
-    <favorite
-        launcher:packageName="com.android.browser"
-        launcher:className="com.android.browser.BrowserActivity"
-        launcher:container="-101"
+    <folder launcher:container="-101"
         launcher:screen="4"
         launcher:x="4"
-        launcher:y="0" />
+        launcher:y="0"
+        launcher:title="@string/foldname_google">
+        <favorite launcher:className="com.google.android.apps.chrome.Main"
+            launcher:packageName="com.android.chrome"
+            launcher:container="47"
+            launcher:screen="0"
+            launcher:x="0"
+            launcher:y="0" />
+        <favorite launcher:className="com.google.android.gm.ConversationListActivityGmail"
+            launcher:packageName="com.google.android.gm"
+            launcher:container="47"
+            launcher:screen="0"
+            launcher:x="1"
+            launcher:y="0" />
+        <favorite launcher:className="com.google.android.apps.plus.phone.HomeActivity"
+            launcher:packageName="com.google.android.apps.plus"
+            launcher:container="47"
+            launcher:screen="0"
+            launcher:x="2"
+            launcher:y="0" />
+        <favorite launcher:className="com.google.android.maps.MapsActivity"
+            launcher:packageName="com.google.android.apps.maps"
+            launcher:container="47"
+            launcher:screen="0"
+            launcher:x="3"
+            launcher:y="0" />
+        <favorite
+            launcher:className="com.google.android.apps.genie.geniewidget.activities.NewsActivity"
+            launcher:packageName="com.google.android.apps.genie.geniewidget"
+            launcher:container="47"
+            launcher:screen="0"
+            launcher:x="0"
+            launcher:y="1" />
+        <favorite launcher:className="com.android.music.activitymanagement.TopLevelActivity"
+            launcher:packageName="com.google.android.music"
+            launcher:container="47"
+            launcher:screen="0"
+            launcher:x="1"
+            launcher:y="1" />
+        <favorite launcher:className="com.google.android.apps.books.app.BooksActivity"
+            launcher:packageName="com.google.android.apps.books"
+            launcher:container="47"
+            launcher:screen="0"
+            launcher:x="2"
+            launcher:y="1" />
+        <favorite
+            launcher:className="com.google.apps.dots.android.app.activity.CurrentsStartActivity"
+            launcher:packageName="com.google.android.apps.magazines"
+            launcher:container="47"
+            launcher:screen="0"
+            launcher:x="3"
+            launcher:y="1" />
+        <favorite launcher:className="com.google.android.gms.games.ui.destination.main.MainActivity"
+            launcher:packageName="com.google.android.play.games"
+            launcher:container="47"
+            launcher:screen="0"
+            launcher:x="0"
+            launcher:y="2" />
+        <favorite launcher:className="com.google.android.apps.docs.app.NewMainProxyActivity"
+            launcher:packageName="com.google.android.apps.docs"
+            launcher:container="47"
+            launcher:screen="0"
+            launcher:x="1"
+            launcher:y="2" />
+        <favorite launcher:className="com.google.android.youtube.app.honeycomb.Shell$HomeActivity"
+            launcher:packageName="com.google.android.youtube"
+            launcher:container="47"
+            launcher:screen="0"
+            launcher:x="2"
+            launcher:y="2" />
+        <favorite launcher:className="com.google.android.apps.plus.phone.ConversationListActivity"
+            launcher:packageName="com.google.android.apps.plus"
+            launcher:container="47"
+            launcher:screen="0"
+            launcher:x="3"
+            launcher:y="2" />
+        <favorite launcher:className="com.google.android.talk.SigningInActivity"
+            launcher:packageName="com.google.android.talk"
+            launcher:container="47"
+            launcher:screen="0"
+            launcher:x="0"
+            launcher:y="3" />
+    </folder>
 </favorites>
