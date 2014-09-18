@@ -67,6 +67,10 @@ public class DynamicGrid {
             fourByFourDefaultLayout = R.xml.ct_default_workspace_4x4;
         } else if (LauncherApplication.LAUNCHER_BACKUP_SHORTCUT_ENABLED) {
             fourByFourDefaultLayout = R.xml.cm_with_backup_default_workspace;
+        } else if (LauncherApplication.LAUNCHER_MMX_SHORTCUT_ENABLED) {
+            fourByFourDefaultLayout = R.xml.micromax_default_workspace;
+        } else if (LauncherApplication.LAUNCHER_SFR_SHORTCUT_ENABLED) {
+            fourByFourDefaultLayout = R.xml.smartfren_default_workspace;
         }
 
         DEFAULT_ICON_SIZE_PX = pxFromDp(DEFAULT_ICON_SIZE_DP, dm);

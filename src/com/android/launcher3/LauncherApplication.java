@@ -23,6 +23,8 @@ public class LauncherApplication extends Application {
     public static boolean LAUNCHER_SHORTCUT_ENABLED;
     public static boolean SHOW_CTAPP_FEATURE;
     public static boolean LAUNCHER_BACKUP_SHORTCUT_ENABLED;
+    public static boolean LAUNCHER_MMX_SHORTCUT_ENABLED;
+    public static boolean LAUNCHER_SFR_SHORTCUT_ENABLED;
 
     @Override
     public void onCreate() {
@@ -34,6 +36,10 @@ public class LauncherApplication extends Application {
         SHOW_CTAPP_FEATURE = getResources().getBoolean(R.bool.config_launcher_page);
         LAUNCHER_BACKUP_SHORTCUT_ENABLED =
                 getResources().getBoolean(R.bool.config_launcher_show_backup_shortcut);
+        LAUNCHER_MMX_SHORTCUT_ENABLED =
+                getResources().getBoolean(R.bool.config_micromax_enabled);
+        LAUNCHER_SFR_SHORTCUT_ENABLED =
+                getResources().getBoolean(R.bool.config_smartfren_enabled);
         LauncherAppState.setApplicationContext(this);
         LauncherAppState.getInstance();
     }
