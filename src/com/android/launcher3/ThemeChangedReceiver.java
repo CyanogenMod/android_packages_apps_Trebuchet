@@ -19,8 +19,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import static com.android.launcher3.WidgetPreviewLoader.CacheDb.DB_NAME;
-
 import java.io.File;
 import java.util.ArrayList;
 
@@ -71,7 +69,7 @@ public class ThemeChangedReceiver extends BroadcastReceiver {
         File[] files = context.getCacheDir().listFiles();
         if (files != null) {
             for (File f : files) {
-                if (!f.isDirectory() && f.getName().startsWith(DB_NAME)) f.delete();
+                if (!f.isDirectory() && f.getName().startsWith(LauncherFiles.LAUNCHER_DB)) f.delete();
             }
         }
     }
