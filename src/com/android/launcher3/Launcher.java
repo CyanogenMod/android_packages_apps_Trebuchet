@@ -59,7 +59,6 @@ import android.database.ContentObserver;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Point;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
@@ -82,7 +81,6 @@ import android.text.Selection;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.method.TextKeyListener;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.Pair;
 import android.view.Display;
@@ -636,21 +634,8 @@ public class Launcher extends Activity
                         SettingsProvider.SETTINGS_UI_DRAWER_TYPE,
                         R.integer.preferences_interface_drawer_type_default));
 
-        // Determine the dynamic grid properties
-        Point smallestSize = new Point();
-        Point largestSize = new Point();
-        Point realSize = new Point();
-        Display display = getWindowManager().getDefaultDisplay();
-        display.getCurrentSizeRange(smallestSize, largestSize);
-        display.getRealSize(realSize);
-        DisplayMetrics dm = new DisplayMetrics();
-        display.getMetrics(dm);
         // Lazy-initialize the dynamic grid
-        mGrid = app.initDynamicGrid(this,
-                Math.min(smallestSize.x, smallestSize.y),
-                Math.min(largestSize.x, largestSize.y),
-                realSize.x, realSize.y,
-                dm.widthPixels, dm.heightPixels);
+        mGrid = app.initDynamicGrid(this);
 
         mModel = app.setLauncher(this);
         mIconCache = app.getIconCache();
