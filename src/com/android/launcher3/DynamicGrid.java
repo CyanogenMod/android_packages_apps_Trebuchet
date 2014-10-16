@@ -68,47 +68,40 @@ public class DynamicGrid {
         // Our phone profiles include the bar sizes in each orientation
         deviceProfiles.add(new DeviceProfile("Super Short Stubby",
                 255, 300,  2, 3,  (useLargeIcons ? 58 : 46), 13, (hasAA ? 3 : 5),
-                (useLargeIcons ? 58 : 46), fourByFourDefaultLayout,
-                R.xml.default_workspace_4x4_no_all_apps));
+                (useLargeIcons ? 58 : 46), fourByFourDefaultLayout));
         deviceProfiles.add(new DeviceProfile("Shorter Stubby",
                 255, 400,  3, 3,  (useLargeIcons ? 58 : 46), 13, (hasAA ? 3 : 5),
-                (useLargeIcons ? 58 : 46), fourByFourDefaultLayout,
-                R.xml.default_workspace_4x4_no_all_apps));
+                (useLargeIcons ? 58 : 46), fourByFourDefaultLayout));
         deviceProfiles.add(new DeviceProfile("Short Stubby",
                 275, 420,  3, 4,  (useLargeIcons ? 58 : 46), 13, (hasAA ? 5 : 5),
-                (useLargeIcons ? 58 : 46), fourByFourDefaultLayout,
-                R.xml.default_workspace_4x4_no_all_apps));
+                (useLargeIcons ? 58 : 46), fourByFourDefaultLayout));
         deviceProfiles.add(new DeviceProfile("Stubby",
                 255, 450,  3, 4,  (useLargeIcons ? 58 : 46), 13, (hasAA ? 5 : 5),
-                (useLargeIcons ? 58 : 46), fourByFourDefaultLayout,
-                R.xml.default_workspace_4x4_no_all_apps));
+                (useLargeIcons ? 58 : 46), fourByFourDefaultLayout));
         deviceProfiles.add(new DeviceProfile("Nexus S",
                 296, 491.33f,  4, 4,  (useLargeIcons ? 58 : 46), 13, (hasAA ? 5 : 5),
-                (useLargeIcons ? 58 : 46), fourByFourDefaultLayout,
-                R.xml.default_workspace_4x4_no_all_apps));
+                (useLargeIcons ? 58 : 46), fourByFourDefaultLayout));
         deviceProfiles.add(new DeviceProfile("Nexus 4",
                 335, 567,  4, 4,  (useLargeIcons ? DEFAULT_ICON_SIZE_DP : 56), 13, (hasAA ? 5 : 5),
-                (useLargeIcons ? 60 : 48), fourByFourDefaultLayout,
-                R.xml.default_workspace_4x4_no_all_apps));
+                (useLargeIcons ? 60 : 48), fourByFourDefaultLayout));
         deviceProfiles.add(new DeviceProfile("Nexus 5",
                 359, 567,  4, 4,  (useLargeIcons ? DEFAULT_ICON_SIZE_DP : 56), 13, (hasAA ? 5 : 5),
-                (useLargeIcons ? 60 : 48), fourByFourDefaultLayout,
-                R.xml.default_workspace_4x4_no_all_apps));
+                (useLargeIcons ? 60 : 48), fourByFourDefaultLayout));
         deviceProfiles.add(new DeviceProfile("Large Phone",
                 406, 694,  5, 5,  (useLargeIcons ? 68 : 56), 14.4f,  5, (useLargeIcons ? 60 : 48),
-                R.xml.default_workspace_5x5, R.xml.default_workspace_5x5_no_all_apps));
+                R.xml.default_workspace_5x5));
         // The tablet profile is odd in that the landscape orientation
         // also includes the nav bar on the side
         deviceProfiles.add(new DeviceProfile("Nexus 7",
                 575, 904,  5, 6, (useLargeIcons ? 76 : 60), 14.4f,  7, (useLargeIcons ? 64 : 52),
-                R.xml.default_workspace_5x6, R.xml.default_workspace_5x6_no_all_apps));
+                R.xml.default_workspace_5x6));
         // Larger tablet profiles always have system bars on the top & bottom
         deviceProfiles.add(new DeviceProfile("Nexus 10",
                 727, 1207,  5, 6,  (useLargeIcons ? 80 : 64), 14.4f,  7, (useLargeIcons ? 68 : 56),
-                R.xml.default_workspace_5x6, R.xml.default_workspace_5x6_no_all_apps));
+                R.xml.default_workspace_5x6));
         deviceProfiles.add(new DeviceProfile("20-inch Tablet",
                 1527, 2527,  7, 7,  (useLargeIcons ? 104 : 80), 20,  7, (useLargeIcons ? 76 : 64),
-                fourByFourDefaultLayout, R.xml.default_workspace_4x4_no_all_apps));
+                fourByFourDefaultLayout));
         mMinWidth = dpiFromPx(minWidthPx, dm);
         mMinHeight = dpiFromPx(minHeightPx, dm);
         mProfile = new DeviceProfile(context, deviceProfiles,
