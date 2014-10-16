@@ -207,6 +207,8 @@ public abstract class PagedView extends ViewGroup implements ViewGroup.OnHierarc
 
     protected boolean mAllowLongPress = true;
 
+    private boolean mWasInOverscroll = false;
+
     // Page Indicator
     private int mPageIndicatorViewId;
     private PageIndicator mPageIndicator;
@@ -645,6 +647,7 @@ public abstract class PagedView extends ViewGroup implements ViewGroup.OnHierarc
             mDelayedSnapToPageRunnable.run();
             mDelayedSnapToPageRunnable = null;
         }
+        mWasInOverscroll = false;
     }
 
     /**
@@ -683,6 +686,7 @@ public abstract class PagedView extends ViewGroup implements ViewGroup.OnHierarc
         if (isXBeforeFirstPage) {
             super.scrollTo(0, y);
             if (mAllowOverScroll) {
+                mWasInOverscroll = true;
                 if (isRtl) {
                     overScroll(x - mMaxScrollX);
                 } else {
@@ -692,6 +696,7 @@ public abstract class PagedView extends ViewGroup implements ViewGroup.OnHierarc
         } else if (isXAfterLastPage) {
             super.scrollTo(mMaxScrollX, y);
             if (mAllowOverScroll) {
+                mWasInOverscroll = true;
                 if (isRtl) {
                     overScroll(x);
                 } else {
@@ -699,6 +704,10 @@ public abstract class PagedView extends ViewGroup implements ViewGroup.OnHierarc
                 }
             }
         } else {
+            if (mWasInOverscroll) {
+                overScroll(0);
+                mWasInOverscroll = false;
+            }
             mOverScrollX = x;
             super.scrollTo(x, y);
         }
@@ -1608,6 +1617,7 @@ public abstract class PagedView extends ViewGroup implements ViewGroup.OnHierarc
                 mLastMotionXRemainder = 0;
                 mTouchX = getViewportOffsetX() + getScrollX();
                 mSmoothingTime = System.nanoTime() / NANOTIME_DIV;
+                onScrollInteractionBegin();
                 pageBeginMoving();
             }
         }
@@ -1847,6 +1857,7 @@ public abstract class PagedView extends ViewGroup implements ViewGroup.OnHierarc
             mActivePointerId = ev.getPointerId(0);
 
             if (mTouchState == TOUCH_STATE_SCROLLING) {
+                onScrollInteractionBegin();
                 pageBeginMoving();
             }
             break;
@@ -2036,6 +2047,7 @@ public abstract class PagedView extends ViewGroup implements ViewGroup.OnHierarc
                             getScrollY(), vX, 0, Integer.MIN_VALUE, Integer.MAX_VALUE, 0, 0);
                     invalidate();
                 }
+                onScrollInteractionEnd();
             } else if (mTouchState == TOUCH_STATE_PREV_PAGE) {
                 // at this point we have not moved beyond the touch slop
                 // (otherwise mTouchState would be TOUCH_STATE_SCROLLING), so
@@ -2119,6 +2131,15 @@ public abstract class PagedView extends ViewGroup implements ViewGroup.OnHierarc
         mCancelTap = false;
         mTouchState = TOUCH_STATE_REST;
         mActivePointerId = INVALID_POINTER;
+    }
+
+    /**
+     * Triggered by scrolling via touch
+     */
+    protected void onScrollInteractionBegin() {
+    }
+
+    protected void onScrollInteractionEnd() {
     }
 
     protected void onUnhandledTap(MotionEvent ev) {

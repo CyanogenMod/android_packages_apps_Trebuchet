@@ -70,6 +70,7 @@ import android.widget.TextView;
 
 import com.android.launcher3.FolderIcon.FolderRingAnimator;
 import com.android.launcher3.Launcher.CustomContentCallbacks;
+import com.android.launcher3.Launcher.LauncherOverlay;
 import com.android.launcher3.LauncherSettings.Favorites;
 import com.android.launcher3.compat.PackageInstallerCompat;
 import com.android.launcher3.compat.PackageInstallerCompat.PackageInstallInfo;
@@ -294,6 +295,12 @@ public class Workspace extends SmoothPagedView
     private Runnable mDeferredAction;
     private boolean mDeferDropAfterUninstall;
     private boolean mUninstallSuccessful;
+
+    // State related to Launcher Overlay
+    LauncherOverlay mLauncherOverlay;
+    boolean mScrollInteractionBegan;
+    boolean mStartedSendingScrollEvents;
+    boolean mShouldSendPageSettled;
 
     private final Runnable mBindPages = new Runnable() {
         @Override
@@ -1284,6 +1291,58 @@ public class Workspace extends SmoothPagedView
             stripEmptyScreens();
             mStripScreensOnPageStopMoving = false;
         }
+
+        if (mShouldSendPageSettled) {
+            mLauncherOverlay.onScrollSettled();
+            mShouldSendPageSettled = false;
+        }
+    }
+
+    protected void onScrollInteractionBegin() {
+        super.onScrollInteractionEnd();
+        mScrollInteractionBegan = true;
+    }
+
+    protected void onScrollInteractionEnd() {
+        super.onScrollInteractionEnd();
+        mScrollInteractionBegan = false;
+        if (mStartedSendingScrollEvents) {
+            mStartedSendingScrollEvents = false;
+            mLauncherOverlay.onScrollInteractionEnd();
+        }
+    }
+
+    public void setLauncherOverlay(LauncherOverlay overlay) {
+        mLauncherOverlay = overlay;
+    }
+
+    @Override
+    protected void overScroll(float amount) {
+        boolean isRtl = isLayoutRtl();
+        boolean shouldOverScroll = (amount <= 0 && (!hasCustomContent() || isRtl)) ||
+                (amount >= 0 && (!hasCustomContent() || !isRtl));
+
+        boolean shouldScrollOverlay = (amount <= 0 && mLauncherOverlay != null && !isRtl) ||
+                (amount >= 0 && mLauncherOverlay != null && isRtl);
+
+        if (shouldScrollOverlay) {
+            if (!mStartedSendingScrollEvents && mScrollInteractionBegan) {
+                mStartedSendingScrollEvents = true;
+                mLauncherOverlay.onScrollInteractionBegin();
+                mShouldSendPageSettled = true;
+            }
+            int screenSize = getViewportWidth();
+            float f = (amount / screenSize);
+
+            int progress = (int) Math.abs((f * 100));
+
+            mLauncherOverlay.onScrollChange(progress, isRtl);
+        } else if (shouldOverScroll) {
+            dampedOverScroll(amount);
+            mOverScrollEffect = acceleratedOverFactor(amount);
+        } else {
+            mOverScrollEffect = 0;
+        }
     }
 
     @Override
@@ -1766,18 +1825,6 @@ public class Workspace extends SmoothPagedView
                 ((CellLayout) getChildAt(0)).setOverScrollAmount(0, false);
                 ((CellLayout) getChildAt(getChildCount() - 1)).setOverScrollAmount(0, false);
             }
-        }
-    }
-
-    @Override
-    protected void overScroll(float amount) {
-        boolean shouldOverScroll = (amount < 0 && (!hasCustomContent() || isLayoutRtl())) ||
-                (amount > 0 && (!hasCustomContent() || !isLayoutRtl()));
-        if (shouldOverScroll) {
-            dampedOverScroll(amount);
-            mOverScrollEffect = acceleratedOverFactor(amount);
-        } else {
-            mOverScrollEffect = 0;
         }
     }
 
@@ -2493,12 +2540,6 @@ public class Workspace extends SmoothPagedView
             hotseatAlpha.addListener(
                     new AlphaUpdateListener(hotseat, finalHotseatAndPageIndicatorAlpha));
 
-            Animator searchBarAlpha = new LauncherViewPropertyAnimator(searchBar)
-                .alpha(finalSearchBarAlpha).withLayer();
-            if (mShowSearchBar) {
-                searchBarAlpha.addListener(new AlphaUpdateListener(searchBar, finalSearchBarAlpha));
-            }
-
             Animator overviewPanelAlpha = new LauncherViewPropertyAnimator(overviewPanel)
                 .alpha(finalOverviewPanelAlpha).withLayer();
             overviewPanelAlpha.addListener(
@@ -2507,11 +2548,9 @@ public class Workspace extends SmoothPagedView
             // For animation optimations, we may need to provide the Launcher transition
             // with a set of views on which to force build layers in certain scenarios.
             hotseat.setLayerType(View.LAYER_TYPE_HARDWARE, null);
-            searchBar.setLayerType(View.LAYER_TYPE_HARDWARE, null);
             overviewPanel.setLayerType(View.LAYER_TYPE_HARDWARE, null);
             if (layerViews != null) {
                 layerViews.add(hotseat);
-                layerViews.add(searchBar);
                 layerViews.add(overviewPanel);
             }
 
@@ -2528,7 +2567,20 @@ public class Workspace extends SmoothPagedView
             overviewPanelAlpha.setDuration(duration);
             pageIndicatorAlpha.setDuration(duration);
             hotseatAlpha.setDuration(duration);
-            searchBarAlpha.setDuration(duration);
+
+            if (searchBar != null) {
+                Animator searchBarAlpha = new LauncherViewPropertyAnimator(searchBar)
+                    .alpha(finalSearchBarAlpha).withLayer();
+                searchBarAlpha.addListener(new AlphaUpdateListener(searchBar, finalSearchBarAlpha));
+                searchBar.setLayerType(View.LAYER_TYPE_HARDWARE, null);
+                if (layerViews != null) {
+                    layerViews.add(searchBar);
+                }
+                searchBarAlpha.setDuration(duration);
+                if (mShowSearchBar && !mLauncher.getDragController().isDragging()) {
+                    anim.play(searchBarAlpha);
+                }
+            }
 
             float mOverviewPanelSlideScale = 1.0f;
 
@@ -2576,9 +2628,6 @@ public class Workspace extends SmoothPagedView
             // Animation animation = AnimationUtils.loadAnimation(mLauncher, R.anim.drop_down);
             // overviewPanel.startAnimation(animation);
             anim.play(hotseatAlpha);
-            if (mShowSearchBar && !mLauncher.getDragController().isDragging()) {
-                    anim.play(searchBarAlpha);
-            }
             anim.play(pageIndicatorAlpha);
             anim.setStartDelay(delay);
         } else {
