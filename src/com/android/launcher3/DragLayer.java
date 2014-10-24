@@ -44,7 +44,7 @@ import java.util.ArrayList;
 /**
  * A ViewGroup that coordinates dragging across its descendants
  */
-public class DragLayer extends FrameLayout implements ViewGroup.OnHierarchyChangeListener {
+public class DragLayer extends InsettableFrameLayout {
     private DragController mDragController;
     private int[] mTmpXY = new int[2];
 
@@ -71,8 +71,6 @@ public class DragLayer extends FrameLayout implements ViewGroup.OnHierarchyChang
     public static final int ANIMATION_END_REMAIN_VISIBLE = 2;
 
     private TouchCompleteListener mTouchCompleteListener;
-
-    private final Rect mInsets = new Rect();
 
     private View mOverlayView;
     private int mTopViewIndex;
@@ -104,7 +102,6 @@ public class DragLayer extends FrameLayout implements ViewGroup.OnHierarchyChang
         // Disable multitouch across the workspace/all apps/customize tray
         setMotionEventSplittingEnabled(false);
         setChildrenDrawingOrderEnabled(true);
-        setOnHierarchyChangeListener(this);
 
         final Resources res = getResources();
         mLeftHoverDrawable = res.getDrawable(R.drawable.page_hover_left);
@@ -126,56 +123,9 @@ public class DragLayer extends FrameLayout implements ViewGroup.OnHierarchyChang
 
     @Override
     protected boolean fitSystemWindows(Rect insets) {
-        final int n = getChildCount();
-        for (int i = 0; i < n; i++) {
-            final View child = getChildAt(i);
-            if (child.getId() == R.id.overview_panel) {
-                LinearLayout layout = (LinearLayout)
-                        child.findViewById(R.id.settings_container);
-                FrameLayout.LayoutParams lp =
-                        (FrameLayout.LayoutParams) layout.getLayoutParams();
-                lp.bottomMargin += insets.bottom - mInsets.bottom;
-                layout.setLayoutParams(lp);
-                continue;
-            } else if (child.getId() == R.id.app_drawer_container) {
-                setAppDrawerInsets(child, insets);
 
-                continue;
-            }
-            setInsets(child, insets, mInsets);
-            if (child.getId() == R.id.search_drop_target_bar) {
-                continue;
-            }
-        }
-        mInsets.set(insets);
-        return true; // I'll take it from here
-    }
 
-    private void setAppDrawerInsets(View child, Rect insets) {
-        // List view
-        View view = child.findViewById(R.id.app_drawer_recyclerview);
-        FrameLayout.LayoutParams lp =
-                (FrameLayout.LayoutParams) view.getLayoutParams();
-        int paddingBottom = view.getPaddingBottom() + insets.bottom - mInsets.bottom;
-        int paddingTop = view.getPaddingTop() + insets.top - mInsets.top;
-        view.setLayoutParams(lp);
-        view.setPadding(view.getPaddingLeft(), paddingTop, view.getPaddingRight(), paddingBottom);
-
-        // Scrubber
-        view = child.findViewById(R.id.app_drawer_scrubber_container);
-        LinearLayout.LayoutParams llp = (LinearLayout.LayoutParams) view.getLayoutParams();
-        llp.bottomMargin += insets.bottom - mInsets.bottom;
-        view.setLayoutParams(llp);
-    }
-
-    Rect getInsets() {
-        return mInsets;
-    }
-
-    @Override
-    public void addView(View child, int index, android.view.ViewGroup.LayoutParams params) {
-        super.addView(child, index, params);
-        setInsets(child, mInsets, new Rect());
+        return super.fitSystemWindows(insets);
     }
 
     public void showOverlayView(View overlayView) {
@@ -190,19 +140,6 @@ public class DragLayer extends FrameLayout implements ViewGroup.OnHierarchyChang
 
     public void dismissOverlayView() {
         removeView(mOverlayView);
-    }
-
-    private void setInsets(View child, Rect newInsets, Rect oldInsets) {
-        final FrameLayout.LayoutParams flp = (FrameLayout.LayoutParams) child.getLayoutParams();
-        if (child instanceof Insettable) {
-            ((Insettable) child).setInsets(newInsets);
-        } else {
-            flp.topMargin += (newInsets.top - oldInsets.top);
-            flp.leftMargin += (newInsets.left - oldInsets.left);
-            flp.rightMargin += (newInsets.right - oldInsets.right);
-            flp.bottomMargin += (newInsets.bottom - oldInsets.bottom);
-        }
-        child.setLayoutParams(flp);
     }
 
     private boolean isEventOverFolderTextRegion(Folder folder, MotionEvent ev) {
@@ -849,6 +786,7 @@ public class DragLayer extends FrameLayout implements ViewGroup.OnHierarchyChang
 
     @Override
     public void onChildViewAdded(View parent, View child) {
+        super.onChildViewAdded(parent, child);
         if (mOverlayView != null) {
             // ensure that the overlay view stays on top. we can't use drawing order for this
             // because in API level 16 touch dispatch doesn't respect drawing order.

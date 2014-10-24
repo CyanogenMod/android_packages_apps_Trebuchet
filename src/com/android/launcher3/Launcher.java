@@ -266,7 +266,7 @@ public class Launcher extends Activity
 
     LauncherOverlayCallbacks mLauncherOverlayCallbacks = new LauncherOverlayCallbacksImpl();
     LauncherOverlay mLauncherOverlay;
-    ViewGroup mLauncherOverlayView;
+    InsettableFrameLayout mLauncherOverlayContainer;
 
     static final int APPWIDGET_HOST_ID = 1024;
     public static final int EXIT_SPRINGLOADED_MODE_SHORT_TIMEOUT = 300;
@@ -589,9 +589,9 @@ public class Launcher extends Activity
             mLauncherCallbacks.onCreate(savedInstanceState);
             if (mLauncherCallbacks.hasLauncherOverlay()) {
                 ViewStub stub = (ViewStub) findViewById(R.id.launcher_overlay_stub);
-                mLauncherOverlayView = (ViewGroup) stub.inflate();
-                mLauncherOverlay = mLauncherCallbacks.setLauncherOverlayView(mLauncherOverlayView,
-                        mLauncherOverlayCallbacks);
+                mLauncherOverlayContainer = (InsettableFrameLayout) stub.inflate();
+                mLauncherOverlay = mLauncherCallbacks.setLauncherOverlayView(
+                        mLauncherOverlayContainer, mLauncherOverlayCallbacks);
                 mWorkspace.setLauncherOverlay(mLauncherOverlay);
             }
         }
