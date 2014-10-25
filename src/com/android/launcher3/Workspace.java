@@ -301,6 +301,7 @@ public class Workspace extends SmoothPagedView
     boolean mScrollInteractionBegan;
     boolean mStartedSendingScrollEvents;
     boolean mShouldSendPageSettled;
+    int mLastOverlaySroll = 0;
 
     private final Runnable mBindPages = new Runnable() {
         @Override
@@ -1322,8 +1323,11 @@ public class Workspace extends SmoothPagedView
         boolean shouldOverScroll = (amount <= 0 && (!hasCustomContent() || isRtl)) ||
                 (amount >= 0 && (!hasCustomContent() || !isRtl));
 
-        boolean shouldScrollOverlay = (amount <= 0 && mLauncherOverlay != null && !isRtl) ||
-                (amount >= 0 && mLauncherOverlay != null && isRtl);
+        boolean shouldScrollOverlay = mLauncherOverlay != null &&
+                ((amount <= 0 && !isRtl) || (amount >= 0 && isRtl));
+
+        boolean shouldZeroOverlay = mLauncherOverlay != null && mLastOverlaySroll != 0 &&
+                ((amount >= 0 && !isRtl) || (amount <= 0 && isRtl));
 
         if (shouldScrollOverlay) {
             if (!mStartedSendingScrollEvents && mScrollInteractionBegan) {
@@ -1336,12 +1340,17 @@ public class Workspace extends SmoothPagedView
 
             int progress = (int) Math.abs((f * 100));
 
+            mLastOverlaySroll = progress;
             mLauncherOverlay.onScrollChange(progress, isRtl);
         } else if (shouldOverScroll) {
             dampedOverScroll(amount);
             mOverScrollEffect = acceleratedOverFactor(amount);
         } else {
             mOverScrollEffect = 0;
+        }
+
+        if (shouldZeroOverlay) {
+            mLauncherOverlay.onScrollChange(0, isRtl);
         }
     }
 
