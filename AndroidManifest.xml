@@ -74,6 +74,19 @@
         android:description="@string/permission_desc_read_extension_data"
         android:protectionLevel="normal" />
 
+    <permission
+        android:name="org.cyanogenmod.launcher.home.api.FEED_HOST"
+        android:label="@string/permission_label_feed_host"
+        android:description="@string/permission_desc_feed_host"
+        android:protectionLevel="signatureOrSystem" />
+
+    <permission
+        android:name="org.cyanogenmod.launcher.home.api.FEED_PUBLISH"
+        android:label="@string/permission_label_feed_publish"
+        android:description="@string/permission_desc_feed_publish"
+        android:protectionLevel="normal" />
+
+    <uses-permission android:name="org.cyanogenmod.launcher.home.api.FEED_HOST" />
     <uses-permission android:name="com.google.android.apps.dashclock.permission.READ_EXTENSION_DATA" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.SET_WALLPAPER" />
