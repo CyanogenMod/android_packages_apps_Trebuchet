@@ -1663,6 +1663,10 @@ public abstract class PagedView extends ViewGroup implements ViewGroup.OnHierarc
         setEnableFreeScroll(false);
     }
 
+    protected void disableFreeScroll(int snapPage) {
+        setEnableFreeScroll(false, snapPage);
+    }
+
     void updateFreescrollBounds() {
         getFreeScrollPageRange(mTempVisiblePagesRange);
         if (isLayoutRtl()) {
@@ -2557,7 +2561,6 @@ public abstract class PagedView extends ViewGroup implements ViewGroup.OnHierarc
             mPostReorderingPreZoomInRunnable = new Runnable() {
                 public void run() {
                     onCompleteRunnable.run();
-                    enableFreeScroll();
                 };
             };
 

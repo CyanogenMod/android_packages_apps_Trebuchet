@@ -23,7 +23,6 @@ import android.util.TypedValue;
 
 import java.util.ArrayList;
 
-
 public class DynamicGrid {
     @SuppressWarnings("unused")
     private static final String TAG = "DynamicGrid";

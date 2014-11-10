@@ -127,6 +127,19 @@ public class DragLayer extends FrameLayout implements ViewGroup.OnHierarchyChang
         for (int i = 0; i < n; i++) {
             final View child = getChildAt(i);
             setInsets(child, insets, mInsets);
+            final FrameLayout.LayoutParams flp = (FrameLayout.LayoutParams) child.getLayoutParams();
+            if (child.getId() == R.id.overview_panel) {
+                continue;
+            }
+            if (child instanceof Insettable) {
+                ((Insettable)child).setInsets(insets);
+            } else {
+                flp.topMargin += (insets.top - mInsets.top);
+                flp.leftMargin += (insets.left - mInsets.left);
+                flp.rightMargin += (insets.right - mInsets.right);
+                flp.bottomMargin += (insets.bottom - mInsets.bottom);
+            }
+            child.setLayoutParams(flp);
         }
         mInsets.set(insets);
         return true; // I'll take it from here
