@@ -19,8 +19,13 @@
 -->
 <manifest
     xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.android.launcher3">
-    <uses-sdk android:targetSdkVersion="21" android:minSdkVersion="16"/>
+    package="com.android.launcher3"
+    android:versionName="@string/application_version"
+    android:versionCode="1000">
+
+    <original-package android:name="com.android.launcher3" />
+
+    <uses-sdk android:minSdkVersion="21" android:targetSdkVersion="16" />
 
     <permission
         android:name="com.android.launcher.permission.INSTALL_SHORTCUT"
@@ -53,9 +58,6 @@
     <permission
         android:name="com.android.launcher3.permission.RECEIVE_FIRST_LOAD_BROADCAST"
         android:protectionLevel="signatureOrSystem" />
-
-    <original-package android:name="com.cyanogenmod.trebuchet" />
-    <original-package android:name="com.android.launcher3" />
 
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.SET_WALLPAPER" />
