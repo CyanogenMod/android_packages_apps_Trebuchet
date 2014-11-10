@@ -21,6 +21,7 @@ import android.app.Application;
 public class LauncherApplication extends Application {
     public static boolean LAUNCHER_SHOW_UNREAD_NUMBER;
     public static boolean LAUNCHER_SHORTCUT_ENABLED;
+    public static boolean SHOW_CTAPP_FEATRUE = false;
 
     @Override
     public void onCreate() {
