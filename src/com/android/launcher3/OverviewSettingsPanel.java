@@ -205,8 +205,10 @@ public class OverviewSettingsPanel {
             frameAnimation.start();
 
             if (mLauncher.updateGridIfNeeded()) {
-                mLauncher.getWorkspace().showOutlines();
-                mLauncher.mSearchDropTargetBar.showSearchBar(false);
+                if (mLauncher.getWorkspace().isInOverviewMode()) {
+                    mLauncher.getWorkspace().showOutlines();
+                    mLauncher.mSearchDropTargetBar.hideSearchBar(false);
+                }
             }
         }
 
