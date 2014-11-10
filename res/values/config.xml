@@ -13,6 +13,7 @@
     <bool name="is_tablet">false</bool>
     <bool name="is_large_tablet">false</bool>
     <bool name="allow_rotation">false</bool>
+    <bool name="config_largeIcons">false</bool>
 
     <!-- Max number of page indicators to show -->
     <integer name="config_maxNumberOfPageIndicatorsToShow">21</integer>
@@ -64,6 +65,10 @@
 <!-- Workspace -->
     <!-- Whether or not the drop targets drop down as opposed to fade in -->
     <bool name="config_useDropTargetDownTransition">false</bool>
+    <!-- Whether or not to fade the side pages -->
+    <bool name="config_workspaceFadeAdjacentScreens">false</bool>
+    <!-- Whether to show outlines on the screens when scrolling -->
+    <bool name="config_workspaceDefaultShowOutlines">false</bool>
 
     <!-- The transition duration for the background of the drop targets -->
     <integer name="config_dropTargetBgTransitionDuration">0</integer>

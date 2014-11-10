@@ -32,6 +32,7 @@ public class Stats {
     private static final boolean LOCAL_LAUNCH_LOG = true;
 
     public static final String ACTION_LAUNCH = "com.android.launcher3.action.LAUNCH";
+    public static final String PERM_LAUNCH = "com.android.launcher3.permission.RECEIVE_LAUNCH_BROADCASTS";
     public static final String EXTRA_INTENT = "intent";
     public static final String EXTRA_CONTAINER = "container";
     public static final String EXTRA_SCREEN = "screen";
@@ -52,8 +53,6 @@ public class Stats {
 
     private final Launcher mLauncher;
 
-    private final String mLaunchBroadcastPermission;
-
     DataOutputStream mLog;
 
     ArrayList<String> mIntents;
@@ -61,9 +60,6 @@ public class Stats {
 
     public Stats(Launcher launcher) {
         mLauncher = launcher;
-
-        mLaunchBroadcastPermission =
-                launcher.getResources().getString(R.string.receive_launch_broadcasts_permission);
 
         loadStats();
 
@@ -91,7 +87,7 @@ public class Stats {
                         }
                     },
                     new IntentFilter(ACTION_LAUNCH),
-                    mLaunchBroadcastPermission,
+                    PERM_LAUNCH,
                     null
             );
         }
@@ -104,6 +100,20 @@ public class Stats {
             mHistogram.add(1);
         } else {
             mHistogram.set(pos, mHistogram.get(pos) + 1);
+        }
+    }
+
+    public int launchCount(Intent intent) {
+        intent = new Intent(intent);
+        intent.setSourceBounds(null);
+
+        final String flat = intent.toUri(0);
+
+        int pos = mIntents.indexOf(flat);
+        if (pos < 0) {
+            return 0;
+        } else {
+            return mHistogram.get(pos);
         }
     }
 
@@ -124,7 +134,7 @@ public class Stats {
                     .putExtra(EXTRA_CELLX, shortcut.cellX)
                     .putExtra(EXTRA_CELLY, shortcut.cellY);
         }
-        mLauncher.sendBroadcast(broadcastIntent, mLaunchBroadcastPermission);
+        mLauncher.sendBroadcast(broadcastIntent, PERM_LAUNCH);
 
         incrementLaunch(flat);
 

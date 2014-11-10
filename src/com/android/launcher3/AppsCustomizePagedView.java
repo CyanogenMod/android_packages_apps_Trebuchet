@@ -49,9 +49,11 @@ import android.widget.Toast;
 
 import com.android.launcher3.DropTarget.DragObject;
 import com.android.launcher3.compat.AppWidgetManagerCompat;
+import com.android.launcher3.settings.SettingsProvider;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
@@ -157,6 +159,36 @@ public class AppsCustomizePagedView extends PagedViewWithDraggableItems implemen
     }
     private ContentType mContentType = ContentType.Applications;
 
+    /**
+     * The different sort modes than can be used to order items.
+     */
+    public enum SortMode {
+        Title(0),
+        LaunchCount(1),
+        InstallTime(2);
+
+        private final int mValue;
+        private SortMode(int value) {
+            mValue = value;
+        }
+
+        public int getValue() {
+            return mValue;
+        }
+
+        public static SortMode getModeForValue(int value) {
+            switch (value) {
+            case 1:
+                return LaunchCount;
+            case 2:
+                return InstallTime;
+            default :
+                return Title;
+            }
+        }
+    }
+    private SortMode mSortMode = SortMode.Title;
+
     // Refs
     private Launcher mLauncher;
     private DragController mDragController;
@@ -180,6 +212,26 @@ public class AppsCustomizePagedView extends PagedViewWithDraggableItems implemen
     private int mNumAppsPages;
     private int mNumWidgetPages;
     private Rect mAllAppsPadding = new Rect();
+
+    // Animation states
+    enum State { NORMAL, OVERVIEW};
+    private State mState = State.NORMAL;
+    private boolean mIsSwitchingState = false;
+
+    // Animation values
+    private float mNewScale;
+    private float[] mOldBackgroundAlphas;
+    private float[] mOldAlphas;
+    private float[] mNewBackgroundAlphas;
+    private float[] mNewAlphas;
+
+    // Relating to the scroll and overscroll effects
+    private static float TRANSITION_MAX_ROTATION = 22;
+    private static final float ALPHA_CUTOFF_THRESHOLD = 0.01f;
+    private boolean mOverscrollTransformsSet;
+    private float mLastOverscrollPivotX;
+
+    public static boolean DISABLE_ALL_APPS = false;
 
     // Previews & outlines
     ArrayList<AppsCustomizeAsyncTask> mRunningTasks;
@@ -231,6 +283,10 @@ public class AppsCustomizePagedView extends PagedViewWithDraggableItems implemen
         // (top + bottom)
         mFadeInAdjacentScreens = false;
 
+        TransitionEffect.setFromString(this, SettingsProvider.getString(context,
+                SettingsProvider.SETTINGS_UI_DRAWER_SCROLLING_TRANSITION_EFFECT,
+                R.string.preferences_interface_drawer_scrolling_transition_effect));
+
         // Unless otherwise specified this view is important for accessibility.
         if (getImportantForAccessibility() == View.IMPORTANT_FOR_ACCESSIBILITY_AUTO) {
             setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_YES);
@@ -245,6 +301,7 @@ public class AppsCustomizePagedView extends PagedViewWithDraggableItems implemen
 
         Context context = getContext();
         Resources r = context.getResources();
+        mCameraDistance = (int) CAMERA_DISTANCE;//r.getInteger(R.integer.config_cameraDistance);
         setDragSlopeThreshold(r.getInteger(R.integer.config_appsCustomizeDragSlopeThreshold)/100f);
     }
 
@@ -1321,8 +1378,54 @@ public class AppsCustomizePagedView extends PagedViewWithDraggableItems implemen
     // In apps customize, we have a scrolling effect which emulates pulling cards off of a stack.
     @Override
     protected void screenScrolled(int screenCenter) {
+        final boolean isRtl = isLayoutRtl();
+
+        mUseTransitionEffect = !mIsSwitchingState;
+
         super.screenScrolled(screenCenter);
         enableHwLayersOnVisiblePages();
+
+        boolean isInOverscroll = mOverScrollX < 0 || mOverScrollX > mMaxScrollX;
+
+        if (isInOverscroll) {
+            int index = 0;
+            float pivotX = 0f;
+            final float leftBiasedPivot = 0.35f;
+            final float rightBiasedPivot = 0.65f;
+            final int lowerIndex = 0;
+            final int upperIndex = getChildCount() - 1;
+
+            final boolean isLeftPage = mOverScrollX < 0;
+            index = (!isRtl && isLeftPage) || (isRtl && !isLeftPage) ? lowerIndex : upperIndex;
+            pivotX = isLeftPage ? rightBiasedPivot : leftBiasedPivot;
+
+            View v = getPageAt(index);
+
+            if (!mOverscrollTransformsSet || Float.compare(mLastOverscrollPivotX, pivotX) != 0) {
+                mOverscrollTransformsSet = true;
+                mLastOverscrollPivotX = pivotX;
+                v.setCameraDistance(mDensity * mCameraDistance);
+                v.setPivotX(v.getMeasuredWidth() * pivotX);
+            }
+
+            float scrollProgress = getScrollProgress(screenCenter, v, index);
+            float rotation = -TRANSITION_MAX_ROTATION * scrollProgress;
+            v.setRotationY(rotation);
+        } else {
+            if (mOverscrollTransformsSet) {
+                mOverscrollTransformsSet = false;
+                View v0 = getPageAt(0);
+                View v1 = getPageAt(getChildCount() - 1);
+                v0.setRotationY(0);
+                v1.setRotationY(0);
+                v0.setCameraDistance(mDensity * mCameraDistance);
+                v1.setCameraDistance(mDensity * mCameraDistance);
+                v0.setPivotX(v0.getMeasuredWidth() / 2);
+                v1.setPivotX(v1.getMeasuredWidth() / 2);
+                v0.setPivotY(v0.getMeasuredHeight() / 2);
+                v1.setPivotY(v1.getMeasuredHeight() / 2);
+            }
+        }
     }
 
     private void enableHwLayersOnVisiblePages() {
@@ -1350,17 +1453,6 @@ public class AppsCustomizePagedView extends PagedViewWithDraggableItems implemen
             if (!(leftScreen <= i && i <= rightScreen &&
                     (i == forceDrawScreen || shouldDrawChild(layout)))) {
                 layout.setLayerType(LAYER_TYPE_NONE, null);
-            }
-        }
-
-        for (int i = 0; i < screenCount; i++) {
-            final View layout = (View) getPageAt(i);
-
-            if (leftScreen <= i && i <= rightScreen &&
-                    (i == forceDrawScreen || shouldDrawChild(layout))) {
-                if (layout.getLayerType() != LAYER_TYPE_HARDWARE) {
-                    layout.setLayerType(LAYER_TYPE_HARDWARE, null);
-                }
             }
         }
     }
@@ -1560,5 +1652,39 @@ public class AppsCustomizePagedView extends PagedViewWithDraggableItems implemen
         }
 
         return String.format(getContext().getString(stringId), page + 1, count);
+    }
+
+    public Comparator<AppInfo> getComparatorForSortMode() {
+        switch (mSortMode) {
+            case Title:
+                return LauncherModel.getAppNameComparator();
+            case LaunchCount:
+                return LauncherModel.getAppLaunchCountComparator(mLauncher.getStats());
+            case InstallTime:
+                return LauncherModel.APP_INSTALL_TIME_COMPARATOR;
+        }
+        return LauncherModel.getAppNameComparator();
+    }
+
+    public void setSortMode(SortMode sortMode) {
+        if (mSortMode == sortMode) return;
+
+        mSortMode = sortMode;
+
+        sortApps();
+    }
+
+    public void sortApps() {
+        Collections.sort(new ArrayList<AppInfo>(), getComparatorForSortMode());
+
+        if (mContentType == ContentType.Applications) {
+            for (int i = 0; i < getChildCount(); i++) {
+                syncAppsPageItems(i, true);
+            }
+        }
+    }
+
+    public SortMode getSortMode() {
+        return mSortMode;
     }
 }

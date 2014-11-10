@@ -60,6 +60,9 @@ import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewPropertyAnimator;
+import android.view.animation.AccelerateDecelerateInterpolator;
+
 import android.view.accessibility.AccessibilityManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -132,6 +135,7 @@ public class Workspace extends SmoothPagedView
 
     private int mOriginalDefaultPage;
     private int mDefaultPage;
+    private long mDefaultScreenId;
 
     private ShortcutAndWidgetContainer mDragSourceInternal;
     private static boolean sAccessibilityEnabled;
@@ -223,12 +227,13 @@ public class Workspace extends SmoothPagedView
     private boolean mWorkspaceFadeInAdjacentScreens;
 
     WallpaperOffsetInterpolator mWallpaperOffset;
+    private boolean mScrollWallpaper;
     private boolean mWallpaperIsLiveWallpaper;
     private int mNumPagesForWallpaperParallax;
     private float mLastSetWallpaperOffsetSteps = 0;
 
     private Runnable mDelayedResizeRunnable;
-    private Runnable mDelayedSnapToPageRunnable;
+
     private Point mDisplaySize = new Point();
     private int mCameraDistance;
 
@@ -299,6 +304,9 @@ public class Workspace extends SmoothPagedView
         }
     };
 
+    private boolean mShowSearchBar;
+    private boolean mShowOutlines;
+    private boolean mHideIconLabels;
     /**
      * Used to inflate the Workspace from XML.
      *
@@ -326,6 +334,18 @@ public class Workspace extends SmoothPagedView
         // With workspace, data is available straight from the get-go
         setDataIsReady();
 
+        mShowSearchBar = SettingsProvider.getBoolean(context, SettingsProvider.SETTINGS_UI_HOMESCREEN_SEARCH,
+                R.bool.preferences_interface_homescreen_search_default);
+        mShowOutlines = SettingsProvider.getBoolean(context,
+                SettingsProvider.SETTINGS_UI_HOMESCREEN_SCROLLING_PAGE_OUTLINES,
+                R.bool.preferences_interface_homescreen_scrolling_page_outlines_default);
+        mScrollWallpaper = SettingsProvider.getBoolean(context,
+                SettingsProvider.SETTINGS_UI_HOMESCREEN_SCROLLING_WALLPAPER_SCROLL,
+                R.bool.preferences_interface_homescreen_scrolling_wallpaper_scroll_default);
+        TransitionEffect.setFromString(this, SettingsProvider.getString(context,
+                SettingsProvider.SETTINGS_UI_HOMESCREEN_SCROLLING_TRANSITION_EFFECT,
+                R.string.preferences_interface_homescreen_scrolling_transition_effect));
+
         mLauncher = (Launcher) context;
         final Resources res = getResources();
         mWorkspaceFadeInAdjacentScreens = LauncherAppState.getInstance().getDynamicGrid().
@@ -342,6 +362,8 @@ public class Workspace extends SmoothPagedView
         mOverviewModeShrinkFactor = grid.getOverviewModeScale();
         mCameraDistance = res.getInteger(R.integer.config_cameraDistance);
         mOriginalDefaultPage = mDefaultPage = a.getInt(R.styleable.Workspace_defaultScreen, 1);
+        mDefaultScreenId = SettingsProvider.getLongCustomDefault(context,
+            SettingsProvider.SETTINGS_UI_HOMESCREEN_DEFAULT_SCREEN_ID, -1);
         a.recycle();
 
         setOnHierarchyChangeListener(this);
@@ -490,6 +512,11 @@ public class Workspace extends SmoothPagedView
     }
 
     @Override
+    public void setChildAlpha(View child, float alpha) {
+        ((CellLayout) child).setShortcutAndWidgetAlpha(alpha);
+    }
+
+    @Override
     public void onChildViewAdded(View parent, View child) {
         if (!(child instanceof CellLayout)) {
             throw new IllegalArgumentException("A Workspace can only have CellLayout children.");
@@ -583,6 +610,13 @@ public class Workspace extends SmoothPagedView
         mWorkspaceScreens.put(screenId, newScreen);
         mScreenOrder.add(insertIndex, screenId);
         addView(newScreen, insertIndex);
+
+        if (mDefaultScreenId == screenId) {
+            int defaultPage = getPageIndexForScreenId(screenId);
+            moveToScreen(defaultPage, false);
+            Launcher.setScreen(defaultPage);
+        }
+
         return screenId;
     }
 
@@ -1246,10 +1280,6 @@ public class Workspace extends SmoothPagedView
             mDelayedResizeRunnable = null;
         }
 
-        if (mDelayedSnapToPageRunnable != null) {
-            mDelayedSnapToPageRunnable.run();
-            mDelayedSnapToPageRunnable = null;
-        }
         if (mStripScreensOnPageStopMoving) {
             stripEmptyScreens();
             mStripScreensOnPageStopMoving = false;
@@ -1683,9 +1713,27 @@ public class Workspace extends SmoothPagedView
         return listener;
     }
 
+    public void setShowOutlines(boolean show) {
+        mShowOutlines = show;
+    }
+
+    @Override
+    public void setFadeInAdjacentScreens(boolean fade) {
+        mWorkspaceFadeInAdjacentScreens = fade;
+    }
+
     @Override
     protected void screenScrolled(int screenCenter) {
         final boolean isRtl = isLayoutRtl();
+
+        boolean isOnLastPageBeforeCustomContent = false;
+        if (hasCustomContent()) {
+            int customContentWidth = mWorkspaceScreens.get(CUSTOM_CONTENT_SCREEN_ID).getMeasuredWidth();
+            isOnLastPageBeforeCustomContent = (mOverScrollX < customContentWidth && (!hasCustomContent() || isLayoutRtl())) ||
+                    (mOverScrollX > mMaxScrollX - customContentWidth && (!hasCustomContent() || !isLayoutRtl()));
+        }
+        mUseTransitionEffect = !isOnLastPageBeforeCustomContent && mState == State.NORMAL && !mIsSwitchingState;
+
         super.screenScrolled(screenCenter);
 
         updatePageAlphaValues(screenCenter);
@@ -1922,38 +1970,6 @@ public class Workspace extends SmoothPagedView
     }
 
     /*
-     * This interpolator emulates the rate at which the perceived scale of an object changes
-     * as its distance from a camera increases. When this interpolator is applied to a scale
-     * animation on a view, it evokes the sense that the object is shrinking due to moving away
-     * from the camera.
-     */
-    static class ZInterpolator implements TimeInterpolator {
-        private float focalLength;
-
-        public ZInterpolator(float foc) {
-            focalLength = foc;
-        }
-
-        public float getInterpolation(float input) {
-            return (1.0f - focalLength / (focalLength + input)) /
-                (1.0f - focalLength / (focalLength + 1.0f));
-        }
-    }
-
-    /*
-     * The exact reverse of ZInterpolator.
-     */
-    static class InverseZInterpolator implements TimeInterpolator {
-        private ZInterpolator zInterpolator;
-        public InverseZInterpolator(float foc) {
-            zInterpolator = new ZInterpolator(foc);
-        }
-        public float getInterpolation(float input) {
-            return 1 - zInterpolator.getInterpolation(1 - input);
-        }
-    }
-
-    /*
      * ZInterpolator compounded with an ease-out.
      */
     static class ZoomOutInterpolator implements TimeInterpolator {
@@ -2061,6 +2077,15 @@ public class Workspace extends SmoothPagedView
     @Override
     protected void getFreeScrollPageRange(int[] range) {
         getOverviewModePages(range);
+    }
+
+    private void updateDefaultScreenButton() {
+        View overviewPanel = mLauncher.getOverviewPanel();
+        if (overviewPanel != null) {
+            View defaultPageButton = overviewPanel.findViewById(R.id.default_screen_button);
+            defaultPageButton.setActivated(
+                    getScreenIdForPageIndex(getPageNearestToCenterOfScreen()) == mDefaultScreenId);
+        }
     }
 
     public void onClickDefaultScreenButton() {
@@ -2249,7 +2274,7 @@ public class Workspace extends SmoothPagedView
         final boolean stateIsOverview = (state == State.OVERVIEW);
         float finalBackgroundAlpha = (stateIsSpringLoaded || stateIsOverview) ? 1.0f : 0f;
         float finalHotseatAndPageIndicatorAlpha = (stateIsNormal || stateIsSpringLoaded) ? 1f : 0f;
-        float finalOverviewPanelAlpha = stateIsOverview ? 1f : 0f;
+        final float finalOverviewPanelAlpha = stateIsOverview ? 1f : 0f;
         float finalSearchBarAlpha = !stateIsNormal ? 0f : 1f;
         float finalWorkspaceTranslationY = stateIsOverview || stateIsOverviewHidden ?
                 getOverviewModeTranslationY() : 0;
@@ -2257,8 +2282,8 @@ public class Workspace extends SmoothPagedView
         boolean workspaceToAllApps = (oldStateIsNormal && stateIsNormalHidden);
         boolean overviewToAllApps = (oldStateIsOverview && stateIsOverviewHidden);
         boolean allAppsToWorkspace = (stateIsNormalHidden && stateIsNormal);
-        boolean workspaceToOverview = (oldStateIsNormal && stateIsOverview);
-        boolean overviewToWorkspace = (oldStateIsOverview && stateIsNormal);
+        final boolean workspaceToOverview = (oldStateIsNormal && stateIsOverview);
+        final boolean overviewToWorkspace = (oldStateIsOverview && stateIsNormal);
 
         mNewScale = 1.0f;
 
@@ -2301,6 +2326,20 @@ public class Workspace extends SmoothPagedView
                 finalAlpha = (i == snapPage || i < numCustomPages()) ? 1f : 0f;
             } else {
                 finalAlpha = 1f;
+            }
+
+            if (stateIsOverview) {
+                cl.setVisibility(VISIBLE);
+                cl.setTranslationX(0f);
+                cl.setTranslationY(0f);
+                cl.setPivotX(cl.getMeasuredWidth() * 0.5f);
+                cl.setPivotY(cl.getMeasuredHeight() * 0.5f);
+                cl.setRotation(0f);
+                cl.setRotationY(0f);
+                cl.setRotationX(0f);
+                cl.setScaleX(1f);
+                cl.setScaleY(1f);
+                cl.setShortcutAndWidgetAlpha(1f);
             }
 
             // If we are animating to/from the small state, then hide the side pages and fade the
@@ -2423,10 +2462,51 @@ public class Workspace extends SmoothPagedView
             hotseatAlpha.setDuration(duration);
             searchBarAlpha.setDuration(duration);
 
-            overviewPanel.setAlpha(finalOverviewPanelAlpha);
-            AlphaUpdateListener.updateVisibility(overviewPanel);
-            Animation animation = AnimationUtils.loadAnimation(mLauncher, R.anim.drop_down);
-            overviewPanel.startAnimation(animation);
+            float mOverviewPanelSlideScale = 1.0f;
+
+            if (overviewToWorkspace || stateIsNormal) {
+                ((SlidingUpPanelLayout) overviewPanel).collapsePane();
+                overviewPanel.setScaleY(1.0f);
+                mOverviewPanelSlideScale = 3.0f;
+            } else if (workspaceToOverview || stateIsOverview) {
+                overviewPanel.setScaleY(3.0f);
+                mOverviewPanelSlideScale = 1.0f;
+            }
+
+            final ViewPropertyAnimator overviewPanelScale = overviewPanel.animate();
+            overviewPanelScale.scaleY(mOverviewPanelSlideScale)
+                    .alpha(finalOverviewPanelAlpha)
+                    .setInterpolator(new AccelerateDecelerateInterpolator());
+            overviewPanelScale.setListener(new AnimatorListener() {
+                @Override
+                public void onAnimationStart(Animator animation) {
+                    if (workspaceToOverview || stateIsOverview) {
+                        overviewPanel.setAlpha(finalOverviewPanelAlpha);
+                        AlphaUpdateListener.updateVisibility(overviewPanel);
+                    }
+                }
+
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    if (overviewToWorkspace || stateIsNormal) {
+                        overviewPanel.setAlpha(finalOverviewPanelAlpha);
+                        AlphaUpdateListener.updateVisibility(overviewPanel);
+                    }
+                    overviewPanelScale.setListener(null);
+                }
+
+                @Override
+                public void onAnimationCancel(Animator animation) {
+                    overviewPanel.setAlpha(finalOverviewPanelAlpha);
+                    AlphaUpdateListener.updateVisibility(overviewPanel);
+                    overviewPanelScale.setListener(null);
+                }
+                @Override
+                public void onAnimationRepeat(Animator animation) {}
+            });
+
+            // Animation animation = AnimationUtils.loadAnimation(mLauncher, R.anim.drop_down);
+            // overviewPanel.startAnimation(animation);
             anim.play(hotseatAlpha);
             anim.play(searchBarAlpha);
             anim.play(pageIndicatorAlpha);
@@ -5086,7 +5166,7 @@ public class Workspace extends SmoothPagedView
     }
 
     void moveToDefaultScreen(boolean animate) {
-        moveToScreen(mDefaultPage, animate);
+        moveToScreen(getPageIndexForScreenId(mDefaultScreenId), animate);
     }
 
     void moveToCustomContentScreen(boolean animate) {

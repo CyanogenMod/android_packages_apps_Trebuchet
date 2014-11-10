@@ -22,7 +22,6 @@
     android:gravity="bottom"
     slidingpanel:overlay="false"
     slidingpanel:panelHeight="@dimen/sliding_panel_padding" >
-
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/default_home_screen_panel"

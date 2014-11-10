@@ -36,6 +36,7 @@ import android.view.accessibility.AccessibilityManager;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -126,11 +127,17 @@ public class DragLayer extends FrameLayout implements ViewGroup.OnHierarchyChang
         final int n = getChildCount();
         for (int i = 0; i < n; i++) {
             final View child = getChildAt(i);
-            setInsets(child, insets, mInsets);
-            final FrameLayout.LayoutParams flp = (FrameLayout.LayoutParams) child.getLayoutParams();
             if (child.getId() == R.id.overview_panel) {
+                LinearLayout layout = (LinearLayout)
+                        child.findViewById(R.id.settings_container);
+                FrameLayout.LayoutParams lp =
+                        (FrameLayout.LayoutParams) layout.getLayoutParams();
+                lp.bottomMargin += insets.bottom - mInsets.bottom;
+                layout.setLayoutParams(lp);
                 continue;
             }
+            setInsets(child, insets, mInsets);
+            final FrameLayout.LayoutParams flp = (FrameLayout.LayoutParams) child.getLayoutParams();
             if (child instanceof Insettable) {
                 ((Insettable)child).setInsets(insets);
             } else {
@@ -893,13 +900,6 @@ public class DragLayer extends FrameLayout implements ViewGroup.OnHierarchyChang
     void hidePageHints() {
         mShowPageHints = false;
         invalidate();
-    }
-
-    /**
-     * Note: this is a reimplementation of View.isLayoutRtl() since that is currently hidden api.
-     */
-    private boolean isLayoutRtl() {
-        return (getLayoutDirection() == LAYOUT_DIRECTION_RTL);
     }
 
     @Override

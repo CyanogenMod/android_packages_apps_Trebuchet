@@ -88,7 +88,7 @@ public class OverviewSettingsPanel {
         wallpaperButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                mLauncher.startWallpaper();
+                mLauncher.onClickWallpaperPicker(arg0);
             }
         });
         wallpaperButton.setOnTouchListener(mLauncher.getHapticFeedbackTouchListener());

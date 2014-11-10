@@ -870,17 +870,5 @@ public class DeviceProfile {
 
             }
         }
-
-        // Layout the Overview Mode
-        ViewGroup overviewMode = launcher.getOverviewPanel();
-        if (overviewMode != null) {
-            Rect r = getOverviewModeButtonBarRect();
-            lp = (FrameLayout.LayoutParams) overviewMode.getLayoutParams();
-            lp.gravity = Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM;
-            lp.width = Math.min(availableWidthPx,
-                    calculateOverviewModeWidth(getVisibleChildCount(overviewMode)));
-            lp.height = r.height();
-            overviewMode.setLayoutParams(lp);
-        }
     }
 }

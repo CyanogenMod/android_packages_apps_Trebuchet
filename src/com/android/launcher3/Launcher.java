@@ -1,4 +1,3 @@
-
 /*
  * Copyright (C) 2008 The Android Open Source Project
  *
@@ -32,6 +31,7 @@ import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.app.Dialog;
 import android.app.SearchManager;
 import android.appwidget.AppWidgetHostView;
 import android.appwidget.AppWidgetManager;
@@ -42,6 +42,7 @@ import android.content.ComponentCallbacks2;
 import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -82,6 +83,7 @@ import android.view.HapticFeedbackConstants;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.Surface;
 import android.view.View;
@@ -100,6 +102,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Advanceable;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -314,6 +317,8 @@ public class Launcher extends Activity
 
     private Bundle mSavedInstanceState;
 
+    private Dialog mTransitionEffectDialog;
+
     private LauncherModel mModel;
     private IconCache mIconCache;
     private boolean mUserPresent = true;
@@ -371,6 +376,9 @@ public class Launcher extends Activity
 
     private BubbleTextView mWaitingForResume;
 
+    // Preferences
+    private boolean mHideIconLabels;
+
     private Runnable mBuildLayersRunnable = new Runnable() {
         public void run() {
             if (mWorkspace != null) {
@@ -397,10 +405,6 @@ public class Launcher extends Activity
 
     FocusIndicatorView mFocusHandler;
 
-    static boolean isPropertyEnabled(String propertyName) {
-        return Log.isLoggable(propertyName, Log.VERBOSE);
-    }
-
     public Animator.AnimatorListener mAnimatorListener = new Animator.AnimatorListener() {
         @Override
         public void onAnimationStart(Animator arg0) {}
@@ -414,7 +418,7 @@ public class Launcher extends Activity
         public void onAnimationCancel(Animator arg0) {}
     };
 
-    private static boolean isPropertyEnabled(String propertyName) {
+    public static boolean isPropertyEnabled(String propertyName) {
         return Log.isLoggable(propertyName, Log.VERBOSE);
     }
 
@@ -542,11 +546,6 @@ public class Launcher extends Activity
         mModel = app.setLauncher(this);
         mIconCache = app.getIconCache();
         mIconCache.flushInvalidIcons(mGrid);
-    }
-
-    protected void onUserLeaveHint() {
-        super.onUserLeaveHint();
-        sPausedFromUserAction = true;
     }
 
     /** To be overriden by subclasses to hint to Launcher that we have custom content */
@@ -1486,7 +1485,7 @@ public class Launcher extends Activity
             mHotseat.setOnLongClickListener(this);
         }
 
-        mOverviewPanel = findViewById(R.id.overview_panel);
+        mOverviewPanel = (ViewGroup) findViewById(R.id.overview_panel);
         mOverviewSettingsPanel = new OverviewSettingsPanel(
                 this, mOverviewPanel);
         mOverviewSettingsPanel.initializeAdapter();
@@ -2026,6 +2025,10 @@ public class Launcher extends Activity
         if (Intent.ACTION_MAIN.equals(intent.getAction())) {
             // also will cancel mWaitingForResult.
             closeSystemDialogs();
+
+            if (mTransitionEffectDialog != null) {
+                mTransitionEffectDialog.cancel();
+            }
 
             final boolean alreadyOnHome = mHasFocus && ((intent.getFlags() &
                     Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT)
@@ -3247,17 +3250,9 @@ public class Launcher extends Activity
         return mHotseat != null && layout != null &&
                 (layout instanceof CellLayout) && (layout == mHotseat.getLayout());
     }
-    Hotseat getHotseat() {
-        return mHotseat;
-    }
-    View getOverviewPanel() {
-        return mOverviewPanel;
-    }
+
     View getDarkPanel() {
         return mDarkPanel;
-    }
-    SearchDropTargetBar getSearchBar() {
-        return mSearchDropTargetBar;
     }
 
     /**
@@ -3273,10 +3268,6 @@ public class Launcher extends Activity
         } else {
             return (CellLayout) mWorkspace.getScreenWithId(screenId);
         }
-    }
-
-    protected Workspace getWorkspace() {
-        return mWorkspace;
     }
 
     protected AppsCustomizePagedView getAppsCustomizeContent() {
