@@ -119,6 +119,19 @@ public class SettingsPinnedHeaderAdapter extends PinnedHeaderListAdapter {
                     R.string.setting_state_on) : res.getString(
                     R.string.setting_state_off);
             ((TextView) v.findViewById(R.id.item_state)).setText(state);
+        } else if (title.equals(res
+                .getString(R.string.search_screen_left_text))) {
+            boolean current = SettingsProvider
+                    .getBoolean(
+                            mContext,
+                            SettingsProvider.SETTINGS_UI_HOMESCREEN_SEARCH_SCREEN_LEFT,
+                            R.bool.preferences_interface_homescreen_search_screen_left_default);
+            String state = current ? res.getString(
+                    R.string.setting_state_on) : res.getString(
+                    R.string.setting_state_off);
+            ((TextView) v.findViewById(R.id.item_state)).setText(state);
+        } else {
+            ((TextView) v.findViewById(R.id.item_state)).setText("");
         }
 
         v.setTag(partition);
