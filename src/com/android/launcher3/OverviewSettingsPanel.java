@@ -39,42 +39,36 @@ public class OverviewSettingsPanel {
         Resources res = mLauncher.getResources();
         String[] headers = new String[] {
                 res.getString(R.string.home_screen_settings),
-                res.getString(R.string.drawer_settings)};
+                res.getString(R.string.drawer_settings),
+                res.getString(R.string.app_settings)};
 
-        String[] values;
-        if(mLauncher.isGelIntegrationSupported()) {
-            values = new String[]{
-                    res.getString(R.string.home_screen_search_text),
-                    res.getString(R.string.search_screen_left_text),
-                    res.getString(R.string.scroll_effect_text),
-                    res.getString(R.string.larger_icons_text),
-                    res.getString(R.string.icon_labels),
-                    res.getString(R.string.scrolling_wallpaper)};
-        } else {
-            values = new String[]{
+        String[] values = new String[]{
                     res.getString(R.string.home_screen_search_text),
                     res.getString(R.string.scroll_effect_text),
-                    res.getString(R.string.larger_icons_text),
                     res.getString(R.string.icon_labels),
-                    res.getString(R.string.scrolling_wallpaper)};
-        }
-
-        mValues = values;
+                    res.getString(R.string.scrolling_wallpaper),
+                    res.getString(R.string.grid_size_text)};
 
         String[] valuesDrawer = new String[] {
                 res.getString(R.string.scroll_effect_text),
                 res.getString(R.string.drawer_sorting_text),
-                res.getString(R.string.icon_labels),
+                res.getString(R.string.icon_labels)};
+
+        String[] valuesApp = new String[] {
+                res.getString(R.string.larger_icons_text),
                 res.getString(R.string.protected_app_settings)};
+
 
         mSettingsAdapter = new SettingsPinnedHeaderAdapter(mLauncher);
         mSettingsAdapter.setHeaders(headers);
+        mSettingsAdapter.addPartition(false, true);
         mSettingsAdapter.addPartition(false, true);
         mSettingsAdapter.addPartition(false, true);
         mSettingsAdapter.mPinnedHeaderCount = headers.length;
 
         mSettingsAdapter.changeCursor(0, createCursor(headers[0], values));
         mSettingsAdapter.changeCursor(1, createCursor(headers[1], valuesDrawer));
+        mSettingsAdapter.changeCursor(2, createCursor(headers[2], valuesApp));
         mListView.setAdapter(mSettingsAdapter);
     }
 
@@ -173,7 +167,7 @@ public class OverviewSettingsPanel {
                     res.getString(R.string.home_screen_search_text),
                     res.getString(R.string.scroll_effect_text),
                     res.getString(R.string.larger_icons_text),
-                    res.getString(R.string.hide_icon_labels)};
+                    res.getString(R.string.icon_labels)};
             mSettingsAdapter.changeCursor(0, createCursor(res
                     .getString(R.string.home_screen_settings), values));
         }

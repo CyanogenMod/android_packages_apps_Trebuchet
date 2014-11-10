@@ -23,6 +23,7 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProviderInfo;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
@@ -190,6 +191,11 @@ public class AppsCustomizePagedView extends PagedViewWithDraggableItems implemen
         }
     }
     private SortMode mSortMode = SortMode.Title;
+
+    private int mFilterApps = FILTER_APPS_SYSTEM_FLAG | FILTER_APPS_DOWNLOADED_FLAG;
+
+    private static final int FILTER_APPS_SYSTEM_FLAG = 1;
+    private static final int FILTER_APPS_DOWNLOADED_FLAG = 2;
 
     // Refs
     private Launcher mLauncher;
@@ -1517,6 +1523,22 @@ public class AppsCustomizePagedView extends PagedViewWithDraggableItems implemen
         }
     }
 
+    public void setShowSystemApps(boolean show) {
+        if (show) {
+            mFilterApps |= FILTER_APPS_SYSTEM_FLAG;
+        } else {
+            mFilterApps &= ~FILTER_APPS_DOWNLOADED_FLAG;
+        }
+    }
+
+    public boolean getShowSystemApps() {
+        return (mFilterApps & FILTER_APPS_SYSTEM_FLAG) != 0;
+    }
+
+    public boolean getShowDownloadedApps() {
+        return (mFilterApps & FILTER_APPS_DOWNLOADED_FLAG) != 0;
+    }
+
     public void setApps(ArrayList<AppInfo> list) {
         if (!LauncherAppState.isDisableAllApps()) {
             mApps = list;
@@ -1595,72 +1617,6 @@ public class AppsCustomizePagedView extends PagedViewWithDraggableItems implemen
                 mProtectedPackages.add(cmp.getPackageName());
             }
         }
-    }
-
-    public void filterAppsWithoutInvalidate() {
-        updateProtectedAppsList(mLauncher);
-
-        mFilteredApps = new ArrayList<AppInfo>(mApps);
-        Iterator<AppInfo> iterator = mFilteredApps.iterator();
-        while (iterator.hasNext()) {
-            AppInfo appInfo = iterator.next();
-            boolean system = (appInfo.flags & AppInfo.DOWNLOADED_FLAG) == 0;
-            if (mProtectedApps.contains(appInfo.componentName) ||
-                (system && !getShowSystemApps()) ||
-                (!system && !getShowDownloadedApps())) {
-                iterator.remove();
-            }
-        }
-        Collections.sort(mFilteredApps, getComparatorForSortMode());
-    }
-
-    public void filterApps() {
-        filterAppsWithoutInvalidate();
-        updatePageCountsAndInvalidateData();
-    }
-
-    public void filterWidgetsWithoutInvalidate() {
-        updateProtectedAppsList(mLauncher);
-
-        mFilteredWidgets = new ArrayList<Object>(mWidgets);
-
-        Iterator<Object> iterator = mFilteredWidgets.iterator();
-        while (iterator.hasNext()) {
-            Object o = iterator.next();
-
-            String packageName;
-            if (o instanceof AppWidgetProviderInfo) {
-                AppWidgetProviderInfo widgetInfo = (AppWidgetProviderInfo) o;
-                if (widgetInfo.provider == null) {
-                    continue;
-                }
-                packageName = widgetInfo.provider.getPackageName();
-            } else if (o instanceof ResolveInfo) {
-                ResolveInfo shortcut = (ResolveInfo) o;
-                packageName = shortcut.activityInfo.applicationInfo.packageName;
-            } else {
-                Log.w(TAG, "Unknown class in widgets list: " + o.getClass());
-                continue;
-            }
-
-            int flags;
-            try {
-                flags = AppInfo.initFlags(mPackageManager.getPackageInfo(packageName, 0));
-            } catch (NameNotFoundException e) {
-                flags = 0;
-            }
-            boolean system = (flags & AppInfo.DOWNLOADED_FLAG) == 0;
-            if (mProtectedPackages.contains(packageName) ||
-                    (system && !getShowSystemApps()) ||
-                    (!system && !getShowDownloadedApps())) {
-                iterator.remove();
-            }
-        }
-    }
-
-    public void filterWidgets() {
-        filterWidgetsWithoutInvalidate();
-        updatePageCountsAndInvalidateData();
     }
 
     public void reset() {
