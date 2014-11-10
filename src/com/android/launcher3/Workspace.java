@@ -4346,6 +4346,11 @@ public class Workspace extends SmoothPagedView
                 && mDragInfo.cell != null) {
             mDragInfo.cell.setVisibility(VISIBLE);
         }
+
+        if (target instanceof InfoDropTarget) {
+            removeExtraEmptyScreen(false, null);
+        }
+
         mDragOutline = null;
         mDragInfo = null;
     }
