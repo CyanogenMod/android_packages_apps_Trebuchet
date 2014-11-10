@@ -163,6 +163,8 @@ public class DeviceProfile {
     int pageIndicatorHeightPx;
     int allAppsButtonVisualSize;
 
+    boolean searchBarVisible;
+
     float dragViewScale;
 
     int allAppsShortEdgeCount = -1;
@@ -312,6 +314,11 @@ public class DeviceProfile {
         updateFromConfiguration(context, res, wPx, hPx, awPx, ahPx);
         updateAvailableDimensions(context);
         computeAllAppsButtonSize(context);
+        // Search Bar
+        searchBarVisible = SettingsProvider.getBoolean(context, SettingsProvider.SETTINGS_UI_HOMESCREEN_SEARCH,
+                R.bool.preferences_interface_homescreen_search_default);
+        searchBarSpaceWidthPx = Math.min(searchBarSpaceMaxWidthPx, widthPx);
+        searchBarSpaceHeightPx = 2 * edgeMarginPx + (searchBarVisible ? searchBarHeightPx  : 3 * edgeMarginPx);
     }
 
     /**
@@ -579,9 +586,9 @@ public class DeviceProfile {
     /** Returns the search bar top offset */
     int getSearchBarTopOffset() {
         if (isTablet() && !isVerticalBarLayout()) {
-            return 4 * edgeMarginPx;
+            return searchBarVisible ? 4 * edgeMarginPx : 0;
         } else {
-            return 2 * edgeMarginPx;
+            return searchBarVisible ? 2 * edgeMarginPx : 0;
         }
     }
 
@@ -614,12 +621,12 @@ public class DeviceProfile {
                         (numColumns * cellWidthPx)) / (2 * (numColumns + 1)));
                 bounds.set(edgeMarginPx + gap, getSearchBarTopOffset(),
                         availableWidthPx - (edgeMarginPx + gap),
-                        searchBarSpaceHeightPx);
+                        searchBarVisible ? searchBarSpaceHeightPx : edgeMarginPx);
             } else {
                 bounds.set(desiredWorkspaceLeftRightMarginPx - defaultWidgetPadding.left,
                         getSearchBarTopOffset(),
                         availableWidthPx - (desiredWorkspaceLeftRightMarginPx -
-                        defaultWidgetPadding.right), searchBarSpaceHeightPx);
+                        defaultWidgetPadding.right), searchBarVisible ? searchBarSpaceHeightPx : edgeMarginPx);
             }
         }
         return bounds;
@@ -772,14 +779,22 @@ public class DeviceProfile {
     }
 
     public void layout(Launcher launcher) {
+        // Update search bar for live settings
+        searchBarVisible = SettingsProvider.getBoolean(launcher, SettingsProvider.SETTINGS_UI_HOMESCREEN_SEARCH,
+                R.bool.preferences_interface_homescreen_search_default);
+        searchBarSpaceHeightPx = 2 * edgeMarginPx + (searchBarVisible ? searchBarHeightPx : 3 * edgeMarginPx);
         FrameLayout.LayoutParams lp;
         Resources res = launcher.getResources();
         boolean hasVerticalBarLayout = isVerticalBarLayout();
 
         // Layout the search bar space
         View searchBar = launcher.getSearchBar();
+        LinearLayout dropTargetBar = (LinearLayout) launcher.getSearchBar().getDropTargetBar();
         lp = (FrameLayout.LayoutParams) searchBar.getLayoutParams();
         if (hasVerticalBarLayout) {
+            // If search bar is invisible add some extra padding for the drop targets
+            searchBarSpaceHeightPx = searchBarVisible ? searchBarSpaceHeightPx
+                    : searchBarSpaceHeightPx + 5 * edgeMarginPx;
             // Vertical search bar space
             lp.gravity = Gravity.TOP | Gravity.LEFT;
             lp.width = searchBarSpaceHeightPx;
@@ -801,6 +816,21 @@ public class DeviceProfile {
                     2 * edgeMarginPx, 0);
         }
         searchBar.setLayoutParams(lp);
+
+        // Layout the drop target icons
+        if (hasVerticalBarLayout) {
+            dropTargetBar.setOrientation(LinearLayout.VERTICAL);
+        } else {
+            dropTargetBar.setOrientation(LinearLayout.HORIZONTAL);
+        }
+
+        // Layout the search bar
+        View qsbBar = launcher.getQsbBar();
+        qsbBar.setVisibility(searchBarVisible ? View.VISIBLE : View.GONE);
+        LayoutParams vglp = qsbBar.getLayoutParams();
+        vglp.width = LayoutParams.MATCH_PARENT;
+        vglp.height = LayoutParams.MATCH_PARENT;
+        qsbBar.setLayoutParams(vglp);
 
         // Layout the voice proxy
         View voiceButtonProxy = launcher.findViewById(R.id.voice_button_proxy);

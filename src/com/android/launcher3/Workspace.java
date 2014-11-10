@@ -2445,7 +2445,7 @@ public class Workspace extends SmoothPagedView
 
             Animator searchBarAlpha = new LauncherViewPropertyAnimator(searchBar)
                 .alpha(finalSearchBarAlpha).withLayer();
-            searchBarAlpha.addListener(new AlphaUpdateListener(searchBar));
+            if (mShowSearchBar) searchBarAlpha.addListener(new AlphaUpdateListener(searchBar));
 
             Animator overviewPanelAlpha = new LauncherViewPropertyAnimator(overviewPanel)
                 .alpha(finalOverviewPanelAlpha).withLayer();
@@ -2523,7 +2523,7 @@ public class Workspace extends SmoothPagedView
             // Animation animation = AnimationUtils.loadAnimation(mLauncher, R.anim.drop_down);
             // overviewPanel.startAnimation(animation);
             anim.play(hotseatAlpha);
-            anim.play(searchBarAlpha);
+            if (mShowSearchBar) anim.play(searchBarAlpha);
             anim.play(pageIndicatorAlpha);
             anim.setStartDelay(delay);
         } else {
@@ -2535,8 +2535,11 @@ public class Workspace extends SmoothPagedView
                 pageIndicator.setAlpha(finalHotseatAndPageIndicatorAlpha);
                 AlphaUpdateListener.updateVisibility(pageIndicator);
             }
-            searchBar.setAlpha(finalSearchBarAlpha);
-            AlphaUpdateListener.updateVisibility(searchBar);
+
+            if (mShowSearchBar) {
+                searchBar.setAlpha(finalSearchBarAlpha);
+                AlphaUpdateListener.updateVisibility(searchBar);
+            }
             updateCustomContentVisibility();
             setScaleX(mNewScale);
             setScaleY(mNewScale);

@@ -1203,7 +1203,9 @@ public class Launcher extends Activity
 
     public void resetQSBScroll() {
         mSearchDropTargetBar.animate().translationY(0).start();
-        getQsbBar().animate().translationY(0).start();
+        if (isSearchBarEnabled()) {
+            getQsbBar().animate().translationY(0).start();
+        }
     }
 
     public interface CustomContentCallbacks {
