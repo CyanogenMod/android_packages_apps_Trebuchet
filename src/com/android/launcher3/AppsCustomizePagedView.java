@@ -1508,6 +1508,10 @@ public class AppsCustomizePagedView extends PagedViewWithDraggableItems implemen
     public void setup(Launcher launcher, DragController dragController) {
         mLauncher = launcher;
         mDragController = dragController;
+        int sortMode = SettingsProvider.getIntCustomDefault(mLauncher, SettingsProvider.SETTINGS_UI_DRAWER_SORT_MODE, -1);
+        if (sortMode != -1) {
+            setSortMode(SortMode.getModeForValue(sortMode));
+        }
     }
 
     /**
