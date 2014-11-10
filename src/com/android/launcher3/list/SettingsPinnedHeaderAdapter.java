@@ -130,6 +130,16 @@ public class SettingsPinnedHeaderAdapter extends PinnedHeaderListAdapter {
                     R.string.setting_state_on) : res.getString(
                     R.string.setting_state_off);
             ((TextView) v.findViewById(R.id.item_state)).setText(state);
+        } else if (title.equals(res.getString(R.string.scrolling_wallpaper))) {
+            boolean current = SettingsProvider
+                    .getBoolean(
+                            mContext,
+                            SettingsProvider.SETTINGS_UI_HOMESCREEN_SCROLLING_WALLPAPER_SCROLL,
+                            R.bool.preferences_interface_homescreen_scrolling_wallpaper_scroll_default);
+            String state = current ? res.getString(
+                    R.string.setting_state_on) : res.getString(
+                    R.string.setting_state_off);
+            ((TextView) v.findViewById(R.id.item_state)).setText(state);
         } else {
             ((TextView) v.findViewById(R.id.item_state)).setText("");
         }
@@ -241,6 +251,33 @@ public class SettingsPinnedHeaderAdapter extends PinnedHeaderListAdapter {
                 intent.setClassName(OverviewSettingsPanel.ANDROID_SETTINGS,
                         OverviewSettingsPanel.ANDROID_PROTECTED_APPS);
                 mLauncher.startActivity(intent);
+            } else if (value.equals(res
+                    .getString(R.string.scrolling_wallpaper))) {
+                onSettingsBooleanChanged(
+                        v,
+                        SettingsProvider.SETTINGS_UI_HOMESCREEN_SCROLLING_WALLPAPER_SCROLL,
+                        R.bool.preferences_interface_homescreen_scrolling_wallpaper_scroll_default);
+                mLauncher.updateDynamicGrid();
+            } else if (value.equals(res
+                    .getString(R.string.search_screen_left_text)) &&
+                    ((Integer)v.getTag() == OverviewSettingsPanel.HOME_SETTINGS_POSITION)) {
+
+                boolean current = SettingsProvider.getBoolean(mContext,
+                        SettingsProvider.SETTINGS_UI_HOMESCREEN_SEARCH_SCREEN_LEFT,
+                        R.bool.preferences_interface_homescreen_search_screen_left_default);
+
+                // If GEL integration is not supported, do not allow the user to turn it on.
+                if(!current && !mLauncher.isGelIntegrationSupported()) {
+                    Toast.makeText(mLauncher.getApplicationContext(),
+                            res.getString(R.string.preferences_search_screen_left_unsupported_toast),
+                            Toast.LENGTH_SHORT).show();
+                } else {
+                    onSettingsBooleanChanged(
+                            v,
+                            SettingsProvider.SETTINGS_UI_HOMESCREEN_SEARCH_SCREEN_LEFT,
+                            R.bool.preferences_interface_homescreen_search_screen_left_default);
+                    mLauncher.updateDynamicGrid();
+                }
             }
 
             View defaultHome = mLauncher.findViewById(R.id.default_home_screen_panel);
