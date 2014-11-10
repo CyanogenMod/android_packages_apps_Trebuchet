@@ -4912,6 +4912,7 @@ public class Launcher extends Activity
         }
         PackageInstallerCompat.getInstance(this).onFinishBind();
         mModel.recheckRestoredItems(this);
+        mWorkspace.stripEmptyScreens();
     }
 
     private void sendLoadingCompleteBroadcastIfNecessary() {
