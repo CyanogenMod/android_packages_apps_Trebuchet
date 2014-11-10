@@ -41,7 +41,9 @@ LOCAL_PROTOC_FLAGS := --proto_path=$(LOCAL_PATH)/protos/
 LOCAL_PACKAGE_NAME := Launcher3
 #LOCAL_CERTIFICATE := shared
 
-LOCAL_OVERRIDES_PACKAGES := Launcher2
+LOCAL_AAPT_FLAGS := --rename-manifest-package org.cyanogenmod.trebuchet
+
+LOCAL_OVERRIDES_PACKAGES := Launcher3
 
 LOCAL_PROGUARD_FLAG_FILES := proguard.flags
 LOCAL_PROGUARD_ENABLED := disabled
