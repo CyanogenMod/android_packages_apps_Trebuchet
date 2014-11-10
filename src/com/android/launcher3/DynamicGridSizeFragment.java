@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -15,6 +16,7 @@ import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -96,6 +98,13 @@ public class DynamicGridSizeFragment extends Fragment implements NumberPicker.On
                 R.layout.settings_pane_list_item, values);
         mListView.setAdapter(mAdapter);
 
+        // RTL
+        ImageView navPrev = (ImageView) v.findViewById(R.id.nav_prev);
+        Configuration config = getResources().getConfiguration();
+        if (config.getLayoutDirection() == View.LAYOUT_DIRECTION_RTL) {
+            navPrev.setImageResource(R.drawable.ic_navigation_next);
+        }
+
         return v;
     }
 
@@ -163,7 +172,13 @@ public class DynamicGridSizeFragment extends Fragment implements NumberPicker.On
             DisplayMetrics displaymetrics = new DisplayMetrics();
             getActivity().getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
             int width = displaymetrics.widthPixels;
-            final ObjectAnimator anim = ObjectAnimator.ofFloat(this, "translationX", width, 0);
+            Configuration config = getResources().getConfiguration();
+            final ObjectAnimator anim;
+            if (config.getLayoutDirection() == View.LAYOUT_DIRECTION_RTL) {
+                anim = ObjectAnimator.ofFloat(this, "translationX", -width, 0);
+            } else {
+                anim = ObjectAnimator.ofFloat(this, "translationX", width, 0);
+            }
 
             final View darkPanel = ((Launcher) getActivity()).getDarkPanel();
             darkPanel.setVisibility(View.VISIBLE);
@@ -303,7 +318,14 @@ public class DynamicGridSizeFragment extends Fragment implements NumberPicker.On
             TextView textView = (TextView) convertView
                     .findViewById(R.id.item_name);
             textView.setText(mTitles[position]);
-            // Set Selected State
+
+            // RTL
+            Configuration config = getResources().getConfiguration();
+            if (config.getLayoutDirection() == View.LAYOUT_DIRECTION_RTL) {
+                textView.setGravity(Gravity.RIGHT);
+            }
+
+            // Set selected state
             if (position == mCurrentSize.getValue()) {
                 mCurrentSelection = convertView;
                 setSelected(mCurrentSelection);

@@ -1283,8 +1283,14 @@ public class Launcher extends Activity
         mOverviewSettingsPanel.notifyDataSetInvalidated();
 
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-        fragmentTransaction
-                .setCustomAnimations(0, R.anim.exit_out_right);
+        Configuration config = getResources().getConfiguration();
+        if(config.getLayoutDirection() == View.LAYOUT_DIRECTION_RTL) {
+            fragmentTransaction
+                    .setCustomAnimations(0, R.anim.exit_out_left);
+        } else {
+            fragmentTransaction
+                    .setCustomAnimations(0, R.anim.exit_out_right);
+        }
         fragmentTransaction
                 .remove(mDynamicGridSizeFragment).commit();
 
@@ -1327,8 +1333,14 @@ public class Launcher extends Activity
         mOverviewSettingsPanel.notifyDataSetInvalidated();
 
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-        fragmentTransaction
-                .setCustomAnimations(0, R.anim.exit_out_right);
+        Configuration config = getResources().getConfiguration();
+        if(config.getLayoutDirection() == View.LAYOUT_DIRECTION_RTL) {
+            fragmentTransaction
+                    .setCustomAnimations(0, R.anim.exit_out_left);
+        } else {
+            fragmentTransaction
+                    .setCustomAnimations(0, R.anim.exit_out_right);
+        }
         fragmentTransaction
                 .remove(mTransitionEffectsFragment).commit();
 
