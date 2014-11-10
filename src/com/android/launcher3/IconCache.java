@@ -245,7 +245,7 @@ public class IconCache {
             HashMap<Object, CharSequence> labelCache) {
         synchronized (mCache) {
             CacheEntry entry = cacheLocked(application.componentName, info, labelCache,
-                    info.getUser(), false);
+                    info.getUser(), false, application.unreadNum);
 
             application.title = entry.title;
             application.iconBitmap = entry.icon;
@@ -267,7 +267,7 @@ public class IconCache {
             }
 
             LauncherActivityInfoCompat launcherActInfo = mLauncherApps.resolveActivity(intent, user);
-            CacheEntry entry = cacheLocked(component, launcherActInfo, null, user, usePkgIcon);
+            CacheEntry entry = cacheLocked(component, launcherActInfo, null, user, usePkgIcon, -1);
             if (title != null) {
                 entry.title = title;
                 entry.contentDescription = mUserManager.getBadgedLabelForUser(title, user);
@@ -292,7 +292,8 @@ public class IconCache {
             } else {
                 LauncherActivityInfoCompat launcherActInfo =
                         mLauncherApps.resolveActivity(intent, user);
-                CacheEntry entry = cacheLocked(component, launcherActInfo, null, user, usePkgIcon);
+                CacheEntry entry = cacheLocked(component, launcherActInfo, null, user, usePkgIcon,
+                        -1);
 
                 shortcutInfo.setIcon(entry.icon);
                 shortcutInfo.title = entry.title;
@@ -316,7 +317,7 @@ public class IconCache {
                 return null;
             }
 
-            CacheEntry entry = cacheLocked(component, info, labelCache, info.getUser(), false);
+            CacheEntry entry = cacheLocked(component, info, labelCache, info.getUser(), false, -1);
             return entry.icon;
         }
     }
@@ -326,10 +327,11 @@ public class IconCache {
     }
 
     private CacheEntry cacheLocked(ComponentName componentName, LauncherActivityInfoCompat info,
-            HashMap<Object, CharSequence> labelCache, UserHandleCompat user, boolean usePackageIcon) {
+            HashMap<Object, CharSequence> labelCache, UserHandleCompat user,
+            boolean usePackageIcon, int unreadNum) {
         CacheKey cacheKey = new CacheKey(componentName, user);
         CacheEntry entry = mCache.get(cacheKey);
-        if (entry == null) {
+        if (entry == null || unreadNum >= 0) {
             entry = new CacheEntry();
 
             mCache.put(cacheKey, entry);
@@ -347,7 +349,7 @@ public class IconCache {
 
                 entry.contentDescription = mUserManager.getBadgedLabelForUser(entry.title, user);
                 entry.icon = Utilities.createIconBitmap(
-                        info.getBadgedIcon(mIconDpi), mContext);
+                        info.getBadgedIcon(mIconDpi), mContext, unreadNum);
             } else {
                 entry.title = "";
                 Bitmap preloaded = getPreloadedIcon(componentName, user);

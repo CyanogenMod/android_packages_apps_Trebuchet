@@ -100,9 +100,6 @@
     <!-- Camera distance for the overscroll effect -->
     <integer name="config_cameraDistance">8000</integer>
 
-<!-- Hotseat -->
-    <bool name="hotseat_transpose_layout_with_orientation">true</bool>
-
     <!-- Memory debugging, including a memory dump icon -->
     <bool name="debug_memory_enabled">false</bool>
 
@@ -113,4 +110,16 @@
     <!-- Name of a subclass of com.android.launcher3.BuildInfo used to
          get build information. Can be empty. -->
     <string name="build_info_class" translatable="false"></string>
+
+<!-- Hotseat -->
+    <bool name="hotseat_transpose_layout_with_orientation">true</bool>
+    <integer name="hotseat_cell_count">5</integer>
+    <integer name="hotseat_all_apps_index">2</integer>
+    <!-- must be between 0 and 100 -->
+    <integer name="hotseat_item_scale_percentage">100</integer>
+
+    <bool name="config_launcher_sort">false</bool>
+    <bool name="config_launcher_page">false</bool>
+    <bool name="config_launcher_shortcut">false</bool>
+    <bool name="config_launcher_show_unread_number">false</bool>
 </resources>

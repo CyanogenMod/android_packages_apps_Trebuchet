@@ -70,6 +70,11 @@
     <!-- Drag padding to add to the bottom of drop targets -->
     <dimen name="drop_target_drag_padding">14dp</dimen>
 
+    <dimen name="infomation_count_height">14dp</dimen>
+    <dimen name="infomation_count_min_width">14dp</dimen>
+    <dimen name="infomation_count_textsize">11dp</dimen>
+    <dimen name="infomation_count_padding">4dp</dimen>
+    <dimen name="infomation_count_circle_radius">7dp</dimen>
 <!-- Dragging -->
     <!-- the area at the edge of the screen that makes the workspace go left
          or right while you're dragging. -->

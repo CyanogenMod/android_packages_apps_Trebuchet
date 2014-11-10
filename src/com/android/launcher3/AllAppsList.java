@@ -18,11 +18,6 @@ package com.android.launcher3;
 
 import android.content.ComponentName;
 import android.content.Context;
-import android.content.Intent;
-import android.content.pm.ActivityInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
-
 import com.android.launcher3.compat.LauncherActivityInfoCompat;
 import com.android.launcher3.compat.LauncherAppsCompat;
 import com.android.launcher3.compat.UserHandleCompat;
@@ -229,6 +224,38 @@ class AllAppsList {
                 return info;
             }
         }
+        return null;
+    }
+
+    public AppInfo unreadNumbersChanged(Context context, ComponentName component,
+            int unreadNum) {
+
+        if (component == null) { return null; }
+
+        LauncherAppsCompat launcherApps = LauncherAppsCompat.getInstance(context);
+        UserHandleCompat myUserHandle = UserHandleCompat.myUserHandle();
+        List<LauncherActivityInfoCompat> matches =
+                launcherApps.getActivityList(component.getPackageName(), myUserHandle);
+
+        for (LauncherActivityInfoCompat launcherActivityInfoCompat : matches) {
+            if (component.getPackageName().equals(
+                    launcherActivityInfoCompat.getComponentName().getPackageName())) {
+
+                AppInfo appInfo = findApplicationInfoLocked(
+                        component.getPackageName(), myUserHandle,
+                        component.getClassName());
+
+                if (appInfo == null) {
+                    return null;
+                } else {
+                    appInfo.unreadNum = unreadNum;
+                    mIconCache.remove(appInfo.componentName, myUserHandle);
+                    mIconCache.getTitleAndIcon(appInfo, launcherActivityInfoCompat, null);
+                    return appInfo;
+                }
+            }
+        }
+
         return null;
     }
 }

@@ -19,9 +19,13 @@ package com.android.launcher3;
 import android.app.Application;
 
 public class LauncherApplication extends Application {
+    public static boolean LAUNCHER_SHOW_UNREAD_NUMBER;
+
     @Override
     public void onCreate() {
         super.onCreate();
+        LAUNCHER_SHOW_UNREAD_NUMBER = getResources().getBoolean(
+                R.bool.config_launcher_show_unread_number);
         LauncherAppState.setApplicationContext(this);
         LauncherAppState.getInstance();
     }
