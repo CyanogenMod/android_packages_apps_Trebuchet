@@ -20,12 +20,15 @@ import android.app.Application;
 
 public class LauncherApplication extends Application {
     public static boolean LAUNCHER_SHOW_UNREAD_NUMBER;
+    public static boolean LAUNCHER_SHORTCUT_ENABLED;
 
     @Override
     public void onCreate() {
         super.onCreate();
         LAUNCHER_SHOW_UNREAD_NUMBER = getResources().getBoolean(
                 R.bool.config_launcher_show_unread_number);
+        LAUNCHER_SHORTCUT_ENABLED = getResources().getBoolean(
+                R.bool.config_launcher_shortcut);
         LauncherAppState.setApplicationContext(this);
         LauncherAppState.getInstance();
     }
