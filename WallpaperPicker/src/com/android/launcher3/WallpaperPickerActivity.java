@@ -702,6 +702,20 @@ public class WallpaperPickerActivity extends WallpaperCropActivity {
         return thumb;
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle presses on the action bar items
+        switch (item.getItemId()) {
+            case MENU_WALLPAPER_SCROLL:
+                SettingsProvider.get(this).edit()
+                        .putBoolean(SettingsProvider.SETTINGS_UI_HOMESCREEN_SCROLLING_WALLPAPER_SCROLL, !item.isChecked())
+                        .commit();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
     protected void onStop() {
         super.onStop();
         mWallpaperStrip = findViewById(R.id.wallpaper_strip);
