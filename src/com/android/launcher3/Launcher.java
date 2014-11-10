@@ -1403,6 +1403,15 @@ public class Launcher extends Activity
         popupMenu.show();
     }
 
+    protected void startSettings() {
+        Intent settings;
+        settings = new Intent(android.provider.Settings.ACTION_SETTINGS);
+        startActivity(settings);
+        if (mWorkspace.isInOverviewMode()) {
+            mWorkspace.exitOverviewMode(false);
+        }
+    }
+
     public interface QSBScroller {
         public void setScrollY(int scrollY);
     }

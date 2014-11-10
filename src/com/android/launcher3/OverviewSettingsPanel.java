@@ -15,8 +15,6 @@ public class OverviewSettingsPanel {
     public static final String ANDROID_SETTINGS = "com.android.settings";
     public static final String ANDROID_PROTECTED_APPS =
             "com.android.settings.applications.ProtectedAppsActivity";
-    public static final String THEME_SETTINGS =
-            "com.android.settings.Settings$ThemeSettingsActivity";
     public static final int HOME_SETTINGS_POSITION = 0;
     public static final int DRAWER_SETTINGS_POSITION = 1;
     public static final int APP_SETTINGS_POSITION = 2;
@@ -115,6 +113,9 @@ public class OverviewSettingsPanel {
         settingsButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View arg0) {
+                if (!mLauncher.getWorkspace().isSwitchingState()) {
+                    mLauncher.startSettings();
+                }
             }
         });
         settingsButton.setOnTouchListener(mLauncher.getHapticFeedbackTouchListener());
