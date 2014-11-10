@@ -210,7 +210,6 @@ public class AppsCustomizePagedView extends PagedViewWithDraggableItems implemen
     private ArrayList<AppInfo> mApps;
     private ArrayList<Object> mWidgets;
 
-    private ArrayList<AppInfo> mFilteredApps;
     private ArrayList<Object> mFilteredWidgets;
     private ArrayList<ComponentName> mProtectedApps;
     private ArrayList<String> mProtectedPackages;
@@ -1502,6 +1501,53 @@ public class AppsCustomizePagedView extends PagedViewWithDraggableItems implemen
         mSaveInstanceStateItemIndex = -1;
     }
 
+    private void onTransitionPrepare() {
+        mIsSwitchingState = true;
+
+        // Invalidate here to ensure that the pages are rendered during the state change transition.
+        invalidate();
+
+        enableHwLayersOnVisiblePages();
+    }
+
+    private void onTransitionEnd() {
+        mIsSwitchingState = false;
+    }
+
+    public Comparator<AppInfo> getComparatorForSortMode() {
+        switch (mSortMode) {
+            case Title:
+                return LauncherModel.getAppNameComparator();
+            case LaunchCount:
+                return LauncherModel.getAppLaunchCountComparator(mLauncher.getStats());
+            case InstallTime:
+                return LauncherModel.APP_INSTALL_TIME_COMPARATOR;
+        }
+        return LauncherModel.getAppNameComparator();
+    }
+
+    public void setSortMode(SortMode sortMode) {
+        if (mSortMode == sortMode) return;
+
+        mSortMode = sortMode;
+
+        sortApps();
+    }
+
+    public void sortApps() {
+        Collections.sort(mApps, getComparatorForSortMode());
+
+        if (mContentType == ContentType.Applications) {
+            for (int i = 0; i < getChildCount(); i++) {
+                syncAppsPageItems(i, true);
+            }
+        }
+    }
+
+    public SortMode getSortMode() {
+        return mSortMode;
+    }
+
     /*
      * AllAppsView implementation
      */
@@ -1712,39 +1758,5 @@ public class AppsCustomizePagedView extends PagedViewWithDraggableItems implemen
         }
 
         return String.format(getContext().getString(stringId), page + 1, count);
-    }
-
-    public Comparator<AppInfo> getComparatorForSortMode() {
-        switch (mSortMode) {
-            case Title:
-                return LauncherModel.getAppNameComparator();
-            case LaunchCount:
-                return LauncherModel.getAppLaunchCountComparator(mLauncher.getStats());
-            case InstallTime:
-                return LauncherModel.APP_INSTALL_TIME_COMPARATOR;
-        }
-        return LauncherModel.getAppNameComparator();
-    }
-
-    public void setSortMode(SortMode sortMode) {
-        if (mSortMode == sortMode) return;
-
-        mSortMode = sortMode;
-
-        sortApps();
-    }
-
-    public void sortApps() {
-        Collections.sort(new ArrayList<AppInfo>(), getComparatorForSortMode());
-
-        if (mContentType == ContentType.Applications) {
-            for (int i = 0; i < getChildCount(); i++) {
-                syncAppsPageItems(i, true);
-            }
-        }
-    }
-
-    public SortMode getSortMode() {
-        return mSortMode;
     }
 }

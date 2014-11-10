@@ -4061,6 +4061,7 @@ public class Launcher extends Activity
         if (resetPageToZero) {
             mAppsCustomizeTabHost.reset();
         }
+        mAppsCustomizeContent.sortApps();
         showAppsCustomizeHelper(animated, false, contentType);
         mAppsCustomizeTabHost.post(new Runnable() {
             @Override
