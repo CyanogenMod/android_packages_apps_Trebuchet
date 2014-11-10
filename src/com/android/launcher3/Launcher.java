@@ -299,7 +299,7 @@ public class Launcher extends Activity
 
     private View mAllAppsButton;
 
-    private SearchDropTargetBar mSearchDropTargetBar;
+    protected SearchDropTargetBar mSearchDropTargetBar;
     private AppsCustomizeTabHost mAppsCustomizeTabHost;
     private AppsCustomizePagedView mAppsCustomizeContent;
     private boolean mAutoAdvanceRunning = false;
@@ -1054,10 +1054,6 @@ public class Launcher extends Activity
 
 
         updateGridIfNeeded();
-
-        if(isGelIntegrationEnabled() && isGelIntegrationSupported()) {
-            GelIntegrationHelper.getInstance().handleGelResume();
-        }
 
         // Restore the previous launcher state
         if (mOnResumeState == State.WORKSPACE) {
