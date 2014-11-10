@@ -496,7 +496,7 @@ public class LauncherProvider extends ContentProvider {
                     "modified INTEGER NOT NULL DEFAULT 0," +
                     "restored INTEGER NOT NULL DEFAULT 0," +
                     "profileId INTEGER DEFAULT " + userSerialNumber +
-                    "hidden INTEGER DEFAULT 0" +
+                    ",hidden INTEGER DEFAULT 0" +
                     ");");
             addWorkspacesTable(db);
 
@@ -959,7 +959,25 @@ public class LauncherProvider extends ContentProvider {
             }
 
             if (oldVersion < 21) {
-                db.execSQL("ALTER TABLE favorites ADD hidden INTEGER DEFAULT 0");
+                //Check for column's existence, hackish way to make sure
+                //we can upgrade from Trebuchet and from Launcher3(new)
+                Cursor c = null;
+                try {
+                    c = db.rawQuery("SELECT hidden FROM favorites", null);
+                    //if we have don't have hidden, add it
+                    if (c == null || (c != null && !c.moveToNext())) {
+                        db.execSQL("ALTER TABLE favorites ADD hidden INTEGER DEFAULT 0");
+                    } else {
+                    //otherwise, we don't have profiles
+                        addProfileColumn(db);
+                    }
+                } catch (SQLException e) {
+                    Log.e(TAG, e.getMessage(), e);
+                } finally {
+                    if (c != null) {
+                        c.close();
+                    }
+                }
                 version = 21;
             }
 
