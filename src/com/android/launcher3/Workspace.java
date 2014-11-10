@@ -4348,7 +4348,7 @@ public class Workspace extends SmoothPagedView
         }
 
         if (target instanceof InfoDropTarget) {
-            removeExtraEmptyScreen(false, null);
+            removeExtraEmptyScreen(false, true);
         }
 
         mDragOutline = null;
