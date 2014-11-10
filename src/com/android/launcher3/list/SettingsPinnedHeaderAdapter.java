@@ -101,15 +101,15 @@ public class SettingsPinnedHeaderAdapter extends PinnedHeaderListAdapter {
                     R.string.setting_state_off);
             ((TextView) v.findViewById(R.id.item_state)).setText(state);
         } else if (title.equals(res
-                .getString(R.string.hide_icon_labels)) &&
+                .getString(R.string.icon_labels)) &&
                 partition == OverviewSettingsPanel.HOME_SETTINGS_POSITION) {
             boolean current = mLauncher.shouldHideWorkspaceIconLables();
             String state = current ? res.getString(
-                    R.string.setting_state_on) : res.getString(
-                    R.string.setting_state_off);
+                    R.string.icon_labels_hide) : res.getString(
+                    R.string.icon_labels_show);
             ((TextView) v.findViewById(R.id.item_state)).setText(state);
         } else if (title.equals(res
-                .getString(R.string.hide_icon_labels)) &&
+                .getString(R.string.icon_labels)) &&
                 partition == OverviewSettingsPanel.DRAWER_SETTINGS_POSITION) {
             boolean current = SettingsProvider
                     .getBoolean(
@@ -117,8 +117,8 @@ public class SettingsPinnedHeaderAdapter extends PinnedHeaderListAdapter {
                             SettingsProvider.SETTINGS_UI_DRAWER_HIDE_ICON_LABELS,
                             R.bool.preferences_interface_drawer_hide_icon_labels_default);
             String state = current ? res.getString(
-                    R.string.setting_state_on) : res.getString(
-                    R.string.setting_state_off);
+                    R.string.icon_labels_hide) : res.getString(
+                    R.string.icon_labels_show);
             ((TextView) v.findViewById(R.id.item_state)).setText(state);
         } else if (title.equals(res
                 .getString(R.string.search_screen_left_text))) {
@@ -232,17 +232,17 @@ public class SettingsPinnedHeaderAdapter extends PinnedHeaderListAdapter {
                         R.bool.preferences_interface_general_icons_large_default);
                 mLauncher.updateDynamicGrid();
             } else if (value.equals(res
-                    .getString(R.string.hide_icon_labels)) &&
+                    .getString(R.string.icon_labels)) &&
                     ((Integer)v.getTag() == OverviewSettingsPanel.HOME_SETTINGS_POSITION)) {
-                onSettingsBooleanChanged(
+                onIconLabelsBooleanChanged(
                         v,
                         SettingsProvider.SETTINGS_UI_HOMESCREEN_HIDE_ICON_LABELS,
                         R.bool.preferences_interface_homescreen_hide_icon_labels_default);
                 mLauncher.updateDynamicGrid();
             } else if (value.equals(res
-                    .getString(R.string.hide_icon_labels)) &&
+                    .getString(R.string.icon_labels)) &&
                     ((Integer)v.getTag() == OverviewSettingsPanel.DRAWER_SETTINGS_POSITION)) {
-                onSettingsBooleanChanged(
+                onIconLabelsBooleanChanged(
                         v,
                         SettingsProvider.SETTINGS_UI_DRAWER_HIDE_ICON_LABELS,
                         R.bool.preferences_interface_drawer_hide_icon_labels_default);
@@ -301,6 +301,24 @@ public class SettingsPinnedHeaderAdapter extends PinnedHeaderListAdapter {
         String state = current ? mLauncher.getResources().getString(
                 R.string.setting_state_off) : mLauncher.getResources().getString(
                 R.string.setting_state_on);
+        ((TextView) v.findViewById(R.id.item_state)).setText(state);
+    }
+
+    private void onIconLabelsBooleanChanged(View v, String key, int res) {
+        boolean current = SettingsProvider.getBoolean(
+                mContext, key, res);
+
+        // Set new state
+        SharedPreferences sharedPref = SettingsProvider
+                .get(mContext);
+        sharedPref.edit().putBoolean(key, !current).commit();
+        sharedPref.edit()
+                .putBoolean(SettingsProvider.SETTINGS_CHANGED, true)
+                .commit();
+
+        String state = current ? mLauncher.getResources().getString(
+                R.string.icon_labels_show) : mLauncher.getResources().getString(
+                R.string.icon_labels_hide);
         ((TextView) v.findViewById(R.id.item_state)).setText(state);
     }
 
