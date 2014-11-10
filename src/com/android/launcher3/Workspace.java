@@ -307,6 +307,7 @@ public class Workspace extends SmoothPagedView
     private boolean mShowSearchBar;
     private boolean mShowOutlines;
     private boolean mHideIconLabels;
+
     /**
      * Used to inflate the Workspace from XML.
      *
@@ -342,6 +343,12 @@ public class Workspace extends SmoothPagedView
         mScrollWallpaper = SettingsProvider.getBoolean(context,
                 SettingsProvider.SETTINGS_UI_HOMESCREEN_SCROLLING_WALLPAPER_SCROLL,
                 R.bool.preferences_interface_homescreen_scrolling_wallpaper_scroll_default);
+        mHideIconLabels = SettingsProvider.getBoolean(context,
+                SettingsProvider.SETTINGS_UI_HOMESCREEN_HIDE_ICON_LABELS,
+                R.bool.preferences_interface_homescreen_hide_icon_labels_default);
+        mWorkspaceFadeInAdjacentScreens = SettingsProvider.getBoolean(context,
+                SettingsProvider.SETTINGS_UI_HOMESCREEN_SCROLLING_FADE_ADJACENT,
+                R.bool.preferences_interface_homescreen_scrolling_fade_adjacent_default);
         TransitionEffect.setFromString(this, SettingsProvider.getString(context,
                 SettingsProvider.SETTINGS_UI_HOMESCREEN_SCROLLING_TRANSITION_EFFECT,
                 R.string.preferences_interface_homescreen_scrolling_transition_effect));
@@ -1057,7 +1064,9 @@ public class Workspace extends SmoothPagedView
         } else {
             // Show folder title if not in the hotseat
             if (child instanceof FolderIcon) {
-                ((FolderIcon) child).setTextVisible(true);
+                ((FolderIcon) child).setTextVisible(!mHideIconLabels);
+            } else if (child instanceof BubbleTextView) {
+                ((BubbleTextView) child).setTextVisibility(!mHideIconLabels);
             }
             layout = getScreenWithId(screenId);
             child.setOnKeyListener(new IconKeyEventListener());
@@ -4063,6 +4072,7 @@ public class Workspace extends SmoothPagedView
             case LauncherSettings.Favorites.ITEM_TYPE_FOLDER:
                 view = FolderIcon.fromXml(R.layout.folder_icon, mLauncher, cellLayout,
                         (FolderInfo) info, mIconCache);
+                    ((FolderIcon) view).setTextVisible(!mHideIconLabels);
                 break;
             default:
                 throw new IllegalStateException("Unknown item type: " + info.itemType);

@@ -460,6 +460,9 @@ public class Launcher extends Activity
         super.onCreate(savedInstanceState);
 
         initializeDynamicGrid();
+        mHideIconLabels = SettingsProvider.getBoolean(this,
+                SettingsProvider.SETTINGS_UI_HOMESCREEN_HIDE_ICON_LABELS,
+                R.bool.preferences_interface_homescreen_hide_icon_labels_default);
 
         // the LauncherApplication should call this, but in case of Instrumentation it might not be present yet
         mSharedPrefs = getSharedPreferences(LauncherAppState.getSharedPreferencesKey(),
@@ -1649,6 +1652,7 @@ public class Launcher extends Activity
     View createShortcut(int layoutResId, ViewGroup parent, ShortcutInfo info) {
         BubbleTextView favorite = (BubbleTextView) mInflater.inflate(layoutResId, parent, false);
         favorite.applyFromShortcutInfo(info, mIconCache, true);
+        favorite.setTextVisibility(!mHideIconLabels);
         favorite.setOnClickListener(this);
         favorite.setOnFocusChangeListener(mFocusHandler);
         return favorite;
@@ -2589,6 +2593,9 @@ public class Launcher extends Activity
         // Create the view
         FolderIcon newFolder =
             FolderIcon.fromXml(R.layout.folder_icon, this, layout, folderInfo, mIconCache);
+        if (container == LauncherSettings.Favorites.CONTAINER_DESKTOP) {
+            newFolder.setTextVisible(!mHideIconLabels);
+        }
         mWorkspace.addInScreen(newFolder, container, screenId, cellX, cellY, 1, 1,
                 isWorkspaceLocked());
         // Force measure the new folder icon
@@ -4666,6 +4673,7 @@ public class Launcher extends Activity
                     FolderIcon newFolder = FolderIcon.fromXml(R.layout.folder_icon, this,
                             (ViewGroup) workspace.getChildAt(workspace.getCurrentPage()),
                             (FolderInfo) item, mIconCache);
+                    newFolder.setTextVisible(!mHideIconLabels);
                     workspace.addInScreenFromBind(newFolder, item.container, item.screenId, item.cellX,
                             item.cellY, 1, 1);
                     break;

@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -27,7 +28,6 @@ public class TransitionEffectsFragment extends Fragment {
     ImageView mTransitionIcon;
     ListView mListView;
     View mCurrentSelection;
-    ScrollView mScrollView;
 
     String[] mTransitionStates;
     TypedArray mTransitionDrawables;
@@ -88,7 +88,6 @@ public class TransitionEffectsFragment extends Fragment {
 
         mTransitionIcon = (ImageView) v.findViewById(R.id.settings_transition_image);
         mListView = (ListView) v.findViewById(R.id.settings_transitions_list);
-        mScrollView = (ScrollView) v.findViewById(R.id.scroll_view);
         TextView title = (TextView) v.findViewById(R.id.transition_effect_title);
         title.setText(getResources().getString(R.string.scroll_effect_text));
         LinearLayout titleLayout = (LinearLayout) v.findViewById(R.id.transition_title);
