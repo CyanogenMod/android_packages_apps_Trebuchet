@@ -2948,6 +2948,25 @@ public class Launcher extends Activity
             throw new IllegalArgumentException("Input must be a Shortcut or AppInfo");
         }
 
+        final ComponentName componentName = intent.getComponent();
+        if(componentName != null){
+            String name = componentName.getPackageName();
+            PackageManager packageManager = getPackageManager();
+
+            try{
+                String sourceDir = (packageManager.getApplicationInfo(name, 0)).sourceDir;
+
+                if(!new File(sourceDir).exists()){
+                    Toast.makeText(this, R.string.activity_not_found,
+                        Toast.LENGTH_SHORT).show();
+                    return;
+                }
+            } catch (NameNotFoundException e) {
+                Toast.makeText(this, R.string.activity_not_found, Toast.LENGTH_SHORT).show();
+                return;
+            }
+        }
+
         boolean success = startActivitySafely(v, intent, tag);
         mStats.recordLaunch(intent, shortcut);
 

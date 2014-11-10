@@ -21,7 +21,7 @@ import android.app.Application;
 public class LauncherApplication extends Application {
     public static boolean LAUNCHER_SHOW_UNREAD_NUMBER;
     public static boolean LAUNCHER_SHORTCUT_ENABLED;
-    public static boolean SHOW_CTAPP_FEATRUE = false;
+    public static boolean SHOW_CTAPP_FEATURE;
 
     @Override
     public void onCreate() {
@@ -30,6 +30,7 @@ public class LauncherApplication extends Application {
                 R.bool.config_launcher_show_unread_number);
         LAUNCHER_SHORTCUT_ENABLED = getResources().getBoolean(
                 R.bool.config_launcher_shortcut);
+        SHOW_CTAPP_FEATURE = getResources().getBoolean(R.bool.config_launcher_page);
         LauncherAppState.setApplicationContext(this);
         LauncherAppState.getInstance();
     }

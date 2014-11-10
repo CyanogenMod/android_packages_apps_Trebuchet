@@ -360,7 +360,7 @@ public class AppsCustomizePagedView extends PagedViewWithDraggableItems implemen
 
         configClassArray(context, mPreClassArray, PRE_CLASS_IDENTIFIER, true);
 
-        if (LauncherApplication.SHOW_CTAPP_FEATRUE) {
+        if (LauncherApplication.SHOW_CTAPP_FEATURE) {
             configClassArray(context, mCTClassArray, CT_CLASS_IDENTIFIER, false);
             configClassArray(context, mCTFirstPageArray, CT_FIRSTPAGE_IDENTIFIER, false);
         }
@@ -463,6 +463,9 @@ public class AppsCustomizePagedView extends PagedViewWithDraggableItems implemen
         mNumWidgetPages = (int) Math.ceil(mWidgets.size() /
                 (float) (mWidgetCountX * mWidgetCountY));
         mNumAppsPages = (int) Math.ceil((float) mApps.size() / (mCellCountX * mCellCountY));
+        if(LauncherApplication.SHOW_CTAPP_FEATURE){
+            mNumAppsPages = mNumAppsPages + 2; //for ct
+        }
     }
 
     protected void onDataReady(int width, int height) {
@@ -1080,16 +1083,18 @@ public class AppsCustomizePagedView extends PagedViewWithDraggableItems implemen
         AppsCustomizeCellLayout layout = (AppsCustomizeCellLayout) getPageAt(page);
 
         //set page 1 & 2 to CT's app
-        boolean isflag = LauncherApplication.SHOW_CTAPP_FEATRUE && (page <= 1);
+        boolean isCTFlag = LauncherApplication.SHOW_CTAPP_FEATURE
+                && (page < CT_CUSTOMIZED_PAGE_COUNT);
 
-        int startIndex = isflag ? 0 : (LauncherApplication.SHOW_CTAPP_FEATRUE && page>1 ?
-            (page-2)* numCells : page * numCells);
+        int startIndex = isCTFlag ? 0 : ((LauncherApplication.SHOW_CTAPP_FEATURE
+                && page >= CT_CUSTOMIZED_PAGE_COUNT) ? (page - CT_CUSTOMIZED_PAGE_COUNT) * numCells
+                : page * numCells);
 
-        int ctEndIndex = page==0 ? Math.min(startIndex + numCells, ctFirstPageApps.size())
-            : Math.min(startIndex + numCells, ctApps.size());
+        int ctEndIndex = (page == 0) ? Math.min(startIndex + numCells, ctFirstPageApps.size())
+                : Math.min(startIndex + numCells, ctApps.size());
 
         int defEndIndex = Math.min(startIndex + numCells, mApps.size());
-        int endIndex = isflag ? ctEndIndex : defEndIndex ;
+        int endIndex = isCTFlag ? ctEndIndex : defEndIndex ;
 
         layout.removeAllViewsOnPage();
         ArrayList<Object> items = new ArrayList<Object>();
@@ -1098,8 +1103,9 @@ public class AppsCustomizePagedView extends PagedViewWithDraggableItems implemen
                 SettingsProvider.SETTINGS_UI_DRAWER_HIDE_ICON_LABELS,
                 R.bool.preferences_interface_drawer_hide_icon_labels_default);
         for (int i = startIndex; i < endIndex; ++i) {
-            AppInfo info = isflag ? (page==0 ? ctFirstPageApps.get(i) :
-                    ctApps.get(i)) : mApps.get(i);
+            AppInfo info = isCTFlag
+                    ? ((page == 0) ? ctFirstPageApps.get(i) : ctApps.get(i))
+                    : mApps.get(i);
 
             BubbleTextView icon = (BubbleTextView) mLayoutInflater.inflate(
                     R.layout.apps_customize_application, layout, false);
@@ -1759,11 +1765,24 @@ public class AppsCustomizePagedView extends PagedViewWithDraggableItems implemen
     private void removeAppsWithoutInvalidate(ArrayList<AppInfo> list) {
         // loop through all the apps and remove apps that have the same component
         int length = list.size();
+        final int INVALID_INDEX = -1;
         for (int i = 0; i < length; ++i) {
             AppInfo info = list.get(i);
-            int removeIndex = findAppByComponent(mApps, info);
-            if (removeIndex > -1) {
-                mApps.remove(removeIndex);
+            if(ctFirstPageApps.contains(info)) { //for CT first page
+                int removeCTFirstPageIndex = findAppByComponent(ctFirstPageApps, info);
+                if (removeCTFirstPageIndex > INVALID_INDEX) {
+                    ctFirstPageApps.remove(removeCTFirstPageIndex);
+                }
+            } else if(ctApps.contains(info)){ //for CT
+                int removeCTIndex = findAppByComponent(ctApps, info);
+                if (removeCTIndex > INVALID_INDEX) {
+                    ctApps.remove(removeCTIndex);
+                }
+            } else {
+                int removeIndex = findAppByComponent(mApps, info);
+                if (removeIndex > INVALID_INDEX) {
+                    mApps.remove(removeIndex);
+                }
             }
         }
     }
@@ -1969,7 +1988,7 @@ public class AppsCustomizePagedView extends PagedViewWithDraggableItems implemen
     }
 
     private void sortByCustomization() {
-        if(LauncherApplication.SHOW_CTAPP_FEATRUE){
+        if(LauncherApplication.SHOW_CTAPP_FEATURE){
             ctApps.clear();
             ctFirstPageApps.clear();
 
