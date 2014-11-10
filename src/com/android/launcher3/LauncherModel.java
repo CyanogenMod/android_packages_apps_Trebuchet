@@ -48,6 +48,7 @@ import android.os.RemoteException;
 import android.os.SystemClock;
 import android.provider.BaseColumns;
 import android.text.TextUtils;
+import android.provider.Settings;
 import android.util.Log;
 import android.util.Pair;
 
@@ -89,6 +90,7 @@ public class LauncherModel extends BroadcastReceiver
     private static final boolean REMOVE_UNRESTORED_ICONS = true;
 
     static final String TAG = "Launcher.Model";
+    public static final String SETTINGS_PROTECTED_COMPONENTS = "protected_components";
 
     // true = use a "More Apps" folder for non-workspace apps on upgrade
     // false = strew non-workspace apps across the workspace on upgrade
@@ -979,6 +981,7 @@ public class LauncherModel extends BroadcastReceiver
                 final int screenIndex = c.getColumnIndexOrThrow(LauncherSettings.Favorites.SCREEN);
                 final int cellXIndex = c.getColumnIndexOrThrow(LauncherSettings.Favorites.CELLX);
                 final int cellYIndex = c.getColumnIndexOrThrow(LauncherSettings.Favorites.CELLY);
+                final int hiddenIndex = c.getColumnIndexOrThrow(LauncherSettings.Favorites.HIDDEN);
 
                 FolderInfo folderInfo = null;
                 switch (c.getInt(itemTypeIndex)) {
@@ -993,6 +996,7 @@ public class LauncherModel extends BroadcastReceiver
                 folderInfo.screenId = c.getInt(screenIndex);
                 folderInfo.cellX = c.getInt(cellXIndex);
                 folderInfo.cellY = c.getInt(cellYIndex);
+                folderInfo.hidden = c.getInt(hiddenIndex) > 0;
 
                 return folderInfo;
             }
@@ -1956,6 +1960,9 @@ public class LauncherModel extends BroadcastReceiver
                             LauncherSettings.Favorites.PROFILE_ID);
                     //final int uriIndex = c.getColumnIndexOrThrow(LauncherSettings.Favorites.URI);
                     //final int displayModeIndex = c.getColumnIndexOrThrow(
+                    final int hiddenIndex = c.getColumnIndexOrThrow(
+                            LauncherSettings.Favorites.HIDDEN);
+                    //final int uriIndex = c.getColumnIndexOrThrow(LauncherSettings.Favorites.URI); //final int displayModeIndex = c.getColumnIndexOrThrow(
                     //        LauncherSettings.Favorites.DISPLAY_MODE);
 
                     ShortcutInfo info;
@@ -2178,6 +2185,7 @@ public class LauncherModel extends BroadcastReceiver
                                 folderInfo.cellY = c.getInt(cellYIndex);
                                 folderInfo.spanX = 1;
                                 folderInfo.spanY = 1;
+                                folderInfo.hidden = c.getInt(hiddenIndex) > 0;
 
                                 // check & update map of what's occupied
                                 deleteOnInvalidPlacement.set(false);
@@ -2584,6 +2592,105 @@ public class LauncherModel extends BroadcastReceiver
                 }
             };
             runOnMainThread(r, MAIN_THREAD_BINDING_RUNNABLE);
+        }
+
+        private void removeHiddenAppsWorkspaceItems(
+                final ArrayList<ItemInfo> workspaceItems,
+                final ArrayList<LauncherAppWidgetInfo> appWidgets,
+                final HashMap<Long, FolderInfo> folders) {
+
+            // Get hidden apps
+            ArrayList<ComponentName> mHiddenApps = new ArrayList<ComponentName>();
+            ArrayList<String> mHiddenAppsPackages = new ArrayList<String>();
+            Context context = mApp.getContext();
+            // Since Trebuchet is compiled using the SDK we have to hardcode this string
+            String protectedComponents = Settings.Secure.getString(context.getContentResolver(),
+                    SETTINGS_PROTECTED_COMPONENTS);
+            protectedComponents = protectedComponents == null ? "" : protectedComponents;
+            String[] flattened = protectedComponents.split("\\|");
+            boolean hideShortcuts = SettingsProvider.getBoolean(context,
+                    SettingsProvider.SETTINGS_UI_DRAWER_REMOVE_HIDDEN_APPS_SHORTCUTS,
+                    R.bool.preferences_interface_drawer_remove_hidden_apps_shortcuts_default);
+            boolean hideWidgets = SettingsProvider.getBoolean(context,
+                    SettingsProvider.SETTINGS_UI_DRAWER_REMOVE_HIDDEN_APPS_WIDGETS,
+                    R.bool.preferences_interface_drawer_remove_hidden_apps_widgets_default);
+
+            for (String flat : flattened) {
+                ComponentName cmp = ComponentName.unflattenFromString(flat);
+                if (cmp != null) {
+                    mHiddenApps.add(cmp);
+                    mHiddenAppsPackages.add(cmp.getPackageName());
+                }
+            }
+
+            // Shortcuts
+            if (hideShortcuts) {
+                int N = workspaceItems.size() - 1;
+                for (int i = N; i >= 0; i--) {
+                    final ItemInfo item = workspaceItems.get(i);
+                    if (item instanceof ShortcutInfo) {
+                        ShortcutInfo shortcut = (ShortcutInfo)item;
+                        if (shortcut.intent != null && shortcut.intent.getComponent() != null) {
+                            if (mHiddenApps.contains(shortcut.intent.getComponent())) {
+                                LauncherModel.deleteItemFromDatabase(mContext, shortcut);
+                                workspaceItems.remove(i);
+                            }
+                        }
+                    } else {
+                        // Only remove items from folders that aren't hidden
+                        final FolderInfo folder = (FolderInfo)item;
+                        List<ShortcutInfo> shortcuts = folder.contents;
+
+                        int NN = shortcuts.size() - 1;
+                        for (int j = NN; j >= 0; j--) {
+                            ShortcutInfo sci = shortcuts.get(j);
+                            if (sci.intent != null && sci.intent.getComponent() != null) {
+                                if (!folder.hidden){
+                                    if (mHiddenApps.contains(sci.intent.getComponent())) {
+                                        LauncherModel.deleteItemFromDatabase(mContext, sci);
+                                        folder.remove(sci);
+                                    }
+                                } else {
+                                    if (!mHiddenApps.contains(sci.intent.getComponent())) {
+                                        LauncherModel.deleteItemFromDatabase(mContext, sci);
+                                        folder.remove(sci);
+                                    }
+                                }
+
+                            }
+                        }
+
+                        if (folder.contents.size() == 1 && !folder.hidden) {
+                            ShortcutInfo finalItem = folder.contents.get(0);
+                            finalItem.container = folder.container;
+                            LauncherModel.deleteItemFromDatabase(mContext, folder);
+                            LauncherModel.addOrMoveItemInDatabase(mContext, finalItem, folder.container,
+                                    folder.screenId, folder.cellX, folder.cellY);
+                            workspaceItems.remove(i);
+                            workspaceItems.add(finalItem);
+                            folders.remove(Long.valueOf(item.id));
+                        } else if (folder.contents.size() == 0 /*&& !(folder instanceof LiveFolderInfo)*/) {
+                            LauncherModel.deleteFolderContentsFromDatabase(mContext, folder);
+                            workspaceItems.remove(i);
+                            folders.remove(Long.valueOf(item.id));
+                        }
+                    }
+                }
+            }
+
+            // AppWidgets
+            if (hideWidgets) {
+                int N = appWidgets.size() - 1;
+                for (int i = N; i >= 0; i--) {
+                    final LauncherAppWidgetInfo item = appWidgets.get(i);
+                    if (item.providerName != null) {
+                        if (mHiddenAppsPackages.contains(item.providerName.getPackageName())) {
+                            LauncherModel.deleteItemFromDatabase(mContext, item);
+                            appWidgets.remove(i);
+                        }
+                    }
+                }
+            }
         }
 
         private void bindWorkspaceItems(final Callbacks oldCallbacks,

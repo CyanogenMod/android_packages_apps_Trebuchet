@@ -35,6 +35,8 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Process;
+import android.provider.Settings;
+import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
@@ -202,6 +204,16 @@ public class AppsCustomizePagedView extends PagedViewWithDraggableItems implemen
     private ArrayList<AppInfo> mApps;
     private ArrayList<Object> mWidgets;
 
+    private ArrayList<AppInfo> mFilteredApps;
+    private ArrayList<Object> mFilteredWidgets;
+    private ArrayList<ComponentName> mProtectedApps;
+    private ArrayList<String> mProtectedPackages;
+
+    // Cling
+    private boolean mHasShownAllAppsCling;
+    private int mClingFocusedX;
+    private int mClingFocusedY;
+
     // Caching
     private IconCache mIconCache;
 
@@ -292,6 +304,8 @@ public class AppsCustomizePagedView extends PagedViewWithDraggableItems implemen
             setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_YES);
         }
         setSinglePageInViewport();
+
+        updateProtectedAppsList(context);
     }
 
     @Override
@@ -1565,6 +1579,88 @@ public class AppsCustomizePagedView extends PagedViewWithDraggableItems implemen
             addAppsWithoutInvalidate(list);
             updatePageCountsAndInvalidateData();
         }
+    }
+
+    private void updateProtectedAppsList(Context context) {
+        String protectedComponents = Settings.Secure.getString(context.getContentResolver(),
+                LauncherModel.SETTINGS_PROTECTED_COMPONENTS);
+        protectedComponents = protectedComponents == null ? "" : protectedComponents;
+        String [] flattened = protectedComponents.split("\\|");
+        mProtectedApps = new ArrayList<ComponentName>(flattened.length);
+        mProtectedPackages = new ArrayList<String>(flattened.length);
+        for (String flat : flattened) {
+            ComponentName cmp = ComponentName.unflattenFromString(flat);
+            if (cmp != null) {
+                mProtectedApps.add(cmp);
+                mProtectedPackages.add(cmp.getPackageName());
+            }
+        }
+    }
+
+    public void filterAppsWithoutInvalidate() {
+        updateProtectedAppsList(mLauncher);
+
+        mFilteredApps = new ArrayList<AppInfo>(mApps);
+        Iterator<AppInfo> iterator = mFilteredApps.iterator();
+        while (iterator.hasNext()) {
+            AppInfo appInfo = iterator.next();
+            boolean system = (appInfo.flags & AppInfo.DOWNLOADED_FLAG) == 0;
+            if (mProtectedApps.contains(appInfo.componentName) ||
+                (system && !getShowSystemApps()) ||
+                (!system && !getShowDownloadedApps())) {
+                iterator.remove();
+            }
+        }
+        Collections.sort(mFilteredApps, getComparatorForSortMode());
+    }
+
+    public void filterApps() {
+        filterAppsWithoutInvalidate();
+        updatePageCountsAndInvalidateData();
+    }
+
+    public void filterWidgetsWithoutInvalidate() {
+        updateProtectedAppsList(mLauncher);
+
+        mFilteredWidgets = new ArrayList<Object>(mWidgets);
+
+        Iterator<Object> iterator = mFilteredWidgets.iterator();
+        while (iterator.hasNext()) {
+            Object o = iterator.next();
+
+            String packageName;
+            if (o instanceof AppWidgetProviderInfo) {
+                AppWidgetProviderInfo widgetInfo = (AppWidgetProviderInfo) o;
+                if (widgetInfo.provider == null) {
+                    continue;
+                }
+                packageName = widgetInfo.provider.getPackageName();
+            } else if (o instanceof ResolveInfo) {
+                ResolveInfo shortcut = (ResolveInfo) o;
+                packageName = shortcut.activityInfo.applicationInfo.packageName;
+            } else {
+                Log.w(TAG, "Unknown class in widgets list: " + o.getClass());
+                continue;
+            }
+
+            int flags;
+            try {
+                flags = AppInfo.initFlags(mPackageManager.getPackageInfo(packageName, 0));
+            } catch (NameNotFoundException e) {
+                flags = 0;
+            }
+            boolean system = (flags & AppInfo.DOWNLOADED_FLAG) == 0;
+            if (mProtectedPackages.contains(packageName) ||
+                    (system && !getShowSystemApps()) ||
+                    (!system && !getShowDownloadedApps())) {
+                iterator.remove();
+            }
+        }
+    }
+
+    public void filterWidgets() {
+        filterWidgetsWithoutInvalidate();
+        updatePageCountsAndInvalidateData();
     }
 
     public void reset() {

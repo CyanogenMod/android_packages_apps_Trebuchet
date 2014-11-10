@@ -35,9 +35,10 @@ public class FolderInfo extends ItemInfo {
     boolean opened;
 
     /**
-     * The apps and shortcuts
+     * The apps and shortcuts and hidden status
      */
     ArrayList<ShortcutInfo> contents = new ArrayList<ShortcutInfo>();
+    Boolean hidden = false;
 
     ArrayList<FolderListener> listeners = new ArrayList<FolderListener>();
 
@@ -83,6 +84,7 @@ public class FolderInfo extends ItemInfo {
     void onAddToDatabase(Context context, ContentValues values) {
         super.onAddToDatabase(context, values);
         values.put(LauncherSettings.Favorites.TITLE, title.toString());
+        values.put(LauncherSettings.Favorites.HIDDEN, hidden ? 1 : 0);
     }
 
     void addListener(FolderListener listener) {
