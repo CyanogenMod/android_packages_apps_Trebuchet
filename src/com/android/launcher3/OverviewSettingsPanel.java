@@ -179,8 +179,6 @@ public class OverviewSettingsPanel {
         ((SlidingUpPanelLayout) mOverviewPanel).setPanelHeight(isAllAppsVisible ?
                 res.getDimensionPixelSize(R.dimen.settings_pane_handle)
                 : res.getDimensionPixelSize(R.dimen.sliding_panel_padding));
-
-        ((SlidingUpPanelLayout) mOverviewPanel).collapsePane();
     }
 
     public void notifyDataSetInvalidated() {
@@ -202,6 +200,11 @@ public class OverviewSettingsPanel {
 
             AnimationDrawable frameAnimation = (AnimationDrawable) mAnimatedArrow.getBackground();
             frameAnimation.start();
+
+            if (mLauncher.updateGridIfNeeded()) {
+                mLauncher.getWorkspace().showOutlines();
+                mLauncher.mSearchDropTargetBar.showSearchBar(false);
+            }
         }
 
         @Override
