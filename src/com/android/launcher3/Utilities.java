@@ -141,7 +141,7 @@ public final class Utilities {
         icon.setBounds(0, 0, sIconWidth, sIconHeight);
     }
 
-    private static boolean isPropertyEnabled(String propertyName) {
+    public static boolean isPropertyEnabled(String propertyName) {
         return Log.isLoggable(propertyName, Log.VERBOSE);
     }
 
