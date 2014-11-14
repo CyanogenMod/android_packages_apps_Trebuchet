@@ -2637,7 +2637,7 @@ public class Workspace extends SmoothPagedView
                 AlphaUpdateListener.updateVisibility(pageIndicator);
             }
 
-            if (mShowSearchBar && !mLauncher.getDragController().isDragging()) {
+            if (searchBar != null && mShowSearchBar && !mLauncher.getDragController().isDragging()) {
                 searchBar.setAlpha(finalSearchBarAlpha);
                 AlphaUpdateListener.updateVisibility(searchBar);
             }
