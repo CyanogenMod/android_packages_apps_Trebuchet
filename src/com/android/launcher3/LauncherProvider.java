@@ -959,17 +959,17 @@ public class LauncherProvider extends ContentProvider {
             }
 
             if (oldVersion < 21) {
-                //Check for column's existence, hackish way to make sure
-                //we can upgrade from Trebuchet and from Launcher3(new)
+                // Check for column's existence, hackish way to make sure
+                // we can upgrade from Trebuchet and from Launcher3(new)
                 Cursor c = null;
                 try {
                     c = db.rawQuery("SELECT hidden FROM favorites", null);
-                    //if we have don't have hidden, add it
-                    if (c == null || (c != null && !c.moveToNext())) {
-                        db.execSQL("ALTER TABLE favorites ADD hidden INTEGER DEFAULT 0");
-                    } else {
-                    //otherwise, we don't have profiles
+                    // if we have have hidden, add profiles
+                    if (c != null) {
                         addProfileColumn(db);
+                    } else {
+                        // otherwise, we don't have hidden, add it
+                        db.execSQL("ALTER TABLE favorites ADD hidden INTEGER DEFAULT 0");
                     }
                 } catch (SQLException e) {
                     Log.e(TAG, e.getMessage(), e);
