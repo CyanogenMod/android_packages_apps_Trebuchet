@@ -3707,6 +3707,8 @@ public class Launcher extends Activity
 
         // Change the state *after* we've called all the transition code
         mState = State.WORKSPACE;
+        setWorkspaceBackground(mState == State.WORKSPACE ? WORKSPACE_BACKGROUND_GRADIENT
+                : WORKSPACE_BACKGROUND_TRANSPARENT);
 
         // Resume the auto-advance of widgets
         mUserPresent = true;
