@@ -110,6 +110,19 @@ public class AppInfo extends ItemInfo {
         return flags;
     }
 
+    public static int initFlags(PackageInfo info) {
+        int appFlags = info.applicationInfo.flags;
+        int flags = 0;
+        if ((appFlags & android.content.pm.ApplicationInfo.FLAG_SYSTEM) == 0) {
+            flags |= DOWNLOADED_FLAG;
+
+            if ((appFlags & android.content.pm.ApplicationInfo.FLAG_UPDATED_SYSTEM_APP) != 0) {
+                flags |= UPDATED_SYSTEM_APP_FLAG;
+            }
+        }
+        return flags;
+    }
+
     public AppInfo(AppInfo info) {
         super(info);
         componentName = info.componentName;

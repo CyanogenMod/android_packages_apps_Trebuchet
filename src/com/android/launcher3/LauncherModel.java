@@ -2778,6 +2778,8 @@ public class LauncherModel extends BroadcastReceiver
 
             final boolean postOnMainThread = (deferredBindRunnables != null);
 
+            removeHiddenAppsWorkspaceItems(workspaceItems, appWidgets, folders);
+
             // Bind the workspace items
             int N = workspaceItems.size();
             for (int i = 0; i < N; i += ITEMS_CHUNK) {

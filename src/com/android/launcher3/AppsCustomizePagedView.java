@@ -207,7 +207,9 @@ public class AppsCustomizePagedView extends PagedViewWithDraggableItems implemen
     private ArrayList<AppInfo> mApps;
     private ArrayList<Object> mWidgets;
 
+    private ArrayList<AppInfo> mFilteredApps;
     private ArrayList<Object> mFilteredWidgets;
+
     private ArrayList<ComponentName> mProtectedApps;
     private ArrayList<String> mProtectedPackages;
 
@@ -331,7 +333,9 @@ public class AppsCustomizePagedView extends PagedViewWithDraggableItems implemen
         mLayoutInflater = LayoutInflater.from(context);
         mPackageManager = context.getPackageManager();
         mApps = new ArrayList<AppInfo>();
+        mFilteredApps = new ArrayList<AppInfo>();
         mWidgets = new ArrayList<Object>();
+        mFilteredWidgets = new ArrayList<Object>();
         mIconCache = (LauncherAppState.getInstance()).getIconCache();
         mRunningTasks = new ArrayList<AppsCustomizeAsyncTask>();
 
@@ -416,7 +420,7 @@ public class AppsCustomizePagedView extends PagedViewWithDraggableItems implemen
                     i = (currentPage * numItemsPerPage) + (childCount / 2);
                 }
             } else if (mContentType == ContentType.Widgets) {
-                int numApps = mApps.size();
+                int numApps = mFilteredApps.size();
                 PagedViewGridLayout layout = (PagedViewGridLayout) getPageAt(currentPage);
                 int numItemsPerPage = mWidgetCountX * mWidgetCountY;
                 int childCount = layout.getChildCount();
@@ -444,12 +448,12 @@ public class AppsCustomizePagedView extends PagedViewWithDraggableItems implemen
     int getPageForComponent(int index) {
         if (index < 0) return 0;
 
-        if (index < mApps.size()) {
+        if (index < mFilteredApps.size()) {
             int numItemsPerPage = mCellCountX * mCellCountY;
             return (index / numItemsPerPage);
         } else {
             int numItemsPerPage = mWidgetCountX * mWidgetCountY;
-            return (index - mApps.size()) / numItemsPerPage;
+            return (index - mFilteredApps.size()) / numItemsPerPage;
         }
     }
 
@@ -460,9 +464,9 @@ public class AppsCustomizePagedView extends PagedViewWithDraggableItems implemen
     }
 
     private void updatePageCounts() {
-        mNumWidgetPages = (int) Math.ceil(mWidgets.size() /
+        mNumWidgetPages = (int) Math.ceil((float) mFilteredWidgets.size() /
                 (float) (mWidgetCountX * mWidgetCountY));
-        mNumAppsPages = (int) Math.ceil((float) mApps.size() / (mCellCountX * mCellCountY));
+        mNumAppsPages = (int) Math.ceil((float) mFilteredApps.size() / (mCellCountX * mCellCountY));
         if(LauncherApplication.SHOW_CTAPP_FEATURE){
             mNumAppsPages = mNumAppsPages + 2; //for ct
         }
@@ -493,7 +497,8 @@ public class AppsCustomizePagedView extends PagedViewWithDraggableItems implemen
         super.onLayout(changed, l, t, r, b);
 
         if (!isDataReady()) {
-            if ((LauncherAppState.isDisableAllApps() || !mApps.isEmpty()) && !mWidgets.isEmpty()) {
+            if ((LauncherAppState.isDisableAllApps() || !mFilteredApps.isEmpty())
+                    && !mFilteredWidgets.isEmpty()) {
                 post(new Runnable() {
                     // This code triggers requestLayout so must be posted outside of the
                     // layout pass.
@@ -546,7 +551,7 @@ public class AppsCustomizePagedView extends PagedViewWithDraggableItems implemen
                 mWidgets.add(o);
             }
         }
-        updatePageCountsAndInvalidateData();
+        filterWidgets();
     }
 
     public void setBulkBind(boolean bulkBind) {
@@ -1093,7 +1098,7 @@ public class AppsCustomizePagedView extends PagedViewWithDraggableItems implemen
         int ctEndIndex = (page == 0) ? Math.min(startIndex + numCells, ctFirstPageApps.size())
                 : Math.min(startIndex + numCells, ctApps.size());
 
-        int defEndIndex = Math.min(startIndex + numCells, mApps.size());
+        int defEndIndex = Math.min(startIndex + numCells, mFilteredApps.size());
         int endIndex = isCTFlag ? ctEndIndex : defEndIndex ;
 
         layout.removeAllViewsOnPage();
@@ -1105,7 +1110,7 @@ public class AppsCustomizePagedView extends PagedViewWithDraggableItems implemen
         for (int i = startIndex; i < endIndex; ++i) {
             AppInfo info = isCTFlag
                     ? ((page == 0) ? ctFirstPageApps.get(i) : ctApps.get(i))
-                    : mApps.get(i);
+                    : mFilteredApps.get(i);
 
             BubbleTextView icon = (BubbleTextView) mLayoutInflater.inflate(
                     R.layout.apps_customize_application, layout, false);
@@ -1262,8 +1267,9 @@ public class AppsCustomizePagedView extends PagedViewWithDraggableItems implemen
 
         // Prepare the set of widgets to load previews for in the background
         int offset = page * numItemsPerPage;
-        for (int i = offset; i < Math.min(offset + numItemsPerPage, mWidgets.size()); ++i) {
-            items.add(mWidgets.get(i));
+        int size = Math.min(offset + numItemsPerPage, mFilteredWidgets.size());
+        for (int i = offset; i < size; ++i) {
+            items.add(mFilteredWidgets.get(i));
         }
 
         // Prepopulate the pages with the other widget info, and fill in the previews later
@@ -1606,7 +1612,7 @@ public class AppsCustomizePagedView extends PagedViewWithDraggableItems implemen
     }
 
     public void sortApps() {
-        Collections.sort(mApps, getComparatorForSortMode());
+        Collections.sort(mFilteredApps, getComparatorForSortMode());
 
         if (mContentType == ContentType.Applications) {
             for (int i = 0; i < getChildCount(); i++) {
@@ -1673,7 +1679,7 @@ public class AppsCustomizePagedView extends PagedViewWithDraggableItems implemen
                 removePreInstallApps();
             }
 
-            Collections.sort(mApps, getComparatorForSortMode());
+            filterAppsWithoutInvalidate();
 
             if (mPreInstallConfig) {
                 addPreInstallApps();
@@ -1741,6 +1747,7 @@ public class AppsCustomizePagedView extends PagedViewWithDraggableItems implemen
             }
 
             addAppsWithoutInvalidate(list);
+            filterAppsWithoutInvalidate();
 
             if (mPreInstallConfig) {
                 addPreInstallApps();
@@ -1789,6 +1796,7 @@ public class AppsCustomizePagedView extends PagedViewWithDraggableItems implemen
     public void removeApps(ArrayList<AppInfo> appInfos) {
         if (!LauncherAppState.isDisableAllApps()) {
             removeAppsWithoutInvalidate(appInfos);
+            filterAppsWithoutInvalidate();
             updatePageCountsAndInvalidateData();
         }
     }
@@ -1805,12 +1813,81 @@ public class AppsCustomizePagedView extends PagedViewWithDraggableItems implemen
             }
 
             addAppsWithoutInvalidate(list);
+            filterAppsWithoutInvalidate();
             if (mPreInstallConfig) {
                 addPreInstallApps();
             }
             updatePageCountsAndInvalidateData();
         }
     }
+
+    public void filterAppsWithoutInvalidate() {
+        updateProtectedAppsList(mLauncher);
+
+        mFilteredApps = new ArrayList<AppInfo>(mApps);
+        Iterator<AppInfo> iterator = mFilteredApps.iterator();
+        while (iterator.hasNext()) {
+            AppInfo appInfo = iterator.next();
+            boolean system = (appInfo.flags & AppInfo.DOWNLOADED_FLAG) == 0;
+            if (mProtectedApps.contains(appInfo.componentName) ||
+                    (system && !getShowSystemApps()) ||
+                    (!system && !getShowDownloadedApps())) {
+                iterator.remove();
+            }
+        }
+        Collections.sort(mFilteredApps, getComparatorForSortMode());
+    }
+
+    public void filterApps() {
+        filterAppsWithoutInvalidate();
+        updatePageCountsAndInvalidateData();
+    }
+
+    public void filterWidgetsWithoutInvalidate() {
+        updateProtectedAppsList(mLauncher);
+
+        mFilteredWidgets = new ArrayList<Object>(mWidgets);
+
+        Iterator<Object> iterator = mFilteredWidgets.iterator();
+        while (iterator.hasNext()) {
+            Object o = iterator.next();
+
+            String packageName;
+            if (o instanceof AppWidgetProviderInfo) {
+                AppWidgetProviderInfo widgetInfo = (AppWidgetProviderInfo) o;
+                if (widgetInfo.provider == null) {
+                    continue;
+                }
+                packageName = widgetInfo.provider.getPackageName();
+            } else if (o instanceof ResolveInfo) {
+                ResolveInfo shortcut = (ResolveInfo) o;
+                packageName = shortcut.activityInfo.applicationInfo.packageName;
+            } else {
+                Log.w(TAG, "Unknown class in widgets list: " + o.getClass());
+                continue;
+            }
+
+            int flags;
+            try {
+                flags = AppInfo.initFlags(mPackageManager.getPackageInfo(packageName, 0));
+            } catch (PackageManager.NameNotFoundException e) {
+                flags = 0;
+            }
+
+            boolean system = (flags & AppInfo.DOWNLOADED_FLAG) == 0;
+            if (mProtectedPackages.contains(packageName) ||
+                    (system && !getShowSystemApps()) ||
+                    (!system && !getShowDownloadedApps())) {
+                iterator.remove();
+            }
+        }
+    }
+
+    public void filterWidgets() {
+        filterWidgetsWithoutInvalidate();
+        updatePageCountsAndInvalidateData();
+    }
+
 
     private void updateProtectedAppsList(Context context) {
         String protectedComponents = Settings.Secure.getString(context.getContentResolver(),
