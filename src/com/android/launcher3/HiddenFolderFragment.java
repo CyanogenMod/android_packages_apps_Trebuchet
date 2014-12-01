@@ -239,7 +239,7 @@ public class HiddenFolderFragment extends Fragment {
             convertView.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    saveHiddenFolderStatus(viewHolder.position);
+                    saveHiddenFolderStatus(position);
                 }
             });
 
