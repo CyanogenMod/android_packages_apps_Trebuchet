@@ -60,19 +60,21 @@
     <!-- Far-right screen [4] -->
 
     <!-- Hotseat (We use the screen as the position of the item in the hotseat) -->
-    <!-- Dialer, Contacts, [All Apps], Messaging, Browser -->
+    <!-- Dialer (if available, fallback to File Manager), Contacts, [All Apps], Messaging, Browser -->
     <resolve
         launcher:container="-101"
         launcher:screen="1"
         launcher:x="1"
         launcher:y="0" >
         <favorite launcher:uri="#Intent;action=android.intent.action.DIAL;end" />
-        <favorite launcher:uri="tel:123" />
         <favorite launcher:uri="#Intent;action=android.intent.action.CALL_BUTTON;end" />
 
         <favorite
             launcher:packageName="com.android.dialer"
             launcher:className="com.android.dialer.DialtactsActivity" />
+        <favorite
+            launcher:packageName="com.cyanogenmod.filemanager"
+            launcher:className="com.cyanogenmod.filemanager.activities.NavigationActivity" />
     </resolve>
 
     <favorite
