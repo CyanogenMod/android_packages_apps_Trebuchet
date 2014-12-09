@@ -340,9 +340,6 @@ public class Workspace extends SmoothPagedView
         mShowOutlines = SettingsProvider.getBoolean(context,
                 SettingsProvider.SETTINGS_UI_HOMESCREEN_SCROLLING_PAGE_OUTLINES,
                 R.bool.preferences_interface_homescreen_scrolling_page_outlines_default);
-        mScrollWallpaper = SettingsProvider.getBoolean(context,
-                SettingsProvider.SETTINGS_UI_HOMESCREEN_SCROLLING_WALLPAPER_SCROLL,
-                R.bool.preferences_interface_homescreen_scrolling_wallpaper_scroll_default);
         mHideIconLabels = SettingsProvider.getBoolean(context,
                 SettingsProvider.SETTINGS_UI_HOMESCREEN_HIDE_ICON_LABELS,
                 R.bool.preferences_interface_homescreen_hide_icon_labels_default);
@@ -1532,7 +1529,11 @@ public class Workspace extends SmoothPagedView
     @Override
     public void computeScroll() {
         super.computeScroll();
-        mWallpaperOffset.syncWithScroll();
+        if (mScrollWallpaper) mWallpaperOffset.syncWithScroll();
+
+        if (isInOverviewMode() && !isReordering(true)) {
+            updateDefaultScreenButton();
+        }
     }
 
     @Override
@@ -1810,6 +1811,16 @@ public class Workspace extends SmoothPagedView
                 getContext().getSystemService(Context.ACCESSIBILITY_SERVICE);
         sAccessibilityEnabled = am.isEnabled();
 
+        mScrollWallpaper = SettingsProvider.getBoolean(mLauncher,
+                SettingsProvider.SETTINGS_UI_HOMESCREEN_SCROLLING_WALLPAPER_SCROLL,
+                R.bool.preferences_interface_homescreen_scrolling_wallpaper_scroll_default);
+
+        if (!mScrollWallpaper) {
+            if (mWindowToken != null) mWallpaperManager.setWallpaperOffsets(mWindowToken, 0f, 0.5f);
+        } else {
+            mWallpaperOffset.syncWithScroll();
+        }
+
         // Update wallpaper dimensions if they were changed since last onResume
         // (we also always set the wallpaper dimensions in the constructor)
         if (LauncherAppState.getInstance().hasWallpaperChangedSinceLastCheck()) {
@@ -1823,7 +1834,8 @@ public class Workspace extends SmoothPagedView
 
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
-        if (mFirstLayout && mCurrentPage >= 0 && mCurrentPage < getChildCount()) {
+        if (mFirstLayout && mCurrentPage >= 0 && mCurrentPage < getChildCount()
+                && mScrollWallpaper) {
             mWallpaperOffset.syncWithScroll();
             mWallpaperOffset.jumpToFinal();
         }
