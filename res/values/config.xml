@@ -119,6 +119,8 @@
     <integer name="hotseat_item_scale_percentage">100</integer>
 
     <bool name="config_launcher_page">false</bool>
+
     <bool name="config_launcher_shortcut">false</bool>
     <bool name="config_launcher_show_unread_number">true</bool>
+    <bool name="config_launcher_show_backup_shortcut">false</bool>
 </resources>

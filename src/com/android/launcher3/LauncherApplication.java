@@ -22,6 +22,7 @@ public class LauncherApplication extends Application {
     public static boolean LAUNCHER_SHOW_UNREAD_NUMBER;
     public static boolean LAUNCHER_SHORTCUT_ENABLED;
     public static boolean SHOW_CTAPP_FEATURE;
+    public static boolean LAUNCHER_BACKUP_SHORTCUT_ENABLED;
 
     @Override
     public void onCreate() {
@@ -31,6 +32,8 @@ public class LauncherApplication extends Application {
         LAUNCHER_SHORTCUT_ENABLED = getResources().getBoolean(
                 R.bool.config_launcher_shortcut);
         SHOW_CTAPP_FEATURE = getResources().getBoolean(R.bool.config_launcher_page);
+        LAUNCHER_BACKUP_SHORTCUT_ENABLED =
+                getResources().getBoolean(R.bool.config_launcher_show_backup_shortcut);
         LauncherAppState.setApplicationContext(this);
         LauncherAppState.getInstance();
     }

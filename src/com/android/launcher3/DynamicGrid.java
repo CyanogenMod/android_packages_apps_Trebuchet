@@ -61,9 +61,14 @@ public class DynamicGrid {
         boolean useLargeIcons = SettingsProvider.getBoolean(context,
                 SettingsProvider.SETTINGS_UI_GENERAL_ICONS_LARGE,
                 R.bool.preferences_interface_general_icons_large_default);
-        boolean launcherShortcutEnabled = LauncherApplication.LAUNCHER_SHORTCUT_ENABLED;
-        int fourByFourDefaultLayout = launcherShortcutEnabled ? R.xml.ct_default_workspace_4x4
-                               : R.xml.default_workspace_4x4;
+
+        int fourByFourDefaultLayout = R.xml.default_workspace_4x4;
+        if (LauncherApplication.LAUNCHER_SHORTCUT_ENABLED) {
+            fourByFourDefaultLayout = R.xml.ct_default_workspace_4x4;
+        } else if (LauncherApplication.LAUNCHER_BACKUP_SHORTCUT_ENABLED) {
+            fourByFourDefaultLayout = R.xml.cm_with_backup_default_workspace;
+        }
+
         DEFAULT_ICON_SIZE_PX = pxFromDp(DEFAULT_ICON_SIZE_DP, dm);
         // Our phone profiles include the bar sizes in each orientation
         deviceProfiles.add(new DeviceProfile("Super Short Stubby",
