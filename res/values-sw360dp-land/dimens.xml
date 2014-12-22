@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (C) 2009 The Android Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+
+<resources>
+<!-- Workspace -->
+    <!-- Panel height -->
+    <dimen name="sliding_panel_padding">120dp</dimen>
+    <!-- space needed to not overlap the statebar -->
+    <dimen name="overview_panel_top_padding">20dp</dimen>
+    <!-- space below the image -->
+    <dimen name="overview_panel_bottom_padding">10dp</dimen>
+    <!-- lateral space from the edge of the screen -->
+    <dimen name="overview_panel_button_spacing">30dp</dimen>
+    <!-- Arrow size that expand or collapse sliding menu -->
+    <dimen name="overview_panel_handle_size">25dp</dimen>
+    <!-- resize pages preview -->
+    <dimen name="overview_scaling_padding">40dp</dimen>
+</resources>
