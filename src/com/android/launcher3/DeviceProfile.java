@@ -925,6 +925,7 @@ public class DeviceProfile {
 
             padding = new Rect();
             if (pagedView != null) {
+                pagedView.updateGridSize();
                 // Constrain the dimensions of all apps so that it does not span the full width
                 int paddingLR = (availableWidthPx - (allAppsCellWidthPx * allAppsNumCols)) /
                         (2 * (allAppsNumCols + 1));
