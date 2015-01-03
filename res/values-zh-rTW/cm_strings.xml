@@ -22,12 +22,18 @@
   <string name="setting_state_on">開啟</string>
   <string name="setting_state_off">關閉</string>
   <string name="search_panel_gel">Google 即時資訊</string>
+  <string name="search_panel_custom_home">CM Home</string>
   <string name="themes_button_text">主題</string>
+  <string name="scrolling_page_outlines">頁面邊框</string>
   <string name="scrolling_fade_adjacent">邊頁淡出</string>
   <string name="scrolling_wallpaper">滾動桌面</string>
+  <string name="grid_size_text">網格大小</string>
+  <string name="grid_size_comfortable">舒適</string>
+  <string name="grid_size_cozy">自在</string>
   <string name="grid_size_condensed">密集</string>
   <string name="grid_size_custom">自訂</string>
   <string name="grid_size_custom_and_size">自訂 (%1$s)</string>
+  <string name="preferences_interface_homescreen_custom">選擇自訂大小</string>
   <string name="scroll_effect_text">滾動效果</string>
   <string name="drawer_sorting_text">排序模式</string>
   <string name="sort_mode_title">標題</string>
@@ -41,4 +47,6 @@
   <string name="protected_app_settings">受保護的應用程式</string>
   <string name="search_screen_left_text">搜尋面板</string>
   <string name="dialog_confirm">確認</string>
+  <string name="permission_label_read_extension_data">請求 DashClock 擴充套件數據</string>
+  <string name="permission_desc_read_extension_data">允許應用程式存取 DashClock 擴充套件數據</string>
 </resources>
