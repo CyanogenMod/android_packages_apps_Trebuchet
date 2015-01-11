@@ -17,19 +17,19 @@
 -->
 <resources>
   <string-array name="transition_effect_entries">
-    <item>Žiadny</item>
-    <item>Priblíženie</item>
-    <item>Oddialenie</item>
-    <item>Otočenie hore</item>
-    <item>Otočenie dolu</item>
-    <item>Kocka zvnútra</item>
-    <item>Kocka zvonku</item>
-    <item>Hromadenie</item>
-    <item>Akordeón</item>
-    <item>Preklopenie</item>
-    <item>Valec zvnútra</item>
-    <item>Valec zvonku</item>
-    <item>Kolotoč</item>
-    <item>Prehľad</item>
+    <item>None</item>
+    <item>Achegar</item>
+    <item>Afastar</item>
+    <item>Rotate up</item>
+    <item>Rotate down</item>
+    <item>Cube in</item>
+    <item>Cube out</item>
+    <item>Stack</item>
+    <item>Acordeón</item>
+    <item>Flip</item>
+    <item>Cilindro para dentro</item>
+    <item>Cilindro para fóra</item>
+    <item>Carrusel</item>
+    <item>Overview</item>
   </string-array>
 </resources>

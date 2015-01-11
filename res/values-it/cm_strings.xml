@@ -42,7 +42,7 @@
   <string name="home_screen_search_text">Barra di ricerca</string>
   <string name="larger_icons_text">Icone grandi</string>
   <string name="icon_labels">Etichette icone</string>
-  <string name="icon_labels_show">Visualizza</string>
+  <string name="icon_labels_show">Mostra</string>
   <string name="icon_labels_hide">Nascondi</string>
   <string name="protected_app_settings">App protette</string>
   <string name="search_screen_left_text">Pannello ricerca</string>

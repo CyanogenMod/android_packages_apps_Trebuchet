@@ -17,7 +17,7 @@
 -->
 <resources>
   <string name="home_screen_settings">STARTSCHIERM-ASTELLUNGEN</string>
-  <string name="drawer_settings">ASTELLUNGE VUN DER APPIWWERSIICHT</string>
+  <string name="drawer_settings">ASTELLUNGE VUN DER APP-IWWERSIICHT</string>
   <string name="app_settings">APP-ASTELLUNGEN</string>
   <string name="setting_state_on">UN</string>
   <string name="setting_state_off">AUS</string>
