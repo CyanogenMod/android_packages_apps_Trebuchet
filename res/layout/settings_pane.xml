@@ -94,6 +94,21 @@
                     android:textColor="@android:color/white"
                     android:maxLines="2" />
 
+                <TextView
+                    android:id="@+id/manage_apps_button"
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="4dp"
+                    android:drawableTop="@drawable/manage_apps_button"
+                    android:fontFamily="sans-serif-condensed"
+                    android:gravity="center_horizontal"
+                    android:layout_weight="2"
+                    android:text="@string/manage_apps_button_text"
+                    android:textAllCaps="true"
+                    android:textSize="12sp"
+                    android:textColor="@android:color/white"
+                    android:maxLines="2" />
+
                 <Space
                     android:layout_width="0dip"
                     android:layout_height="1dp"
