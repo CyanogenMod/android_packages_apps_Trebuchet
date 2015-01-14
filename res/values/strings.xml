@@ -52,7 +52,7 @@
     <!-- AppsCustomize pane -->
     <!-- Message to tell the user to press and hold on a widget to add it [CHAR_LIMIT=50] -->
     <string name="long_press_widget_to_add">Touch &amp; hold to pick up a widget.</string>
-    <!-- Market button text.  The market button text is removed in Launcher.java 
+    <!-- Market button text.  The market button text is removed in Launcher.java
          in the Phone UI. [CHAR LIMIT=32] -->
     <string name="market">Shop</string>
     <!-- The format string for the dimensions of a widget in the drawer -->
@@ -188,7 +188,7 @@ s -->
         shortcuts in Home.</string>
 
     <!-- Widgets: -->
-    <skip />    
+    <skip />
 
     <!-- Text to show user in place of a gadget when we can't display it properly -->
     <string name="gadget_error_text">Problem loading widget</string>
@@ -283,6 +283,8 @@ s -->
     <string name="wallpaper_button_text">Wallpapers</string>
     <!-- Text for settings button -->
     <string name="settings_button_text">Settings</string>
+    <!-- Text for manage apps button -->
+    <string name="manage_apps_button_text">Apps</string>
 
     <!-- Label on an icon that references an uninstalled package, that is going to be installed at some point. [CHAR_LIMIT=15] -->
     <string name="package_state_enqueued">Waiting</string>

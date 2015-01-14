@@ -225,6 +225,8 @@ public class Launcher extends Activity
     static final String FIRST_LOAD_COMPLETE = "launcher.first_load_complete";
     static final String ACTION_FIRST_LOAD_COMPLETE =
             "com.android.launcher3.action.FIRST_LOAD_COMPLETE";
+    static final String ACTION_MANAGE_APPS=
+            "android.settings.MANAGE_APPLICATIONS_SETTINGS";
 
     private static final String TOOLBAR_ICON_METADATA_NAME = "com.android.launcher.toolbar_icon";
     private static final String TOOLBAR_SEARCH_ICON_METADATA_NAME =
@@ -1421,6 +1423,15 @@ public class Launcher extends Activity
         Intent settings;
         settings = new Intent(android.provider.Settings.ACTION_SETTINGS);
         startActivity(settings);
+        if (mWorkspace.isInOverviewMode()) {
+            mWorkspace.exitOverviewMode(false);
+        }
+    }
+
+    protected void startManageApps() {
+        Intent manageApps;
+        manageApps= new Intent(ACTION_MANAGE_APPS);
+        startActivity(manageApps);
         if (mWorkspace.isInOverviewMode()) {
             mWorkspace.exitOverviewMode(false);
         }
