@@ -37,9 +37,9 @@ public class LauncherApplication extends Application {
         LAUNCHER_BACKUP_SHORTCUT_ENABLED =
                 getResources().getBoolean(R.bool.config_launcher_show_backup_shortcut);
         LAUNCHER_MMX_SHORTCUT_ENABLED =
-                getResources().getBoolean(R.bool.config_micromax_enabled);
+                getResources().getBoolean(R.bool.config_mmx_enabled);
         LAUNCHER_SFR_SHORTCUT_ENABLED =
-                getResources().getBoolean(R.bool.config_smartfren_enabled);
+                getResources().getBoolean(R.bool.config_srf_enabled);
         LauncherAppState.setApplicationContext(this);
         LauncherAppState.getInstance();
     }
