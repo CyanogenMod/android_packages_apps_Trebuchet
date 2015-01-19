@@ -37,8 +37,8 @@
   <string name="scroll_effect_text">Ефект гортання</string>
   <string name="drawer_sorting_text">Режим сортування</string>
   <string name="sort_mode_title">За назвою</string>
-  <string name="sort_mode_launch_count">По частоті використання</string>
-  <string name="sort_mode_install_time">По часу встановлення</string>
+  <string name="sort_mode_launch_count">За частотою використання</string>
+  <string name="sort_mode_install_time">За часом встановлення</string>
   <string name="home_screen_search_text">Рядок пошуку</string>
   <string name="larger_icons_text">Великі піктограми</string>
   <string name="icon_labels">Мітки піктограм</string>
