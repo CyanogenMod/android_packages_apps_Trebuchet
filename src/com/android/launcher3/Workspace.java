@@ -2186,7 +2186,7 @@ public class Workspace extends SmoothPagedView
     }
 
     private void enableOverviewMode(boolean enable, int snapPage, boolean animated) {
-        // Check to see if new Settings need to taken
+        // Check to see if new Settings need to be taken
         reloadSettings();
         mLauncher.updateGridIfNeeded();
 
@@ -2283,6 +2283,9 @@ public class Workspace extends SmoothPagedView
         if (mState == state) {
             return null;
         }
+
+        // Check to see if new Settings need to be taken
+        reloadSettings();
 
         // Initialize animation arrays for the first time if necessary
         initAnimationArrays();
