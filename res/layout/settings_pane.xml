@@ -29,92 +29,48 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
                 android:orientation="horizontal"
                 android:paddingBottom="@dimen/overview_panel_bottom_padding"
                 android:paddingTop="@dimen/overview_panel_list_padding" >
-
-                <Space
-                    android:layout_width="0dip"
-                    android:layout_height="1dp"
-                    android:layout_weight="0.5" />
 
                 <TextView
                     android:id="@+id/wallpaper_button"
                     android:layout_width="0dip"
                     android:layout_height="wrap_content"
-                    android:drawablePadding="4dp"
+                    android:layout_weight="1"
+                    style="@style/SettingsPaneButton"
                     android:drawableTop="@drawable/wallpaper_button"
-                    android:fontFamily="sans-serif-condensed"
-                    android:gravity="center_horizontal"
-                    android:layout_weight="2"
-                    android:text="@string/wallpaper_button_text"
-                    android:textAllCaps="true"
-                    android:textSize="12sp"
-                    android:textColor="@android:color/white"
-                    android:maxLines="2" />
-
-                <Space
-                    android:layout_width="0dip"
-                    android:layout_height="1dp"
-                    android:layout_weight="0.5" />
+                    android:text="@string/wallpaper_button_text" />
 
                 <TextView
                     android:id="@+id/widget_button"
                     android:layout_width="0dip"
                     android:layout_height="wrap_content"
-                    android:drawablePadding="4dp"
+                    android:layout_weight="1"
+                    style="@style/SettingsPaneButton"
                     android:drawableTop="@drawable/widget_button"
-                    android:fontFamily="sans-serif-condensed"
-                    android:gravity="center_horizontal"
-                    android:layout_weight="2"
-                    android:text="@string/widget_button_text"
-                    android:textAllCaps="true"
-                    android:textSize="12sp"
-                    android:textColor="@android:color/white"
-                    android:maxLines="2" />
-
-                <Space
-                    android:layout_width="0dip"
-                    android:layout_height="1dp"
-                    android:layout_weight="0.5" />
+                    android:text="@string/widget_button_text" />
 
                 <TextView
                     android:id="@+id/settings_button"
                     android:layout_width="0dip"
                     android:layout_height="wrap_content"
-                    android:drawablePadding="4dp"
+                    android:layout_weight="1"
+                    style="@style/SettingsPaneButton"
                     android:drawableTop="@drawable/setting_button"
-                    android:fontFamily="sans-serif-condensed"
-                    android:gravity="center_horizontal"
-                    android:layout_weight="2"
-                    android:text="@string/settings_button_text"
-                    android:textAllCaps="true"
-                    android:textSize="12sp"
-                    android:textColor="@android:color/white"
-                    android:maxLines="2" />
+                    android:text="@string/settings_button_text" />
 
                 <TextView
                     android:id="@+id/manage_apps_button"
                     android:layout_width="0dip"
                     android:layout_height="wrap_content"
-                    android:drawablePadding="4dp"
+                    android:layout_weight="1"
+                    style="@style/SettingsPaneButton"
                     android:drawableTop="@drawable/manage_apps_button"
-                    android:fontFamily="sans-serif-condensed"
-                    android:gravity="center_horizontal"
-                    android:layout_weight="2"
-                    android:text="@string/manage_apps_button_text"
-                    android:textAllCaps="true"
-                    android:textSize="12sp"
-                    android:textColor="@android:color/white"
-                    android:maxLines="2" />
-
-                <Space
-                    android:layout_width="0dip"
-                    android:layout_height="1dp"
-                    android:layout_weight="0.5" />
+                    android:text="@string/manage_apps_button_text" />
 
             </LinearLayout>
+
         </LinearLayout>
 
         <view
