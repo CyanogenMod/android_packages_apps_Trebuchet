@@ -78,6 +78,18 @@
         <item name="android:shadowRadius">4.0</item>
     </style>
 
+    <style name="SettingsPaneButton">
+        <item name="android:paddingLeft">4dp</item>
+        <item name="android:paddingRight">4dp</item>
+        <item name="android:drawablePadding">4dp</item>
+        <item name="android:fontFamily">sans-serif-condensed</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:maxLines">2</item>
+    </style>
+
     <style name="TabIndicator">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">match_parent</item>
