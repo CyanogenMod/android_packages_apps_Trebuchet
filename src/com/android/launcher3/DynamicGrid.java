@@ -87,15 +87,15 @@ public class DynamicGrid {
                 (useLargeIcons ? 58 : 46), fourByFourDefaultLayout,
                 R.xml.default_workspace_4x4_no_all_apps));
         deviceProfiles.add(new DeviceProfile("Nexus 4",
-                335, 567,  4, 4,  (useLargeIcons ? DEFAULT_ICON_SIZE_DP : 52), 13, (hasAA ? 5 : 5),
-                (useLargeIcons ? 60 : 46), fourByFourDefaultLayout,
+                335, 567,  4, 4,  (useLargeIcons ? DEFAULT_ICON_SIZE_DP : 56), 13, (hasAA ? 5 : 5),
+                (useLargeIcons ? 60 : 48), fourByFourDefaultLayout,
                 R.xml.default_workspace_4x4_no_all_apps));
         deviceProfiles.add(new DeviceProfile("Nexus 5",
-                359, 567,  4, 4,  (useLargeIcons ? DEFAULT_ICON_SIZE_DP : 52), 13, (hasAA ? 5 : 5),
-                (useLargeIcons ? 60 : 46), fourByFourDefaultLayout,
+                359, 567,  4, 4,  (useLargeIcons ? DEFAULT_ICON_SIZE_DP : 56), 13, (hasAA ? 5 : 5),
+                (useLargeIcons ? 60 : 48), fourByFourDefaultLayout,
                 R.xml.default_workspace_4x4_no_all_apps));
         deviceProfiles.add(new DeviceProfile("Large Phone",
-                406, 694,  5, 5,  (useLargeIcons ? 68 : 52), 14.4f,  5, (useLargeIcons ? 60 : 44),
+                406, 694,  5, 5,  (useLargeIcons ? 68 : 56), 14.4f,  5, (useLargeIcons ? 60 : 48),
                 R.xml.default_workspace_5x5, R.xml.default_workspace_5x5_no_all_apps));
         // The tablet profile is odd in that the landscape orientation
         // also includes the nav bar on the side
