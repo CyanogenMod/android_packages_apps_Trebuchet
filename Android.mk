@@ -53,7 +53,6 @@ LOCAL_PROGUARD_ENABLED := disabled
 
 include $(BUILD_PACKAGE)
 
-include $(call all-makefiles-under,$(LOCAL_PATH))
 
 #
 # Protocol Buffer Debug Utility in Java
@@ -84,10 +83,10 @@ LOCAL_MODULE := launcher_protoutil
 
 include $(BUILD_SYSTEM)/base_rules.mk
 
-$(LOCAL_BUILT_MODULE): launcher_protoutil_lib
+$(LOCAL_BUILT_MODULE): | $(HOST_OUT_JAVA_LIBRARIES)/launcher_protoutil_lib.jar
 $(LOCAL_BUILT_MODULE): $(LOCAL_PATH)/util/etc/launcher_protoutil | $(ACP)
 	@echo "Copy: $(PRIVATE_MODULE) ($@)"
 	$(copy-file-to-new-target)
 	$(hide) chmod 755 $@
 
-INTERNAL_DALVIK_MODULES += $(LOCAL_INSTALLED_MODULE)
+include $(call all-makefiles-under,$(LOCAL_PATH))
