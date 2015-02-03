@@ -153,6 +153,18 @@ public class TransitionEffectsFragment extends Fragment {
         frameAnimation.start();
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        // explicitly stop animation to ensure that we release references from the
+        // view root's run queue
+        AnimationDrawable frameAnimation = (AnimationDrawable) mTransitionIcon.getBackground();
+        if (frameAnimation != null) {
+            frameAnimation.stop();
+        }
+    }
+
     private void setSelected(View v) {
         v.setBackgroundColor(Color.WHITE);
         TextView t = (TextView) v.findViewById(R.id.item_name);
