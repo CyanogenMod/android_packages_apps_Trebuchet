@@ -55,6 +55,7 @@ public class OverviewSettingsPanel {
 
         String[] valuesApp = new String[] {
                 res.getString(R.string.larger_icons_text),
+                res.getString(R.string.small_text_size),
                 res.getString(R.string.protected_app_settings)};
 
 

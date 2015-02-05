@@ -64,6 +64,9 @@
     <!-- Larger icons -->
     <string name="larger_icons_text">Larger icons</string>
 
+    <!-- Small text -->
+    <string name="small_text_size">Small text size</string>
+
     <!-- Icon labels -->
     <string name="icon_labels">Icon labels</string>
     <string name="icon_labels_show">Show</string>
