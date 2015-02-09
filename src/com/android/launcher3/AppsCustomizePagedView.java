@@ -1686,12 +1686,11 @@ public class AppsCustomizePagedView extends PagedViewWithDraggableItems implemen
                 removePreInstallApps();
             }
 
-            filterAppsWithoutInvalidate();
-
             if (mPreInstallConfig) {
                 addPreInstallApps();
             }
 
+            filterAppsWithoutInvalidate();
             sortByCustomization();
             updatePageCountsAndInvalidateData();
         }
@@ -1754,12 +1753,12 @@ public class AppsCustomizePagedView extends PagedViewWithDraggableItems implemen
             }
 
             addAppsWithoutInvalidate(list);
-            filterAppsWithoutInvalidate();
 
             if (mPreInstallConfig) {
                 addPreInstallApps();
             }
 
+            filterAppsWithoutInvalidate();
             updatePageCountsAndInvalidateData();
         }
     }
@@ -1820,10 +1819,10 @@ public class AppsCustomizePagedView extends PagedViewWithDraggableItems implemen
             }
 
             addAppsWithoutInvalidate(list);
-            filterAppsWithoutInvalidate();
             if (mPreInstallConfig) {
                 addPreInstallApps();
             }
+            filterAppsWithoutInvalidate();
             updatePageCountsAndInvalidateData();
         }
     }
