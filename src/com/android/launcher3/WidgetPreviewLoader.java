@@ -12,6 +12,7 @@ import android.database.sqlite.SQLiteCantOpenDatabaseException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDiskIOException;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.database.sqlite.SQLiteReadOnlyDatabaseException;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
@@ -379,6 +380,7 @@ public class WidgetPreviewLoader {
             db.delete(CacheDb.TABLE_NAME, null, null);
         } catch (SQLiteDiskIOException e) {
         } catch (SQLiteCantOpenDatabaseException e) {
+        } catch (SQLiteReadOnlyDatabaseException e) {
             dumpOpenFiles();
             throw e;
         }
