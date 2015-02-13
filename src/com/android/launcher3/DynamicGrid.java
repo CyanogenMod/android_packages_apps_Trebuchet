@@ -78,8 +78,6 @@ public class DynamicGrid {
                 SettingsProvider.SETTINGS_UI_GENERAL_TEXT_SMALL,
                 R.bool.preferences_interface_general_text_small_default);
         boolean launcherShortcutEnabled = LauncherApplication.LAUNCHER_SHORTCUT_ENABLED;
-        int fourByFourDefaultLayout = launcherShortcutEnabled ? R.xml.ct_default_workspace_4x4
-                               : R.xml.default_workspace_4x4;
         DEFAULT_ICON_SIZE_PX = pxFromDp(DEFAULT_ICON_SIZE_DP, dm);
         // Our phone profiles include the bar sizes in each orientation
         deviceProfiles.add(new DeviceProfile("Super Short Stubby",
