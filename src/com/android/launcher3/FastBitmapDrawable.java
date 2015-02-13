@@ -47,7 +47,7 @@ class FastBitmapDrawable extends Drawable {
             }
         }
     };
-    static final long CLICK_FEEDBACK_DURATION = 2000;
+    static final long CLICK_FEEDBACK_DURATION = 150;
 
     private static final int PRESSED_BRIGHTNESS = 100;
     private static ColorMatrix sGhostModeMatrix;

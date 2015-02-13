@@ -15,4 +15,5 @@
     <bool name="preferences_interface_general_text_small_default">true</bool>
     <string name="preferences_interface_general_icons_text_font_family_default">sans-serif-condensed</string>
     <integer name="preferences_interface_general_icons_text_font_style_default">0</integer>
+    <bool name="preferences_interface_general_app_icon_animation">false</bool>
 </resources>
