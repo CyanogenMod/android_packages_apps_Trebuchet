@@ -17,4 +17,9 @@
 -->
 <resources>
   <string name="app_settings">অ্যাপ এর রুপান্তর নির্ধারণ</string>
+  <string name="setting_state_on">চালু</string>
+  <string name="setting_state_off">বন্ধ</string>
+  <string name="search_panel_gel">গুগল নাউ</string>
+  <string name="search_panel_custom_home">সিএম হোম</string>
+  <string name="themes_button_text">থিমস</string>
 </resources>
