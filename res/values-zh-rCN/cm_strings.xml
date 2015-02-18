@@ -40,4 +40,5 @@
   <string name="icon_labels_hide">隐藏</string>
   <string name="protected_app_settings">受保护的应用</string>
   <string name="dialog_confirm">确认</string>
+  <string name="small_text_size">小字体设置</string>
 </resources>
