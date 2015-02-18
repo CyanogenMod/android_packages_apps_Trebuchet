@@ -29,6 +29,7 @@
   <string name="grid_size_comfortable">Confortable</string>
   <string name="grid_size_cozy">Acoyedor</string>
   <string name="grid_size_condensed">Condensáu</string>
+  <string name="grid_size_custom">Personalizar (<xliff:g id="rows">%1$d</xliff:g> \u00d7 <xliff:g id="columns">%2$d</xliff:g>)</string>
   <string name="preferences_interface_homescreen_custom">Esbilla\'l tamañu personalizáu</string>
   <string name="scroll_effect_text">Efeutu de desplazamientu</string>
   <string name="drawer_sorting_text">Mou d\'ordenación</string>

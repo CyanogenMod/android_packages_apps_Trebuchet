@@ -29,6 +29,7 @@
   <string name="grid_size_comfortable">Gemaklik</string>
   <string name="grid_size_cozy">Snoesig</string>
   <string name="grid_size_condensed">Verkorte</string>
+  <string name="grid_size_custom">Persoonlik (<xliff:g id="rows">%1$d</xliff:g> \u00d7 <xliff:g id="columns">%2$d</xliff:g>)</string>
   <string name="preferences_interface_homescreen_custom">Kies persoonlike grootte</string>
   <string name="scroll_effect_text">Rol effek</string>
   <string name="drawer_sorting_text">Sorteer metode</string>

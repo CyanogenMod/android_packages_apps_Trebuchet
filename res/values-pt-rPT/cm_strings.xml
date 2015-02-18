@@ -23,7 +23,7 @@
   <string name="setting_state_off">DESL.</string>
   <string name="themes_button_text">Temas</string>
   <string name="scrolling_page_outlines">Contorno das páginas</string>
-  <string name="scrolling_fade_adjacent">Desvanecer as páginas laterais</string>
+  <string name="scrolling_fade_adjacent">Desvanecer as laterais das páginas</string>
   <string name="scrolling_wallpaper">Deslizar imagem de fundo</string>
   <string name="grid_size_text">Tamanho da grelha</string>
   <string name="grid_size_comfortable">Confortável</string>

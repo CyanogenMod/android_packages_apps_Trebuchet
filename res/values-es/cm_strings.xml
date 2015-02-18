@@ -16,9 +16,9 @@
      limitations under the License.
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-  <string name="home_screen_settings">AJUSTES DEL INICIO</string>
+  <string name="home_screen_settings">AJUSTES DE INICIO</string>
   <string name="drawer_settings">AJUSTES DE LAS APLICACIONES</string>
-  <string name="app_settings">AJUSTES DE LA APLICACIÓN</string>
+  <string name="app_settings">AJUSTES DE LAS APLICACIONES</string>
   <string name="setting_state_on">SÍ</string>
   <string name="setting_state_off">NO</string>
   <string name="themes_button_text">Temas</string>
@@ -29,6 +29,7 @@
   <string name="grid_size_comfortable">Normal</string>
   <string name="grid_size_cozy">Cómoda</string>
   <string name="grid_size_condensed">Comprimida</string>
+  <string name="grid_size_custom">Personalizado (<xliff:g id="rows">%1$d</xliff:g> \u00d7 <xliff:g id="columns">%2$d</xliff:g>)</string>
   <string name="preferences_interface_homescreen_custom">Selecciona el tamaño personalizado</string>
   <string name="scroll_effect_text">Efecto de desplazamiento</string>
   <string name="drawer_sorting_text">Modo de ordenación</string>

@@ -29,6 +29,7 @@
   <string name="grid_size_comfortable">느슨하게</string>
   <string name="grid_size_cozy">적당히</string>
   <string name="grid_size_condensed">빽빽하게</string>
+  <string name="grid_size_custom">사용자 지정 (<xliff:g id="rows">%1$d</xliff:g> \u00d7 <xliff:g id="columns">%2$d</xliff:g>)</string>
   <string name="preferences_interface_homescreen_custom">사용자 정의 크기 선택</string>
   <string name="scroll_effect_text">스크롤 효과</string>
   <string name="drawer_sorting_text">정렬 모드</string>

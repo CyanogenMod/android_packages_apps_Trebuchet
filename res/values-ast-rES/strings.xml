@@ -112,6 +112,7 @@
   <string name="widget_button_text">Widgets</string>
   <string name="wallpaper_button_text">Fondos de pantalla</string>
   <string name="settings_button_text">Axustes</string>
+  <string name="manage_apps_button_text">Aplicaciones</string>
   <string name="package_state_enqueued">Esperando</string>
   <string name="package_state_downloading">Descargando</string>
   <string name="package_state_installing">Instalando</string>
