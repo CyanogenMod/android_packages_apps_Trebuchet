@@ -60,15 +60,6 @@
                     android:drawableTop="@drawable/setting_button"
                     android:text="@string/settings_button_text" />
 
-                <TextView
-                    android:id="@+id/manage_apps_button"
-                    android:layout_width="0dip"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    style="@style/SettingsPaneButton"
-                    android:drawableTop="@drawable/manage_apps_button"
-                    android:text="@string/manage_apps_button_text" />
-
             </LinearLayout>
 
         </LinearLayout>

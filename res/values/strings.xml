@@ -283,8 +283,6 @@ s -->
     <string name="wallpaper_button_text">Wallpapers</string>
     <!-- Text for settings button -->
     <string name="settings_button_text">Settings</string>
-    <!-- Text for manage apps button -->
-    <string name="manage_apps_button_text">Apps</string>
 
     <!-- Label on an icon that references an uninstalled package, that is going to be installed at some point. [CHAR_LIMIT=15] -->
     <string name="package_state_enqueued">Waiting</string>

@@ -90,6 +90,7 @@ public class OverviewSettingsPanel {
         ((SlidingUpPanelLayout) mOverviewPanel)
                 .setPanelSlideListener(new SettingsSimplePanelSlideListener());
 
+        //Quick Settings Buttons
         View widgetButton = mLauncher.findViewById(R.id.widget_button);
         widgetButton.setOnClickListener(new OnClickListener() {
             @Override
@@ -108,7 +109,6 @@ public class OverviewSettingsPanel {
         });
         wallpaperButton.setOnTouchListener(mLauncher.getHapticFeedbackTouchListener());
 
-        //Quick Settings Button
         View settingsButton = mLauncher.findViewById(R.id.settings_button);
         settingsButton.setOnClickListener(new OnClickListener() {
             @Override
@@ -119,18 +119,6 @@ public class OverviewSettingsPanel {
             }
         });
         settingsButton.setOnTouchListener(mLauncher.getHapticFeedbackTouchListener());
-
-        //Manage Apps Button
-        View manageAppsButton = mLauncher.findViewById(R.id.manage_apps_button);
-        manageAppsButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View arg0) {
-                if (!mLauncher.getWorkspace().isSwitchingState()) {
-                    mLauncher.startManageApps();
-                }
-            }
-        });
-        manageAppsButton.setOnTouchListener(mLauncher.getHapticFeedbackTouchListener());
 
         View defaultScreenButton = mLauncher.findViewById(R.id.default_screen_button);
         defaultScreenButton.setOnClickListener(new OnClickListener() {
