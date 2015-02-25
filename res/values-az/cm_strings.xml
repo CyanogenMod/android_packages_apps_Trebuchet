@@ -45,6 +45,6 @@
   <string name="protected_app_settings">Qorunan tətbiqetmələr</string>
   <string name="search_screen_left_text">Axtarış paneli</string>
   <string name="dialog_confirm">Təsdiqlə</string>
-  <string name="permission_label_read_extension_data">DashClock əlavə verilənini istə</string>
+  <string name="permission_label_read_extension_data">DashClock əlavə verilənlərini sorğula</string>
   <string name="permission_desc_read_extension_data">Tətbiqetmənin DashClock əlavə verilənini istəməsinə icazə verər</string>
 </resources>
