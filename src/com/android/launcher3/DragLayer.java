@@ -135,6 +135,10 @@ public class DragLayer extends FrameLayout implements ViewGroup.OnHierarchyChang
                 lp.bottomMargin += insets.bottom - mInsets.bottom;
                 layout.setLayoutParams(lp);
                 continue;
+            } else if (child.getId() == R.id.app_drawer_container) {
+                setAppDrawerInsets(child, insets);
+
+                continue;
             }
             setInsets(child, insets, mInsets);
             if (child.getId() == R.id.search_drop_target_bar) {
@@ -143,6 +147,22 @@ public class DragLayer extends FrameLayout implements ViewGroup.OnHierarchyChang
         }
         mInsets.set(insets);
         return true; // I'll take it from here
+    }
+
+    private void setAppDrawerInsets(View child, Rect insets) {
+        // List view
+        View view = child.findViewById(R.id.app_drawer_recyclerview);
+        FrameLayout.LayoutParams lp =
+                (FrameLayout.LayoutParams) view.getLayoutParams();
+        lp.bottomMargin += insets.bottom - mInsets.bottom;
+        lp.topMargin += insets.top - mInsets.top;
+        view.setLayoutParams(lp);
+
+        // Scrubber
+        view = child.findViewById(R.id.app_drawer_scrubber_container);
+        LinearLayout.LayoutParams llp = (LinearLayout.LayoutParams) view.getLayoutParams();
+        llp.bottomMargin += insets.bottom - mInsets.bottom;
+        view.setLayoutParams(llp);
     }
 
     Rect getInsets() {

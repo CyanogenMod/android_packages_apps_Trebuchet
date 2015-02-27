@@ -15,86 +15,30 @@
      limitations under the License.
 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+    android:id="@+id/app_drawer_scrubber_container"
     android:layout_width="match_parent"
-    android:layout_marginRight="20dp"
-    android:layout_marginLeft="20dp"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@drawable/seek_back"
+    android:layout_alignParentBottom="true">
 
     <LinearLayout
         android:clickable="true"
-        android:layout_marginTop="-5dp"
-        android:layout_below="@+id/scrubberIndicator"
         android:orientation="horizontal"
-        android:background="@drawable/scrubber_back"
         android:layout_width="match_parent"
-        android:layout_height="50dp">
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_height="48dp">
 
-        <Space
-            android:layout_weight="0.1"
-            android:layout_width="0dp"
-            android:layout_height="match_parent" />
-
-        <TextView
-            android:id="@+id/firstSection"
-            android:gravity="center"
-            android:textColor="@android:color/white"
-            android:paddingRight="10dp"
-            android:textStyle="bold"
-            style="?android:attr/textAppearanceLarge"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent" />
-
-        <LinearLayout
-            android:layout_weight="0.9"
-            android:layout_width="0dp"
+        <SeekBar
+            android:id="@+id/scrubber"
+            android:paddingLeft="0dp"
+            android:paddingRight="0dp"
+            android:thumb="@android:color/transparent"
+            android:progressDrawable="@drawable/empty_seek_bar"
+            android:layout_width="match_parent"
             android:layout_gravity="center"
-            android:orientation="vertical"
-            android:layout_height="match_parent">
-
-            <SeekBar
-                android:id="@+id/scrubber"
-                android:paddingLeft="0dp"
-                android:paddingRight="0dp"
-                android:layout_marginRight="-10dp"
-                android:layout_marginLeft="-10dp"
-                android:thumb="@android:color/transparent"
-                android:thumbOffset="-10dp"
-                android:progressDrawable="@drawable/seek_back"
-                android:layout_width="match_parent"
-                android:layout_gravity="center"
-                android:layout_height="match_parent" />
-
-        </LinearLayout>
-
-
-        <TextView
-            android:gravity="center"
-            android:id="@+id/lastSection"
-            android:paddingLeft="10dp"
-            android:textColor="@android:color/white"
-            android:textStyle="bold"
-            style="?android:attr/textAppearanceLarge"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent" />
-
-        <Space
-            android:layout_weight="0.1"
-            android:layout_width="0dp"
             android:layout_height="match_parent" />
 
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/scrubberIndicator"
-        android:background="@drawable/letter_indicator"
-        android:layout_width="80dp"
-        android:textSize="30sp"
-        android:gravity="center"
-        android:textColor="@android:color/white"
-        android:clickable="false"
-        android:layout_marginBottom="-20dp"
-        android:visibility="invisible"
-        android:layout_height="100dp" />
 
 </RelativeLayout>

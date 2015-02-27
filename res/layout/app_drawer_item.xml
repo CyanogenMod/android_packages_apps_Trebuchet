@@ -34,7 +34,9 @@
                 android:gravity="start|top"
                 android:singleLine="true"
                 autofit:minTextSize="8sp"
-                android:textSize="35sp"
+                android:textSize="24sp"
+                android:layout_gravity="center"
+                android:fontFamily="sans-serif-light"
                 android:textColor="@android:color/white"/>
         <LinearLayout
                 android:id="@+id/drawer_item_flow"

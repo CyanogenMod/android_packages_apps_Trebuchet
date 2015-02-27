@@ -296,6 +296,7 @@ public class AppDrawerListAdapter extends RecyclerView.Adapter<AppDrawerListAdap
                 inflate(R.layout.app_drawer_item, parent, false);
         ViewHolder holder = new ViewHolder(v);
         holder.mSpacer.setLayoutParams(mSpacerParams);
+        holder.mTextView.setPadding(0, 0, 0, mDeviceProfile.iconTextSizePx + 10);
         for (int i = 0; i < mDeviceProfile.numColumnsBase; i++) {
             AppDrawerIconView icon = (AppDrawerIconView) mLayoutInflater.inflate(
                     R.layout.drawer_icon, holder.mLayout, false);
