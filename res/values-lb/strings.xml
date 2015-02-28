@@ -109,7 +109,6 @@
   <string name="widget_button_text">Widgeten</string>
   <string name="wallpaper_button_text">Hannergrondbiller</string>
   <string name="settings_button_text">Astellungen</string>
-  <string name="manage_apps_button_text">Appen</string>
   <string name="package_state_enqueued">Waarden</string>
   <string name="package_state_downloading">Gëtt erofgelueden</string>
   <string name="package_state_installing">Installatioun leeft</string>

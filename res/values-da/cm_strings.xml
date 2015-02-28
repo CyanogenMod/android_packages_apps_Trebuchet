@@ -29,6 +29,7 @@
   <string name="grid_size_comfortable">Behageligt</string>
   <string name="grid_size_cozy">Hyggeligt</string>
   <string name="grid_size_condensed">Sammentrængt</string>
+  <string name="grid_size_custom">Brugerdefineret (<xliff:g id="rows">%1$d</xliff:g> \u00d7 <xliff:g id="columns">%2$d</xliff:g>)</string>
   <string name="preferences_interface_homescreen_custom">Vælg brugerdefineret størrelse</string>
   <string name="scroll_effect_text">Rulleeffekt</string>
   <string name="drawer_sorting_text">Sorteringstilstand</string>
