@@ -38,7 +38,6 @@ import java.util.ListIterator;
 public class AppDrawerListAdapter extends RecyclerView.Adapter<AppDrawerListAdapter.ViewHolder>
         implements View.OnLongClickListener, DragSource, SectionIndexer {
 
-    private static final int SCRUBBER_MARGIN_FROM_BOTTOM_DP = 80;
     private static final char NUMERIC_OR_SPECIAL_CHAR = '#';
     private static final String NUMERIC_OR_SPECIAL_HEADER = "#";
 
@@ -48,18 +47,16 @@ public class AppDrawerListAdapter extends RecyclerView.Adapter<AppDrawerListAdap
     private Launcher mLauncher;
     private DeviceProfile mDeviceProfile;
     private LinkedHashMap<String, Integer> mSectionHeaders;
-    private LinearLayout.LayoutParams mIconParams, mSpacerParams;
+    private LinearLayout.LayoutParams mIconParams;
     private Rect mIconRect;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public AutoFitTextView mTextView;
         public ViewGroup mLayout;
-        public View mSpacer;
         public ViewHolder(View itemView) {
             super(itemView);
             mTextView = (AutoFitTextView) itemView.findViewById(R.id.drawer_item_title);
             mLayout = (ViewGroup) itemView.findViewById(R.id.drawer_item_flow);
-            mSpacer = itemView.findViewById(R.id.spacer);
         }
     }
 
@@ -75,9 +72,6 @@ public class AppDrawerListAdapter extends RecyclerView.Adapter<AppDrawerListAdap
         mIconParams = new
                 LinearLayout.LayoutParams(mDeviceProfile.folderCellWidthPx,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
-        mSpacerParams = new
-                LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                (int) Utilities.convertDpToPixel(SCRUBBER_MARGIN_FROM_BOTTOM_DP, mLauncher));
         LauncherAppState app = LauncherAppState.getInstance();
         DeviceProfile grid = app.getDynamicGrid().getDeviceProfile();
         mIconRect = new Rect(0, 0, grid.allAppsIconSizePx, grid.allAppsIconSizePx);
@@ -295,7 +289,6 @@ public class AppDrawerListAdapter extends RecyclerView.Adapter<AppDrawerListAdap
         View v = LayoutInflater.from(parent.getContext()).
                 inflate(R.layout.app_drawer_item, parent, false);
         ViewHolder holder = new ViewHolder(v);
-        holder.mSpacer.setLayoutParams(mSpacerParams);
         holder.mTextView.setPadding(0, 0, 0, mDeviceProfile.iconTextSizePx + 10);
         for (int i = 0; i < mDeviceProfile.numColumnsBase; i++) {
             AppDrawerIconView icon = (AppDrawerIconView) mLayoutInflater.inflate(
@@ -348,11 +341,6 @@ public class AppDrawerListAdapter extends RecyclerView.Adapter<AppDrawerListAdap
                 icon.mLabel.setText(info.title);
             }
         }
-        if (position == getItemCount() - 1) {
-            holder.mSpacer.setVisibility(View.VISIBLE);
-        } else {
-            holder.mSpacer.setVisibility(View.GONE);
-        }
         holder.itemView.setTag(indexedInfo);
     }
 
@@ -360,7 +348,7 @@ public class AppDrawerListAdapter extends RecyclerView.Adapter<AppDrawerListAdap
     public boolean onLongClick(View v) {
         if (v instanceof AppDrawerIconView) {
             beginDraggingApplication(v);
-            mLauncher.showWorkspace();
+            mLauncher.enterSpringLoadedDragMode();
         }
         return false;
     }
@@ -439,7 +427,6 @@ public class AppDrawerListAdapter extends RecyclerView.Adapter<AppDrawerListAdap
     }
 
     private void beginDraggingApplication(View v) {
-        // mLauncher.getWorkspace().onDragStartedWithItem(v);
         mLauncher.getWorkspace().beginDragShared(v, this);
     }
 

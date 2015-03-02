@@ -92,8 +92,8 @@ public class AppDrawerScrubber extends LinearLayout {
                     mScrubberIndicator.setText(section);
                 }
 
-                mLayoutManager.scrollToPositionWithOffset(
-                        mAdapter.getPositionForSection(progress), 0);
+                mLayoutManager.smoothScrollToPosition(mListView, null,
+                        mAdapter.getPositionForSection(progress));
             }
 
             @Override
