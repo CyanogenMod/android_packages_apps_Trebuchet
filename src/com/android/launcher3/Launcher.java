@@ -1407,7 +1407,18 @@ public class Launcher extends Activity
     public void setDynamicGridSize(DeviceProfile.GridSize size) {
         int gridSize = SettingsProvider.getIntCustomDefault(this,
                 SettingsProvider.SETTINGS_UI_DYNAMIC_GRID_SIZE, 0);
-        if (gridSize != size.getValue()) {
+        boolean customValuesChanged = false;
+        if (gridSize == size.getValue() && size == DeviceProfile.GridSize.Custom) {
+            int tempRows = SettingsProvider.getIntCustomDefault(this,
+                    SettingsProvider.SETTINGS_UI_HOMESCREEN_ROWS, (int)mGrid.numRows);
+            int tempColumns = SettingsProvider.getIntCustomDefault(this,
+                    SettingsProvider.SETTINGS_UI_HOMESCREEN_COLUMNS, (int)mGrid.numColumns);
+            if (tempColumns != (int) mGrid.numColumns || tempRows != (int) mGrid.numRows) {
+                customValuesChanged = true;
+            }
+        }
+
+        if (gridSize != size.getValue() || customValuesChanged) {
             SettingsProvider.putInt(this,
                     SettingsProvider.SETTINGS_UI_DYNAMIC_GRID_SIZE, size.getValue());
 
