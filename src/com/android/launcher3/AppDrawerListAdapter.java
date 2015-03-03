@@ -50,6 +50,29 @@ public class AppDrawerListAdapter extends RecyclerView.Adapter<AppDrawerListAdap
     private LinearLayout.LayoutParams mIconParams;
     private Rect mIconRect;
 
+    public enum DrawerType {
+        Drawer(0),
+        Pager(1);
+
+        private final int mValue;
+        private DrawerType(int value) {
+            mValue = value;
+        }
+
+        public int getValue() {
+            return mValue;
+        }
+
+        public static DrawerType getModeForValue(int value) {
+            switch (value) {
+                case 1:
+                    return Pager;
+                default :
+                    return Drawer;
+            }
+        }
+    }
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public AutoFitTextView mTextView;
         public ViewGroup mLayout;

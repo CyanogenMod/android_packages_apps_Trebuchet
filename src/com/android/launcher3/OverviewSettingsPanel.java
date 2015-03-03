@@ -49,6 +49,7 @@ public class OverviewSettingsPanel {
                 res.getString(R.string.grid_size_text)};
 
         String[] valuesDrawer = new String[] {
+                res.getString(R.string.drawer_type),
                 res.getString(R.string.scroll_effect_text),
                 res.getString(R.string.drawer_sorting_text),
                 res.getString(R.string.icon_labels)};

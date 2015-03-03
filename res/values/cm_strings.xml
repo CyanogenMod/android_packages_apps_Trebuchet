@@ -74,4 +74,10 @@
 
     <!-- Dialog -->
     <string name="dialog_confirm">Confirm</string>
+
+    <!-- Drawer type -->
+    <string name="drawer_type">Layout</string>
+
+    <string name="drawer_type_drawer">Vertical</string>
+    <string name="drawer_type_pager">Paged</string>
 </resources>
