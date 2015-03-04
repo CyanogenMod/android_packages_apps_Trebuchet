@@ -19,18 +19,21 @@ package com.android.launcher3;
 import android.content.ComponentName;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.v7.widget.RecyclerView;
 import android.widget.LinearLayout;
 import android.widget.SectionIndexer;
+import com.android.launcher3.locale.LocaleSetManager;
+import com.android.launcher3.locale.LocaleUtils;
 
+import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.ListIterator;
 
 /**
  * AppDrawerListAdapter - list adapter for the vertical app drawer
@@ -38,7 +41,6 @@ import java.util.ListIterator;
 public class AppDrawerListAdapter extends RecyclerView.Adapter<AppDrawerListAdapter.ViewHolder>
         implements View.OnLongClickListener, DragSource, SectionIndexer {
 
-    private static final char NUMERIC_OR_SPECIAL_CHAR = '#';
     private static final String NUMERIC_OR_SPECIAL_HEADER = "#";
 
     private ArrayList<AppItemIndexedInfo> mHeaderList;
@@ -49,6 +51,7 @@ public class AppDrawerListAdapter extends RecyclerView.Adapter<AppDrawerListAdap
     private LinkedHashMap<String, Integer> mSectionHeaders;
     private LinearLayout.LayoutParams mIconParams;
     private Rect mIconRect;
+    private LocaleSetManager mLocaleSetManager;
 
     public enum DrawerType {
         Drawer(0),
@@ -88,6 +91,9 @@ public class AppDrawerListAdapter extends RecyclerView.Adapter<AppDrawerListAdap
         mHeaderList = new ArrayList<AppItemIndexedInfo>();
         mDeviceProfile = LauncherAppState.getInstance().getDynamicGrid().getDeviceProfile();
         mLayoutInflater = LayoutInflater.from(launcher);
+
+        mLocaleSetManager = new LocaleSetManager(mLauncher);
+        mLocaleSetManager.updateLocaleSet(mLocaleSetManager.getSystemLocaleSet());
         initParams();
     }
 
@@ -106,50 +112,51 @@ public class AppDrawerListAdapter extends RecyclerView.Adapter<AppDrawerListAdap
      */
     public void populateByCharacter(ArrayList<AppInfo> info) {
         if (info == null || info.size() <= 0) {
+            Collections.sort(mHeaderList);
             return;
         }
 
         // Create a clone of AppInfo ArrayList to preserve data
-        ArrayList<AppInfo> tempInfo = new ArrayList<AppInfo>(info.size());
-        for (AppInfo i : info) {
-            tempInfo.add(i);
-        }
+        ArrayList<AppInfo> tempInfo = (ArrayList<AppInfo>) info.clone();
 
-        ListIterator<AppInfo> it = tempInfo.listIterator();
         ArrayList<AppInfo> appInfos = new ArrayList<AppInfo>();
-        appInfos.clear();
 
         // get next app
-        AppInfo app = it.next();
+        AppInfo app = tempInfo.get(0);
 
         // get starting character
-        boolean isSpecial = false;
-        char startChar = app.title.toString().toUpperCase().charAt(0);
-        if (!Character.isLetter(startChar)) {
-            isSpecial = true;
+        LocaleUtils localeUtils = LocaleUtils.getInstance();
+        int bucketIndex = localeUtils.getBucketIndex(app.title.toString());
+            String startString
+                = localeUtils.getBucketLabel(bucketIndex);
+        if (TextUtils.isEmpty(startString)) {
+            startString = NUMERIC_OR_SPECIAL_HEADER;
+            bucketIndex = localeUtils.getBucketIndex(startString);
         }
 
         // now iterate through
         for (AppInfo info1 : tempInfo) {
-            char newChar = info1.title.toString().toUpperCase().charAt(0);
+            int newBucketIndex = localeUtils.getBucketIndex(info1.title.toString());
+
+            String newChar
+                    = localeUtils.getBucketLabel(newBucketIndex);
+            if (TextUtils.isEmpty(newChar)) {
+                newChar = NUMERIC_OR_SPECIAL_HEADER;
+            }
             // if same character
-            if (newChar == startChar) {
+            if (newChar.equals(startString)) {
                 // add it
-                appInfos.add(info1);
-            } else if (isSpecial && !Character.isLetter(newChar)) {
                 appInfos.add(info1);
             }
         }
+
+        Collections.sort(appInfos, LauncherModel.getAppNameComparator());
 
         for (int i = 0; i < appInfos.size(); i += mDeviceProfile.numColumnsBase) {
             int endIndex = (int) Math.min(i + mDeviceProfile.numColumnsBase, appInfos.size());
             ArrayList<AppInfo> subList = new ArrayList<AppInfo>(appInfos.subList(i, endIndex));
             AppItemIndexedInfo indexInfo;
-            if (isSpecial) {
-                indexInfo = new AppItemIndexedInfo('#', subList, i != 0);
-            } else {
-                indexInfo = new AppItemIndexedInfo(startChar, subList, i != 0);
-            }
+            indexInfo = new AppItemIndexedInfo(startString, bucketIndex, subList, i != 0);
             mHeaderList.add(indexInfo);
         }
 
@@ -163,7 +170,6 @@ public class AppDrawerListAdapter extends RecyclerView.Adapter<AppDrawerListAdap
     public void setApps(ArrayList<AppInfo> list) {
         if (!LauncherAppState.isDisableAllApps()) {
             mHeaderList.clear();
-            Collections.sort(list, LauncherModel.getAppNameComparator());
             populateByCharacter(list);
             populateSectionHeaders();
             mLauncher.updateScrubber();
@@ -179,7 +185,7 @@ public class AppDrawerListAdapter extends RecyclerView.Adapter<AppDrawerListAdap
         for (int i = 0; i < mHeaderList.size(); i++) {
             AppItemIndexedInfo info = mHeaderList.get(i);
             if (!mHeaderList.get(i).isChild) {
-                mSectionHeaders.put(String.valueOf(mHeaderList.get(i).mChar), count);
+                mSectionHeaders.put(String.valueOf(mHeaderList.get(i).mStartString), count);
             }
             if (info.mInfo.size() < mDeviceProfile.numColumnsBase) {
                 count++;
@@ -227,14 +233,22 @@ public class AppDrawerListAdapter extends RecyclerView.Adapter<AppDrawerListAdap
 
     private void addAppsWithoutInvalidate(ArrayList<AppInfo> list) {
         // We add it in place, in alphabetical order
+        LocaleUtils localeUtils = LocaleUtils.getInstance();
+
         int count = list.size();
         for (int i = 0; i < count; ++i) {
             AppInfo info = list.get(i);
             boolean found = false;
             AppItemIndexedInfo lastInfoForSection = null;
+            int bucketIndex = localeUtils.getBucketIndex(info.title.toString());
+            String start = localeUtils.getBucketLabel(bucketIndex);
+            if (TextUtils.isEmpty(start)) {
+                start = NUMERIC_OR_SPECIAL_HEADER;
+                bucketIndex = localeUtils.getBucketIndex(start);
+            }
             for (int j = 0; j < mHeaderList.size(); ++j) {
                 AppItemIndexedInfo indexedInfo = mHeaderList.get(j);
-                if (info.title.charAt(0) == indexedInfo.mChar) {
+                if (start.equals(indexedInfo.mStartString)) {
                     Collections.sort(indexedInfo.mInfo, LauncherModel.getAppNameComparator());
                     int index =
                             Collections.binarySearch(indexedInfo.mInfo,
@@ -255,8 +269,9 @@ public class AppDrawerListAdapter extends RecyclerView.Adapter<AppDrawerListAdap
                     ArrayList<AppInfo> newInfos = new ArrayList<AppInfo>();
                     newInfos.add(info);
                     AppItemIndexedInfo newInfo =
-                            new AppItemIndexedInfo(info.title.charAt(0), newInfos, false);
+                            new AppItemIndexedInfo(start, bucketIndex, newInfos, false);
                     mHeaderList.add(newInfo);
+                    Collections.sort(mHeaderList);
                 }
             }
         }
@@ -343,10 +358,10 @@ public class AppDrawerListAdapter extends RecyclerView.Adapter<AppDrawerListAdap
         AppItemIndexedInfo indexedInfo = mHeaderList.get(position);
         holder.mTextView.setVisibility(indexedInfo.isChild ? View.INVISIBLE : View.VISIBLE);
         if (!indexedInfo.isChild) {
-            if (indexedInfo.mChar == NUMERIC_OR_SPECIAL_CHAR) {
+            if (indexedInfo.mStartString.equals(NUMERIC_OR_SPECIAL_HEADER)) {
                 holder.mTextView.setText(NUMERIC_OR_SPECIAL_HEADER);
             } else {
-                holder.mTextView.setText(String.valueOf(indexedInfo.mChar));
+                holder.mTextView.setText(String.valueOf(indexedInfo.mStartString));
             }
         }
         final int size = indexedInfo.mInfo.size();
@@ -458,19 +473,35 @@ public class AppDrawerListAdapter extends RecyclerView.Adapter<AppDrawerListAdap
         // We just dismiss the drag when we fling, so cleanup here
     }
 
-    public class AppItemIndexedInfo {
+    public class AppItemIndexedInfo implements Comparable {
         private boolean isChild;
-        private char mChar;
+        private String mStartString;
+        private int mStringIndex;
         private ArrayList<AppInfo> mInfo;
 
-        private AppItemIndexedInfo(char startChar, ArrayList<AppInfo> info, boolean isChild) {
-            this.mChar = startChar;
+        private AppItemIndexedInfo(String startString, int bucketIndex, ArrayList<AppInfo> info,
+                boolean isChild) {
+            this.mStartString = startString;
+            this.mStringIndex = bucketIndex;
             this.mInfo = info;
             this.isChild = isChild;
+
+            if (mStartString.equals(NUMERIC_OR_SPECIAL_HEADER)) {
+                this.mStringIndex = 0;
+            }
         }
 
-        public char getChar() {
-            return mChar;
+        public String getString() {
+            return mStartString;
+        }
+
+        @Override
+        public int compareTo(Object o) {
+            if (o instanceof AppItemIndexedInfo) {
+                int otherBucketIndex = ((AppItemIndexedInfo) o).mStringIndex;
+                return Integer.compare(mStringIndex, otherBucketIndex);
+            }
+            return 0;
         }
     }
 
@@ -486,6 +517,6 @@ public class AppDrawerListAdapter extends RecyclerView.Adapter<AppDrawerListAdap
 
     @Override
     public int getSectionForPosition(int position) {
-        return mSectionHeaders.get(mHeaderList.get(position).mChar);
+        return mSectionHeaders.get(mHeaderList.get(position).mStartString);
     }
 }
