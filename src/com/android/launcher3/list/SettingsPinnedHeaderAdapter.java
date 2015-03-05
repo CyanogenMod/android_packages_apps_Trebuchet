@@ -6,7 +6,9 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.graphics.Typeface;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -25,6 +27,8 @@ import com.android.launcher3.settings.SettingsProvider;
 public class SettingsPinnedHeaderAdapter extends PinnedHeaderListAdapter {
     private static final int PARTITION_TAG = 0;
     private static final int POSITION_TAG = 1;
+    private static final float ENABLED_ALPHA = 1f;
+    private static final float DISABLED_ALPHA = 1f;
 
     private Launcher mLauncher;
     private Context mContext;
@@ -91,6 +95,7 @@ public class SettingsPinnedHeaderAdapter extends PinnedHeaderListAdapter {
 
         Resources res = mLauncher.getResources();
 
+
         boolean current = false;
         String state = "";
 
@@ -135,12 +140,16 @@ public class SettingsPinnedHeaderAdapter extends PinnedHeaderListAdapter {
                         updateDrawerTypeSettingsItem(v);
                         break;
                     case 1:
-                        state = mLauncher.getAppsCustomizeTransitionEffect();
-                        state = mapEffectToValue(state);
-                        ((TextView) v.findViewById(R.id.item_state)).setText(state);
+                        if (!setDisabled(v)) {
+                            state = mLauncher.getAppsCustomizeTransitionEffect();
+                            state = mapEffectToValue(state);
+                            ((TextView) v.findViewById(R.id.item_state)).setText(state);
+                        }
                         break;
                     case 2:
-                        updateDrawerSortSettingsItem(v);
+                        if (!setDisabled(v)) {
+                            updateDrawerSortSettingsItem(v);
+                        }
                         break;
                     case 3:
                         current = SettingsProvider.getBoolean(mContext,
@@ -207,11 +216,7 @@ public class SettingsPinnedHeaderAdapter extends PinnedHeaderListAdapter {
 
     public void updateDrawerTypeSettingsItem(View v) {
         String state = "";
-        AppDrawerListAdapter.DrawerType type =
-                AppDrawerListAdapter.DrawerType.getModeForValue(
-                        SettingsProvider.getInt(mLauncher,
-                                SettingsProvider.SETTINGS_UI_DRAWER_TYPE,
-                                R.integer.preferences_interface_drawer_type_default));
+        AppDrawerListAdapter.DrawerType type = mLauncher.getDrawerType();
         switch (type) {
             case Drawer:
                 state = mLauncher.getResources().getString(R.string.drawer_type_drawer);
@@ -313,9 +318,11 @@ public class SettingsPinnedHeaderAdapter extends PinnedHeaderListAdapter {
                             break;
                         case 1:
                             mLauncher.onClickTransitionEffectButton(v, true);
+
                             break;
                         case 2:
                             onClickSortButton();
+
                             break;
                         case 3:
                             onIconLabelsBooleanChanged(v,
@@ -407,5 +414,32 @@ public class SettingsPinnedHeaderAdapter extends PinnedHeaderListAdapter {
         mLauncher.updateDrawerType();
 
         notifyDataSetChanged();
+    }
+
+    private boolean setDisabled(View v) {
+        TextView itemState = ((TextView) v.findViewById(R.id.item_state));
+        TextView itemName = ((TextView) v.findViewById(R.id.item_name));
+
+        AppDrawerListAdapter.DrawerType type = mLauncher.getDrawerType();
+
+        boolean isDisabled = false;
+
+        switch (type) {
+            case Drawer:
+                itemState.setAlpha(DISABLED_ALPHA);
+                itemState.setText(mLauncher.getResources()
+                        .getString(R.string.setting_state_disabled));
+                itemName.setAlpha(DISABLED_ALPHA);
+                v.setEnabled(false);
+                isDisabled = true;
+                break;
+            case Pager:
+                itemState.setAlpha(ENABLED_ALPHA);
+                itemName.setAlpha(ENABLED_ALPHA);
+                v.setEnabled(true);
+                break;
+        }
+
+        return isDisabled;
     }
 }

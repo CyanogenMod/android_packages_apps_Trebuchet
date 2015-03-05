@@ -1275,6 +1275,10 @@ public class Launcher extends Activity
                         R.integer.preferences_interface_drawer_type_default));
     }
 
+    public AppDrawerListAdapter.DrawerType getDrawerType() {
+        return mDrawerType;
+    }
+
     public void onClickSortModeButton(View v) {
         final PopupMenu popupMenu = new PopupMenu(this, v);
         final Menu menu = popupMenu.getMenu();
