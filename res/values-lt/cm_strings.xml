@@ -29,7 +29,7 @@
   <string name="grid_size_comfortable">Patogus</string>
   <string name="grid_size_cozy">Jaukus</string>
   <string name="grid_size_condensed">Suglaustas</string>
-  <string name="grid_size_custom">Individualus (<xliff:g id="rows">%1$d</xliff:g> \u00d7 <xliff:g id="columns">%2$d</xliff:g>)</string>
+  <string name="grid_size_custom">Priskirtas (<xliff:g id="rows">%1$d</xliff:g> \u00d7 <xliff:g id="columns">%2$d</xliff:g>)</string>
   <string name="preferences_interface_homescreen_custom">Pasirinkite tinkintą dydį</string>
   <string name="scroll_effect_text">Slinkimo efektas</string>
   <string name="drawer_sorting_text">Rūšiavimo režimas</string>
