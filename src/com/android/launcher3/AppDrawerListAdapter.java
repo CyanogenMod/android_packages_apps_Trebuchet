@@ -17,8 +17,10 @@
 package com.android.launcher3;
 
 import android.content.ComponentName;
+import android.content.Context;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.provider.Settings;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,6 +34,7 @@ import com.android.launcher3.locale.LocaleUtils;
 import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -52,6 +55,8 @@ public class AppDrawerListAdapter extends RecyclerView.Adapter<AppDrawerListAdap
     private LinearLayout.LayoutParams mIconParams;
     private Rect mIconRect;
     private LocaleSetManager mLocaleSetManager;
+
+    private ArrayList<ComponentName> mProtectedApps;
 
     public enum DrawerType {
         Drawer(0),
@@ -95,6 +100,8 @@ public class AppDrawerListAdapter extends RecyclerView.Adapter<AppDrawerListAdap
         mLocaleSetManager = new LocaleSetManager(mLauncher);
         mLocaleSetManager.updateLocaleSet(mLocaleSetManager.getSystemLocaleSet());
         initParams();
+
+        updateProtectedAppsList(mLauncher);
     }
 
     private void initParams() {
@@ -169,6 +176,8 @@ public class AppDrawerListAdapter extends RecyclerView.Adapter<AppDrawerListAdap
 
     public void setApps(ArrayList<AppInfo> list) {
         if (!LauncherAppState.isDisableAllApps()) {
+            filterProtectedApps(list);
+
             mHeaderList.clear();
             populateByCharacter(list);
             populateSectionHeaders();
@@ -197,6 +206,7 @@ public class AppDrawerListAdapter extends RecyclerView.Adapter<AppDrawerListAdap
 
     private void reset() {
         ArrayList<AppInfo> infos = getAllApps();
+
         setApps(infos);
     }
 
@@ -518,5 +528,31 @@ public class AppDrawerListAdapter extends RecyclerView.Adapter<AppDrawerListAdap
     @Override
     public int getSectionForPosition(int position) {
         return mSectionHeaders.get(mHeaderList.get(position).mStartString);
+    }
+
+    private void filterProtectedApps(ArrayList<AppInfo> list) {
+        updateProtectedAppsList(mLauncher);
+
+        Iterator<AppInfo> iterator = list.iterator();
+        while (iterator.hasNext()) {
+            AppInfo appInfo = iterator.next();
+            if (mProtectedApps.contains(appInfo.componentName)) {
+                iterator.remove();
+            }
+        }
+    }
+
+    private void updateProtectedAppsList(Context context) {
+        String protectedComponents = Settings.Secure.getString(context.getContentResolver(),
+                LauncherModel.SETTINGS_PROTECTED_COMPONENTS);
+        protectedComponents = protectedComponents == null ? "" : protectedComponents;
+        String [] flattened = protectedComponents.split("\\|");
+        mProtectedApps = new ArrayList<ComponentName>(flattened.length);
+        for (String flat : flattened) {
+            ComponentName cmp = ComponentName.unflattenFromString(flat);
+            if (cmp != null) {
+                mProtectedApps.add(cmp);
+            }
+        }
     }
 }
