@@ -30,6 +30,7 @@ import android.widget.LinearLayout;
 import android.widget.SectionIndexer;
 import com.android.launcher3.locale.LocaleSetManager;
 import com.android.launcher3.locale.LocaleUtils;
+import com.android.launcher3.settings.SettingsProvider;
 
 import java.text.Collator;
 import java.util.ArrayList;
@@ -57,6 +58,8 @@ public class AppDrawerListAdapter extends RecyclerView.Adapter<AppDrawerListAdap
     private LocaleSetManager mLocaleSetManager;
 
     private ArrayList<ComponentName> mProtectedApps;
+
+    private boolean mHideIconLabels;
 
     public enum DrawerType {
         Drawer(0),
@@ -111,6 +114,10 @@ public class AppDrawerListAdapter extends RecyclerView.Adapter<AppDrawerListAdap
                 LinearLayout.LayoutParams(width, ViewGroup.LayoutParams.WRAP_CONTENT);
         mIconRect = new Rect(0, 0, mDeviceProfile.allAppsIconSizePx,
                 mDeviceProfile.allAppsIconSizePx);
+
+        mHideIconLabels = SettingsProvider.getBoolean(mLauncher,
+                SettingsProvider.SETTINGS_UI_DRAWER_HIDE_ICON_LABELS,
+                R.bool.preferences_interface_drawer_hide_icon_labels_default);
     }
 
     /**
@@ -387,6 +394,7 @@ public class AppDrawerListAdapter extends RecyclerView.Adapter<AppDrawerListAdap
                 d.setBounds(mIconRect);
                 icon.mIcon.setImageDrawable(d);
                 icon.mLabel.setText(info.title);
+                icon.mLabel.setVisibility(mHideIconLabels ? View.INVISIBLE : View.VISIBLE);
             }
         }
         holder.itemView.setTag(indexedInfo);
