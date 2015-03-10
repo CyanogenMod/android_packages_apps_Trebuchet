@@ -5775,6 +5775,7 @@ public class Launcher extends Activity
         mModel.startLoader(true, page);
         mWorkspace.updateCustomContentVisibility();
 
+        mAppDrawerAdapter.reset();
     }
 
     public void setUpdateDynamicGrid() {

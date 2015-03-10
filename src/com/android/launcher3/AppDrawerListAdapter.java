@@ -94,7 +94,6 @@ public class AppDrawerListAdapter extends RecyclerView.Adapter<AppDrawerListAdap
     public AppDrawerListAdapter(Launcher launcher) {
         mLauncher = launcher;
         mHeaderList = new ArrayList<AppItemIndexedInfo>();
-        mDeviceProfile = LauncherAppState.getInstance().getDynamicGrid().getDeviceProfile();
         mLayoutInflater = LayoutInflater.from(launcher);
 
         mLocaleSetManager = new LocaleSetManager(mLauncher);
@@ -105,12 +104,13 @@ public class AppDrawerListAdapter extends RecyclerView.Adapter<AppDrawerListAdap
     }
 
     private void initParams() {
+        mDeviceProfile = LauncherAppState.getInstance().getDynamicGrid().getDeviceProfile();
+
+        int width = mDeviceProfile.cellWidthPx + 2 * mDeviceProfile.edgeMarginPx;
         mIconParams = new
-                LinearLayout.LayoutParams(mDeviceProfile.folderCellWidthPx,
-                ViewGroup.LayoutParams.WRAP_CONTENT);
-        LauncherAppState app = LauncherAppState.getInstance();
-        DeviceProfile grid = app.getDynamicGrid().getDeviceProfile();
-        mIconRect = new Rect(0, 0, grid.allAppsIconSizePx, grid.allAppsIconSizePx);
+                LinearLayout.LayoutParams(width, ViewGroup.LayoutParams.WRAP_CONTENT);
+        mIconRect = new Rect(0, 0, mDeviceProfile.allAppsIconSizePx,
+                mDeviceProfile.allAppsIconSizePx);
     }
 
     /**
@@ -176,6 +176,8 @@ public class AppDrawerListAdapter extends RecyclerView.Adapter<AppDrawerListAdap
 
     public void setApps(ArrayList<AppInfo> list) {
         if (!LauncherAppState.isDisableAllApps()) {
+            initParams();
+
             filterProtectedApps(list);
 
             mHeaderList.clear();
@@ -204,9 +206,10 @@ public class AppDrawerListAdapter extends RecyclerView.Adapter<AppDrawerListAdap
         }
     }
 
-    private void reset() {
+    public void reset() {
         ArrayList<AppInfo> infos = getAllApps();
 
+        mLauncher.mAppDrawer.getLayoutManager().removeAllViews();
         setApps(infos);
     }
 
@@ -341,12 +344,8 @@ public class AppDrawerListAdapter extends RecyclerView.Adapter<AppDrawerListAdap
         for (int i = 0; i < mDeviceProfile.numColumnsBase; i++) {
             AppDrawerIconView icon = (AppDrawerIconView) mLayoutInflater.inflate(
                     R.layout.drawer_icon, holder.mLayout, false);
-            icon.setLayoutParams(mIconParams);
             icon.setOnClickListener(mLauncher);
             icon.setOnLongClickListener(this);
-            int padding = (int) mLauncher.getResources()
-                    .getDimension(R.dimen.vertical_app_drawer_icon_padding);
-            icon.setPadding(padding, padding, padding, padding);
             holder.mLayout.addView(icon);
         }
         return holder;
@@ -377,6 +376,7 @@ public class AppDrawerListAdapter extends RecyclerView.Adapter<AppDrawerListAdap
         final int size = indexedInfo.mInfo.size();
         for (int i = 0; i < holder.mLayout.getChildCount(); i++) {
             AppDrawerIconView icon = (AppDrawerIconView) holder.mLayout.getChildAt(i);
+            icon.setLayoutParams(mIconParams);
             if (i >= size) {
                 icon.setVisibility(View.INVISIBLE);
             } else {

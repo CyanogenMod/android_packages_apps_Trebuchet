@@ -123,5 +123,5 @@
     <dimen name="scrubber_height">48dp</dimen>
 
     <!-- Vertical app drawer padding -->
-    <dimen name="vertical_app_drawer_icon_padding">5px</dimen>
+    <dimen name="vertical_app_drawer_icon_padding">5dp</dimen>
 </resources>

@@ -18,6 +18,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="wrap_content"
+    android:paddingLeft="@dimen/vertical_app_drawer_icon_padding"
+    android:paddingRight="@dimen/vertical_app_drawer_icon_padding"
     android:layout_height="wrap_content">
 
     <ImageView
