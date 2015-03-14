@@ -43,4 +43,8 @@
   <string name="icon_labels_hide">隐藏</string>
   <string name="protected_app_settings">受保护的应用</string>
   <string name="dialog_confirm">确认</string>
+  <string name="drawer_type">布局</string>
+  <string name="drawer_type_drawer">垂直</string>
+  <string name="drawer_type_pager">分页</string>
+  <string name="setting_state_disabled">已禁用</string>
 </resources>

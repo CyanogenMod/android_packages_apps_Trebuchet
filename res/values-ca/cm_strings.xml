@@ -18,7 +18,7 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
   <string name="home_screen_settings">CONFIGURACIÓ DE LA PANTALLA D\'INICI</string>
   <string name="drawer_settings">CONFIGURACIÓ DEL CALAIX</string>
-  <string name="app_settings">CONFIGURACIÓ DE L\'APP</string>
+  <string name="app_settings">CONFIGURACIÓ DE L\'APLICACIÓ</string>
   <string name="setting_state_on">SÍ</string>
   <string name="setting_state_off">NO</string>
   <string name="themes_button_text">Temes</string>
@@ -41,6 +41,10 @@
   <string name="icon_labels">Etiquetes de les icones</string>
   <string name="icon_labels_show">Mostra</string>
   <string name="icon_labels_hide">Amaga</string>
-  <string name="protected_app_settings">Apps protegides</string>
+  <string name="protected_app_settings">Aplicacions protegides</string>
   <string name="dialog_confirm">Confirma</string>
+  <string name="drawer_type">Disposició</string>
+  <string name="drawer_type_drawer">Vertical</string>
+  <string name="drawer_type_pager">Paginada</string>
+  <string name="setting_state_disabled">DESHABILITAT</string>
 </resources>

@@ -43,4 +43,8 @@
   <string name="icon_labels_hide">Ukryj</string>
   <string name="protected_app_settings">Chronione aplikacje</string>
   <string name="dialog_confirm">Potwierdź</string>
+  <string name="drawer_type">Układ</string>
+  <string name="drawer_type_drawer">Pionowo</string>
+  <string name="drawer_type_pager">Strony</string>
+  <string name="setting_state_disabled">WYŁĄCZONE</string>
 </resources>
