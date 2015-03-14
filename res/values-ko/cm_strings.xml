@@ -43,4 +43,8 @@
   <string name="icon_labels_hide">숨기기</string>
   <string name="protected_app_settings">보호된 앱</string>
   <string name="dialog_confirm">확인</string>
+  <string name="drawer_type">레이아웃</string>
+  <string name="drawer_type_drawer">수직</string>
+  <string name="drawer_type_pager">페이징</string>
+  <string name="setting_state_disabled">사용 안함</string>
 </resources>
