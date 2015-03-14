@@ -43,4 +43,8 @@
   <string name="icon_labels_hide">Απόκρυψη</string>
   <string name="protected_app_settings">Προστατευμένες εφαρμογές</string>
   <string name="dialog_confirm">Επιβεβαίωση</string>
+  <string name="drawer_type">Διάταξη</string>
+  <string name="drawer_type_drawer">Κάθετη</string>
+  <string name="drawer_type_pager">Οριζόντια</string>
+  <string name="setting_state_disabled">ΑΠΕΝΕΡΓΟΠΟΙΗΜΕΝΟ</string>
 </resources>

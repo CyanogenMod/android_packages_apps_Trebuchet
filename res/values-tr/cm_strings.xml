@@ -43,4 +43,8 @@
   <string name="icon_labels_hide">Gizle</string>
   <string name="protected_app_settings">Korunan uygulamalar</string>
   <string name="dialog_confirm">Onayla</string>
+  <string name="drawer_type">Düzen</string>
+  <string name="drawer_type_drawer">Dikey</string>
+  <string name="drawer_type_pager">Sayfalı</string>
+  <string name="setting_state_disabled">DEVRE DIŞI</string>
 </resources>
