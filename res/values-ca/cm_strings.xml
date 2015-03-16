@@ -18,7 +18,7 @@
 <resources>
   <string name="home_screen_settings">CONFIGURACIÓ DE LA PANTALLA D\'INICI</string>
   <string name="drawer_settings">CONFIGURACIÓ DEL CALAIX</string>
-  <string name="app_settings">CONFIGURACIÓ DE L\'APP</string>
+  <string name="app_settings">CONFIGURACIÓ DE L\'APLICACIÓ</string>
   <string name="setting_state_on">SÍ</string>
   <string name="setting_state_off">NO</string>
   <string name="search_panel_gel">Google Now</string>
@@ -44,7 +44,7 @@
   <string name="icon_labels">Etiquetes de les icones</string>
   <string name="icon_labels_show">Mostra</string>
   <string name="icon_labels_hide">Amaga</string>
-  <string name="protected_app_settings">Apps protegides</string>
+  <string name="protected_app_settings">Aplicacions protegides</string>
   <string name="search_screen_left_text">Quadre de cerca</string>
   <string name="dialog_confirm">Confirma</string>
   <string name="permission_label_read_extension_data">sol·licita dades de l\'extensió DashClock</string>
