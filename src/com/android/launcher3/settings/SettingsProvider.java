@@ -88,4 +88,8 @@ public final class SettingsProvider {
     public static void putInt(Context context, String key, int value) {
         get(context).edit().putInt(key, value).commit();
     }
+
+    public static void putBoolean(Context context, String key, boolean value) {
+        get(context).edit().putBoolean(key, value).commit();
+    }
 }

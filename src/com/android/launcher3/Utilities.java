@@ -17,6 +17,7 @@
 package com.android.launcher3;
 
 import android.app.Activity;
+import android.app.SearchManager;
 import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
 import android.content.Context;
@@ -565,5 +566,13 @@ public final class Utilities {
         DisplayMetrics metrics = resources.getDisplayMetrics();
         float px = dp * (metrics.densityDpi / (float) DisplayMetrics.DENSITY_DEFAULT);
         return px;
+    }
+
+    public static boolean searchActivityExists(Context context) {
+        SearchManager searchManager =
+                (SearchManager) context.getSystemService(Context.SEARCH_SERVICE);
+        ComponentName activityName = searchManager.getGlobalSearchActivity();
+
+        return activityName != null;
     }
 }
