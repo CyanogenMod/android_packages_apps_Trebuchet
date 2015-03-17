@@ -70,6 +70,8 @@ import android.os.Message;
 import android.os.StrictMode;
 import android.os.SystemClock;
 import android.speech.RecognizerIntent;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Selection;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
@@ -98,6 +100,7 @@ import android.view.accessibility.AccessibilityEvent;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
+import android.view.animation.OvershootInterpolator;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Advanceable;
 import android.widget.FrameLayout;
@@ -165,6 +168,8 @@ public class Launcher extends Activity
     private static final int REQUEST_BIND_APPWIDGET = 11;
     private static final int REQUEST_RECONFIGURE_APPWIDGET = 12;
     public static final int REQUEST_TRANSITION_EFFECTS = 14;
+
+    private static final float OVERSHOOT_TENSION = 1.4f;
 
     static final int REQUEST_PICK_ICON = 13;
 
@@ -299,6 +304,9 @@ public class Launcher extends Activity
     OverviewSettingsPanel mOverviewSettingsPanel;
 
     private View mAllAppsButton;
+    protected RecyclerView mAppDrawer;
+    private AppDrawerListAdapter mAppDrawerAdapter;
+    private AppDrawerScrubber mScrubber;
 
     protected SearchDropTargetBar mSearchDropTargetBar;
     private AppsCustomizeTabHost mAppsCustomizeTabHost;
@@ -389,6 +397,7 @@ public class Launcher extends Activity
 
     // Preferences
     private boolean mHideIconLabels;
+    private AppDrawerListAdapter.DrawerType mDrawerType;
 
     private Runnable mBuildLayersRunnable = new Runnable() {
         public void run() {
@@ -563,6 +572,10 @@ public class Launcher extends Activity
         mHideIconLabels = SettingsProvider.getBoolean(this,
                 SettingsProvider.SETTINGS_UI_HOMESCREEN_HIDE_ICON_LABELS,
                 R.bool.preferences_interface_homescreen_hide_icon_labels_default);
+        mDrawerType = AppDrawerListAdapter.DrawerType.getModeForValue(
+                SettingsProvider.getInt(this,
+                        SettingsProvider.SETTINGS_UI_DRAWER_TYPE,
+                        R.integer.preferences_interface_drawer_type_default));
 
         // Determine the dynamic grid properties
         Point smallestSize = new Point();
@@ -596,6 +609,24 @@ public class Launcher extends Activity
      * {@link #hasCustomContentToLeft()} is {@code true}.
      */
     protected void populateCustomContentContainer() {
+    }
+
+    private void initializeScrubber() {
+        if (mScrubber == null) {
+            FrameLayout view = (FrameLayout) findViewById(R.id.app_drawer_container);
+            mScrubber = (AppDrawerScrubber) view.findViewById(R.id.app_drawer_scrubber);
+            mScrubber.setSource(mAppDrawer);
+            mScrubber.setScrubberIndicator((TextView) view.findViewById(R.id.scrubberIndicator));
+        }
+    }
+
+    public void updateScrubber() {
+        mScrubber.updateSections();
+    }
+
+    public void initializeAdapter() {
+        mAppDrawerAdapter = new AppDrawerListAdapter(this);
+        mAppDrawerAdapter.notifyDataSetChanged();
     }
 
     /**
@@ -1239,6 +1270,17 @@ public class Launcher extends Activity
         return false;
     }
 
+    public void updateDrawerType() {
+        mDrawerType = AppDrawerListAdapter.DrawerType.getModeForValue(
+                SettingsProvider.getInt(this,
+                        SettingsProvider.SETTINGS_UI_DRAWER_TYPE,
+                        R.integer.preferences_interface_drawer_type_default));
+    }
+
+    public AppDrawerListAdapter.DrawerType getDrawerType() {
+        return mDrawerType;
+    }
+
     public void onClickSortModeButton(View v) {
         final PopupMenu popupMenu = new PopupMenu(this, v);
         final Menu menu = popupMenu.getMenu();
@@ -1289,7 +1331,18 @@ public class Launcher extends Activity
     public void setDynamicGridSize(DeviceProfile.GridSize size) {
         int gridSize = SettingsProvider.getIntCustomDefault(this,
                 SettingsProvider.SETTINGS_UI_DYNAMIC_GRID_SIZE, 0);
-        if (gridSize != size.getValue()) {
+        boolean customValuesChanged = false;
+        if (gridSize == size.getValue() && size == DeviceProfile.GridSize.Custom) {
+            int tempRows = SettingsProvider.getIntCustomDefault(this,
+                    SettingsProvider.SETTINGS_UI_HOMESCREEN_ROWS, (int)mGrid.numRows);
+            int tempColumns = SettingsProvider.getIntCustomDefault(this,
+                    SettingsProvider.SETTINGS_UI_HOMESCREEN_COLUMNS, (int)mGrid.numColumns);
+            if (tempColumns != (int) mGrid.numColumns || tempRows != (int) mGrid.numRows) {
+                customValuesChanged = true;
+            }
+        }
+
+        if (gridSize != size.getValue() || customValuesChanged) {
             SettingsProvider.putInt(this,
                     SettingsProvider.SETTINGS_UI_DYNAMIC_GRID_SIZE, size.getValue());
 
@@ -1644,6 +1697,9 @@ public class Launcher extends Activity
                 mAppsCustomizeTabHost.findViewById(R.id.apps_customize_pane_content);
         mAppsCustomizeContent.setup(this, dragController);
 
+        // Setup AppDrawer
+        setupAppDrawer();
+
         // Setup the drag controller (drop targets have to be added in reverse order in priority)
         dragController.setDragScoller(mWorkspace);
         dragController.setScrollView(mDragLayer);
@@ -1666,6 +1722,20 @@ public class Launcher extends Activity
 
             boolean show = shouldShowWeightWatcher();
             mWeightWatcher.setVisibility(show ? View.VISIBLE : View.GONE);
+        }
+    }
+
+    private void setupAppDrawer() {
+        if (mAppDrawer == null) {
+            FrameLayout view = (FrameLayout) findViewById(R.id.app_drawer_container);
+            mAppDrawer = (RecyclerView) view.findViewById(R.id.app_drawer_recyclerview);
+            mAppDrawer.setLayoutManager(new LinearLayoutManager(this));
+            if (mAppDrawerAdapter == null) {
+                initializeAdapter();
+            }
+            mAppDrawer.setHasFixedSize(true);
+            mAppDrawer.setAdapter(mAppDrawerAdapter);
+            initializeScrubber();
         }
     }
 
@@ -2201,11 +2271,6 @@ public class Launcher extends Activity
                 InputMethodManager imm = (InputMethodManager)getSystemService(
                         INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-            }
-
-            // Reset the apps customize page
-            if (!alreadyOnHome && mAppsCustomizeTabHost != null) {
-                mAppsCustomizeTabHost.reset();
             }
 
             onHomeIntent();
@@ -3205,7 +3270,7 @@ public class Launcher extends Activity
         return false;
     }
 
-    boolean startActivitySafely(View v, Intent intent, Object tag) {
+    public boolean startActivitySafely(View v, Intent intent, Object tag) {
         boolean success = false;
         if (mIsSafeModeEnabled && !Utilities.isSystemApp(this, intent)) {
             Toast.makeText(this, R.string.safemode_shortcut_error, Toast.LENGTH_SHORT).show();
@@ -3583,7 +3648,7 @@ public class Launcher extends Activity
         }
 
         boolean material = Utilities.isLmpOrAbove();
-
+        boolean drawer = mDrawerType == AppDrawerListAdapter.DrawerType.Drawer;
         final Resources res = getResources();
 
         final int duration = res.getInteger(R.integer.config_appsCustomizeZoomInTime);
@@ -3594,7 +3659,13 @@ public class Launcher extends Activity
 
         final float scale = (float) res.getInteger(R.integer.config_appsCustomizeZoomScaleFactor);
         final View fromView = mWorkspace;
-        final AppsCustomizeTabHost toView = mAppsCustomizeTabHost;
+        final View toView;
+
+        if (drawer && contentType == AppsCustomizePagedView.ContentType.Applications) {
+            toView = findViewById(R.id.app_drawer_container);
+        } else {
+            toView = mAppsCustomizeTabHost;
+        }
 
         final ArrayList<View> layerViews = new ArrayList<View>();
 
@@ -3616,7 +3687,8 @@ public class Launcher extends Activity
             final AppsCustomizePagedView content = (AppsCustomizePagedView)
                     toView.findViewById(R.id.apps_customize_pane_content);
 
-            final View page = content.getPageAt(content.getCurrentPage());
+            final View page = content != null ? content.getPageAt(content.getCurrentPage())
+                    : toView.findViewById(R.id.app_drawer_view);
             final View revealView = toView.findViewById(R.id.fake_page);
 
             final float initialPanelAlpha = 1f;
@@ -3625,11 +3697,19 @@ public class Launcher extends Activity
             if (isWidgetTray) {
                 revealView.setBackground(res.getDrawable(R.drawable.quantum_panel_dark));
             } else {
-                revealView.setBackground(res.getDrawable(R.drawable.quantum_panel));
+                if (drawer) {
+                    revealView.setBackgroundColor(res.getColor(R.color.app_drawer_background));
+                } else {
+                    revealView.setBackground(res.getDrawable(R.drawable.quantum_panel));
+                }
             }
 
             // Hide the real page background, and swap in the fake one
-            content.setPageBackgroundsVisible(false);
+            if (content != null) {
+                content.setPageBackgroundsVisible(false);
+            } else {
+                toView.setBackgroundColor(Color.TRANSPARENT);
+            }
             revealView.setVisibility(View.VISIBLE);
             // We need to hide this view as the animation start will be posted.
             revealView.setAlpha(0);
@@ -3674,6 +3754,11 @@ public class Launcher extends Activity
 
             mStateAnimation.play(panelAlphaAndDrift);
 
+            final View drawerContent = content == null ?
+                    toView.findViewById(R.id.app_drawer_recyclerview) : null;
+            final View drawerScrubber = content == null ?
+                    toView.findViewById(R.id.scrubber_container) : null;
+
             if (page != null) {
                 page.setVisibility(View.VISIBLE);
                 page.setLayerType(View.LAYER_TYPE_HARDWARE, null);
@@ -3692,14 +3777,32 @@ public class Launcher extends Activity
                 itemsAlpha.setInterpolator(new AccelerateInterpolator(1.5f));
                 itemsAlpha.setStartDelay(itemsAlphaStagger);
                 mStateAnimation.play(itemsAlpha);
+
+                if (drawerContent != null) {
+                    drawerContent.setTranslationY(toView.getHeight());
+                    ObjectAnimator slideIn = ObjectAnimator.ofFloat(drawerContent,
+                            "translationY", 1000, 0);
+                    slideIn.setInterpolator(new OvershootInterpolator(OVERSHOOT_TENSION));
+                    slideIn.setStartDelay(revealDuration / 2);
+                    mStateAnimation.play(slideIn);
+                }
+                if (drawerScrubber != null) {
+                    drawerScrubber.setAlpha(0f);
+                    ObjectAnimator fadeIn = ObjectAnimator.ofFloat(drawerScrubber,
+                            "alpha", 0f, 1f);
+                    fadeIn.setStartDelay(revealDuration / 2);
+                    mStateAnimation.play(fadeIn);
+                }
             }
 
             View pageIndicators = toView.findViewById(R.id.apps_customize_page_indicator);
-            pageIndicators.setAlpha(0.01f);
-            ObjectAnimator indicatorsAlpha =
-                    ObjectAnimator.ofFloat(pageIndicators, "alpha", 1f);
-            indicatorsAlpha.setDuration(revealDuration);
-            mStateAnimation.play(indicatorsAlpha);
+            if (pageIndicators != null) {
+                pageIndicators.setAlpha(0.01f);
+                ObjectAnimator indicatorsAlpha =
+                        ObjectAnimator.ofFloat(pageIndicators, "alpha", 1f);
+                indicatorsAlpha.setDuration(revealDuration);
+                mStateAnimation.play(indicatorsAlpha);
+            }
 
             if (material) {
                 final View allApps = getAllAppsButton();
@@ -3737,7 +3840,11 @@ public class Launcher extends Activity
                     if (page != null) {
                         page.setLayerType(View.LAYER_TYPE_NONE, null);
                     }
-                    content.setPageBackgroundsVisible(true);
+                    if (content != null) {
+                        content.setPageBackgroundsVisible(true);
+                    } else {
+                        toView.setBackgroundColor(res.getColor(R.color.app_drawer_background));
+                    }
 
                     // Hide the search bar
                     if (mSearchDropTargetBar != null) {
@@ -3820,7 +3927,8 @@ public class Launcher extends Activity
         }
 
         boolean material = Utilities.isLmpOrAbove();
-        Resources res = getResources();
+        boolean drawer = mDrawerType == AppDrawerListAdapter.DrawerType.Drawer;
+        final Resources res = getResources();
 
         final int duration = res.getInteger(R.integer.config_appsCustomizeZoomOutTime);
         final int fadeOutDuration = res.getInteger(R.integer.config_appsCustomizeFadeOutTime);
@@ -3830,7 +3938,15 @@ public class Launcher extends Activity
 
         final float scaleFactor = (float)
                 res.getInteger(R.integer.config_appsCustomizeZoomScaleFactor);
-        final View fromView = mAppsCustomizeTabHost;
+        final View fromView;
+
+        if (drawer && mAppsCustomizeContent.getContentType()
+                != AppsCustomizePagedView.ContentType.Widgets) {
+            fromView = (FrameLayout) findViewById(R.id.app_drawer_container);
+        } else {
+            fromView = mAppsCustomizeTabHost;
+        }
+
         final View toView = mWorkspace;
         Animator workspaceAnim = null;
         final ArrayList<View> layerViews = new ArrayList<View>();
@@ -3856,10 +3972,11 @@ public class Launcher extends Activity
             final AppsCustomizePagedView content = (AppsCustomizePagedView)
                     fromView.findViewById(R.id.apps_customize_pane_content);
 
-            final View page = content.getPageAt(content.getNextPage());
+            final View page = content != null ? content.getPageAt(content.getNextPage())
+                    : fromView.findViewById(R.id.app_drawer_view);
 
             // We need to hide side pages of the Apps / Widget tray to avoid some ugly edge cases
-            int count = content.getChildCount();
+            int count = content != null ? content.getChildCount() : 0;
             for (int i = 0; i < count; i++) {
                 View child = content.getChildAt(i);
                 if (child != page) {
@@ -3872,14 +3989,20 @@ public class Launcher extends Activity
             // don't perform all these no-op animations. In particularly, this was causing
             // the all-apps button to pop in and out.
             if (fromView.getVisibility() == View.VISIBLE) {
-                AppsCustomizePagedView.ContentType contentType = content.getContentType();
+                AppsCustomizePagedView.ContentType contentType =
+                        mAppsCustomizeContent.getContentType();
                 final boolean isWidgetTray =
                         contentType == AppsCustomizePagedView.ContentType.Widgets;
 
                 if (isWidgetTray) {
                     revealView.setBackground(res.getDrawable(R.drawable.quantum_panel_dark));
                 } else {
-                    revealView.setBackground(res.getDrawable(R.drawable.quantum_panel));
+                    if (drawer) {
+                        revealView.setBackgroundColor(res.getColor(
+                                R.color.app_drawer_background));
+                    } else {
+                        revealView.setBackground(res.getDrawable(R.drawable.quantum_panel));
+                    }
                 }
 
                 int width = revealView.getMeasuredWidth();
@@ -3888,7 +4011,11 @@ public class Launcher extends Activity
 
                 // Hide the real page background, and swap in the fake one
                 revealView.setVisibility(View.VISIBLE);
-                content.setPageBackgroundsVisible(false);
+                if (content != null) {
+                    content.setPageBackgroundsVisible(false);
+                } else {
+                    fromView.setBackgroundColor(Color.TRANSPARENT);
+                }
 
                 final View allAppsButton = getAllAppsButton();
                 revealView.setTranslationY(0);
@@ -3938,6 +4065,9 @@ public class Launcher extends Activity
                     mStateAnimation.play(panelAlpha);
                 }
 
+                final View drawerScrubber = content == null ?
+                        fromView.findViewById(R.id.scrubber_container) : null;
+
                 if (page != null) {
                     page.setLayerType(View.LAYER_TYPE_HARDWARE, null);
 
@@ -3954,15 +4084,24 @@ public class Launcher extends Activity
                     itemsAlpha.setDuration(100);
                     itemsAlpha.setInterpolator(decelerateInterpolator);
                     mStateAnimation.play(itemsAlpha);
+
+                    if (drawerScrubber != null) {
+                        drawerScrubber.setAlpha(1f);
+                        ObjectAnimator fadeOut = ObjectAnimator.ofFloat(drawerScrubber,
+                                "alpha", 1f, 0f);
+                        mStateAnimation.play(fadeOut);
+                    }
                 }
 
                 View pageIndicators = fromView.findViewById(R.id.apps_customize_page_indicator);
-                pageIndicators.setAlpha(1f);
-                ObjectAnimator indicatorsAlpha =
-                        LauncherAnimUtils.ofFloat(pageIndicators, "alpha", 0f);
-                indicatorsAlpha.setDuration(revealDuration);
-                indicatorsAlpha.setInterpolator(new DecelerateInterpolator(1.5f));
-                mStateAnimation.play(indicatorsAlpha);
+                if (pageIndicators != null) {
+                    pageIndicators.setAlpha(1f);
+                    ObjectAnimator indicatorsAlpha =
+                            LauncherAnimUtils.ofFloat(pageIndicators, "alpha", 0f);
+                    indicatorsAlpha.setDuration(revealDuration);
+                    indicatorsAlpha.setInterpolator(new DecelerateInterpolator(1.5f));
+                    mStateAnimation.play(indicatorsAlpha);
+                }
 
                 width = revealView.getMeasuredWidth();
 
@@ -4011,9 +4150,13 @@ public class Launcher extends Activity
                     if (page != null) {
                         page.setLayerType(View.LAYER_TYPE_NONE, null);
                     }
-                    content.setPageBackgroundsVisible(true);
+                    if (content != null) {
+                        content.setPageBackgroundsVisible(true);
+                    } else {
+                        fromView.setBackgroundColor(res.getColor(R.color.app_drawer_background));
+                    }
                     // Unhide side pages
-                    int count = content.getChildCount();
+                    int count = content != null ? content.getChildCount() : 0;
                     for (int i = 0; i < count; i++) {
                         View child = content.getChildAt(i);
                         child.setVisibility(View.VISIBLE);
@@ -4025,7 +4168,9 @@ public class Launcher extends Activity
                         page.setTranslationY(0);
                         page.setAlpha(1);
                     }
-                    content.setCurrentPage(content.getNextPage());
+                    if (content != null) {
+                        content.setCurrentPage(content.getNextPage());
+                    }
 
                     mAppsCustomizeContent.updateCurrentPageScroll();
                 }
@@ -4676,6 +4821,7 @@ public class Launcher extends Activity
         if (!LauncherAppState.isDisableAllApps() &&
                 addedApps != null && mAppsCustomizeContent != null) {
             mAppsCustomizeContent.addApps(addedApps);
+            mAppDrawerAdapter.addApps(addedApps);
         }
     }
 
@@ -5059,6 +5205,9 @@ public class Launcher extends Activity
                         LauncherModel.getSortedWidgetsAndShortcuts(this));
             }
         } else {
+            if (mAppDrawerAdapter != null) {
+                mAppDrawerAdapter.setApps(apps);
+            }
             if (mAppsCustomizeContent != null) {
                 mAppsCustomizeContent.setApps(apps);
                 mAppsCustomizeContent.onPackagesUpdated(
@@ -5089,6 +5238,7 @@ public class Launcher extends Activity
         if (!LauncherAppState.isDisableAllApps() &&
                 mAppsCustomizeContent != null) {
             mAppsCustomizeContent.updateApps(apps);
+            mAppDrawerAdapter.updateApps(apps);
         }
     }
 
@@ -5168,6 +5318,7 @@ public class Launcher extends Activity
         if (!LauncherAppState.isDisableAllApps() &&
                 mAppsCustomizeContent != null) {
             mAppsCustomizeContent.removeApps(appInfos);
+            mAppDrawerAdapter.removeApps(appInfos);
         }
     }
 
@@ -5425,14 +5576,22 @@ public class Launcher extends Activity
         if (mWorkspace != null) mWorkspace.setAlpha(1f);
         if (mHotseat != null) mHotseat.setAlpha(1f);
         if (mPageIndicators != null) mPageIndicators.setAlpha(1f);
-        if (mSearchDropTargetBar != null) mSearchDropTargetBar.showSearchBar(false);
+        showSearch();
     }
 
     void hideWorkspaceSearchAndHotseat() {
         if (mWorkspace != null) mWorkspace.setAlpha(0f);
         if (mHotseat != null) mHotseat.setAlpha(0f);
         if (mPageIndicators != null) mPageIndicators.setAlpha(0f);
+        hideSearch();
+    }
+
+    void hideSearch() {
         if (mSearchDropTargetBar != null) mSearchDropTargetBar.hideSearchBar(false);
+    }
+
+    void showSearch() {
+        if (mSearchDropTargetBar != null) mSearchDropTargetBar.showSearchBar(false);
     }
 
     public ItemInfo createAppDragInfo(Intent appLaunchIntent) {
@@ -5623,9 +5782,11 @@ public class Launcher extends Activity
         mGrid.layout(Launcher.this);
 
         // Synchronized reload
+        mModel.stopLoader(); //make sure the loader isn't running
         mModel.startLoader(true, page);
         mWorkspace.updateCustomContentVisibility();
 
+        mAppDrawerAdapter.reset();
     }
 
     public void setUpdateDynamicGrid() {

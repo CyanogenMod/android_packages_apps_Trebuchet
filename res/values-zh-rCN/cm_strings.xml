@@ -15,7 +15,7 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
   <string name="home_screen_settings">主屏幕设置</string>
   <string name="drawer_settings">抽屉设置</string>
   <string name="app_settings">应用设置</string>
@@ -29,9 +29,12 @@
   <string name="grid_size_comfortable">宽松</string>
   <string name="grid_size_cozy">合适</string>
   <string name="grid_size_condensed">紧凑</string>
-  <string name="grid_size_custom">自定义 %1$d \u00d7 %2$d</string>
+  <string name="grid_size_custom">自定义(<xliff:g id="rows">%1$d</xliff:g>\u00d7<xliff:g id="columns">%2$d</xliff:g>)</string>
   <string name="preferences_interface_homescreen_custom">选择自定义尺寸</string>
   <string name="scroll_effect_text">滚动特效</string>
+  <string name="drawer_sorting_text">排序模式</string>
+  <string name="sort_mode_title">标题</string>
+  <string name="sort_mode_launch_count">启动次数</string>
   <string name="sort_mode_install_time">安装时间</string>
   <string name="home_screen_search_text">搜索栏</string>
   <string name="larger_icons_text">大图标</string>

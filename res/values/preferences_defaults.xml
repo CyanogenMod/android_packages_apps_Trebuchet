@@ -16,4 +16,5 @@
     <string name="preferences_interface_general_icons_text_font_family_default">sans-serif-condensed</string>
     <integer name="preferences_interface_general_icons_text_font_style_default">0</integer>
     <bool name="preferences_interface_general_app_icon_animation">false</bool>
+    <integer name="preferences_interface_drawer_type_default">1</integer>
 </resources>

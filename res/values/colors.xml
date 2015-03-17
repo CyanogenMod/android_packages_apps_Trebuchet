@@ -49,4 +49,8 @@
 
     <color name="dynamic_grid_preview_background">#FFFFFFFF</color>
     <color name="dynamic_grid_preview_foreground">#FF000000</color>
+
+    <color name="app_drawer_background">#76000000</color>
+
+    <color name="scrubber_background">#CC14191E</color>
 </resources>
