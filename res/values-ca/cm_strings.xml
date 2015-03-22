@@ -47,4 +47,5 @@
   <string name="drawer_type_drawer">Vertical</string>
   <string name="drawer_type_pager">Paginada</string>
   <string name="setting_state_disabled">DESHABILITAT</string>
+  <string name="search_activity_not_found">No s\'ha pogut trobar una activitat de cerca!</string>
 </resources>

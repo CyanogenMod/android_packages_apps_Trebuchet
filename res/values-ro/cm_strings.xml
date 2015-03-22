@@ -43,4 +43,5 @@
   <string name="icon_labels_hide">Ascunde</string>
   <string name="protected_app_settings">Aplicații protejate</string>
   <string name="dialog_confirm">Confirmă</string>
+  <string name="setting_state_disabled">DEZACTIVAT</string>
 </resources>
