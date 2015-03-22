@@ -47,4 +47,5 @@
   <string name="drawer_type_drawer">Вертикальное</string>
   <string name="drawer_type_pager">Постраничное</string>
   <string name="setting_state_disabled">ОТКЛЮЧЕНО</string>
+  <string name="search_activity_not_found">Невозможно запустить приложение поиска!</string>
 </resources>

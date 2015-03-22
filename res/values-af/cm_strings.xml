@@ -47,4 +47,5 @@
   <string name="drawer_type_drawer">Vertikaal</string>
   <string name="drawer_type_pager">Bladsye</string>
   <string name="setting_state_disabled">Gedeaktiveer</string>
+  <string name="search_activity_not_found">\'n Soektog aktiwiteit kon nie gevind word nie!</string>
 </resources>
