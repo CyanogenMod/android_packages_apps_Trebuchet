@@ -66,6 +66,7 @@ import java.util.Stack;
 public class IconCache {
 
     private static final String TAG = "Launcher.IconCache";
+    private final String STK_PACKAGE_NAME = "com.android.stk";
 
     private static final int INITIAL_ICON_CACHE_CAPACITY = 50;
 
@@ -567,6 +568,16 @@ public class IconCache {
             UserHandleCompat user, boolean usePackageIcon, boolean useLowResIcon) {
         ComponentKey cacheKey = new ComponentKey(componentName, user);
         CacheEntry entry = mCache.get(cacheKey);
+        boolean condition = (mContext.getResources().
+                getBoolean(R.bool.config_launcher_stkAppRename))
+                && info.getComponentName().getPackageName().toString()
+                        .equalsIgnoreCase(STK_PACKAGE_NAME);
+        boolean isCustomTitle = false;
+        if (condition
+                && !TextUtils.isEmpty(((LauncherApplication) mContext)
+                        .getStkAppName())) {
+            isCustomTitle = true;
+        }
         if (entry == null || (entry.isLowResIcon && !useLowResIcon)) {
             entry = new CacheEntry();
             mCache.put(cacheKey, entry);
@@ -583,7 +594,12 @@ public class IconCache {
                             if (DEBUG) Log.d(TAG, "using package default icon for " +
                                     componentName.toShortString());
                             entry.icon = packageEntry.icon;
-                            entry.title = packageEntry.title;
+                            if (isCustomTitle) {
+                                entry.title = ((LauncherApplication) mContext)
+                                    .getStkAppName();
+                            } else {
+                                entry.title = packageEntry.title;
+                            }
                             entry.contentDescription = packageEntry.contentDescription;
                         }
                     }
@@ -596,7 +612,12 @@ public class IconCache {
             }
 
             if (TextUtils.isEmpty(entry.title) && info != null) {
-                entry.title = info.getLabel();
+                if (isCustomTitle) {
+                    entry.title = ((LauncherApplication) mContext)
+                        .getStkAppName();
+                } else {
+                    entry.title = info.getLabel();
+                }
                 entry.contentDescription = mUserManager.getBadgedLabelForUser(entry.title, user);
             }
         }
