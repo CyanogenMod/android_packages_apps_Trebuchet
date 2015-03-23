@@ -17,6 +17,11 @@
 package com.android.launcher3;
 
 import android.app.Application;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+
 import com.android.launcher3.stats.LauncherStats;
 import com.android.launcher3.stats.internal.service.AggregationIntentService;
 
@@ -25,6 +30,11 @@ public class LauncherApplication extends Application {
     public static boolean LAUNCHER_SHORTCUT_ENABLED;
     public static boolean SHOW_CTAPP_FEATURE;
     public static String PACKAGE_NAME = "";
+
+    private String mStkAppName = new String();
+    private final String STK_PACKAGE_INTENT_ACTION_NAME =
+            "org.codeaurora.carrier.ACTION_TELEPHONY_SEND_STK_TITLE";
+    private final String STK_APP_NAME = "StkTitle";
 
     private static LauncherStats sLauncherStats = null;
 
@@ -48,8 +58,30 @@ public class LauncherApplication extends Application {
         SHOW_CTAPP_FEATURE = getResources().getBoolean(R.bool.config_launcher_page);
         LauncherAppState.setApplicationContext(this);
         LauncherAppState.getInstance();
+        if (getResources().getBoolean(R.bool.config_launcher_stkAppRename)) {
+            registerAppNameChangeReceiver();
+        }
         sLauncherStats = LauncherStats.createInstance(this);
         AggregationIntentService.scheduleService(this);
+    }
+
+    private void registerAppNameChangeReceiver() {
+        IntentFilter intentFilter = new IntentFilter(STK_PACKAGE_INTENT_ACTION_NAME);
+        registerReceiver(appNameChangeReceiver, intentFilter);
+    }
+
+    /**
+     * Receiver for STK Name change broadcast
+     */
+    private BroadcastReceiver appNameChangeReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            mStkAppName = intent.getStringExtra(STK_APP_NAME);
+        }
+    };
+
+    public String getStkAppName(){
+        return mStkAppName;
     }
 
     @Override
