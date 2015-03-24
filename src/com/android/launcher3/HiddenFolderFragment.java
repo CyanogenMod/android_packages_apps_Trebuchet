@@ -20,7 +20,9 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -114,6 +116,14 @@ public class HiddenFolderFragment extends Fragment {
 
         mListView = (ListView) v.findViewById(R.id.hidden_apps_list);
         mListView.setAdapter(mAppsAdapter);
+
+        // Apply insets
+        Launcher launcher = (Launcher) getActivity();
+        LinearLayout.LayoutParams llp =
+                (LinearLayout.LayoutParams) mListView.getLayoutParams();
+        llp.bottomMargin += ((FrameLayout.LayoutParams) launcher.getOverviewPanel()
+                .findViewById(R.id.settings_container).getLayoutParams()).bottomMargin;
+        mListView.setLayoutParams(llp);
 
         return v;
     }
