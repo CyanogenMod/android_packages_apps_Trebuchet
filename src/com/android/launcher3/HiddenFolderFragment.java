@@ -227,7 +227,10 @@ public class HiddenFolderFragment extends Fragment {
 
             viewHolder.title.setText(app.title);
 
-            Drawable icon = mIcons.get(app.componentName.getPackageName());
+            Drawable icon = null;
+            if (app.componentName != null) {
+                icon = mIcons.get(app.componentName.getPackageName());
+            }
             viewHolder.icon.setImageDrawable(icon != null ? icon : mDefaultImg);
             viewHolder.remove.setOnClickListener(new OnClickListener() {
                 @Override
@@ -284,8 +287,9 @@ public class HiddenFolderFragment extends Fragment {
             protected Void doInBackground(AppEntry... apps) {
                 for (AppEntry app : apps) {
                     try {
-                        if (mIcons.containsKey(app.componentName
-                                .getPackageName())) {
+                        // Widget icons do not have a
+                        if (app.componentName == null ||
+                                mIcons.containsKey(app.componentName.getPackageName())) {
                             continue;
                         }
                         Drawable icon = mPackageManager
