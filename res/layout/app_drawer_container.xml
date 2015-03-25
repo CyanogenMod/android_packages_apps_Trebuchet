@@ -71,12 +71,14 @@
         <TextView
                 android:id="@+id/scrubberIndicator"
                 android:background="@drawable/letter_indicator"
-                android:layout_width="80dp"
-                android:textSize="30sp"
-                android:gravity="center"
-                android:textColor="@android:color/white"
+                android:layout_width="100dp"
+                android:layout_marginLeft="@dimen/app_drawer_scrubber_padding"
+                android:paddingTop="18dp"
+                android:textSize="24sp"
+                android:gravity="center_horizontal|top"
+                android:textColor="@android:color/black"
                 android:clickable="false"
-                android:layout_marginBottom="-20dp"
+                android:layout_marginBottom="-48dp"
                 android:visibility="invisible"
                 android:layout_height="100dp" />
     </RelativeLayout>

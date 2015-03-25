@@ -14,31 +14,31 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/app_drawer_scrubber_container"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@drawable/seek_back"
-    android:layout_alignParentBottom="true">
+    android:layout_height="@dimen/scrubber_height"
+    android:paddingLeft="@dimen/app_drawer_scrubber_padding"
+    android:paddingRight="@dimen/app_drawer_scrubber_padding"
+    android:layout_alignParentBottom="true"
+    android:background="@drawable/seek_back">
 
-    <LinearLayout
-        android:clickable="true"
-        android:orientation="horizontal"
+    <com.android.launcher3.AutoExpandTextView
+        android:id="@+id/scrubberText"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textColor="@android:color/white"
+        android:maxLines="1"
+        android:lines="1"
+        android:textSize="8sp" />
+
+    <SeekBar
+        android:id="@+id/scrubber"
+        android:thumb="@android:color/transparent"
+        android:progressDrawable="@android:color/transparent"
         android:layout_width="match_parent"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_height="@dimen/scrubber_height">
+        android:layout_gravity="center"
+        android:layout_height="match_parent" />
 
-        <SeekBar
-            android:id="@+id/scrubber"
-            android:paddingLeft="0dp"
-            android:paddingRight="0dp"
-            android:thumb="@android:color/transparent"
-            android:progressDrawable="@drawable/empty_seek_bar"
-            android:layout_width="match_parent"
-            android:layout_gravity="center"
-            android:layout_height="match_parent" />
-
-    </LinearLayout>
-
-</RelativeLayout>
+</FrameLayout>
