@@ -297,7 +297,9 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
     public void modifyProtectedApps(boolean protect) {
         ArrayList<ComponentName> components = new ArrayList<ComponentName>();
         for (Pair<ComponentName, CharSequence> item : getComponents()) {
-            components.add(item.first);
+            if (item.first != null) {
+                components.add(item.first);
+            }
         }
 
         Intent intent = new Intent();
