@@ -1492,6 +1492,18 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
         return null;
     }
 
+    public ShortcutInfo getShortcutForPosition(int position) {
+        if (position < 0 || position >= mItemsInReadingOrder.size()) {
+            return null;
+        }
+        View v = mItemsInReadingOrder.get(position);
+        Object tag = v.getTag();
+        if (tag instanceof ShortcutInfo) {
+            return (ShortcutInfo) tag;
+        }
+        return null;
+    }
+
     public void getLocationInDragLayer(int[] loc) {
         mLauncher.getDragLayer().getLocationInDragLayer(this, loc);
     }
