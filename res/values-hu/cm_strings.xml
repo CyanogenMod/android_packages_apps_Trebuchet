@@ -47,4 +47,5 @@
   <string name="drawer_type_drawer">Függőleges</string>
   <string name="drawer_type_pager">Lapozható</string>
   <string name="setting_state_disabled">LETILTVA</string>
+  <string name="search_activity_not_found">Keresési tevékenység nem található!</string>
 </resources>

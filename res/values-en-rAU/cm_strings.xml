@@ -47,4 +47,5 @@
   <string name="drawer_type_drawer">Vertical</string>
   <string name="drawer_type_pager">Paged</string>
   <string name="setting_state_disabled">DISABLED</string>
+  <string name="search_activity_not_found">A search activity could not be found!</string>
 </resources>

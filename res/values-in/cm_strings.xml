@@ -43,4 +43,9 @@
   <string name="icon_labels_hide">Sembunyikan</string>
   <string name="protected_app_settings">Aplikasi yang di lindungi</string>
   <string name="dialog_confirm">Konfirmasi</string>
+  <string name="drawer_type">Tata letak</string>
+  <string name="drawer_type_drawer">Vertikal</string>
+  <string name="drawer_type_pager">Berhalaman</string>
+  <string name="setting_state_disabled">DINONAKTIFKAN</string>
+  <string name="search_activity_not_found">Aktivitas pencarian tidak dapat ditemukan!</string>
 </resources>
