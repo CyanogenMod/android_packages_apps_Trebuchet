@@ -47,4 +47,5 @@
   <string name="drawer_type_drawer">אנכי</string>
   <string name="drawer_type_pager">דפים</string>
   <string name="setting_state_disabled">כבוי</string>
+  <string name="search_activity_not_found">לא ניתן היה למצוא פעולת חיפוש!</string>
 </resources>
