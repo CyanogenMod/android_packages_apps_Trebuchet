@@ -47,4 +47,5 @@
   <string name="drawer_type_drawer">Pionowo</string>
   <string name="drawer_type_pager">Strony</string>
   <string name="setting_state_disabled">WYŁĄCZONE</string>
+  <string name="search_activity_not_found">Nie można odnaleźć aktywności związanej z wyszukiwaniem!</string>
 </resources>
