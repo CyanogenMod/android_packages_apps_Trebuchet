@@ -86,7 +86,7 @@
   <string name="first_run_cling_description">Fill dech wéi doheem.</string>
   <string name="first_run_cling_create_screens_hint">Méi Schiermer fir Appen an Dossieren dobäisetzen</string>
   <string name="migration_cling_title">App-Symboler kopéieren</string>
-  <string name="migration_cling_description">Symboler an Dossieren vun dengem ale Startschierm importéieren?</string>
+  <string name="migration_cling_description">Symboler an Dossiere vun dengem ale Startschierm importéieren?</string>
   <string name="migration_cling_copy_apps">SYMBOLER KOPÉIEREN</string>
   <string name="migration_cling_use_default">FRËSCH UFÄNKEN</string>
   <string name="workspace_cling_title">Aarbechtsberäich organiséieren</string>
