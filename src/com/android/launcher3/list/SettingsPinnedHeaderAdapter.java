@@ -16,12 +16,14 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 import com.android.launcher3.AppDrawerListAdapter;
 import com.android.launcher3.AppsCustomizePagedView;
 import com.android.launcher3.DeviceProfile;
 import com.android.launcher3.Launcher;
 import com.android.launcher3.OverviewSettingsPanel;
 import com.android.launcher3.R;
+import com.android.launcher3.Utilities;
 import com.android.launcher3.settings.SettingsProvider;
 
 public class SettingsPinnedHeaderAdapter extends PinnedHeaderListAdapter {
@@ -285,9 +287,7 @@ public class SettingsPinnedHeaderAdapter extends PinnedHeaderListAdapter {
                 case OverviewSettingsPanel.HOME_SETTINGS_POSITION:
                     switch (position) {
                         case 0:
-                            onSettingsBooleanChanged(v,
-                                    SettingsProvider.SETTINGS_UI_HOMESCREEN_SEARCH,
-                                    R.bool.preferences_interface_homescreen_search_default);
+                            updateSearchBarVisibility(v);
                             mLauncher.setUpdateDynamicGrid();
                             break;
                         case 1:
@@ -354,17 +354,31 @@ public class SettingsPinnedHeaderAdapter extends PinnedHeaderListAdapter {
         }
     };
 
+    private void updateSearchBarVisibility(View v) {
+        boolean isSearchEnabled = SettingsProvider.getBoolean(mContext,
+                SettingsProvider.SETTINGS_UI_HOMESCREEN_SEARCH,
+                R.bool.preferences_interface_homescreen_search_default);
+
+        if (!isSearchEnabled) {
+            if (!Utilities.searchActivityExists(mContext)) {
+                Toast.makeText(mContext, mContext.getString(R.string.search_activity_not_found),
+                        Toast.LENGTH_SHORT).show();
+                return;
+            }
+        }
+
+        onSettingsBooleanChanged(v,
+                SettingsProvider.SETTINGS_UI_HOMESCREEN_SEARCH,
+                R.bool.preferences_interface_homescreen_search_default);
+    }
+
     private void onSettingsBooleanChanged(View v, String key, int res) {
         boolean current = SettingsProvider.getBoolean(
                 mContext, key, res);
 
         // Set new state
-        SharedPreferences sharedPref = SettingsProvider
-                .get(mContext);
-        sharedPref.edit().putBoolean(key, !current).commit();
-        sharedPref.edit()
-                .putBoolean(SettingsProvider.SETTINGS_CHANGED, true)
-                .commit();
+        SettingsProvider.putBoolean(mContext, key, !current);
+        SettingsProvider.putBoolean(mContext, SettingsProvider.SETTINGS_CHANGED, true);
 
         String state = current ? mLauncher.getResources().getString(
                 R.string.setting_state_off) : mLauncher.getResources().getString(
@@ -377,12 +391,8 @@ public class SettingsPinnedHeaderAdapter extends PinnedHeaderListAdapter {
                 mContext, key, res);
 
         // Set new state
-        SharedPreferences sharedPref = SettingsProvider
-                .get(mContext);
-        sharedPref.edit().putBoolean(key, !current).commit();
-        sharedPref.edit()
-                .putBoolean(SettingsProvider.SETTINGS_CHANGED, true)
-                .commit();
+        SettingsProvider.putBoolean(mContext, key, !current);
+        SettingsProvider.putBoolean(mContext, SettingsProvider.SETTINGS_CHANGED, true);
 
         String state = current ? mLauncher.getResources().getString(
                 R.string.icon_labels_show) : mLauncher.getResources().getString(

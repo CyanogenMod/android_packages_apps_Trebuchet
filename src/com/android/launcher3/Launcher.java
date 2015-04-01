@@ -2781,6 +2781,14 @@ public class Launcher extends Activity
             } else if (f2 != null) {
                 mDynamicGridSizeFragment.setSize();
             } else {
+                // if a user backs up twice very quickly from the widget add screen to the
+                // homescreen, the UI can get into a messed up state and mStateAnimation never
+                // completes or gets cancelled. Cancelling mStateAnimation here fixes this bug
+                if (mStateAnimation != null && mStateAnimation.isRunning()) {
+                    mStateAnimation.cancel();
+                    mStateAnimation = null;
+                }
+
                 mWorkspace.exitOverviewMode(true);
             }
         } else if (mWorkspace.getOpenFolder() != null) {

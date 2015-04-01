@@ -43,4 +43,9 @@
   <string name="icon_labels_hide">表示しない</string>
   <string name="protected_app_settings">アプリの保護</string>
   <string name="dialog_confirm">確認</string>
+  <string name="drawer_type">レイアウト</string>
+  <string name="drawer_type_drawer">縦</string>
+  <string name="drawer_type_pager">ページ</string>
+  <string name="setting_state_disabled">無効</string>
+  <string name="search_activity_not_found">検索アクティビティが見つかりませんでした。</string>
 </resources>

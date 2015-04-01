@@ -43,4 +43,9 @@
   <string name="icon_labels_hide">Paslėpti</string>
   <string name="protected_app_settings">Apsaugotos programos</string>
   <string name="dialog_confirm">Patvirtinti</string>
+  <string name="drawer_type">Išdėstymas</string>
+  <string name="drawer_type_drawer">Vertikalus</string>
+  <string name="drawer_type_pager">Puslapiai</string>
+  <string name="setting_state_disabled">NELEIDŽIAMA</string>
+  <string name="search_activity_not_found">Paieškos veikla negali būti rasta!</string>
 </resources>

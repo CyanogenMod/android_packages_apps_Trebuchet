@@ -378,9 +378,13 @@ public class WidgetPreviewLoader {
         // Delete everything
         try {
             db.delete(CacheDb.TABLE_NAME, null, null);
+        } catch (SQLiteReadOnlyDatabaseException e) {
+            // After a DB update subsequent calls to getWritableDatabase seems always result in
+            // a SQLiteReadOnlyDatabaseException. Protect this code path for the time being to
+            // prevent FC
+            return;
         } catch (SQLiteDiskIOException e) {
         } catch (SQLiteCantOpenDatabaseException e) {
-        } catch (SQLiteReadOnlyDatabaseException e) {
             dumpOpenFiles();
             throw e;
         }
