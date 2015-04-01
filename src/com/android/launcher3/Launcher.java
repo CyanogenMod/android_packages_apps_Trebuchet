@@ -4333,7 +4333,11 @@ public class Launcher extends Activity
         if (resetPageToZero) {
             mAppsCustomizeTabHost.reset();
         }
-        mAppsCustomizeContent.sortApps();
+        if (mAppsCustomizeContent.getSortMode() != AppsCustomizePagedView.SortMode.Title) {
+            // optimize Title sort by not reinflating views every time we open the app drawer
+            // since we already sort based on new app installs and change of sort mode
+            mAppsCustomizeContent.sortApps();
+        }
         showAppsCustomizeHelper(animated, false, contentType);
         mAppsCustomizeTabHost.post(new Runnable() {
             @Override
