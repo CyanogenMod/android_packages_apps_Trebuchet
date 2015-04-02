@@ -165,7 +165,10 @@ public class AppDrawerScrubber extends LinearLayout {
      * Handles the animations of the scrubber indicator
      */
     private class ScrubberAnimationState implements SeekBar.OnSeekBarChangeListener {
-        private static final long SCRUBBER_DISPLAY_DURATION = 150;
+        private static final long SCRUBBER_DISPLAY_DURATION_IN = 60;
+        private static final long SCRUBBER_DISPLAY_DURATION_OUT = 150;
+        private static final long SCRUBBER_DISPLAY_DELAY_IN = 0;
+        private static final long SCRUBBER_DISPLAY_DELAY_OUT = 200;
         private static final float SCRUBBER_SCALE_START = 0f;
         private static final float SCRUBBER_SCALE_END = 1f;
         private static final float SCRUBBER_ALPHA_START = 0f;
@@ -193,7 +196,7 @@ public class AppDrawerScrubber extends LinearLayout {
             // start from a scratch position when animating in
             mScrubberIndicator.animate().cancel();
             mScrubberIndicator.setPivotX(mScrubberIndicator.getMeasuredWidth() / 2);
-            mScrubberIndicator.setPivotY(mScrubberIndicator.getMeasuredHeight() * 0.8f);
+            mScrubberIndicator.setPivotY(mScrubberIndicator.getMeasuredHeight() * 0.9f);
             mScrubberIndicator.setAlpha(SCRUBBER_ALPHA_START);
             mScrubberIndicator.setScaleX(SCRUBBER_SCALE_START);
             mScrubberIndicator.setScaleY(SCRUBBER_SCALE_START);
@@ -204,7 +207,8 @@ public class AppDrawerScrubber extends LinearLayout {
                 .alpha(SCRUBBER_ALPHA_END)
                 .scaleX(SCRUBBER_SCALE_END)
                 .scaleY(SCRUBBER_SCALE_END)
-                .setDuration(SCRUBBER_DISPLAY_DURATION)
+                .setStartDelay(SCRUBBER_DISPLAY_DELAY_IN)
+                .setDuration(SCRUBBER_DISPLAY_DURATION_IN)
                 .setListener(new AnimatorListenerAdapter() {
                     @Override
                     public void onAnimationEnd(Animator animation) {
@@ -223,7 +227,8 @@ public class AppDrawerScrubber extends LinearLayout {
                 .alpha(SCRUBBER_ALPHA_START)
                 .scaleX(SCRUBBER_SCALE_START)
                 .scaleY(SCRUBBER_SCALE_START)
-                .setDuration(SCRUBBER_DISPLAY_DURATION)
+                .setStartDelay(SCRUBBER_DISPLAY_DELAY_OUT)
+                .setDuration(SCRUBBER_DISPLAY_DURATION_OUT)
                 .setListener(new AnimatorListenerAdapter() {
                     @Override
                     public void onAnimationEnd(Animator animation) {
