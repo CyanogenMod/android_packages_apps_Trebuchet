@@ -20,9 +20,11 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.PointF;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.LinearSmoothScroller;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -256,8 +258,41 @@ public class AppDrawerScrubber extends LinearLayout {
 
             // get the index of the underlying list
             int adapterIndex = mSectionContainer.getAdapterIndex(mLastIndex, index);
-            mLayoutManager.smoothScrollToPosition(mListView, null,
-                    mAdapter.getPositionForSection(adapterIndex));
+            int itemIndex = mAdapter.getPositionForSection(adapterIndex);
+
+            // get any child's height since all children are the same height
+            int itemHeight = 0;
+            View child = mLayoutManager.getChildAt(0);
+            if (child != null) {
+                itemHeight = child.getMeasuredHeight();
+            }
+
+            if (itemHeight != 0) {
+                // scroll to the item such that there are 2 rows beneath it from the bottom
+                final int itemDiff = 2 * itemHeight;
+                LinearSmoothScroller scroller = new LinearSmoothScroller(mListView.getContext()) {
+                    @Override
+                    protected int getVerticalSnapPreference() {
+                        // position the item against the end of the list view
+                        return SNAP_TO_END;
+                    }
+
+                    @Override
+                    public PointF computeScrollVectorForPosition(int targetPosition) {
+                        return mLayoutManager.computeScrollVectorForPosition(targetPosition);
+                    }
+
+                    @Override
+                    public int calculateDyToMakeVisible(View view, int snapPreference) {
+                        int dy = super.calculateDyToMakeVisible(view, snapPreference);
+                        return dy - itemDiff;
+                    }
+                };
+                scroller.setTargetPosition(itemIndex);
+                mLayoutManager.startSmoothScroll(scroller);
+            }
+
+            mAdapter.setSectionTarget(adapterIndex);
 
             mLastIndex = index;
         }
