@@ -43,7 +43,7 @@
         android:layout_width="27dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:layout_marginLeft="10dp"
+        android:layout_marginLeft="6dp"
         android:layout_centerVertical="true"
         android:includeFontPadding="false"
         android:gravity="center"
@@ -52,6 +52,9 @@
         android:textSize="24sp"
         android:layout_gravity="center"
         android:fontFamily="sans-serif-light"
-        android:textColor="@android:color/white" />
+        android:textColor="@android:color/white"
+        android:shadowRadius="4.0"
+        android:shadowDy="2"
+        android:shadowColor="#b0000000"/>
 
 </RelativeLayout>

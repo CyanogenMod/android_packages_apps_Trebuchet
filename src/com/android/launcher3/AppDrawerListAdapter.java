@@ -138,7 +138,7 @@ public class AppDrawerListAdapter extends RecyclerView.Adapter<AppDrawerListAdap
                 public void onLayoutChange(View v, int left, int top, int right, int bottom,
                                            int oldLeft, int oldTop, int oldRight, int oldBottom) {
                     // set the pivot of the text view
-                    v.setPivotX(0);
+                    v.setPivotX(v.getMeasuredWidth() / 4);
                     v.setPivotY(v.getMeasuredHeight() / 2);
                 }
             };
