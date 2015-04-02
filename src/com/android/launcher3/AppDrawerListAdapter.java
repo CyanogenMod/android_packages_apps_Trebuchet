@@ -16,6 +16,8 @@
 
 package com.android.launcher3;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.content.ComponentName;
 import android.content.Context;
@@ -51,12 +53,27 @@ public class AppDrawerListAdapter extends RecyclerView.Adapter<AppDrawerListAdap
 
     private static final String NUMERIC_OR_SPECIAL_HEADER = "#";
 
+    /**
+     * Tracks both the section index and the positional item index for the sections
+     * section:     0 0 0 1 1 2 3 4 4
+     * itemIndex:   0 1 2 3 4 5 6 7 8
+     * Sections:    A A A B B C D E E
+     */
+    private static class SectionIndices {
+        public int mSectionIndex;
+        public int mItemIndex;
+        public SectionIndices(int sectionIndex, int itemIndex) {
+            mSectionIndex = sectionIndex;
+            mItemIndex = itemIndex;
+        }
+    }
+
     private ArrayList<AppItemIndexedInfo> mHeaderList;
     private LayoutInflater mLayoutInflater;
 
     private Launcher mLauncher;
     private DeviceProfile mDeviceProfile;
-    private LinkedHashMap<String, Integer> mSectionHeaders;
+    private LinkedHashMap<String, SectionIndices> mSectionHeaders;
     private LinearLayout.LayoutParams mIconParams;
     private Rect mIconRect;
     private LocaleSetManager mLocaleSetManager;
@@ -93,12 +110,14 @@ public class AppDrawerListAdapter extends RecyclerView.Adapter<AppDrawerListAdap
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public AutoFitTextView mTextView;
         public ViewGroup mLayout;
-        public View mFadingBackground;
+        public View mFadingBackgroundFront;
+        public View mFadingBackgroundBack;
         public ViewHolder(View itemView) {
             super(itemView);
             mTextView = (AutoFitTextView) itemView.findViewById(R.id.drawer_item_title);
             mLayout = (ViewGroup) itemView.findViewById(R.id.drawer_item_flow);
-            mFadingBackground = itemView.findViewById(R.id.fading_background);
+            mFadingBackgroundFront = itemView.findViewById(R.id.fading_background_front);
+            mFadingBackgroundBack = itemView.findViewById(R.id.fading_background_back);
         }
     }
 
@@ -111,6 +130,7 @@ public class AppDrawerListAdapter extends RecyclerView.Adapter<AppDrawerListAdap
         private static final float MAX_SCALE = 2f;
         private static final float MIN_SCALE = 1f;
         private static final float FAST_SCROLL = 0.3f;
+        private static final int NO_SECTION_TARGET = -1;
 
         private final float YDPI;
         private final HashSet<ViewHolder> mViewHolderSet;
@@ -125,11 +145,16 @@ public class AppDrawerListAdapter extends RecyclerView.Adapter<AppDrawerListAdap
         private float mFastScrollSpeed;
         private float mLastScrollSpeed;
 
+        // If the user is scrubbing, we want to highlight the target section differently,
+        // so we use this to track where the user is currently scrubbing to
+        private int mSectionTarget;
+
         public ItemAnimatorSet(Context ctx) {
             mDragging = false;
             mExpanding = false;
             mPendingShrink = false;
             mScrollState = RecyclerView.SCROLL_STATE_IDLE;
+            mSectionTarget = NO_SECTION_TARGET;
             mViewHolderSet = new HashSet<>();
             mInterpolator = new DecelerateInterpolator();
             YDPI = ctx.getResources().getDisplayMetrics().ydpi;
@@ -161,6 +186,12 @@ public class AppDrawerListAdapter extends RecyclerView.Adapter<AppDrawerListAdap
                 mScrollState = newState;
                 mFastScrollSpeed = 0;
                 checkAnimationState();
+
+                // If the user is dragging, clear the section target
+                if (mScrollState == RecyclerView.SCROLL_STATE_DRAGGING
+                        && mSectionTarget != NO_SECTION_TARGET) {
+                    setSectionTarget(NO_SECTION_TARGET);
+                }
             }
         }
 
@@ -211,18 +242,46 @@ public class AppDrawerListAdapter extends RecyclerView.Adapter<AppDrawerListAdap
             }
         }
 
-        public void createAnimationHook(ViewHolder holder) {
+        public void createAnimationHook(final ViewHolder holder) {
             holder.mTextView.animate().cancel();
             holder.mTextView.animate()
                     .setUpdateListener(new ItemAnimator(holder, mItemAnimatorSet))
+                    .setListener(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationEnd(final Animator animation) {
+                            animateEnd(holder, animation);
+                        }
+                    })
                     .setDuration(ANIMATION_DURATION)
                     .start();
         }
 
-        public void animate(ViewHolder holder, ValueAnimator animation) {
+        public void animateEnd(ViewHolder holder, Animator animation) {
+            animate(holder, animation, 1f);
+        }
+
+        public void animate(ViewHolder holder, Animator animation) {
             long diffTime = System.currentTimeMillis() - mStartTime;
 
             float percentage = Math.min(diffTime / (float) ANIMATION_DURATION, 1f);
+
+            animate(holder, animation, percentage);
+
+            if (diffTime >= ANIMATION_DURATION) {
+                if (animation != null) {
+                    animation.cancel();
+                }
+
+                if (mPendingShrink) {
+                    mPendingShrink = false;
+                    mLastScrollSpeed = 0;
+                    checkAnimationState();
+                }
+
+            }
+        }
+
+        public void animate(ViewHolder holder, Animator animation, float percentage) {
             percentage = mInterpolator.getInterpolation(percentage);
 
             if (!mExpanding) {
@@ -233,17 +292,24 @@ public class AppDrawerListAdapter extends RecyclerView.Adapter<AppDrawerListAdap
             holder.mTextView.setScaleX(targetScale);
             holder.mTextView.setScaleY(targetScale);
 
-            holder.mFadingBackground.setAlpha(percentage);
+            if (getSectionForPosition(holder.getPosition()) == mSectionTarget) {
+                holder.mFadingBackgroundFront.setVisibility(View.INVISIBLE);
+                holder.mFadingBackgroundBack.setAlpha(percentage);
+                holder.mFadingBackgroundBack.setVisibility(View.VISIBLE);
+            } else {
+                holder.mFadingBackgroundFront.setAlpha(percentage);
+                holder.mFadingBackgroundFront.setVisibility(View.VISIBLE);
+                holder.mFadingBackgroundBack.setVisibility(View.INVISIBLE);
+            }
+        }
 
-            if (diffTime >= ANIMATION_DURATION) {
-                animation.cancel();
-
-                if (mPendingShrink) {
-                    mPendingShrink = false;
-                    mLastScrollSpeed = 0;
-                    checkAnimationState();
-                }
-
+        /**
+         * Sets the section index to highlight different from the rest when scrubbing
+         */
+        public void setSectionTarget(int sectionIndex) {
+            mSectionTarget = sectionIndex;
+            for (ViewHolder holder : mViewHolderSet) {
+                animate(holder, null);
             }
         }
     }
@@ -287,6 +353,13 @@ public class AppDrawerListAdapter extends RecyclerView.Adapter<AppDrawerListAdap
 
     public void setDragging(boolean dragging) {
         mItemAnimatorSet.setDragging(dragging);
+    }
+
+    /**
+     * Sets the section index to highlight different from the rest when scrubbing
+     */
+    public void setSectionTarget(int sectionIndex) {
+        mItemAnimatorSet.setSectionTarget(sectionIndex);
     }
 
     private void initParams() {
@@ -380,18 +453,15 @@ public class AppDrawerListAdapter extends RecyclerView.Adapter<AppDrawerListAdap
 
     private void populateSectionHeaders() {
         if (mSectionHeaders == null || mSectionHeaders.size() != mHeaderList.size()) {
-            mSectionHeaders = new LinkedHashMap<String, Integer>();
+            mSectionHeaders = new LinkedHashMap<>();
         }
-        int count = 0;
+
+        int sectionIndex = 0;
         for (int i = 0; i < mHeaderList.size(); i++) {
-            AppItemIndexedInfo info = mHeaderList.get(i);
             if (!mHeaderList.get(i).isChild) {
-                mSectionHeaders.put(String.valueOf(mHeaderList.get(i).mStartString), count);
-            }
-            if (info.mInfo.size() < mDeviceProfile.numColumnsBase) {
-                count++;
-            } else {
-                count += info.mInfo.size() / mDeviceProfile.numColumnsBase;
+                mSectionHeaders.put(String.valueOf(mHeaderList.get(i).mStartString),
+                        new SectionIndices(sectionIndex, i));
+                sectionIndex++;
             }
         }
     }
@@ -741,12 +811,12 @@ public class AppDrawerListAdapter extends RecyclerView.Adapter<AppDrawerListAdap
 
     @Override
     public int getPositionForSection(int sectionIndex) {
-        return mSectionHeaders.get(getSections()[sectionIndex]);
+        return mSectionHeaders.get(getSections()[sectionIndex]).mItemIndex;
     }
 
     @Override
     public int getSectionForPosition(int position) {
-        return mSectionHeaders.get(mHeaderList.get(position).mStartString);
+        return mSectionHeaders.get(mHeaderList.get(position).mStartString).mSectionIndex;
     }
 
     private void filterProtectedApps(ArrayList<AppInfo> list) {
