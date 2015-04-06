@@ -31,21 +31,21 @@
   <string name="grid_size_condensed">Сжатая</string>
   <string name="grid_size_custom">Своя (<xliff:g id="rows">%1$d</xliff:g> \u00d7 <xliff:g id="columns">%2$d</xliff:g>)</string>
   <string name="preferences_interface_homescreen_custom">Выберите размер сетки</string>
-  <string name="scroll_effect_text">Эффект прокрутки</string>
+  <string name="scroll_effect_text">Анимация</string>
   <string name="drawer_sorting_text">Режим сортировки</string>
-  <string name="sort_mode_title">По назв.</string>
+  <string name="sort_mode_title">По названию</string>
   <string name="sort_mode_launch_count">По частоте исп.</string>
   <string name="sort_mode_install_time">По врем. устан.</string>
   <string name="home_screen_search_text">Строка поиска</string>
   <string name="larger_icons_text">Крупные значки</string>
   <string name="icon_labels">Подписи значков</string>
-  <string name="icon_labels_show">Показ.</string>
+  <string name="icon_labels_show">Показывать</string>
   <string name="icon_labels_hide">Скрывать</string>
   <string name="protected_app_settings">Заблокированные приложения</string>
   <string name="dialog_confirm">Подтвердить</string>
   <string name="drawer_type">Тип меню</string>
   <string name="drawer_type_drawer">Вертикальное</string>
   <string name="drawer_type_pager">Постраничное</string>
-  <string name="setting_state_disabled">ОТКЛЮЧЕНО</string>
+  <string name="setting_state_disabled">НЕДОСТУПНО</string>
   <string name="search_activity_not_found">Невозможно запустить приложение поиска!</string>
 </resources>
