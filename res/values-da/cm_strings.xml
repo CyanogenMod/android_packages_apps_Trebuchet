@@ -47,4 +47,5 @@
   <string name="drawer_type_drawer">Lodret</string>
   <string name="drawer_type_pager">Sideinddelt</string>
   <string name="setting_state_disabled">HANDICAPPET</string>
+  <string name="search_activity_not_found">En funktion til søgning findes ikke!</string>
 </resources>
