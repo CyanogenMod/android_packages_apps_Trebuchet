@@ -302,8 +302,8 @@ public class AppsCustomizePagedView extends PagedViewWithDraggableItems implemen
             = new Comparator<AppInfo>() {
 
         public final int compare(AppInfo a, AppInfo b) {
-            int indexA = mPreClassArray.indexOf(a.componentName.getClassName());
-            int indexB = mPreClassArray.indexOf(b.componentName.getClassName());
+            int indexA = getIndexOfComponent(mPreClassArray, a.componentName);
+            int indexB = getIndexOfComponent(mPreClassArray, b.componentName);
             return indexA < indexB ? -1 : 1;
         }
     };
@@ -312,8 +312,8 @@ public class AppsCustomizePagedView extends PagedViewWithDraggableItems implemen
             = new Comparator<AppInfo>() {
 
         public final int compare(AppInfo a, AppInfo b) {
-            int indexA = mCTClassArray.indexOf(a.componentName.getClassName());
-            int indexB = mCTClassArray.indexOf(b.componentName.getClassName());
+            int indexA = getIndexOfComponent(mCTClassArray, a.componentName);
+            int indexB = getIndexOfComponent(mCTClassArray, b.componentName);
             return indexA < indexB ? -1 : 1;
         }
     };
@@ -322,8 +322,8 @@ public class AppsCustomizePagedView extends PagedViewWithDraggableItems implemen
             = new Comparator<AppInfo>() {
 
         public final int compare(AppInfo a, AppInfo b) {
-            int indexA = mCTFirstPageArray.indexOf(a.componentName.getClassName());
-            int indexB = mCTFirstPageArray.indexOf(b.componentName.getClassName());
+            int indexA = getIndexOfComponent(mCTFirstPageArray, a.componentName);
+            int indexB = getIndexOfComponent(mCTFirstPageArray, b.componentName);
             return indexA < indexB ? -1 : 1;
         }
     };
@@ -1695,6 +1695,60 @@ public class AppsCustomizePagedView extends PagedViewWithDraggableItems implemen
             updatePageCountsAndInvalidateData();
         }
     }
+
+    private boolean appStringEqualsComponentName(String appString, ComponentName componentName) {
+        String packageName = "";
+        String className = "";
+
+        if (appString.contains("/")) {
+            String[] parts = appString.split("/");
+            packageName = parts[0];
+            if (parts.length > 1) {
+                className = parts[1];
+            }
+
+            return packageName.equals(componentName.getPackageName())
+                    && componentName.getClassName().equals(className);
+        } else {
+            // There is no separator, the whole input string is the class name.
+            return componentName.getClassName().equals(appString);
+        }
+    }
+
+    /**
+     * Check if the given AppInfo exists in the given list of predetermined apps.
+     *
+     * The supported syntax for the strings in appList is one of:
+     *
+     * com.example.package/com.example.package.Activity
+     *
+     * or just the Activity name:
+     *
+     * com.example.package.Activity.
+     *
+     *
+     * If the package name is supplied, the ComponentName instance must match
+     * both the package name and the class name. Otherise, only the class name must match.
+     */
+    private boolean appListContainsInfo(ArrayList<String> appList,
+                                        ComponentName componentName) {
+        return getIndexOfComponent(appList, componentName) != -1;
+    }
+
+    private int getIndexOfComponent(ArrayList<String> appList,
+                                    ComponentName componentName) {
+        int index = 0;
+        for (String appString : appList) {
+            boolean wasFound = appStringEqualsComponentName(appString, componentName);
+            if (wasFound) {
+                return index;
+            }
+            index++;
+        }
+        // No match
+        return -1;
+    }
+
     private void addAppsWithoutInvalidate(ArrayList<AppInfo> list) {
         // We add it in place, in alphabetical order
         int count = list.size();
@@ -1703,7 +1757,7 @@ public class AppsCustomizePagedView extends PagedViewWithDraggableItems implemen
         for (int i = 0; i < count; ++i) {
             AppInfo info = list.get(i);
 
-            if (mCTFirstPageArray.indexOf(info.componentName.getClassName()) > INVALID_INDEX) {
+            if (appListContainsInfo(mCTFirstPageArray, info.componentName)) {
                 //for CT first page
                 int index = Collections.binarySearch(ctFirstPageApps, info,
                         APP_CT_FIRSTPAGE_COMPARATOR);
@@ -1711,8 +1765,7 @@ public class AppsCustomizePagedView extends PagedViewWithDraggableItems implemen
                 if (index < 0) {
                     ctFirstPageApps.add(-(index + 1), info);
                 }
-            } else if (mCTClassArray.indexOf(info.componentName.getClassName())
-                    > INVALID_INDEX) {
+            } else if (appListContainsInfo(mCTClassArray, info.componentName)) {
                 int index = Collections.binarySearch(ctApps, info, APP_CT_COMPARATOR);
 
                 if (index < 0){
@@ -1737,10 +1790,8 @@ public class AppsCustomizePagedView extends PagedViewWithDraggableItems implemen
             for(int i = 0; i< list.size(); i++){
                 AppInfo info = list.get(i);
 
-                for(String preClass: mPreClassArray){
-                    if(preClass.equals(info.componentName.getClassName())) {
-                        preList.add(info);
-                    }
+                if (appListContainsInfo(mPreClassArray, info.componentName)) {
+                    preList.add(info);
                 }
             }
 
@@ -2055,7 +2106,8 @@ public class AppsCustomizePagedView extends PagedViewWithDraggableItems implemen
         for (int i =0; i<preCount; i++) {
             for (int j=0; j<N; j++) {
                 final AppInfo item = mApps.get(j);
-                if (mPreClassArray.get(i).equals(item.componentName.getClassName())) {
+                String appString = mPreClassArray.get(i);
+                if (appStringEqualsComponentName(appString, item.componentName)) {
                     mPreAppList.add(item);
                 }
             }
@@ -2076,14 +2128,14 @@ public class AppsCustomizePagedView extends PagedViewWithDraggableItems implemen
             ctFirstPageApps.clear();
 
             for (AppInfo info:mApps) {
-                String className = info.componentName.getClassName();
-                int index = mCTClassArray.indexOf(className);
+                ComponentName componentName = info.componentName;
+                int index = getIndexOfComponent(mCTClassArray, componentName);
 
                 if(index > -1){
                     ctApps.add(info);
                 }
 
-                int firstPageIndex = mCTFirstPageArray.indexOf(className);
+                int firstPageIndex = getIndexOfComponent(mCTFirstPageArray, componentName);
 
                 if(firstPageIndex > -1){
                     ctFirstPageApps.add(info);
