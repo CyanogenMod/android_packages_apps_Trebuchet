@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+        android:height="72dp"
+        android:width="72dp"
+        android:viewportHeight="72"
+        android:viewportWidth="72">
+
+    <group
+        android:name="folder_container">
+        <path
+            android:name="folder_path"
+            android:pathData="  M6,4
+                                h60
+                                c1.2,0 2,0.8 2,2
+                                v60
+                                c0,1.2 -0.8,2 -2,2
+                                h-60
+                                c-1.2,0 -2,-0.8 -2,-2
+                                v-60
+                                c0,-1.2 0.8,-2 2,-2
+                                z"
+            android:fillColor="#ff524e5e"/>
+    </group>
+
+</vector>

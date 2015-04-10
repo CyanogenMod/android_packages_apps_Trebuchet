@@ -203,7 +203,7 @@ s -->
     <string name="dream_name">Rocket Launcher</string>
 
     <!-- Default folder title -->
-    <string name="folder_hint_text">Unnamed Folder</string>
+    <string name="folder_hint_text">Tap to Name</string>
 
     <!-- Accessibility -->
     <skip />

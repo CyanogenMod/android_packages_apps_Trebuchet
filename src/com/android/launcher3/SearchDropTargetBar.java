@@ -52,6 +52,8 @@ public class SearchDropTargetBar extends FrameLayout implements DragController.D
     private Drawable mPreviousBackground;
     private boolean mEnableDropDownDropTargets;
 
+    private Launcher mLauncher;
+
     public SearchDropTargetBar(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
@@ -74,6 +76,7 @@ public class SearchDropTargetBar extends FrameLayout implements DragController.D
     }
 
     public void setupQSB(Launcher launcher) {
+        mLauncher = launcher;
         mQSBSearchBar = launcher.getQsbBar();
         if (mEnableDropDownDropTargets) {
             mQSBSearchBarAnim = LauncherAnimUtils.ofFloat(mQSBSearchBar, "translationY", 0,
@@ -94,6 +97,13 @@ public class SearchDropTargetBar extends FrameLayout implements DragController.D
         anim.setInterpolator(sAccelerateInterpolator);
         anim.setDuration(sTransitionInDuration);
         anim.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                if (v.getVisibility() != View.VISIBLE) {
+                    v.setVisibility(View.VISIBLE);
+                }
+            }
+
             @Override
             public void onAnimationEnd(Animator animation) {
                 v.setLayerType(View.LAYER_TYPE_NONE, null);
@@ -193,7 +203,7 @@ public class SearchDropTargetBar extends FrameLayout implements DragController.D
         // Animate out the QSB search bar, and animate in the drop target bar
         prepareStartAnimation(mDropTargetBar);
         mDropTargetBarAnim.start();
-        if (!mIsSearchBarHidden || mQSBSearchBar.getAlpha() > 0f) {
+        if (!isAnyFolderOpen() && (!mIsSearchBarHidden || mQSBSearchBar.getAlpha() > 0f)) {
             prepareStartAnimation(mQSBSearchBar);
             mQSBSearchBarAnim.start();
         }
@@ -203,13 +213,20 @@ public class SearchDropTargetBar extends FrameLayout implements DragController.D
         mDeferOnDragEnd = true;
     }
 
+    private boolean isAnyFolderOpen() {
+        if (mLauncher != null) {
+            return mLauncher.getWorkspace().getOpenFolder() != null;
+        }
+        return false;
+    }
+
     @Override
     public void onDragEnd() {
         if (!mDeferOnDragEnd) {
             // Restore the QSB search bar, and animate out the drop target bar
             prepareStartAnimation(mDropTargetBar);
             mDropTargetBarAnim.reverse();
-            if (!mIsSearchBarHidden || mQSBSearchBar.getAlpha() < 1f) {
+            if (!isAnyFolderOpen() && (!mIsSearchBarHidden || mQSBSearchBar.getAlpha() < 1f)) {
                 prepareStartAnimation(mQSBSearchBar);
                 mQSBSearchBarAnim.reverse();
             }

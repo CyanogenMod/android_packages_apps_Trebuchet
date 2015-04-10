@@ -24,6 +24,33 @@
     android:layout_height="match_parent"
     android:background="@drawable/workspace_bg">
 
+    <FrameLayout
+        android:id="@+id/reveal_fake_page_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="invisible"
+        android:alpha=".5"
+        android:clipToPadding="false">
+        <View
+            android:id="@+id/reveal_fake_page"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/folder_background"/>
+
+        <View
+            android:id="@+id/reveal_fake_folder_outline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/folder_bg_opaque"/>
+
+        <ImageView
+            android:id="@+id/reveal_fake_folder_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            android:background="@drawable/folder_bg_opaque"/>
+    </FrameLayout>
+
     <com.android.launcher3.DragLayer
         android:id="@+id/drag_layer"
         android:layout_width="match_parent"

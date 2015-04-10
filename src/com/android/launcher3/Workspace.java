@@ -2545,7 +2545,9 @@ public class Workspace extends SmoothPagedView
             // Animation animation = AnimationUtils.loadAnimation(mLauncher, R.anim.drop_down);
             // overviewPanel.startAnimation(animation);
             anim.play(hotseatAlpha);
-            if (mShowSearchBar) anim.play(searchBarAlpha);
+            if (mShowSearchBar && !mLauncher.getDragController().isDragging()) {
+                    anim.play(searchBarAlpha);
+            }
             anim.play(pageIndicatorAlpha);
             anim.setStartDelay(delay);
         } else {
@@ -2558,7 +2560,7 @@ public class Workspace extends SmoothPagedView
                 AlphaUpdateListener.updateVisibility(pageIndicator);
             }
 
-            if (mShowSearchBar) {
+            if (mShowSearchBar && !mLauncher.getDragController().isDragging()) {
                 searchBar.setAlpha(finalSearchBarAlpha);
                 AlphaUpdateListener.updateVisibility(searchBar);
             }

@@ -59,8 +59,8 @@ public class HiddenFolderFragment extends Fragment {
             mHidden = !mHidden;
 
             ImageView mLock = (ImageView) v;
-            Drawable mLockIcon = mHidden ? getResources().getDrawable(R.drawable.folder_lock_light)
-                    : getResources().getDrawable(R.drawable.folder_unlock);
+            Drawable mLockIcon = mHidden ? getResources().getDrawable(R.drawable.folder_locked)
+                    : getResources().getDrawable(R.drawable.folder_unlocked);
             mLock.setImageDrawable(mLockIcon);
         }
     };
@@ -103,8 +103,8 @@ public class HiddenFolderFragment extends Fragment {
         });
 
         ImageView mLock = (ImageView) v.findViewById(R.id.folder_lock_icon);
-        Drawable mLockIcon = mHidden ? getResources().getDrawable(R.drawable.folder_lock_light)
-                : getResources().getDrawable(R.drawable.folder_unlock);
+        Drawable mLockIcon = mHidden ? getResources().getDrawable(R.drawable.folder_locked)
+                : getResources().getDrawable(R.drawable.folder_unlocked);
         mLock.setImageDrawable(mLockIcon);
         mLock.setOnClickListener(mClicklistener);
 

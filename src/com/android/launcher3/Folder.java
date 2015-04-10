@@ -25,14 +25,17 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
 import android.graphics.PointF;
 import android.graphics.Rect;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.v4.widget.AutoScrollHelper;
 import android.text.InputType;
 import android.text.Selection;
 import android.text.Spannable;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.Pair;
@@ -43,14 +46,16 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewAnimationUtils;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityManager;
 import android.view.animation.AccelerateInterpolator;
+import android.view.animation.DecelerateInterpolator;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -115,6 +120,7 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
     private Alarm mReorderAlarm = new Alarm();
     private Alarm mOnExitAlarm = new Alarm();
     private int mFolderNameHeight;
+    private int mFolderLockHeight;
     private Rect mTempRect = new Rect();
     private boolean mDragInProgress = false;
     private boolean mDeleteFolderOnDropCompleted = false;
@@ -122,10 +128,14 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
     private boolean mItemAddedBackToSelfViaIcon = false;
     FolderEditText mFolderName;
     ImageView mFolderLock;
-    RelativeLayout mFolderTitleSection;
     private float mFolderIconPivotX;
     private float mFolderIconPivotY;
     private boolean mHideLabels;
+
+    // Instance variables to keep track of the left/top values calculated by centerAboutIcon() for
+    // use by the prepareOutline() method
+    private float mLeft;
+    private float mTop;
 
     private boolean mIsEditingName = false;
     private InputMethodManager mInputMethodManager;
@@ -239,10 +249,9 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
         }
 
         mFolderLock = (ImageView) findViewById(R.id.folder_lock);
-        mFolderTitleSection = (RelativeLayout) findViewById(R.id.folder_title_section);
         mFolderLock.measure(measureSpec, measureSpec);
         mFolderLock.setOnClickListener(this);
-        mFolderTitleSection.measure(measureSpec, measureSpec);
+        mFolderLockHeight = mFolderLock.getMeasuredHeight();
     }
 
     private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
@@ -536,9 +545,60 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
         setScaleY(1f);
         setAlpha(1f);
         mState = STATE_SMALL;
+
+        View reveal = mLauncher.findViewById(R.id.reveal_fake_page_container);
+        reveal.setVisibility(View.VISIBLE);
+        View revealPage = mLauncher.findViewById(R.id.reveal_fake_page);
+        revealPage.setVisibility(View.VISIBLE);
+        View revealOutline = mLauncher.findViewById(R.id.reveal_fake_folder_outline);
+        revealOutline.setVisibility(View.INVISIBLE);
+        View revealFolderIcon = mLauncher.findViewById(R.id.reveal_fake_folder_icon);
+        revealFolderIcon.setVisibility(View.INVISIBLE);
     }
 
-    public void animateOpen() {
+    private void prepareOutline() {
+        View outline = mLauncher.findViewById(R.id.reveal_fake_folder_outline);
+        FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) outline.getLayoutParams();
+        int width = getPaddingLeft() + getPaddingRight() + mContent.getDesiredWidth();
+        int height = getFolderHeight();
+
+        lp.width = width;
+        lp.height = height;
+        outline.setLayoutParams(lp);
+
+        outline.setX(mLeft);
+        outline.setY(mTop);
+        outline.setVisibility(View.INVISIBLE);
+    }
+
+    private void prepareFakeFolderIcon() {
+        mFolderIcon.buildDrawingCache(true);
+
+        Bitmap fakeFolderIcon = Bitmap.createBitmap(mFolderIcon.getDrawingCache());
+        View fakeFolderIconView = mLauncher.findViewById(R.id.reveal_fake_folder_icon);
+        FrameLayout.LayoutParams flp = (FrameLayout.LayoutParams)
+                fakeFolderIconView.getLayoutParams();
+
+        // Get globalVisibleRect of the folderIcon. getWidth and getHeight are inaccurate for
+        // hotseat icons
+        Rect rect = new Rect();
+        mFolderIcon.getGlobalVisibleRect(rect);
+
+        flp.height = rect.height();
+        flp.width = rect.width();
+
+        fakeFolderIconView.setLayoutParams(flp);
+
+        int [] folderIconXY = new int[2];
+        mFolderIcon.getLocationOnScreen(folderIconXY);
+        fakeFolderIconView.setX(folderIconXY[0]);
+        fakeFolderIconView.setY(folderIconXY[1]);
+
+        fakeFolderIconView.setBackground(new BitmapDrawable(null, fakeFolderIcon));
+        fakeFolderIconView.setVisibility(View.INVISIBLE);
+    }
+
+    public void animateOpen(Workspace workspace) {
         if (!(getParent() instanceof DragLayer)) return;
 
         Animator openFolderAnim = null;
@@ -563,49 +623,110 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
                 }
             };
         } else {
-            prepareReveal();
             centerAboutIcon();
 
-            int width = getPaddingLeft() + getPaddingRight() + mContent.getDesiredWidth();
-            int height = getFolderHeight();
-
-            float transX = - 0.075f * (width / 2 - getPivotX());
-            float transY = - 0.075f * (height / 2 - getPivotY());
+            float transX = 0;
+            float transY = getResources().getInteger(R.integer.folder_translate_y_dist);
             setTranslationX(transX);
             setTranslationY(transY);
             PropertyValuesHolder tx = PropertyValuesHolder.ofFloat("translationX", transX, 0);
             PropertyValuesHolder ty = PropertyValuesHolder.ofFloat("translationY", transY, 0);
 
-            int rx = (int) Math.max(Math.max(width - getPivotX(), 0), getPivotX());
-            int ry = (int) Math.max(Math.max(height - getPivotY(), 0), getPivotY());
-            float radius = (float) Math.sqrt(rx * rx + ry * ry);
             AnimatorSet anim = LauncherAnimUtils.createAnimatorSet();
-            Animator reveal = LauncherAnimUtils.createCircularReveal(this, (int) getPivotX(),
-                    (int) getPivotY(), 0, radius);
-            reveal.setDuration(mMaterialExpandDuration);
-            reveal.setInterpolator(new LogDecelerateInterpolator(100, 0));
+
+            mFolderLock.setAlpha(0f);
+            Animator lockAlpha = LauncherAnimUtils.ofFloat(mFolderLock, "alpha", 0f, 1f);
+            lockAlpha.setDuration(mMaterialExpandDuration);
+            lockAlpha.setStartDelay(mMaterialExpandStagger);
+            lockAlpha.setInterpolator(new LogDecelerateInterpolator(60, 0));
 
             mContent.setAlpha(0f);
             Animator iconsAlpha = LauncherAnimUtils.ofFloat(mContent, "alpha", 0f, 1f);
             iconsAlpha.setDuration(mMaterialExpandDuration);
             iconsAlpha.setStartDelay(mMaterialExpandStagger);
-            iconsAlpha.setInterpolator(new AccelerateInterpolator(1.5f));
+            iconsAlpha.setInterpolator(new LogDecelerateInterpolator(60, 0));
 
             mFolderName.setAlpha(0f);
             Animator textAlpha = LauncherAnimUtils.ofFloat(mFolderName, "alpha", 0f, 1f);
             textAlpha.setDuration(mMaterialExpandDuration);
             textAlpha.setStartDelay(mMaterialExpandStagger);
-            textAlpha.setInterpolator(new AccelerateInterpolator(1.5f));
+            textAlpha.setInterpolator(new LogDecelerateInterpolator(60, 0));
 
             Animator drift = LauncherAnimUtils.ofPropertyValuesHolder(this, tx, ty);
             drift.setDuration(mMaterialExpandDuration);
             drift.setStartDelay(mMaterialExpandStagger);
             drift.setInterpolator(new LogDecelerateInterpolator(60, 0));
 
+            final ArrayList<View> layerViews = new ArrayList<View>();
+
+            Animator workspaceAnim = workspace.getChangeStateAnimation(
+                    Workspace.State.NORMAL_HIDDEN, true, layerViews);
+            if (workspaceAnim != null) {
+                workspaceAnim.setStartDelay(mMaterialExpandStagger);
+            }
+
+            prepareFakeFolderIcon();
+            float iconTransY = getResources().getInteger(R.integer.folder_icon_translate_y_dist);
+
+            final View fakeFolderIconView = mLauncher.findViewById(R.id.reveal_fake_folder_icon);
+            float baseIconTranslationY = fakeFolderIconView.getTranslationY();
+            PropertyValuesHolder iconty = PropertyValuesHolder.ofFloat("translationY",
+                    baseIconTranslationY, baseIconTranslationY + iconTransY);
+            PropertyValuesHolder iconAlpha = PropertyValuesHolder.ofFloat("alpha", 1f, 0f);
+
+            Animator fakeFolderIcon = LauncherAnimUtils.ofPropertyValuesHolder(fakeFolderIconView,
+                    iconty, iconAlpha);
+            fakeFolderIcon.setDuration(mMaterialExpandDuration);
+            fakeFolderIcon.setInterpolator(new AccelerateInterpolator(1.5f));
+            fakeFolderIcon.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationStart(Animator animation) {
+                    mFolderIcon.setPreviewBackground(-1);
+                    mFolderIcon.setAlpha(0);
+                    fakeFolderIconView.setVisibility(View.VISIBLE);
+                }
+
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    fakeFolderIconView.setVisibility(View.INVISIBLE);
+                }
+            });
+
+            Animator revealAnim = null;
+            prepareReveal();
+            if (!mIsExternalDrag) {
+                revealAnim = getFolderIconRevealAnimator(false);
+            } else {
+                prepareOutline();
+                View revealFakeView = mLauncher.findViewById(R.id.reveal_fake_page);
+                revealFakeView.setVisibility(View.INVISIBLE);
+                View outlineView = mLauncher.findViewById(R.id.reveal_fake_folder_outline);
+                outlineView.setAlpha(0f);
+                outlineView.setVisibility(View.VISIBLE);
+
+                float baseOutlineTranslationY = outlineView.getTranslationY();
+                PropertyValuesHolder outlineTransY = PropertyValuesHolder.ofFloat("translationY",
+                        baseOutlineTranslationY + transY, baseOutlineTranslationY);
+
+                PropertyValuesHolder alpha = PropertyValuesHolder.ofFloat("alpha", 0f, 1f);
+                revealAnim = LauncherAnimUtils.ofPropertyValuesHolder(outlineView, alpha,
+                        outlineTransY);
+                revealAnim.setDuration(mMaterialExpandDuration);
+                revealAnim.setStartDelay(mMaterialExpandStagger);
+                revealAnim.setInterpolator(new LogDecelerateInterpolator(60, 0));
+            }
+
+            if (revealAnim != null) {
+                anim.play(revealAnim);
+            }
+            anim.play(fakeFolderIcon);
             anim.play(drift);
             anim.play(iconsAlpha);
+            anim.play(lockAlpha);
             anim.play(textAlpha);
-            anim.play(reveal);
+            if (workspaceAnim != null) {
+                anim.play(workspaceAnim);
+            }
 
             openFolderAnim = anim;
 
@@ -622,7 +743,7 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
             public void onAnimationStart(Animator animation) {
                 sendCustomAccessibilityEvent(AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED,
                         String.format(getContext().getString(R.string.folder_opened),
-                        mContent.getCountX(), mContent.getCountY()));
+                                mContent.getCountX(), mContent.getCountY()));
                 mState = STATE_ANIMATING;
             }
             @Override
@@ -642,6 +763,44 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
         if (mDragController.isDragging()) {
             mDragController.forceTouchMove();
         }
+    }
+
+    private Animator getFolderIconRevealAnimator(boolean reverse) {
+        DragLayer parent = (DragLayer) mLauncher.findViewById(R.id.drag_layer);
+        float scale = parent.getDescendantRectRelativeToSelf(mFolderIcon, mTempRect);
+
+        int centerX = (int) (mTempRect.left + mTempRect.width() * scale / 2);
+        int centerY = (int) (mTempRect.top + mTempRect.height() * scale / 2);
+
+        float targetRadius = 0;
+        return getRevealAnimator(reverse, centerX, centerY, targetRadius);
+    }
+
+    private Animator getFolderRevealAnimator(boolean reverse) {
+        DragLayer parent = (DragLayer) mLauncher.findViewById(R.id.drag_layer);
+        float scale = parent.getDescendantRectRelativeToSelf(this, mTempRect);
+
+        int centerX = (int) (mTempRect.left + mTempRect.width() * scale / 2);
+        int centerY = (int) (mTempRect.top + mTempRect.height() * scale / 2);
+
+        float targetRadius = 0;
+        return getRevealAnimator(reverse, centerX, centerY, targetRadius);
+    }
+
+    private Animator getRevealAnimator(boolean reverse, int centerX, int centerY,
+        float targetRadius) {
+        View reveal = mLauncher.findViewById(R.id.reveal_fake_page);
+        int height = reveal.getMeasuredHeight();
+
+        float startRadius = targetRadius;
+        float endRadius = height;
+
+        if (reverse) {
+            endRadius = startRadius;
+            startRadius = height;
+        }
+        return ViewAnimationUtils.createCircularReveal(reveal, centerX,
+                centerY, startRadius, endRadius);
     }
 
     public void beginExternalDrag(ShortcutInfo item) {
@@ -674,31 +833,142 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
         }
     }
 
-    public void animateClosed() {
+    public int getState() {
+        return mState;
+    }
+
+    public void animateClosed(final boolean animate) {
         if (!(getParent() instanceof DragLayer)) return;
+        AnimatorSet anim = LauncherAnimUtils.createAnimatorSet();
+
         PropertyValuesHolder alpha = PropertyValuesHolder.ofFloat("alpha", 0);
-        PropertyValuesHolder scaleX = PropertyValuesHolder.ofFloat("scaleX", 0.9f);
-        PropertyValuesHolder scaleY = PropertyValuesHolder.ofFloat("scaleY", 0.9f);
+        float transY = getResources().getInteger(R.integer.folder_translate_y_dist);
+        PropertyValuesHolder translationY = PropertyValuesHolder.ofFloat("translationY", 0f,
+                transY);
         final ObjectAnimator oa =
-                LauncherAnimUtils.ofPropertyValuesHolder(this, alpha, scaleX, scaleY);
+                LauncherAnimUtils.ofPropertyValuesHolder(this, alpha, translationY);
 
         oa.addListener(new AnimatorListenerAdapter() {
             @Override
-            public void onAnimationEnd(Animator animation) {
-                onCloseComplete();
-                setLayerType(LAYER_TYPE_NONE, null);
-                mState = STATE_SMALL;
+            public void onAnimationStart(Animator animation) {
+                if (animate && !mLauncher.getDragController().isDragging()) {
+                    hideFolderOutline(false);
+                }
             }
+        });
+        oa.setDuration(mMaterialExpandDuration);
+        oa.setInterpolator(new LogDecelerateInterpolator(60, 0));
+        setLayerType(LAYER_TYPE_HARDWARE, null);
+
+        Animator workspaceAnim = mLauncher.getWorkspace().getChangeStateAnimation(
+                Workspace.State.NORMAL, animate, new ArrayList<View>());
+        Animator reverseRevealAnim = null;
+        Animator fakeFolderIconAnim = null;
+
+        if (animate) {
+            if (!mDragInProgress) {
+                reverseRevealAnim = getFolderIconRevealAnimator(true);
+                reverseRevealAnim.setInterpolator(new DecelerateInterpolator(2f));
+                reverseRevealAnim.addListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        View revealView = mLauncher.findViewById(R.id.reveal_fake_page_container);
+                        revealView.setVisibility(View.INVISIBLE);
+                    }
+
+                    @Override
+                    public void onAnimationStart(Animator animation) {
+                        View outline = mLauncher.findViewById(R.id.reveal_fake_folder_outline);
+                        outline.setVisibility(View.INVISIBLE);
+                    }
+                });
+            } else {
+                prepareOutline();
+                View revealFakeView = mLauncher.findViewById(R.id.reveal_fake_page);
+                revealFakeView.setVisibility(View.INVISIBLE);
+                View outlineView = mLauncher.findViewById(R.id.reveal_fake_folder_outline);
+                outlineView.setAlpha(1f);
+                outlineView.setVisibility(View.VISIBLE);
+
+                float baseOutlineTranslationY = outlineView.getTranslationY();
+                PropertyValuesHolder outlineTransY = PropertyValuesHolder.ofFloat("translationY",
+                        baseOutlineTranslationY, baseOutlineTranslationY + transY);
+
+                PropertyValuesHolder outlineAlpha = PropertyValuesHolder.ofFloat("alpha", 1f, 0f);
+                reverseRevealAnim = LauncherAnimUtils.ofPropertyValuesHolder(outlineView,
+                        outlineAlpha, outlineTransY);
+
+                reverseRevealAnim.setDuration(mMaterialExpandDuration);
+                reverseRevealAnim.setStartDelay(mMaterialExpandStagger);
+                reverseRevealAnim.setInterpolator(new DecelerateInterpolator(2f));
+            }
+
+            prepareFakeFolderIcon();
+            float iconTransY = getResources().getInteger(R.integer.folder_icon_translate_y_dist);
+
+            final View fakeFolderIconView = mLauncher.findViewById(R.id.reveal_fake_folder_icon);
+            float baseIconTranslationY = fakeFolderIconView.getTranslationY();
+            PropertyValuesHolder iconty = PropertyValuesHolder.ofFloat("translationY",
+                    baseIconTranslationY + iconTransY, baseIconTranslationY);
+            PropertyValuesHolder iconAlpha = PropertyValuesHolder.ofFloat("alpha", 0f, 1f);
+
+            fakeFolderIconAnim = LauncherAnimUtils.ofPropertyValuesHolder(fakeFolderIconView,
+                    iconty, iconAlpha);
+            fakeFolderIconAnim.setDuration(mMaterialExpandDuration);
+            fakeFolderIconAnim.setInterpolator(new DecelerateInterpolator(2f));
+            fakeFolderIconAnim.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationStart(Animator animation) {
+                    mFolderIcon.setPreviewBackground(-1);
+                    mFolderIcon.setAlpha(0);
+                    fakeFolderIconView.setVisibility(View.VISIBLE);
+                }
+
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    fakeFolderIconView.setVisibility(View.INVISIBLE);
+                    mFolderIcon.setAlpha(1);
+                    mFolderIcon.setPreviewBackground(R.drawable.folder_bg);
+
+                    View revealView = mLauncher.findViewById(R.id.reveal_fake_page_container);
+                    revealView.setVisibility(View.INVISIBLE);
+                }
+            });
+        } else {
+            View revealView = mLauncher.findViewById(R.id.reveal_fake_page_container);
+            revealView.setVisibility(View.INVISIBLE);
+            mFolderIcon.setAlpha(1);
+            mFolderIcon.setPreviewBackground(R.drawable.folder_bg);
+        }
+
+        anim.play(oa);
+        if (workspaceAnim != null) {
+            anim.play(workspaceAnim);
+        }
+        if (reverseRevealAnim != null) {
+            anim.play(reverseRevealAnim);
+        }
+        if (fakeFolderIconAnim != null) {
+            anim.play(fakeFolderIconAnim);
+        }
+
+        anim.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationStart(Animator animation) {
                 sendCustomAccessibilityEvent(AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED,
                         getContext().getString(R.string.folder_closed));
                 mState = STATE_ANIMATING;
             }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                onCloseComplete();
+                setLayerType(LAYER_TYPE_NONE, null);
+                mState = STATE_SMALL;
+            }
         });
-        oa.setDuration(mExpandDuration);
-        setLayerType(LAYER_TYPE_HARDWARE, null);
-        oa.start();
+
+        anim.start();
     }
 
     public boolean acceptDrop(DragObject d) {
@@ -756,6 +1026,10 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
         mPreviousTargetCell[0] = -1;
         mPreviousTargetCell[1] = -1;
         mOnExitAlarm.cancelAlarm();
+
+        if (mState != STATE_ANIMATING && !mIsExternalDrag) {
+            showFolderOutline(true);
+        }
     }
 
     OnAlarmListener mReorderAlarmListener = new OnAlarmListener() {
@@ -896,6 +1170,7 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
         mSuppressOnAdd = false;
         mRearrangeOnClose = true;
         mIsExternalDrag = false;
+        mDragInProgress = false;
     }
 
     public void onDragExit(DragObject d) {
@@ -908,6 +1183,10 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
             mOnExitAlarm.setAlarm(ON_EXIT_CLOSE_DELAY);
         }
         mReorderAlarm.cancelAlarm();
+
+        if (!mLauncher.getDragController().isDragging()) {
+            hideFolderOutline(true);
+        }
     }
 
     public void onDropCompleted(final View target, final DragObject d,
@@ -953,6 +1232,13 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
         mCurrentDragInfo = null;
         mCurrentDragView = null;
         mSuppressOnAdd = false;
+
+        if (mState == STATE_OPEN) {
+            hideFolderOutline(true);
+            mLauncher.hideSearch();
+        } else if (mState == STATE_SMALL) {
+            mLauncher.showSearch();
+        }
 
         // Reordering may have occured, and we need to save the new item locations. We do this once
         // at the end to prevent unnecessary database operations.
@@ -1107,20 +1393,14 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
         // We reset the workspaces scroll
         mLauncher.getWorkspace().resetFinalScrollForPageChange(currentPage);
 
-        // We need to bound the folder to the currently visible CellLayoutChildren
-        int left = Math.min(Math.max(bounds.left, centeredLeft),
-                bounds.left + bounds.width() - width);
-        int top = Math.min(Math.max(bounds.top, centeredTop),
-                bounds.top + bounds.height() - height);
-        if (grid.isPhone() && (grid.availableWidthPx - width) < grid.iconSizePx) {
-            // Center the folder if it is full (on phones only)
-            left = (grid.availableWidthPx - width) / 2;
-        } else if (width >= bounds.width()) {
+        // Center the folder
+        int left = (grid.availableWidthPx - width) / 2;
+        // Drop the top down a little so it isn't bounded by the page indicators
+        int top = (int) (bounds.top + (bounds.height() * 1.15) - height);
+
+        if (width >= bounds.width()) {
             // If the folder doesn't fit within the bounds, center it about the desired bounds
             left = bounds.left + (bounds.width() - width) / 2;
-        }
-        if (height >= bounds.height()) {
-            top = bounds.top + (bounds.height() - height) / 2;
         }
 
         int folderPivotX = width / 2 + (centeredLeft - left);
@@ -1136,6 +1416,8 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
         lp.height = height;
         lp.x = left;
         lp.y = top;
+        mLeft = left;
+        mTop = top;
     }
 
     float getPivotXForIconAnimation() {
@@ -1166,16 +1448,13 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
     }
 
     private int getFolderHeight() {
-        int height = getPaddingTop() + getPaddingBottom() + mFolderNameHeight
+        int height = getPaddingTop() + getPaddingBottom() + mFolderNameHeight + mFolderLockHeight
                 + getContentAreaHeight();
         return height;
     }
 
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        int width = getPaddingLeft()
-                + getPaddingRight()
-                + Math.max(mContent.getDesiredWidth(),
-                        mFolderTitleSection.getMeasuredWidth());
+        int width = getPaddingLeft() + getPaddingRight() + mContent.getDesiredWidth();
         int height = getFolderHeight();
         int contentAreaWidthSpec = MeasureSpec.makeMeasureSpec(getContentAreaWidth(),
                 MeasureSpec.EXACTLY);
@@ -1190,12 +1469,10 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
         }
 
         mScrollView.measure(contentAreaWidthSpec, contentAreaHeightSpec);
-        mFolderName.measure(contentAreaWidthSpec, MeasureSpec.makeMeasureSpec(
-                mFolderNameHeight, MeasureSpec.EXACTLY));
-        mFolderLock.measure(contentAreaWidthSpec, MeasureSpec.makeMeasureSpec(
-                mFolderNameHeight, MeasureSpec.EXACTLY));
-        mFolderTitleSection.measure(contentAreaWidthSpec, MeasureSpec
-                .makeMeasureSpec(mFolderNameHeight, MeasureSpec.EXACTLY));
+        if (TextUtils.isEmpty(mInfo.title)) {
+            mFolderName.measure(contentAreaWidthSpec, MeasureSpec.makeMeasureSpec(
+                    mFolderNameHeight, MeasureSpec.EXACTLY));
+        }
         setMeasuredDimension(width, height);
     }
 
@@ -1503,6 +1780,89 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
         if (v == mFolderName && hasFocus) {
             startEditingFolderName();
         }
+    }
+
+    // Instance variables to keep track of the hide/show outline animators
+    private Animator mRevealOutlinesAnimator = null;
+    private Animator mHideOutlinesAnimator = null;
+    // Sometimes the onAnimationEnd gets called despite getting cancelled, use this variable to
+    // handle the special cancel cases (when the user quickly picks up and drops an in the folder)
+    private boolean mCancelAnim = false;
+
+    private void showFolderOutline(boolean animate) {
+        final View revealView = mLauncher.findViewById(R.id.reveal_fake_page);
+        final View outline = mLauncher.findViewById(R.id.reveal_fake_folder_outline);
+
+        if (mHideOutlinesAnimator != null && mHideOutlinesAnimator.isRunning()) {
+            mHideOutlinesAnimator.cancel();
+        }
+        prepareOutline();
+
+        if (!animate) {
+            revealView.setVisibility(View.INVISIBLE);
+            outline.setVisibility(View.VISIBLE);
+            return;
+        }
+
+        mRevealOutlinesAnimator = getFolderRevealAnimator(true);
+        mRevealOutlinesAnimator.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                if (mCancelAnim) {
+                    mCancelAnim = false;
+                } else {
+                    revealView.setVisibility(View.INVISIBLE);
+                }
+            }
+
+            @Override
+            public void onAnimationStart(Animator animation) {
+                outline.setAlpha(1f);
+                outline.setVisibility(View.VISIBLE);
+            }
+        });
+
+        mRevealOutlinesAnimator.start();
+    }
+
+    private void hideFolderOutline(boolean animate) {
+        final View revealView = mLauncher.findViewById(R.id.reveal_fake_page);
+        final View outline = mLauncher.findViewById(R.id.reveal_fake_folder_outline);
+
+        if (revealView.getVisibility() == View.VISIBLE) {
+            // Nothing to do here
+            return;
+        }
+
+        if (mRevealOutlinesAnimator != null && mRevealOutlinesAnimator.isRunning()) {
+            mCancelAnim = true;
+            mRevealOutlinesAnimator.cancel();
+        }
+
+        if (!animate) {
+            revealView.setVisibility(View.VISIBLE);
+            outline.setVisibility(View.INVISIBLE);
+            return;
+        }
+
+        mHideOutlinesAnimator = getFolderRevealAnimator(false);
+        mHideOutlinesAnimator.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                revealView.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                if (mCancelAnim) {
+                    mCancelAnim = false;
+                } else {
+                    outline.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
+
+        mHideOutlinesAnimator.start();
     }
 
     @Override
