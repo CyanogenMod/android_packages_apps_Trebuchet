@@ -56,4 +56,5 @@
     <color name="app_scrubber_gray_color">@android:color/darker_gray</color>
 
     <color name="scrubber_background">#CC14191E</color>
+    <color name="aftv_shadowColor">#b0000000</color>
 </resources>
