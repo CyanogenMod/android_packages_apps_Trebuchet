@@ -23,6 +23,8 @@ import android.graphics.Color;
 import android.graphics.PointF;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.LinearSmoothScroller;
 import android.support.v7.widget.RecyclerView;
@@ -34,8 +36,18 @@ import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import java.lang.IllegalArgumentException;
 import java.util.ArrayList;
 
+/**
+ * AppDrawerScrubber
+ * <pre>
+ *     This is the scrubber at the bottom of the app drawer layout for navigating the application
+ *     list
+ * </pre>
+ *
+ * @see {@link android.widget.LinearLayout}
+ */
 public class AppDrawerScrubber extends LinearLayout {
     private AppDrawerListAdapter mAdapter;
     private RecyclerView mListView;
@@ -45,15 +57,195 @@ public class AppDrawerScrubber extends LinearLayout {
     private SectionContainer mSectionContainer;
     private LinearLayoutManager mLayoutManager;
     private ScrubberAnimationState mScrubberAnimationState;
+    private Drawable mTransparentDrawable;
+    private AppDrawerSmoothScroller mLinearSmoothScroller;
 
+    private static final int MSG_SET_TARGET = 1000;
+    private static final int MSG_SMOOTH_SCROLL = MSG_SET_TARGET + 1;
+    private static final int MSG_ANIMATE_PICK = MSG_SMOOTH_SCROLL + 1;
+
+    /**
+     * UiHandler
+     * <pre>
+     *     Using a handler for sending signals to perform certain actions.  The reason for
+     *     using this is to be able to remove and replace a signal if signals are being
+     *     sent too fast (e.g. user scrubbing like crazy). This allows the touch loop to
+     *     complete then later run the animations in their own loops.
+     * </pre>
+     */
+    private class UiHandler extends Handler {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case MSG_SET_TARGET:
+                    int adapterIndex = msg.arg1;
+                    performSetTarget(adapterIndex);
+                    break;
+                case MSG_ANIMATE_PICK:
+                    int index = msg.arg1;
+                    int width = msg.arg2;
+                    int lastIndex = (Integer)msg.obj;
+                    performAnimatePickMessage(index, width, lastIndex);
+                    break;
+                case MSG_SMOOTH_SCROLL:
+                    int itemDiff = msg.arg1;
+                    int itemIndex = msg.arg2;
+                    performSmoothScroll(itemDiff, itemIndex);
+                    break;
+                default:
+                    super.handleMessage(msg);
+            }
+        }
+
+        /**
+         * Overidden to remove identical calls if they are called subsequently fast enough.
+         *
+         * This is the final point that is public in the call chain.  Other calls to sendMessageXXX
+         * will eventually call this function which calls "enqueueMessage" which is private.
+         *
+         * @param msg {@link android.os.Message}
+         * @param uptimeMillis {@link java.lang.Long}
+         *
+         * @throws IllegalArgumentException {@link java.lang.IllegalArgumentException}
+         */
+        @Override
+        public boolean sendMessageAtTime(Message msg, long uptimeMillis) throws
+                IllegalArgumentException {
+            if (msg == null) {
+                throw new IllegalArgumentException("'msg' cannot be null!");
+            }
+            if (hasMessages(msg.what)) {
+                removeMessages(msg.what);
+            }
+            return super.sendMessageAtTime(msg, uptimeMillis);
+        }
+
+    }
+    private Handler mUiHandler = new UiHandler();
+    private void sendSetTargetMessage(int adapterIndex) {
+        Message msg = mUiHandler.obtainMessage(MSG_SET_TARGET);
+        msg.what = MSG_SET_TARGET;
+        msg.arg1 = adapterIndex;
+        mUiHandler.sendMessage(msg);
+    }
+    private void performSetTarget(int adapterIndex) {
+        if (mAdapter != null) {
+            mAdapter.setSectionTarget(adapterIndex);
+        }
+    }
+    private void sendAnimatePickMessage(int index, int width, int lastIndex) {
+        Message msg = mUiHandler.obtainMessage(MSG_ANIMATE_PICK);
+        msg.what = MSG_ANIMATE_PICK;
+        msg.arg1 = index;
+        msg.arg2 = width;
+        msg.obj = lastIndex;
+        mUiHandler.sendMessage(msg);
+    }
+    private void performAnimatePickMessage(int index, int width, int lastIndex) {
+        if (mScrubberIndicator != null) {
+            // get the index based on the direction the user is scrolling
+            int directionalIndex = mSectionContainer.getDirectionalIndex(lastIndex, index);
+            String sectionText = mSectionContainer.getHeader(directionalIndex);
+            float translateX = (index * width) / (float) mSectionContainer.size();
+            // if we are showing letters, grab the position based on the text view
+            if (mSectionContainer.showLetters()) {
+                translateX = mScrubberText.getPositionOfSection(index);
+            }
+            // center the x position
+            translateX -= mScrubberIndicator.getMeasuredWidth() / 2;
+            mScrubberIndicator.setTranslationX(translateX);
+            mScrubberIndicator.setText(sectionText);
+        }
+    }
+    private void sendSmoothScrollMessage(int itemDiff, int itemIndex) {
+        Message msg = mUiHandler.obtainMessage(MSG_SMOOTH_SCROLL);
+        msg.what = MSG_SMOOTH_SCROLL;
+        msg.arg1 = itemDiff;
+        msg.arg2 = itemIndex;
+        mUiHandler.sendMessage(msg);
+    }
+    private void performSmoothScroll(int itemDiff, int itemIndex) {
+        if (mLinearSmoothScroller == null) {
+            mLinearSmoothScroller = new AppDrawerSmoothScroller(mContext);
+        }
+        mLinearSmoothScroller.setItemDiff(itemDiff);
+        mLinearSmoothScroller.setTargetPosition(itemIndex);
+        mLayoutManager.startSmoothScroll(mLinearSmoothScroller);
+    }
+
+    /**
+     * Constructor
+     *
+     * @param context {@link android.content.Context}
+     * @param attrs {@link android.util.AttributeSet}
+     */
     public AppDrawerScrubber(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(context);
     }
 
+    /**
+     * Constructor
+     *
+     * @param context {@link android.content.Context}
+     */
     public AppDrawerScrubber(Context context) {
         super(context);
         init(context);
+    }
+
+    /**
+     * AppDrawerSmoothScroller
+     * <pre>
+     *     This is a smooth scroller with the ability to set an item diff
+     * </pre>
+     *
+     * @see {@link android.support.v7.widget.LinearSmoothScroller}
+     */
+    private class AppDrawerSmoothScroller extends LinearSmoothScroller {
+
+        // Members
+        private int mItemDiff = 0;
+
+        public AppDrawerSmoothScroller(Context context) {
+            super(context);
+        }
+
+        @Override
+        protected int getVerticalSnapPreference() {
+            // position the item against the end of the list view
+            return SNAP_TO_END;
+        }
+
+        @Override
+        public PointF computeScrollVectorForPosition(int targetPosition) {
+            return mLayoutManager.computeScrollVectorForPosition(targetPosition);
+        }
+
+        @Override
+        public int calculateDyToMakeVisible(View view, int snapPreference) {
+            int dy = super.calculateDyToMakeVisible(view, snapPreference);
+            return dy - mItemDiff;
+        }
+
+        /**
+         * Set the item difference
+         *
+         * @param itemDiff
+         */
+        public void setItemDiff(int itemDiff) {
+            mItemDiff = itemDiff;
+        }
+
+        /**
+         * Get the item difference
+         *
+         * @return {@link java.lang.Integer}
+         */
+        public int getItemDiff() {
+            return mItemDiff;
+        }
+
     }
 
     /**
@@ -131,7 +323,7 @@ public class AppDrawerScrubber extends LinearLayout {
         mSeekBar.setMax(mSectionContainer.size() - 1);
 
         // show a white line if there are no letters, otherwise show transparent
-        Drawable d = mSectionContainer.showLetters() ? new ColorDrawable(Color.TRANSPARENT)
+        Drawable d = mSectionContainer.showLetters() ? mTransparentDrawable
             : getContext().getResources().getDrawable(R.drawable.seek_back);
         ((ViewGroup)mSeekBar.getParent()).setBackground(d);
 
@@ -155,6 +347,7 @@ public class AppDrawerScrubber extends LinearLayout {
 
     private void init(Context context) {
         LayoutInflater.from(context).inflate(R.layout.scrub_layout, this);
+        mTransparentDrawable = new ColorDrawable(Color.TRANSPARENT);
         mScrubberAnimationState = new ScrubberAnimationState();
         mSeekBar = (SeekBar) findViewById(R.id.scrubber);
         mScrubberText = (AutoExpandTextView) findViewById(R.id.scrubberText);
@@ -193,6 +386,9 @@ public class AppDrawerScrubber extends LinearLayout {
         }
 
         private void animateIn() {
+            if (mScrubberIndicator == null) {
+                return;
+            }
             // start from a scratch position when animating in
             mScrubberIndicator.animate().cancel();
             mScrubberIndicator.setPivotX(mScrubberIndicator.getMeasuredWidth() / 2);
@@ -218,11 +414,13 @@ public class AppDrawerScrubber extends LinearLayout {
                             animateOut();
                         }
                     }
-                })
-                .start();
+                }).start();
         }
 
         private void animateOut() {
+            if (mScrubberIndicator == null) {
+                return;
+            }
             mScrubberIndicator.animate()
                 .alpha(SCRUBBER_ALPHA_START)
                 .scaleX(SCRUBBER_SCALE_START)
@@ -242,24 +440,12 @@ public class AppDrawerScrubber extends LinearLayout {
             if (!isReady()) {
                 return;
             }
+            progressChanged(seekBar, index, fromUser);
+        }
 
-            if (mScrubberIndicator != null) {
-                // get the index based on the direction the user is scrolling
-                int directionalIndex = mSectionContainer.getDirectionalIndex(mLastIndex, index);
-                String sectionText = mSectionContainer.getHeader(directionalIndex);
+        private void progressChanged(SeekBar seekBar, int index, boolean fromUser) {
 
-                float translateX = (index * seekBar.getWidth()) / (float)mSectionContainer.size();
-                // if we are showing letters, grab the position based on the text view
-                if (mSectionContainer.showLetters()) {
-                    translateX = mScrubberText.getPositionOfSection(index);
-                }
-
-                // center the x position
-                translateX -= mScrubberIndicator.getMeasuredWidth() / 2;
-
-                mScrubberIndicator.setTranslationX(translateX);
-                mScrubberIndicator.setText(sectionText);
-            }
+            sendAnimatePickMessage(index, seekBar.getWidth(), mLastIndex);
 
             // get the index of the underlying list
             int adapterIndex = mSectionContainer.getAdapterIndex(mLastIndex, index);
@@ -272,32 +458,15 @@ public class AppDrawerScrubber extends LinearLayout {
                 itemHeight = child.getMeasuredHeight();
             }
 
+            // Start smooth scroll from this Looper loop
             if (itemHeight != 0) {
                 // scroll to the item such that there are 2 rows beneath it from the bottom
                 final int itemDiff = 2 * itemHeight;
-                LinearSmoothScroller scroller = new LinearSmoothScroller(mListView.getContext()) {
-                    @Override
-                    protected int getVerticalSnapPreference() {
-                        // position the item against the end of the list view
-                        return SNAP_TO_END;
-                    }
-
-                    @Override
-                    public PointF computeScrollVectorForPosition(int targetPosition) {
-                        return mLayoutManager.computeScrollVectorForPosition(targetPosition);
-                    }
-
-                    @Override
-                    public int calculateDyToMakeVisible(View view, int snapPreference) {
-                        int dy = super.calculateDyToMakeVisible(view, snapPreference);
-                        return dy - itemDiff;
-                    }
-                };
-                scroller.setTargetPosition(itemIndex);
-                mLayoutManager.startSmoothScroll(scroller);
+                sendSmoothScrollMessage(itemDiff, itemIndex);
             }
 
-            mAdapter.setSectionTarget(adapterIndex);
+            // Post set target index on queue to get processed by Looper later
+            sendSetTargetMessage(adapterIndex);
 
             mLastIndex = index;
         }

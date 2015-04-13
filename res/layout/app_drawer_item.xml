@@ -54,7 +54,7 @@
         android:layout_marginTop="10dp"
         android:layout_marginLeft="6dp"
         android:layout_centerVertical="true"
-        android:includeFontPadding="false"
+        android:includeFontPadding="true"
         android:gravity="center"
         android:singleLine="true"
         autofit:minTextSize="8sp"
