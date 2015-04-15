@@ -30,6 +30,7 @@ import android.content.Intent;
 import android.content.Intent.ShortcutIconResource;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ProviderInfo;
 import android.content.pm.ResolveInfo;
@@ -2181,6 +2182,11 @@ public class LauncherModel extends BroadcastReceiver
                                             iconPackageIndex, iconResourceIndex, iconIndex,
                                             titleIndex);
 
+                                    CharSequence title = getShortcutTitle(manager, intent);
+                                    if (title != null) {
+                                        info.title = title;
+                                    }
+
                                     // App shortcuts that used to be automatically added to Launcher
                                     // didn't always have the correct intent flags set, so do that
                                     // here
@@ -3963,4 +3969,17 @@ public class LauncherModel extends BroadcastReceiver
             Log.d(TAG, "mLoaderTask=null");
         }
     }
+
+    private CharSequence getShortcutTitle(PackageManager manager, Intent intent) {
+        ComponentName componentName = intent.getComponent();
+        if (componentName == null) {
+            return null;
+        }
+        ResolveInfo resolveInfo = manager.resolveActivity(intent, 0);
+        if (resolveInfo != null) {
+            return resolveInfo.activityInfo.loadLabel(manager);
+        }
+        return null;
+    }
+
 }
