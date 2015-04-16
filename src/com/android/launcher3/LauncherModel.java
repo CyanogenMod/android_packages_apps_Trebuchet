@@ -2747,10 +2747,13 @@ public class LauncherModel extends BroadcastReceiver
                             ShortcutInfo finalItem = folder.contents.get(0);
                             finalItem.container = folder.container;
                             LauncherModel.deleteItemFromDatabase(mContext, folder);
-                            LauncherModel.addOrMoveItemInDatabase(mContext, finalItem, folder.container,
-                                    folder.screenId, folder.cellX, folder.cellY);
+                            // only replace this item back on the workspace if it's not protected
+                            if (!mHiddenApps.contains(finalItem.intent.getComponent())) {
+                                LauncherModel.addOrMoveItemInDatabase(mContext, finalItem, folder.container,
+                                        folder.screenId, folder.cellX, folder.cellY);
+                                workspaceItems.add(finalItem);
+                            }
                             workspaceItems.remove(i);
-                            workspaceItems.add(finalItem);
                             folders.remove(Long.valueOf(item.id));
                         } else if (folder.contents.size() == 0 /*&& !(folder instanceof LiveFolderInfo)*/) {
                             LauncherModel.deleteFolderContentsFromDatabase(mContext, folder);
