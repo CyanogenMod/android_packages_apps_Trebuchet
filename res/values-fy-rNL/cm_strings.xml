@@ -15,21 +15,6 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<resources>
-  <string-array name="transition_effect_entries">
-    <item>ללא</item>
-    <item>התקרבות</item>
-    <item>התרחקות</item>
-    <item>סובב למעלה</item>
-    <item>סובב למטה</item>
-    <item>קובייה פנימה</item>
-    <item>קוביה החוצה</item>
-    <item>מחסנית</item>
-    <item>אקורדיון</item>
-    <item>היפוך</item>
-    <item>גליל פנימה</item>
-    <item>גליל החוצה</item>
-    <item>קרוסלה</item>
-    <item>תקציר</item>
-  </string-array>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <string name="grid_size_comfortable">Komfortabel</string>
 </resources>
