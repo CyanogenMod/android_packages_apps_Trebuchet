@@ -43,4 +43,9 @@
   <string name="icon_labels_hide">Anubrir</string>
   <string name="protected_app_settings">Apps protexíes</string>
   <string name="dialog_confirm">Confirmar</string>
+  <string name="drawer_type">Disposición</string>
+  <string name="drawer_type_drawer">Vertical</string>
+  <string name="drawer_type_pager">Paxináu</string>
+  <string name="setting_state_disabled">DESHABILITÁU</string>
+  <string name="search_activity_not_found">¡Nun pudo atopase un encontu de gueta!</string>
 </resources>
