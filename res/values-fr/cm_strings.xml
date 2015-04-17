@@ -47,4 +47,5 @@
   <string name="drawer_type_drawer">Verticale</string>
   <string name="drawer_type_pager">Paginée</string>
   <string name="setting_state_disabled">DÉSACTIVÉ</string>
+  <string name="search_activity_not_found">Aucune recherche n\'a pu être trouvée !</string>
 </resources>

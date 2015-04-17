@@ -47,4 +47,5 @@
   <string name="drawer_type_drawer">수직</string>
   <string name="drawer_type_pager">페이징</string>
   <string name="setting_state_disabled">사용 안함</string>
+  <string name="search_activity_not_found">검색 작업을 찾아 낼 수 없습니다.</string>
 </resources>

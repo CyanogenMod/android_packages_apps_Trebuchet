@@ -22,8 +22,8 @@
   <string name="setting_state_on">מופעל</string>
   <string name="setting_state_off">מושבת</string>
   <string name="themes_button_text">ערכות עיצוב</string>
-  <string name="scrolling_page_outlines">תיאור דף</string>
-  <string name="scrolling_fade_adjacent">עימום דפים צדדיים</string>
+  <string name="scrolling_page_outlines">מתאר הדף</string>
+  <string name="scrolling_fade_adjacent">עמעום דפים צדדיים</string>
   <string name="scrolling_wallpaper">גלילת טפט</string>
   <string name="grid_size_text">גודל רשת</string>
   <string name="grid_size_comfortable">נוח</string>
