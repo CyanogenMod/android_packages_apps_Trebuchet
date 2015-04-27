@@ -634,7 +634,7 @@ public class AppDrawerListAdapter extends RecyclerView.Adapter<AppDrawerListAdap
         if (params instanceof ViewGroup.MarginLayoutParams) {
             ViewGroup.MarginLayoutParams marginParams = (ViewGroup.MarginLayoutParams) params;
             marginParams.setMargins(marginParams.leftMargin, marginParams.topMargin,
-                    marginParams.rightMargin, mDeviceProfile.iconTextSizePx);
+                    marginParams.rightMargin, marginParams.bottomMargin);
             holder.mTextView.setLayoutParams(marginParams);
         }
 
