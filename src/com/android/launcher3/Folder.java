@@ -166,12 +166,12 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
         mIconCache = app.getIconCache();
 
         Resources res = getResources();
-        mMaxCountX = (int) grid.numColumns;
+        mMaxCountX = (int) grid.numColumnsBase;
         // Allow scrolling folders when DISABLE_ALL_APPS is true.
         if (LauncherAppState.isDisableAllApps()) {
             mMaxCountY = mMaxNumItems = Integer.MAX_VALUE;
         } else {
-            mMaxCountY = (int) grid.numRows;
+            mMaxCountY = (int) grid.numRowsBase;
             mMaxNumItems = mMaxCountX * mMaxCountY;
         }
 
@@ -1158,16 +1158,7 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
     }
 
     private int getContentAreaHeight() {
-        LauncherAppState app = LauncherAppState.getInstance();
-        DeviceProfile grid = app.getDynamicGrid().getDeviceProfile();
-        Rect workspacePadding = grid.getWorkspacePadding(grid.isLandscape ?
-                CellLayout.LANDSCAPE : CellLayout.PORTRAIT);
-        int maxContentAreaHeight = grid.availableHeightPx -
-                workspacePadding.top - workspacePadding.bottom -
-                mFolderNameHeight;
-        int height = Math.min(maxContentAreaHeight,
-                mContent.getDesiredHeight());
-        return Math.max(height, MIN_CONTENT_DIMEN);
+        return Math.max(mContent.getDesiredHeight(), MIN_CONTENT_DIMEN);
     }
 
     private int getContentAreaWidth() {
