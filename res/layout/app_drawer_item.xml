@@ -49,7 +49,7 @@
 
     <com.android.launcher3.AutoFitTextView
         android:id="@+id/drawer_item_title"
-        android:layout_width="27dp"
+        android:layout_width="@dimen/app_drawer_char_width"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="6dp"

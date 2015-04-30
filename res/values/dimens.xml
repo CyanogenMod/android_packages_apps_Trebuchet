@@ -128,6 +128,7 @@
     <dimen name="app_drawer_scrubber_padding">20dp</dimen>
 
     <!-- App Drawer Item -->
+    <dimen name="app_drawer_char_width">27dp</dimen>
     <dimen name="container_paddingStart">6dp</dimen>
     <dimen name="container_paddingEnd">6dp</dimen>
     <dimen name="aftv_width">32dp</dimen>
