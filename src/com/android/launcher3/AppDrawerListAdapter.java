@@ -860,6 +860,9 @@ public class AppDrawerListAdapter extends RecyclerView.Adapter<AppDrawerListAdap
 
     @Override
     public int getPositionForSection(int sectionIndex) {
+        if (mSectionHeaders.isEmpty()) {
+            return 0;
+        }
         return mSectionHeaders.get(getSections()[sectionIndex]).mItemIndex;
     }
 

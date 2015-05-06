@@ -266,6 +266,9 @@ public class AppDrawerScrubber extends LinearLayout {
         }
 
         public String getHeader(int idx) {
+            if (size() == 0) {
+                return null;
+            }
             return showLetters() ? mSections.get(idx).getText() : mHeaders[idx];
         }
 
@@ -277,7 +280,7 @@ public class AppDrawerScrubber extends LinearLayout {
          * @return the mHeaders index (aka the underlying adapter index).
          */
         public int getAdapterIndex(int prevIdx, int curIdx) {
-            if (!showLetters()) {
+            if (!showLetters() || size() == 0) {
                 return curIdx;
             }
 
@@ -291,7 +294,7 @@ public class AppDrawerScrubber extends LinearLayout {
          * highlighted index
          */
         public int getDirectionalIndex(int prevIdx, int curIdx) {
-            if (!showLetters() || mSections.get(curIdx).getHighlight()) {
+            if (!showLetters() || size() == 0 || mSections.get(curIdx).getHighlight()) {
                 return curIdx;
             }
 
