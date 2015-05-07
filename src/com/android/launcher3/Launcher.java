@@ -72,6 +72,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.StrictMode;
 import android.os.SystemClock;
+import android.preference.PreferenceManager;
 import android.speech.RecognizerIntent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -123,6 +124,8 @@ import com.android.launcher3.compat.UserHandleCompat;
 import com.android.launcher3.compat.UserManagerCompat;
 import com.android.launcher3.PagedView.TransitionEffect;
 import com.android.launcher3.settings.SettingsProvider;
+import com.android.launcher3.stats.LauncherStats;
+import com.android.launcher3.stats.internal.service.AggregationIntentService;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -171,6 +174,8 @@ public class Launcher extends Activity
     private static final int REQUEST_BIND_APPWIDGET = 11;
     private static final int REQUEST_RECONFIGURE_APPWIDGET = 12;
     public static final int REQUEST_TRANSITION_EFFECTS = 14;
+
+    public static final String LONGPRESS_CHANGE = "wallpaper_changed_by_longpress";
 
     private static final float OVERSHOOT_TENSION = 1.4f;
 
@@ -1137,7 +1142,7 @@ public class Launcher extends Activity
             mBindOnResumeCallbacks.clear();
             if (DEBUG_RESUME_TIME) {
                 Log.d(TAG, "Time spent processing callbacks in onResume: " +
-                    (System.currentTimeMillis() - startTimeCallbacks));
+                        (System.currentTimeMillis() - startTimeCallbacks));
             }
         }
         if (mOnResumeCallbacks.size() > 0) {
@@ -1188,7 +1193,7 @@ public class Launcher extends Activity
 
         //Close out Fragments
         TransitionEffectsFragment tef =
-                (TransitionEffectsFragment)getFragmentManager().findFragmentByTag(
+                (TransitionEffectsFragment) getFragmentManager().findFragmentByTag(
                         TransitionEffectsFragment.TRANSITION_EFFECTS_FRAGMENT);
         if (tef != null) {
             tef.setEffect();
@@ -1479,6 +1484,8 @@ public class Launcher extends Activity
         Intent settings;
         settings = new Intent(android.provider.Settings.ACTION_SETTINGS);
         startActivity(settings);
+        LauncherApplication.getLauncherStats().sendSettingsOpenedEvent(
+                LauncherStats.ORIGIN_TREB_LONGPRESS);
         if (mWorkspace.isInOverviewMode()) {
             mWorkspace.exitOverviewMode(false);
         }
@@ -2177,6 +2184,9 @@ public class Launcher extends Activity
     public void removeAppWidget(LauncherAppWidgetInfo launcherInfo) {
         removeWidgetToAutoAdvance(launcherInfo.hostView);
         launcherInfo.hostView = null;
+        AppWidgetProviderInfo info = mAppWidgetManager.getAppWidgetInfo(launcherInfo.appWidgetId);
+        String packageName = info.providerInfo.packageName;
+        LauncherApplication.getLauncherStats().sendWidgetRemoveEvent(packageName);
     }
 
     void showOutOfSpaceMessage(boolean isHotseatLayout) {
@@ -2606,6 +2616,8 @@ public class Launcher extends Activity
             completeAddAppWidget(appWidgetId, info.container, info.screenId, boundWidget,
                     appWidgetInfo);
             mWorkspace.removeExtraEmptyScreenDelayed(true, onComplete, delay, false);
+            String packageName = appWidgetInfo.providerInfo.packageName;
+            LauncherApplication.getLauncherStats().sendWidgetAddEvent(packageName);
         }
     }
 
@@ -2895,6 +2907,13 @@ public class Launcher extends Activity
             onClickAllAppsButton(v);
         } else if (tag instanceof AppInfo) {
             startAppShortcutOrInfoActivity(v);
+            LauncherApplication.getLauncherStats().sendAppLaunchEvent(
+                    LauncherStats.ORIGIN_APPDRAWER, ((AppInfo)tag).componentName.getPackageName());
+            String packageName = ((AppInfo)tag).getIntent().getComponent().getPackageName();
+            if (LauncherStats.SETTINGS_PACKAGE_NAME.equals(packageName)) {
+                LauncherApplication.getLauncherStats()
+                        .sendSettingsOpenedEvent(LauncherStats.ORIGIN_APPDRAWER);
+            }
         } else if (tag instanceof LauncherAppWidgetInfo) {
             if (v instanceof PendingAppWidgetHostView) {
                 onClickPendingWidget((PendingAppWidgetHostView) v);
@@ -3059,6 +3078,13 @@ public class Launcher extends Activity
 
         // Start activities
         startAppShortcutOrInfoActivity(v);
+        String packageName = intent.getComponent().getPackageName();
+        LauncherApplication.getLauncherStats().sendAppLaunchEvent(LauncherStats.ORIGIN_HOMESCREEN,
+                packageName);
+        if (LauncherStats.SETTINGS_PACKAGE_NAME.equals(packageName)) {
+            LauncherApplication.getLauncherStats().sendSettingsOpenedEvent(
+                    LauncherStats.ORIGIN_HOMESCREEN);
+        }
     }
 
     private void startAppShortcutOrInfoActivity(View v) {
@@ -3170,6 +3196,7 @@ public class Launcher extends Activity
         if (LOGD) Log.d(TAG, "onClickWallpaperPicker");
         final Intent pickWallpaper = new Intent(Intent.ACTION_SET_WALLPAPER);
         pickWallpaper.setComponent(getWallpaperPickerComponent());
+        mSharedPrefs.edit().putBoolean(LONGPRESS_CHANGE, true).apply();
         startActivityForResult(pickWallpaper, REQUEST_PICK_WALLPAPER);
     }
 
@@ -4818,6 +4845,10 @@ public class Launcher extends Activity
             mWorkspace.createCustomContentContainer();
             populateCustomContentContainer();
         }
+
+        LauncherModel.saveWidgetCount(this);
+        LauncherModel.savePageCount(this);
+
     }
 
     @Override
