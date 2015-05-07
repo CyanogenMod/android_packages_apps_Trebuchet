@@ -44,7 +44,7 @@ LOCAL_AAPT_FLAGS := \
     --auto-add-overlay \
     --extra-packages android.support.v7.recyclerview
 
-LOCAL_SDK_VERSION := current
+#LOCAL_SDK_VERSION := current
 LOCAL_PACKAGE_NAME := Trebuchet
 LOCAL_PRIVILEGED_MODULE := true
 #LOCAL_CERTIFICATE := shared
