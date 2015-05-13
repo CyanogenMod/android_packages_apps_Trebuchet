@@ -98,13 +98,6 @@ public class SearchDropTargetBar extends FrameLayout implements DragController.D
         anim.setDuration(sTransitionInDuration);
         anim.addListener(new AnimatorListenerAdapter() {
             @Override
-            public void onAnimationStart(Animator animation) {
-                if (v.getVisibility() != View.VISIBLE) {
-                    v.setVisibility(View.VISIBLE);
-                }
-            }
-
-            @Override
             public void onAnimationEnd(Animator animation) {
                 v.setLayerType(View.LAYER_TYPE_NONE, null);
             }
@@ -227,6 +220,10 @@ public class SearchDropTargetBar extends FrameLayout implements DragController.D
             prepareStartAnimation(mDropTargetBar);
             mDropTargetBarAnim.reverse();
             if (!isAnyFolderOpen() && (!mIsSearchBarHidden || mQSBSearchBar.getAlpha() < 1f)) {
+                if (mLauncher != null && mLauncher.shouldShowSearchBar()
+                        && mQSBSearchBar.getVisibility() != View.VISIBLE) {
+                    mQSBSearchBar.setVisibility(View.VISIBLE);
+                }
                 prepareStartAnimation(mQSBSearchBar);
                 mQSBSearchBarAnim.reverse();
             }
