@@ -18,4 +18,5 @@
     <!-- Specifies whether to expand the cropped area on both sides (rather
          than just to one side) -->
     <bool name="center_crop">false</bool>
+    <bool name="resource_wallpaper_preview_left_edge">false</bool>
 </resources>

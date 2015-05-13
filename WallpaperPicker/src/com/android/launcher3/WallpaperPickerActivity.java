@@ -94,6 +94,7 @@ public class WallpaperPickerActivity extends WallpaperCropActivity {
 
     private View mSelectedTile;
     private boolean mIgnoreNextTap;
+    private boolean mResourcePreviewMoveToLeft = false;
     private OnClickListener mThumbnailOnClickListener;
 
     private LinearLayout mWallpapersView;
@@ -231,11 +232,13 @@ public class WallpaperPickerActivity extends WallpaperCropActivity {
     public static class ResourceWallpaperInfo extends WallpaperTileInfo {
         private Resources mResources;
         private int mResId;
+        private boolean mMoveToLeft;
 
-        public ResourceWallpaperInfo(Resources res, int resId, Drawable thumb) {
+        public ResourceWallpaperInfo(Resources res, int resId, Drawable thumb, boolean moveToLeft) {
             mResources = res;
             mResId = resId;
             mThumb = thumb;
+            mMoveToLeft = moveToLeft;
         }
         @Override
         public void onClick(WallpaperPickerActivity a) {
@@ -254,6 +257,9 @@ public class WallpaperPickerActivity extends WallpaperCropActivity {
             v.setScale(wallpaperSize.x / crop.width());
             v.setTouchEnabled(false);
             a.setSystemWallpaperVisiblity(false);
+            if (mMoveToLeft) {
+                v.moveToLeft();
+            }
         }
         @Override
         public void onSave(WallpaperPickerActivity a) {
@@ -378,6 +384,9 @@ public class WallpaperPickerActivity extends WallpaperCropActivity {
     // called by onCreate; this is subclassed to overwrite WallpaperCropActivity
     protected void init() {
         setContentView(R.layout.wallpaper_picker);
+
+        mResourcePreviewMoveToLeft =
+            getResources().getBoolean(R.bool.resource_wallpaper_preview_left_edge);
 
         mCropView = (CropView) findViewById(R.id.cropView);
         mCropView.setVisibility(View.INVISIBLE);
@@ -1089,7 +1098,8 @@ public class WallpaperPickerActivity extends WallpaperCropActivity {
             }
         }
         if (defaultWallpaperExists) {
-            return new ResourceWallpaperInfo(sysRes, resId, new BitmapDrawable(thumb));
+            return new ResourceWallpaperInfo(sysRes, resId,
+                    new BitmapDrawable(thumb), mResourcePreviewMoveToLeft);
         }
         return null;
     }
@@ -1151,7 +1161,8 @@ public class WallpaperPickerActivity extends WallpaperCropActivity {
 
                     if (thumbRes != 0) {
                         ResourceWallpaperInfo wallpaperInfo =
-                                new ResourceWallpaperInfo(res, resId, res.getDrawable(thumbRes));
+                                new ResourceWallpaperInfo(res, resId,
+                                        res.getDrawable(thumbRes), mResourcePreviewMoveToLeft);
                         known.add(wallpaperInfo);
                         // Log.d(TAG, "add: [" + packageName + "]: " + extra + " (" + res + ")");
                     }
