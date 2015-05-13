@@ -2286,9 +2286,6 @@ public class Workspace extends SmoothPagedView
             return null;
         }
 
-        // Check to see if new Settings need to be taken
-        reloadSettings();
-
         // Initialize animation arrays for the first time if necessary
         initAnimationArrays();
 
@@ -2318,6 +2315,11 @@ public class Workspace extends SmoothPagedView
         boolean allAppsToWorkspace = (stateIsNormalHidden && stateIsNormal);
         final boolean workspaceToOverview = (oldStateIsNormal && stateIsOverview);
         final boolean overviewToWorkspace = (oldStateIsOverview && stateIsNormal);
+
+        if (overviewToWorkspace || overviewToAllApps) {
+            // Check to see if new Settings need to be taken
+            reloadSettings();
+        }
 
         mNewScale = 1.0f;
 
