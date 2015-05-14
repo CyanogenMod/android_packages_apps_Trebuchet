@@ -2522,7 +2522,7 @@ public class Launcher extends Activity
         super.onPrepareOptionsMenu(menu);
         if (!isOnCustomContent()) {
             // Close any open folders
-            closeFolder();
+            closeFolder(false);
             // Stop resizing any widgets
             mWorkspace.exitWidgetResizeMode();
             if (!mWorkspace.isInOverviewMode()) {
