@@ -78,7 +78,6 @@
   <string name="gadget_setup_text">Astellen</string>
   <string name="uninstall_system_app_text">Dëst ass eng System-App a kann net desinstalléiert ginn.</string>
   <string name="dream_name">Rocket Launcher</string>
-  <string name="folder_hint_text">Onbenannten Dossier</string>
   <string name="workspace_description_format">Startschierm %1$d</string>
   <string name="default_scroll_format">Säit %1$d / %2$d</string>
   <string name="workspace_scroll_format">Startschierm %1$d / %2$d</string>

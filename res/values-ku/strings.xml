@@ -80,7 +80,6 @@
   <string name="gadget_error_text">کێشەی بارکردنی ویجێت</string>
   <string name="uninstall_system_app_text">ئەمە بەرنامەیەکی سیستەمییە و ناتوانرێت دامەزرانسڕینەوەی بۆ بکرێت.</string>
   <string name="dream_name">داگیرسێنەری مووشەک</string>
-  <string name="folder_hint_text">بوخچەی ناونەنراو</string>
   <string name="workspace_description_format">ڕوونمای ماڵەوە %1$d</string>
   <string name="default_scroll_format">پەڕەی %1$d لە %2$d</string>
   <string name="workspace_scroll_format">ڕوونمای ماڵەوە %1$d of %2$d</string>

@@ -80,7 +80,6 @@
   <string name="gadget_setup_text">Configuración</string>
   <string name="uninstall_system_app_text">Esta aplicación ye del sistema y nun pue desinstalase.</string>
   <string name="dream_name">Rocket Launcher</string>
-  <string name="folder_hint_text">Carpeta ensin nome</string>
   <string name="workspace_description_format">Pantalla d\'aniciu %1$d</string>
   <string name="default_scroll_format">Páxina %1$d de %2$d</string>
   <string name="workspace_scroll_format">Pantalla d\'aniciu %1$d de %2$d</string>

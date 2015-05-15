@@ -41,4 +41,5 @@
   <string name="icon_labels_hide">izkutatu</string>
   <string name="protected_app_settings">Babesturiko aplikazioak</string>
   <string name="dialog_confirm">Berretsi</string>
+  <string name="drawer_type_drawer">Bertikala</string>
 </resources>
