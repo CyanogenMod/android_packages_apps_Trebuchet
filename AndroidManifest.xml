@@ -25,7 +25,7 @@
 
     <original-package android:name="com.android.launcher3" />
 
-    <uses-sdk android:minSdkVersion="21" android:targetSdkVersion="16" />
+    <uses-sdk android:minSdkVersion="21" android:targetSdkVersion="21" />
 
     <permission
         android:name="com.android.launcher.permission.INSTALL_SHORTCUT"
