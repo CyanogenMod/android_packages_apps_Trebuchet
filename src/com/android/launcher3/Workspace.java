@@ -2175,6 +2175,13 @@ public class Workspace extends SmoothPagedView
         return true;
     }
 
+    public boolean resetOverviewMode() {
+        //reset overviewmode without any animations
+        exitOverviewMode(-1, false);
+        enableOverviewMode(true, -1, false);
+        return true;
+    }
+
     public void exitOverviewMode(boolean animated) {
         exitOverviewMode(-1, animated);
     }

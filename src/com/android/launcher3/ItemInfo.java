@@ -113,6 +113,12 @@ public class ItemInfo {
     CharSequence contentDescription;
 
     /**
+     * Indicates that this item has had it's position changed
+     * because the grid size was made smaller and it could no longer fit.
+     */
+    public boolean wasMovedDueToReducedSpace = false;
+
+    /**
      * The position of the item in a drag-and-drop operation.
      */
     int[] dropPos = null;
