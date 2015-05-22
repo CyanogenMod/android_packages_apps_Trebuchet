@@ -195,9 +195,7 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
         if (sDefaultFolderName == null) {
             sDefaultFolderName = res.getString(R.string.folder_name);
         }
-        if (sHintText == null) {
-            sHintText = res.getString(R.string.folder_hint_text);
-        }
+        sHintText = res.getString(R.string.folder_hint_text);
         mLauncher = (Launcher) context;
         // We need this view to be focusable in touch mode so that when text editing of the folder
         // name is complete, we have something to focus on, thus hiding the cursor and giving
