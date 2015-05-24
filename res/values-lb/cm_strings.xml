@@ -46,6 +46,6 @@
   <string name="drawer_type">Layout</string>
   <string name="drawer_type_drawer">Vertikal</string>
   <string name="drawer_type_pager">Säiten</string>
-  <string name="setting_state_disabled">DEAKTIVÉIEREN</string>
+  <string name="setting_state_disabled">DESAKTIVÉIEREN</string>
   <string name="search_activity_not_found">Eng Sichaktivitéit konnt net fonnt ginn!</string>
 </resources>
