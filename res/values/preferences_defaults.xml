@@ -14,6 +14,6 @@
     <bool name="preferences_interface_general_icons_large_default">@bool/config_largeIcons</bool>
     <string name="preferences_interface_general_icons_text_font_family_default">sans-serif-condensed</string>
     <integer name="preferences_interface_general_icons_text_font_style_default">0</integer>
-    <integer name="preferences_interface_drawer_type_default" product="default">0</integer>
     <integer name="preferences_interface_drawer_type_default" product="tablet">1</integer>
+    <integer name="preferences_interface_drawer_type_default" product="default">0</integer>
 </resources>
