@@ -181,6 +181,55 @@ public class FolderIcon extends FrameLayout implements FolderListener {
 
         icon.setOnFocusChangeListener(launcher.mFocusHandler);
         icon.setDrawingCacheEnabled(true);
+
+        // get dimen for the icon size
+        // ratio: iconsize = 3*padding + 2*small_icon_size
+        // padding*6.5 = small_icon_size
+        // so padding = folderIconSize / 16
+        int padding = grid.iconSizePx / 16;
+        int smallIconSize = (int) (padding * 6.5);
+
+        for (int i = NUM_ITEMS_IN_PREVIEW; i >= 0; i--) {
+            ImageView appIcon = null;
+            int marginLeft = 0, marginRight = 0, marginTop = 0, marginBottom = 0;
+            switch(i) {
+                case 0:
+                    appIcon = (ImageView) icon.findViewById(R.id.app_0);
+                    marginLeft = padding;
+                    marginTop = padding;
+                    break;
+                case 1:
+                    appIcon = (ImageView) icon.findViewById(R.id.app_1);
+                    marginTop = padding;
+                    marginRight = padding;
+                    break;
+                case 2:
+                    appIcon = (ImageView) icon.findViewById(R.id.app_2);
+                    marginBottom = padding;
+                    marginLeft = padding;
+                    break;
+                case 3:
+                    appIcon = (ImageView) icon.findViewById(R.id.app_3);
+                    marginBottom = padding;
+                    marginRight = padding;
+                    break;
+            }
+
+            if (appIcon != null) {
+                RelativeLayout.LayoutParams layoutParams
+                        = (RelativeLayout.LayoutParams) appIcon.getLayoutParams();
+
+                layoutParams.width = smallIconSize;
+                layoutParams.height = smallIconSize;
+                layoutParams.leftMargin = marginLeft;
+                layoutParams.rightMargin = marginRight;
+                layoutParams.topMargin = marginTop;
+                layoutParams.bottomMargin = marginBottom;
+
+                appIcon.setLayoutParams(layoutParams);
+            }
+        }
+
         return icon;
     }
 
@@ -681,16 +730,6 @@ public class FolderIcon extends FrameLayout implements FolderListener {
         }
 
         if (!mAnimating) {
-            LauncherAppState app = LauncherAppState.getInstance();
-            DeviceProfile grid = app.getDynamicGrid().getDeviceProfile();
-
-            // get dimen for the icon size
-            // ratio: iconsize = 3*padding + 2*small_icon_size
-            // padding*6.5 = small_icon_size
-            // so padding = folderIconSize / 16
-            int padding = grid.iconSizePx / 16;
-            int smallIconSize = (int) (padding * 6.5);
-
             for (int i = NUM_ITEMS_IN_PREVIEW; i >= 0; i--) {
                 d = null;
                 if (i < items.size()) {
@@ -703,42 +742,23 @@ public class FolderIcon extends FrameLayout implements FolderListener {
                 }
 
                 ImageView appIcon = null;
-                int marginLeft = 0, marginRight = 0, marginTop = 0, marginBottom = 0;
                 switch(i) {
                     case 0:
                         appIcon = (ImageView) findViewById(R.id.app_0);
-                        marginLeft = padding;
-                        marginTop = padding;
                         break;
                     case 1:
                         appIcon = (ImageView) findViewById(R.id.app_1);
-                        marginTop = padding;
-                        marginRight = padding;
                         break;
                     case 2:
                         appIcon = (ImageView) findViewById(R.id.app_2);
-                        marginBottom = padding;
-                        marginLeft = padding;
                         break;
                     case 3:
                         appIcon = (ImageView) findViewById(R.id.app_3);
-                        marginBottom = padding;
-                        marginRight = padding;
                         break;
                 }
 
                 if (appIcon != null) {
                     appIcon.setImageDrawable(d);
-                    RelativeLayout.LayoutParams layoutParams
-                            = (RelativeLayout.LayoutParams) appIcon.getLayoutParams();
-                    layoutParams.width = smallIconSize;
-                    layoutParams.height = smallIconSize;
-                    layoutParams.leftMargin = marginLeft;
-                    layoutParams.rightMargin = marginRight;
-                    layoutParams.topMargin = marginTop;
-                    layoutParams.bottomMargin = marginBottom;
-
-                    appIcon.setLayoutParams(layoutParams);
                 }
             }
         } else {
