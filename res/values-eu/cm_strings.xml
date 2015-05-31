@@ -16,33 +16,34 @@
      limitations under the License.
 -->
 <resources>
-  <string name="home_screen_settings">HASIERA PANTAILAREN EZARPENAK</string>
-  <string name="drawer_settings">APLIKAZIOEN EZARPENAK</string>
+  <string name="home_screen_settings">HASIERA-PANTAILAREN EZARPENAK</string>
+  <string name="drawer_settings">TIRADERAREN EZARPENAK</string>
   <string name="app_settings">APLIKAZIOAREN EZARPENAK</string>
   <string name="setting_state_on">BAI</string>
   <string name="setting_state_off">EZ</string>
   <string name="search_panel_gel">Google Now</string>
-  <string name="search_panel_custom_home">CM Home</string>
+  <string name="search_panel_custom_home">CM Hasiera</string>
   <string name="themes_button_text">Gaiak</string>
   <string name="scrolling_page_outlines">Pantaila ertzak</string>
   <string name="scrolling_fade_adjacent">Bat egite efektua</string>
+  <string name="scrolling_wallpaper">Korritu horma-papera</string>
   <string name="grid_size_text">Sarearen tamaina</string>
   <string name="grid_size_comfortable">Arrunta</string>
   <string name="grid_size_cozy">Erosoa</string>
-  <string name="grid_size_condensed">Konprimatua</string>
+  <string name="grid_size_condensed">Trinkotua</string>
   <string name="grid_size_custom">Pertsonalizatua</string>
   <string name="grid_size_custom_and_size">Pertsonalizatua (%1$s)</string>
-  <string name="preferences_interface_homescreen_custom">Tamaina pertsonalizatua hautatu</string>
+  <string name="preferences_interface_homescreen_custom">Hautatu tamaina pertsonalizatua</string>
   <string name="scroll_effect_text">Mugitze efektua</string>
-  <string name="drawer_sorting_text">Antolatze era</string>
-  <string name="sort_mode_title">Izena</string>
+  <string name="drawer_sorting_text">Ordenatzeko modua</string>
+  <string name="sort_mode_title">Izenburua</string>
   <string name="sort_mode_launch_count">Zenbat aldiz exekutatua</string>
   <string name="sort_mode_install_time">Noiz instalatua</string>
-  <string name="home_screen_search_text">Bilaketa barra</string>
+  <string name="home_screen_search_text">Bilaketa-barra</string>
   <string name="larger_icons_text">Ikono handiak</string>
   <string name="icon_labels">Ikonoen etiketak</string>
   <string name="icon_labels_show">Erakutsi</string>
-  <string name="icon_labels_hide">izkutatu</string>
+  <string name="icon_labels_hide">Ezkutatu</string>
   <string name="protected_app_settings">Babesturiko aplikazioak</string>
   <string name="search_screen_left_text">Bilaketa panela</string>
   <string name="dialog_confirm">Berretsi</string>
