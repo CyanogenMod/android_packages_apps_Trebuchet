@@ -29,6 +29,7 @@
   <string name="grid_size_comfortable">สะดวกสบาย</string>
   <string name="grid_size_cozy">โคซี่</string>
   <string name="grid_size_condensed">บีบ</string>
+  <string name="grid_size_custom">กำหนดเอง  (<xliff:g id="rows">%1$d</xliff:g> \u00d7 <xliff:g id="columns">%2$d</xliff:g>)</string>
   <string name="preferences_interface_homescreen_custom">เลือกขนาดกำหนดเอง</string>
   <string name="scroll_effect_text">เอฟเฟกต์เลื่อน</string>
   <string name="drawer_sorting_text">วิธีการเรียง</string>
@@ -42,4 +43,9 @@
   <string name="icon_labels_hide">ซ่อน</string>
   <string name="protected_app_settings">แอปที่ป้องกัน</string>
   <string name="dialog_confirm">Google</string>
+  <string name="drawer_type">การจัดวาง</string>
+  <string name="drawer_type_drawer">แนวตั้ง</string>
+  <string name="drawer_type_pager">หน้า</string>
+  <string name="setting_state_disabled">ปิดการใช้งาน</string>
+  <string name="search_activity_not_found">ไม่มีกิจกรรมที่ค้นหา!</string>
 </resources>
