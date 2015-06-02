@@ -153,7 +153,7 @@ public class AggregationIntentService extends IntentService {
         Bundle bundle = TrackingBundle
                 .createTrackingBundle(TRACKING_ID, TrackingEvent.Category.HOMESCREEN_PAGE.name(),
                         "count");
-        bundle.putInt(TrackingEvent.KEY_VALUE, pageCount);
+        bundle.putString(TrackingEvent.KEY_VALUE, String.valueOf(pageCount));
         StatsUtil.sendEvent(this, bundle);
     }
 
@@ -164,7 +164,7 @@ public class AggregationIntentService extends IntentService {
         }
         Bundle bundle = TrackingBundle
                 .createTrackingBundle(TRACKING_ID, TrackingEvent.Category.WIDGET.name(), "count");
-        bundle.putInt(TrackingEvent.KEY_VALUE, widgetCount);
+        bundle.putString(TrackingEvent.KEY_VALUE, String.valueOf(widgetCount));
         StatsUtil.sendEvent(this, bundle);
     }
 

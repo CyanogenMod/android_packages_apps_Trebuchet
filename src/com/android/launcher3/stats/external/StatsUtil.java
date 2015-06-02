@@ -97,7 +97,7 @@ public class StatsUtil {
         }
         Logger.logd(TAG, "Stats collection: ENABLED!");
 
-        Intent newIntent = new Intent("com.cyngn.stats.action.SEND_ANALYTIC_EVENT");
+        Intent newIntent = new Intent(ANALYTIC_INTENT);
 
         if (!trackingBundle.containsKey(KEY_TRACKING_ID)) {
             Logger.logd(TAG, "No tracking id in bundle");
