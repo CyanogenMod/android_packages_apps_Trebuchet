@@ -3080,12 +3080,15 @@ public class Launcher extends Activity
 
         // Start activities
         startAppShortcutOrInfoActivity(v);
-        String packageName = intent.getComponent().getPackageName();
-        LauncherApplication.getLauncherStats().sendAppLaunchEvent(LauncherStats.ORIGIN_HOMESCREEN,
-                packageName);
-        if (LauncherStats.SETTINGS_PACKAGE_NAME.equals(packageName)) {
-            LauncherApplication.getLauncherStats().sendSettingsOpenedEvent(
-                    LauncherStats.ORIGIN_HOMESCREEN);
+        final ComponentName componentName = intent.getComponent();
+        if (componentName != null) {
+            String packageName = componentName.getPackageName();
+            LauncherApplication.getLauncherStats().sendAppLaunchEvent(
+                    LauncherStats.ORIGIN_HOMESCREEN, packageName);
+            if (LauncherStats.SETTINGS_PACKAGE_NAME.equals(packageName)) {
+                LauncherApplication.getLauncherStats().sendSettingsOpenedEvent(
+                        LauncherStats.ORIGIN_HOMESCREEN);
+            }
         }
     }
 
