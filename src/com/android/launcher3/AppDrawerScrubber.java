@@ -83,17 +83,23 @@ public class AppDrawerScrubber extends LinearLayout {
                 }
                 resetScrubber();
 
-                String section = String.valueOf(mSections[progress]);
-
-                if (mScrubberIndicator != null) {
-                    float translateX = (progress * seekBar.getWidth()) / mSections.length;
-                    translateX -= (mScrubberIndicator.getWidth() / 6); // offset for alignment
-                    mScrubberIndicator.setTranslationX(translateX);
-                    mScrubberIndicator.setText(section);
+                if (mSections.length == 0) {
+                    updateSections();
                 }
 
-                mLayoutManager.smoothScrollToPosition(mListView, null,
-                        mAdapter.getPositionForSection(progress));
+                if (mSections.length > 0) {
+                    String section = String.valueOf(mSections[progress]);
+
+                    if (mScrubberIndicator != null) {
+                        float translateX = (progress * seekBar.getWidth()) / mSections.length;
+                        translateX -= (mScrubberIndicator.getWidth() / 6); // offset for alignment
+                        mScrubberIndicator.setTranslationX(translateX);
+                        mScrubberIndicator.setText(section);
+                    }
+
+                    mLayoutManager.smoothScrollToPosition(mListView, null,
+                            mAdapter.getPositionForSection(progress));
+                }
             }
 
             @Override
