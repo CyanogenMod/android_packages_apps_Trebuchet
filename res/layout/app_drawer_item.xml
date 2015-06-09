@@ -31,8 +31,8 @@
     <!-- Layout in back to front render order -->
     <LinearLayout
             android:id="@+id/drawer_item_flow"
-            android:layout_alignParentRight="true"
-            android:layout_toRightOf="@+id/drawer_item_title"
+            android:layout_alignParentEnd="true"
+            android:layout_toEndOf="@+id/drawer_item_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal" />
@@ -52,7 +52,7 @@
         android:layout_height="fill_parent"
         android:layout_marginTop="6dp"
         android:layout_marginBottom="24dp"
-        android:layout_marginLeft="6dp"
+        android:layout_marginStart="6dp"
         android:layout_alignTop="@id/drawer_item_flow"
         android:layout_alignBottom="@id/drawer_item_flow"
         android:layout_centerVertical="true"
