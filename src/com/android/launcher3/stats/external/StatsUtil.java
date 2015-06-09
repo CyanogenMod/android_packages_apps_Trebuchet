@@ -71,7 +71,7 @@ public class StatsUtil {
                     (ApplicationInfo.FLAG_SYSTEM | ApplicationInfo.FLAG_UPDATED_SYSTEM_APP)) != 0;
             return pi.applicationInfo.enabled && isSystemApp;
         } catch (PackageManager.NameNotFoundException e) {
-            Log.e(TAG, e.getMessage(), e);
+            Log.e(TAG, "stats not found!");
             return false;
         }
     }
