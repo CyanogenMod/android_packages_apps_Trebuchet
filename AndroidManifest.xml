@@ -244,5 +244,9 @@
 
         <meta-data android:name="android.nfc.disable_beam_default"
                        android:value="true" />
+
+        <meta-data android:name="com.google.android.backup.api_key"
+            android:value="@string/backup_api_key" />
+
     </application>
 </manifest>

@@ -21,6 +21,7 @@
     <!-- App data backup and restore. To enble backup, register with an android backup service.
          http://developer.android.com/guide/topics/data/backup.html#BackupKey -->
     <bool name="enable_backup">false</bool>
+    <string name="backup_api_key"></string>
 
 <!-- DragController -->
     <integer name="config_flingToDeleteMinVelocity">-1500</integer>
