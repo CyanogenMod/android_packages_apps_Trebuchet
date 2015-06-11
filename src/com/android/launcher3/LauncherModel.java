@@ -1537,7 +1537,11 @@ public class LauncherModel extends BroadcastReceiver
     }
 
     public void stopLoader() {
-        resetLoadedState(true, true);
+        synchronized (mLock) {
+            if (mLoaderTask != null) {
+                mLoaderTask.stopLocked();
+            }
+        }
     }
 
     /** Loads the workspace screens db into a map of Rank -> ScreenId */
