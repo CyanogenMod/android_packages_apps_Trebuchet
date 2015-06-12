@@ -884,7 +884,7 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
         oa.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationStart(Animator animation) {
-                if (animate && !mLauncher.getDragController().isDragging()) {
+                if (animate && !mDragController.isDragging()) {
                     hideFolderOutline(false);
                 }
             }
@@ -1216,7 +1216,7 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
         }
         mReorderAlarm.cancelAlarm();
 
-        if (!mLauncher.getDragController().isDragging()) {
+        if (!mDragController.isDragging()) {
             hideFolderOutline(true);
         }
     }
@@ -1351,7 +1351,7 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
     }
 
     public void notifyDrop() {
-        if (mDragInProgress) {
+        if (mDragController.isDragging()) {
             mItemAddedBackToSelfViaIcon = true;
         }
     }
@@ -1556,9 +1556,9 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
             mRearrangeOnClose = false;
         }
         if (getItemCount() <= 1) {
-            if (!mDragInProgress && !mSuppressFolderDeletion) {
+            if (!mDragController.isDragging() && !mSuppressFolderDeletion) {
                 replaceFolderWithFinalItem();
-            } else if (mDragInProgress) {
+            } else if (mDragController.isDragging()) {
                 mDeleteFolderOnDropCompleted = true;
             }
         }
