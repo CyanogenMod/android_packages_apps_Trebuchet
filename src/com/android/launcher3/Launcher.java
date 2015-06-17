@@ -927,14 +927,9 @@ public class Launcher extends Activity
                     final CellLayout dropLayout = mWorkspace.getScreenWithId(mPendingAddInfo.screenId);
 
                     dropLayout.setDropPending(true);
-                    final Runnable onComplete = new Runnable() {
-                        @Override
-                        public void run() {
-                            completeTwoStageWidgetDrop(resultCode, appWidgetId);
-                            dropLayout.setDropPending(false);
-                        }
-                    };
-                    mWorkspace.removeExtraEmptyScreenDelayed(true, onComplete,
+                    completeTwoStageWidgetDrop(resultCode, appWidgetId);
+                    dropLayout.setDropPending(false);
+                    mWorkspace.removeExtraEmptyScreenDelayed(true, null,
                             ON_ACTIVITY_RESULT_ANIMATION_DELAY, false);
                 } else {
                     PendingAddArguments args = preparePendingAddArgs(requestCode, data, appWidgetId,
