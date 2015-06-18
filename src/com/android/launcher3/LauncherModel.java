@@ -2284,9 +2284,11 @@ public class LauncherModel extends BroadcastReceiver
                                             iconPackageIndex, iconResourceIndex, iconIndex,
                                             titleIndex);
 
-                                    CharSequence title = getShortcutTitle(manager, intent);
-                                    if (title != null) {
-                                        info.title = title;
+                                    if (info.title == null) {
+                                        CharSequence title = getShortcutTitle(manager, intent);
+                                        if (title != null) {
+                                            info.title = title;
+                                        }
                                     }
 
                                     // App shortcuts that used to be automatically added to Launcher
