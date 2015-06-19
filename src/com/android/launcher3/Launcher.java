@@ -331,6 +331,7 @@ public class Launcher extends Activity
     private boolean mWorkspaceLoading = true;
 
     private boolean mDynamicGridUpdateRequired = false;
+    private boolean mDynamicGridResizeRequired = false;
 
     private boolean mPaused = true;
     private boolean mRestoring;
@@ -451,7 +452,7 @@ public class Launcher extends Activity
     Runnable mUpdateDynamicGridRunnable = new Runnable() {
         @Override
         public void run() {
-            updateDynamicGrid();
+            updateDynamicGrid(false);
         }
     };
 
@@ -463,7 +464,7 @@ public class Launcher extends Activity
                 return;
             }
 
-            updateDynamicGrid();
+            updateDynamicGrid(false);
         }
     };
 
@@ -1354,7 +1355,7 @@ public class Launcher extends Activity
             SettingsProvider.putInt(this,
                     SettingsProvider.SETTINGS_UI_DYNAMIC_GRID_SIZE, size.getValue());
 
-            setUpdateDynamicGrid();
+            setUpdateDynamicGrid(true);
         }
 
         mOverviewSettingsPanel.notifyDataSetInvalidated();
@@ -5892,11 +5893,11 @@ public class Launcher extends Activity
         return effect == null ? TransitionEffect.TRANSITION_EFFECT_NONE : effect.getName();
     }
 
-    public void updateDynamicGrid() {
-        updateDynamicGrid(mWorkspace.getRestorePage());
+    public void updateDynamicGrid(boolean resizeGridIfNeeded) {
+        updateDynamicGrid(mWorkspace.getRestorePage(), resizeGridIfNeeded);
     }
 
-    public void updateDynamicGrid(int page) {
+    public void updateDynamicGrid(int page, boolean resizeGridIfNeeded) {
         mSearchDropTargetBar.setupQSB(Launcher.this);
 
         initializeDynamicGrid(true);
@@ -5905,19 +5906,22 @@ public class Launcher extends Activity
 
         // Synchronized reload
         mModel.resetLoadedState(true, true);
-        mModel.startLoader(true, page);
+        int flag = resizeGridIfNeeded ? LauncherModel.LOADER_FLAG_RESIZE_GRID :
+                LauncherModel.LOADER_FLAG_NONE;
+        mModel.startLoader(true, page, flag);
         mWorkspace.updateCustomContentVisibility();
 
         mAppDrawerAdapter.reset();
     }
 
-    public void setUpdateDynamicGrid() {
+    public void setUpdateDynamicGrid(boolean resizeDynamicGrid) {
         mDynamicGridUpdateRequired = true;
+        mDynamicGridResizeRequired = resizeDynamicGrid;
     }
 
     public boolean updateGridIfNeeded() {
         if (mDynamicGridUpdateRequired) {
-            updateDynamicGrid(mWorkspace.getCurrentPage());
+            updateDynamicGrid(mWorkspace.getCurrentPage(), mDynamicGridResizeRequired);
             mDynamicGridUpdateRequired = false;
             return true;
         }

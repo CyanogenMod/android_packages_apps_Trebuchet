@@ -288,7 +288,7 @@ public class SettingsPinnedHeaderAdapter extends PinnedHeaderListAdapter {
                     switch (position) {
                         case 0:
                             updateSearchBarVisibility(v);
-                            mLauncher.setUpdateDynamicGrid();
+                            mLauncher.setUpdateDynamicGrid(false);
                             break;
                         case 1:
                             mLauncher.onClickTransitionEffectButton(v, false);
@@ -297,13 +297,13 @@ public class SettingsPinnedHeaderAdapter extends PinnedHeaderListAdapter {
                             onIconLabelsBooleanChanged(v,
                                     SettingsProvider.SETTINGS_UI_HOMESCREEN_HIDE_ICON_LABELS,
                                     R.bool.preferences_interface_homescreen_hide_icon_labels_default);
-                            mLauncher.setUpdateDynamicGrid();
+                            mLauncher.setUpdateDynamicGrid(false);
                             break;
                         case 3:
                             onSettingsBooleanChanged(v,
                                     SettingsProvider.SETTINGS_UI_HOMESCREEN_SCROLLING_WALLPAPER_SCROLL,
                                     R.bool.preferences_interface_homescreen_scrolling_wallpaper_scroll_default);
-                            mLauncher.setUpdateDynamicGrid();
+                            mLauncher.setUpdateDynamicGrid(false);
                             break;
                         case 4:
                             mLauncher.onClickDynamicGridSizeButton();
@@ -328,7 +328,7 @@ public class SettingsPinnedHeaderAdapter extends PinnedHeaderListAdapter {
                             onIconLabelsBooleanChanged(v,
                                     SettingsProvider.SETTINGS_UI_DRAWER_HIDE_ICON_LABELS,
                                     R.bool.preferences_interface_drawer_hide_icon_labels_default);
-                            mLauncher.setUpdateDynamicGrid();
+                            mLauncher.setUpdateDynamicGrid(false);
                             break;
                     }
                     break;
@@ -338,7 +338,7 @@ public class SettingsPinnedHeaderAdapter extends PinnedHeaderListAdapter {
                             onSettingsBooleanChanged(v,
                                     SettingsProvider.SETTINGS_UI_GENERAL_ICONS_LARGE,
                                     R.bool.preferences_interface_general_icons_large_default);
-                            mLauncher.setUpdateDynamicGrid();
+                            mLauncher.setUpdateDynamicGrid(false);
                             break;
                         case 1:
                             Intent intent = new Intent();
