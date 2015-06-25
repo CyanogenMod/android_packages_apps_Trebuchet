@@ -1111,6 +1111,10 @@ public class Workspace extends SmoothPagedView
         return mIsSwitchingState;
     }
 
+    public boolean isHidden() {
+        return mState == State.NORMAL_HIDDEN;
+    }
+
     /** This differs from isSwitchingState in that we take into account how far the transition
      *  has completed. */
     public boolean isFinishedSwitchingState() {
