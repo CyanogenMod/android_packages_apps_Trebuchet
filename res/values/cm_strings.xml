@@ -47,6 +47,7 @@
 
     <!-- Folder titles -->
     <string name="google_title" translatable="false">Google</string>
+    <string name="play_folder_title">Play</string>
 
     <!-- Scroll effect -->
     <string name="scroll_effect_text">Scroll effect</string>
