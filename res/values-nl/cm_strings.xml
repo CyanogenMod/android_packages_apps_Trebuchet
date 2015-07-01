@@ -31,6 +31,7 @@
   <string name="grid_size_condensed">Smal</string>
   <string name="grid_size_custom">Aangepast (<xliff:g id="rows">%1$d</xliff:g> \u00d7 <xliff:g id="columns">%2$d</xliff:g>)</string>
   <string name="preferences_interface_homescreen_custom">Aangepaste grootte</string>
+  <string name="play_folder_title">Play</string>
   <string name="scroll_effect_text">Overgangseffect</string>
   <string name="drawer_sorting_text">Sorteren op</string>
   <string name="sort_mode_title">Titel</string>
