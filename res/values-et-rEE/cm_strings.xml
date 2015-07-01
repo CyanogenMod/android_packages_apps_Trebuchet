@@ -29,6 +29,7 @@
   <string name="grid_size_comfortable">Mugav</string>
   <string name="grid_size_cozy">Kodune</string>
   <string name="grid_size_condensed">Kärbitud</string>
+  <string name="grid_size_custom">Kohandatud (<xliff:g id="rows">%1$d</xliff:g> \u00d7 <xliff:g id="columns">%2$d</xliff:g>)</string>
   <string name="preferences_interface_homescreen_custom">Vali sobiv suurus</string>
   <string name="scroll_effect_text">Kerimisefekt</string>
   <string name="drawer_sorting_text">Sortimisrežiim</string>
@@ -42,4 +43,9 @@
   <string name="icon_labels_hide">Peida</string>
   <string name="protected_app_settings">Kaitstud rakendused</string>
   <string name="dialog_confirm">Kinnita</string>
+  <string name="drawer_type">Paigutus</string>
+  <string name="drawer_type_drawer">Vertikaalne</string>
+  <string name="drawer_type_pager">Leheküljed</string>
+  <string name="setting_state_disabled">KEELATUD</string>
+  <string name="search_activity_not_found">Otsimise tegevusala ei leitud!</string>
 </resources>

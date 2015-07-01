@@ -16,18 +16,36 @@
      limitations under the License.
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <string name="home_screen_settings">AGORDOJ DE LA HEJMA PAĜO</string>
+  <string name="drawer_settings">AGORDOJ DE LA APLIKAĴA EKRANO</string>
+  <string name="app_settings">AGORDOJ DE LA APLIKAĴO</string>
   <string name="setting_state_on">EK</string>
   <string name="setting_state_off">FOR</string>
+  <string name="themes_button_text">Etosoj</string>
+  <string name="scrolling_page_outlines">Konturo de la paĝoj</string>
+  <string name="scrolling_fade_adjacent">Dissolvi flankajn paĝojn</string>
+  <string name="scrolling_wallpaper">Rulumo de la ekranfono</string>
+  <string name="grid_size_text">Grandeco de la krado</string>
+  <string name="grid_size_comfortable">Komforta</string>
   <string name="grid_size_cozy">Koketa</string>
+  <string name="grid_size_condensed">Densiga</string>
+  <string name="grid_size_custom">Propra (<xliff:g id="rows">%1$d</xliff:g> \u00d7 <xliff:g id="columns">%2$d</xliff:g>)</string>
+  <string name="preferences_interface_homescreen_custom">Elekti propran tipar-grandecon</string>
+  <string name="scroll_effect_text">Ruluma efekto</string>
+  <string name="drawer_sorting_text">Reĝimo de ordigo</string>
   <string name="sort_mode_title">Titolo</string>
+  <string name="sort_mode_launch_count">Nombro de lanĉo</string>
+  <string name="sort_mode_install_time">Dato de instalado</string>
   <string name="home_screen_search_text">Serĉ-breto</string>
   <string name="larger_icons_text">Grandaj piktogramoj</string>
   <string name="icon_labels">Etikedo de la piktogramoj</string>
   <string name="icon_labels_show">Montri</string>
   <string name="icon_labels_hide">Kaŝi</string>
+  <string name="protected_app_settings">Protektitaj aplikaĵoj</string>
   <string name="dialog_confirm">Konfirmi</string>
   <string name="drawer_type">Aspekto</string>
   <string name="drawer_type_drawer">Vertikala</string>
   <string name="drawer_type_pager">Paĝigita</string>
   <string name="setting_state_disabled">MALŜALTITA</string>
+  <string name="search_activity_not_found">Neniu serĉilo troveblas!</string>
 </resources>

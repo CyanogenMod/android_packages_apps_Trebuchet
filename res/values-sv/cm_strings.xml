@@ -42,4 +42,5 @@
   <string name="icon_labels_hide">Dölj</string>
   <string name="protected_app_settings">Skyddade appar</string>
   <string name="dialog_confirm">Bekräfta</string>
+  <string name="setting_state_disabled">INAKTIVERAD</string>
 </resources>

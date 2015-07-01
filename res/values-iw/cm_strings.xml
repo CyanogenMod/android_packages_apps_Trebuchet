@@ -31,6 +31,7 @@
   <string name="grid_size_condensed">מרוכז</string>
   <string name="grid_size_custom">מותאם אישית (<xliff:g id="rows">%1$d </xliff:g> \u00d7 <xliff:g id="columns">%2$d </xliff:g>)</string>
   <string name="preferences_interface_homescreen_custom">בחר גודל מותאם אישית</string>
+  <string name="play_folder_title">נגן</string>
   <string name="scroll_effect_text">אפקט גלילה</string>
   <string name="drawer_sorting_text">מצב המיון</string>
   <string name="sort_mode_title">כותרת</string>
