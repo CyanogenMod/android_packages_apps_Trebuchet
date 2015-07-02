@@ -33,6 +33,7 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.Dialog;
 import android.app.SearchManager;
+import android.appwidget.AppWidgetHost;
 import android.appwidget.AppWidgetHostView;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProviderInfo;
@@ -76,6 +77,7 @@ import android.text.TextUtils;
 import android.text.method.TextKeyListener;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.Pair;
 import android.view.ContextThemeWrapper;
 import android.view.Display;
 import android.view.Gravity;
@@ -4335,10 +4337,59 @@ public class Launcher extends Activity
         }
     }
 
+    /**
+     * Resolves and returns the first Recents widget from the same package as the global
+     * assist activity.
+     */
+    public AppWidgetProviderInfo resolveSearchAppWidget() {
+        if (mAppWidgetManager == null) return null;
+
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        final Intent assistIntent = searchManager.getAssistIntent(this, false);
+        if (assistIntent == null) {
+            return null;
+        }
+        ComponentName searchComponent = assistIntent.getComponent();
+
+        // Find the first Recents widget from the same package as the global assist activity
+        List<AppWidgetProviderInfo> widgets = AppWidgetManager.getInstance(this)
+                .getInstalledProviders(AppWidgetProviderInfo.WIDGET_CATEGORY_SEARCHBOX);
+        for (AppWidgetProviderInfo info : widgets) {
+            if (info.provider.getPackageName().equals(searchComponent.getPackageName())) {
+                return info;
+            }
+        }
+        return null;
+    }
+
+    public Pair<Integer, AppWidgetProviderInfo> bindSearchAppWidget(AppWidgetHost host) {
+        if (mAppWidgetManager == null) return null;
+
+        // Find the first Recents widget from the same package as the global assist activity
+        AppWidgetProviderInfo searchWidgetInfo = resolveSearchAppWidget();
+
+        // Return early if there is no search widget
+        if (searchWidgetInfo == null) return null;
+
+        // Allocate a new widget id and try and bind the app widget (if that fails, then just skip)
+        int searchWidgetId = host.allocateAppWidgetId();
+        Bundle opts = new Bundle();
+        opts.putInt(AppWidgetManager.OPTION_APPWIDGET_HOST_CATEGORY,
+                AppWidgetProviderInfo.WIDGET_CATEGORY_SEARCHBOX);
+        if (!AppWidgetManager.getInstance(this).bindAppWidgetIdIfAllowed(searchWidgetId,
+                searchWidgetInfo.provider, opts)) {
+            host.deleteAppWidgetId(searchWidgetId);
+            return null;
+        }
+        return new Pair<Integer, AppWidgetProviderInfo>(searchWidgetId, searchWidgetInfo);
+    }
+
     public View getQsbBar() {
         if (mQsb == null) {
             mQsb = mInflater.inflate(R.layout.qsb, mSearchDropTargetBar, false);
             mSearchDropTargetBar.addView(mQsb);
+
+            bindSearchAppWidget(mAppWidgetHost);
         }
         return mQsb;
     }
