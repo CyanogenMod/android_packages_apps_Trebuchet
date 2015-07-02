@@ -587,7 +587,7 @@ public class DeviceProfile {
         if (isTablet() && !isVerticalBarLayout()) {
             return searchBarVisible ? 4 * edgeMarginPx : 0;
         } else {
-            return searchBarVisible ? 2 * edgeMarginPx : 0;
+            return searchBarVisible ? edgeMarginPx : 0;
         }
     }
 
@@ -809,9 +809,13 @@ public class DeviceProfile {
             lp.width = searchBarSpaceWidthPx;
             lp.height = searchBarSpaceHeightPx;
             searchBar.setPadding(
-                    2 * edgeMarginPx,
+                    edgeMarginPx,
                     getSearchBarTopOffset(),
-                    2 * edgeMarginPx, 0);
+                    edgeMarginPx, edgeMarginPx);
+        }
+        if (launcher.mSearchWidgetId >= 0) {
+            // remove padding on widget
+            searchBar.setPadding(0, 0, 0, 0);
         }
         searchBar.setLayoutParams(lp);
 

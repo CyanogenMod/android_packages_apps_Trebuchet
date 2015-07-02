@@ -34,6 +34,7 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.Dialog;
 import android.app.SearchManager;
+import android.appwidget.AppWidgetHost;
 import android.appwidget.AppWidgetHostView;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProviderInfo;
@@ -72,6 +73,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.StrictMode;
 import android.os.SystemClock;
+import android.os.UserHandle;
 import android.preference.PreferenceManager;
 import android.speech.RecognizerIntent;
 import android.support.v7.widget.LinearLayoutManager;
@@ -82,6 +84,7 @@ import android.text.TextUtils;
 import android.text.method.TextKeyListener;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.Pair;
 import android.view.ContextThemeWrapper;
 import android.view.Display;
 import android.view.Gravity;
@@ -406,6 +409,11 @@ public class Launcher extends Activity
 
     private BubbleTextView mWaitingForResume;
 
+    // Search widget
+    int mSearchWidgetId;
+    AppWidgetProviderInfo mSearchWidgetInfo;
+    AppWidgetHostView mSearchViewHost;
+
     // Preferences
     private boolean mHideIconLabels;
     private AppDrawerListAdapter.DrawerType mDrawerType;
@@ -666,19 +674,25 @@ public class Launcher extends Activity
     private void updateGlobalIcons() {
         boolean searchVisible = false;
         boolean voiceVisible = false;
-        // If we have a saved version of these external icons, we load them up immediately
-        int coi = getCurrentOrientationIndexForGlobalIcons();
-        if (sGlobalSearchIcon[coi] == null || sVoiceSearchIcon[coi] == null) {
-            searchVisible = updateGlobalSearchIcon();
-            voiceVisible = updateVoiceSearchIcon(searchVisible);
-        }
-        if (sGlobalSearchIcon[coi] != null) {
-             updateGlobalSearchIcon(sGlobalSearchIcon[coi]);
-             searchVisible = true;
-        }
-        if (sVoiceSearchIcon[coi] != null) {
-            updateVoiceSearchIcon(sVoiceSearchIcon[coi]);
-            voiceVisible = true;
+        if (mSearchWidgetId >= 0) {
+            // we're displaying a search widget
+            searchVisible = true;
+            voiceVisible = false;
+        } else {
+            // If we have a saved version of these external icons, we load them up immediately
+            int coi = getCurrentOrientationIndexForGlobalIcons();
+            if (sGlobalSearchIcon[coi] == null || sVoiceSearchIcon[coi] == null) {
+                searchVisible = updateGlobalSearchIcon();
+                voiceVisible = updateVoiceSearchIcon(searchVisible);
+            }
+            if (sGlobalSearchIcon[coi] != null) {
+                updateGlobalSearchIcon(sGlobalSearchIcon[coi]);
+                searchVisible = true;
+            }
+            if (sVoiceSearchIcon[coi] != null) {
+                updateVoiceSearchIcon(sVoiceSearchIcon[coi]);
+                voiceVisible = true;
+            }
         }
         if (mSearchDropTargetBar != null) {
             mSearchDropTargetBar.onSearchPackagesChanged(searchVisible, voiceVisible);
@@ -4553,15 +4567,107 @@ public class Launcher extends Activity
         }
     }
 
+    /**
+     * Resolves and returns the first search widget from the same package as the global
+     * assist activity.
+     */
+    public AppWidgetProviderInfo resolveSearchAppWidget() {
+        if (mAppWidgetManager == null) return null;
+
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        final Intent assistIntent = searchManager.getAssistIntent(this, false);
+        if (assistIntent == null) {
+            return null;
+        }
+        ComponentName searchComponent = assistIntent.getComponent();
+
+        // Find the first widget from the same package as the global assist activity
+        List<AppWidgetProviderInfo> widgets = AppWidgetManager.getInstance(this)
+                .getInstalledProviders(AppWidgetProviderInfo.WIDGET_CATEGORY_HOME_SCREEN);
+        for (AppWidgetProviderInfo info : widgets) {
+            if (info.provider.getPackageName().equals(searchComponent.getPackageName())) {
+                return info;
+            }
+        }
+        return null;
+    }
+
+    public Pair<Integer, AppWidgetProviderInfo> bindSearchAppWidget(AppWidgetHost host) {
+        if (mAppWidgetManager == null) return null;
+
+        if (!mGrid.isPhone()) {
+            // tablets rotate and widget doesn't have a vertical layout
+            return null;
+        }
+
+        // Find the first widget from the same package as the global assist activity
+        AppWidgetProviderInfo searchWidgetInfo = resolveSearchAppWidget();
+
+        // Return early if there is no search widget
+        if (searchWidgetInfo == null) return null;
+
+        // Allocate a new widget id and try and bind the app widget (if that fails, then just skip)
+        int searchWidgetId = host.allocateAppWidgetId();
+        Bundle opts = new Bundle();
+        opts.putInt(AppWidgetManager.OPTION_APPWIDGET_HOST_CATEGORY,
+                AppWidgetProviderInfo.WIDGET_CATEGORY_HOME_SCREEN);
+        if (!AppWidgetManager.getInstance(this).bindAppWidgetIdIfAllowed(searchWidgetId,
+                searchWidgetInfo.provider, opts)) {
+            host.deleteAppWidgetId(searchWidgetId);
+            return null;
+        }
+        return new Pair<Integer, AppWidgetProviderInfo>(searchWidgetId, searchWidgetInfo);
+    }
+
     public View getQsbBar() {
         if (mQsb == null) {
-            mQsb = mInflater.inflate(R.layout.qsb, mSearchDropTargetBar, false);
+            // bind search widget if possible
+            if (mSearchWidgetId >= 0) {
+                mSearchWidgetInfo
+                        = AppWidgetManager.getInstance(this).getAppWidgetInfo(mSearchWidgetId);
+                if (mSearchWidgetInfo == null) {
+                    mAppWidgetHost.deleteAppWidgetId(mSearchWidgetId);
+                    mSearchWidgetId = -1;
+                }
+            }
+
+            if (mSearchWidgetId < 0) {
+                final Pair<Integer, AppWidgetProviderInfo> newWidget
+                        = bindSearchAppWidget(mAppWidgetHost);
+                if (newWidget != null) {
+                    mSearchWidgetInfo = newWidget.second;
+                    mSearchWidgetId = newWidget.first;
+                } else {
+                    mSearchWidgetId = -1;
+                }
+            }
+
+            if (mSearchWidgetId < 0) {
+                // no widget, fall back to views
+                mQsb = mInflater.inflate(R.layout.qsb, mSearchDropTargetBar, false);
+            } else {
+                final AppWidgetHostView searchWidget
+                        = mAppWidgetHost.createView(this, mSearchWidgetId, mSearchWidgetInfo);
+                searchWidget.setAppWidget(mSearchWidgetId, mSearchWidgetInfo);
+                searchWidget.setPadding(0, 0, 0, 0);
+
+                Bundle opts = new Bundle();
+                opts.putInt(AppWidgetManager.OPTION_APPWIDGET_HOST_CATEGORY,
+                        AppWidgetProviderInfo.WIDGET_CATEGORY_HOME_SCREEN);
+                searchWidget.updateAppWidgetOptions(opts);
+                searchWidget.setVisibility(View.VISIBLE);
+
+                mQsb = searchWidget;
+                mSearchViewHost = searchWidget;
+            }
+
             mSearchDropTargetBar.addView(mQsb);
         }
         return mQsb;
     }
 
     protected boolean updateGlobalSearchIcon() {
+        if (mSearchWidgetId >= 0) return false;
         final View searchButtonContainer = findViewById(R.id.search_button_container);
         final ImageView searchButton = (ImageView) findViewById(R.id.search_button);
         final View voiceButtonContainer = findViewById(R.id.voice_button_container);
@@ -4597,6 +4703,7 @@ public class Launcher extends Activity
     }
 
     protected void updateGlobalSearchIcon(Drawable.ConstantState d) {
+        if (mSearchWidgetId >= 0) return;
         final View searchButtonContainer = findViewById(R.id.search_button_container);
         final View searchButton = (ImageView) findViewById(R.id.search_button);
         updateButtonWithDrawable(R.id.search_button, d);
@@ -4604,6 +4711,7 @@ public class Launcher extends Activity
     }
 
     protected boolean updateVoiceSearchIcon(boolean searchVisible) {
+        if (mSearchWidgetId >= 0) return false;
         final View voiceButtonContainer = findViewById(R.id.voice_button_container);
         final View voiceButton = findViewById(R.id.voice_button);
 
