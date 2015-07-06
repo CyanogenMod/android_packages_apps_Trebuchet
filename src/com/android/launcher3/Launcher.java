@@ -5222,6 +5222,7 @@ public class Launcher extends Activity
         if (mWorkspace.isInOverviewMode()) {
             mWorkspace.resetOverviewMode();
         }
+        mModel.updateCount();
     }
 
     private void sendLoadingCompleteBroadcastIfNecessary() {

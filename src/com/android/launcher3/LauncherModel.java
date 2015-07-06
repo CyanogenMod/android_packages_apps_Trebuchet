@@ -236,7 +236,6 @@ public class LauncherModel extends BroadcastReceiver
             ArrayList<UnreadInfo> unreadInfos = new ArrayList<LauncherModel.UnreadInfo>();
             synchronized (unreadChangedMap) {
                 unreadInfos.addAll(unreadChangedMap.values());
-                unreadChangedMap.clear();
             }
 
             Context context = mApp.getContext();
@@ -1428,6 +1427,11 @@ public class LauncherModel extends BroadcastReceiver
             sWorker.removeCallbacks(mUnreadUpdateTask);
             sWorker.post(mUnreadUpdateTask);
         }
+    }
+
+    public void updateCount() {
+        sWorker.removeCallbacks(mUnreadUpdateTask);
+        sWorker.post(mUnreadUpdateTask);
     }
 
     void forceReload() {
