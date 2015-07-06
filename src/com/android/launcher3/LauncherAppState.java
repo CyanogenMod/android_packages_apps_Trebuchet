@@ -107,18 +107,10 @@ public class LauncherAppState implements DeviceProfile.DeviceProfileCallbacks {
         IntentFilter filter = new IntentFilter();
         filter.addAction(Intent.ACTION_LOCALE_CHANGED);
         filter.addAction(Intent.ACTION_CONFIGURATION_CHANGED);
-        sContext.registerReceiver(mModel, filter);
-        filter = new IntentFilter();
         filter.addAction(SearchManager.INTENT_GLOBAL_SEARCH_ACTIVITY_CHANGED);
-        sContext.registerReceiver(mModel, filter);
-
-        filter = new IntentFilter();
         if (LauncherApplication.LAUNCHER_SHOW_UNREAD_NUMBER) {
             filter.addAction(LauncherModel.ACTION_UNREAD_CHANGED);
-            sContext.registerReceiver(mModel, filter);
         }
-
-        filter = new IntentFilter();
         filter.addAction(SearchManager.INTENT_ACTION_SEARCHABLES_CHANGED);
         sContext.registerReceiver(mModel, filter);
 
