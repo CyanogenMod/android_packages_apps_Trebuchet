@@ -492,14 +492,18 @@ public class FocusHelper {
                     if (workspace != null) {
                         int pageIndex = workspace.getCurrentPage();
                         CellLayout topLayout = (CellLayout) workspace.getChildAt(pageIndex);
-                        ShortcutAndWidgetContainer children = topLayout.getShortcutsAndWidgets();
-                        final View newIcon = getIconInDirection(layout, children, -1, 1);
-                        // Select the first bubble text view in the current page of the workspace
-                        if (newIcon != null) {
-                            newIcon.requestFocus();
-                            v.playSoundEffect(SoundEffectConstants.NAVIGATION_UP);
-                        } else {
-                            workspace.requestFocus();
+                        ShortcutAndWidgetContainer children = topLayout != null ?
+                                topLayout.getShortcutsAndWidgets() : null;
+                        if (children != null) {
+                            final View newIcon = getIconInDirection(layout, children, -1, 1);
+                            // Select the first bubble text view in the current page of the
+                            // workspace
+                            if (newIcon != null) {
+                                newIcon.requestFocus();
+                                v.playSoundEffect(SoundEffectConstants.NAVIGATION_UP);
+                            } else {
+                                workspace.requestFocus();
+                            }
                         }
                     }
                 }
