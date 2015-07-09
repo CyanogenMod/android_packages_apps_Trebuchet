@@ -30,6 +30,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
+            android:layout_toStartOf="@id/folder_lock_icon"
             android:paddingBottom="@dimen/folder_name_padding"
             android:paddingTop="@dimen/folder_name_padding"
             android:hint="@string/folder_hint_text"
