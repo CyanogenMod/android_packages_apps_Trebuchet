@@ -3167,7 +3167,7 @@ public abstract class PagedView extends ViewGroup implements ViewGroup.OnHierarc
                 v.setTranslationX(translationX);
                 v.setScaleX(scale);
                 v.setScaleY(scale);
-                if (v instanceof CellLayout) {
+                if (v instanceof CellLayout && mPagedView instanceof Workspace) {
                     ((CellLayout) v).getShortcutsAndWidgets().setAlpha(alpha);
                 } else {
                     v.setAlpha(alpha);
