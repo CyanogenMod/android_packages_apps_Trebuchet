@@ -1425,17 +1425,11 @@ public class Launcher extends Activity
         pageOutlines.setVisible(!drawer);
         pageOutlines.setChecked(SettingsProvider.getBoolean(this,
                 SettingsProvider.SETTINGS_UI_HOMESCREEN_SCROLLING_PAGE_OUTLINES,
-                R.bool.preferences_interface_homescreen_scrolling_page_outlines_default
-        ));
+                R.bool.preferences_interface_homescreen_scrolling_page_outlines_default));
 
         fadeAdjacent.setChecked(SettingsProvider.getBoolean(this,
-                !drawer ?
-                        SettingsProvider.SETTINGS_UI_HOMESCREEN_SCROLLING_FADE_ADJACENT :
-                        SettingsProvider.SETTINGS_UI_DRAWER_SCROLLING_FADE_ADJACENT,
-                !drawer ?
-                        R.bool.preferences_interface_homescreen_scrolling_fade_adjacent_default :
-                        R.bool.preferences_interface_drawer_scrolling_fade_adjacent_default
-        ));
+                        SettingsProvider.SETTINGS_UI_HOMESCREEN_SCROLLING_FADE_ADJACENT,
+                        R.bool.preferences_interface_homescreen_scrolling_fade_adjacent_default));
 
         final PagedView pagedView = !drawer ? mWorkspace : mAppsCustomizeContent;
 
@@ -1445,14 +1439,15 @@ public class Launcher extends Activity
                 switch (item.getItemId()) {
                     case R.id.scrolling_page_outlines:
                         SettingsProvider.get(Launcher.this).edit()
-                                .putBoolean(SettingsProvider.SETTINGS_UI_HOMESCREEN_SCROLLING_PAGE_OUTLINES, !item.isChecked()).commit();
+                                .putBoolean(SettingsProvider.SETTINGS_UI_HOMESCREEN_SCROLLING_PAGE_OUTLINES,
+                                        !item.isChecked()).commit();
                         mWorkspace.setShowOutlines(!item.isChecked());
                         break;
                     case R.id.scrolling_fade_adjacent:
                         SettingsProvider.get(Launcher.this).edit()
-                                .putBoolean(!drawer ?
-                                        SettingsProvider.SETTINGS_UI_HOMESCREEN_SCROLLING_FADE_ADJACENT :
-                                        SettingsProvider.SETTINGS_UI_DRAWER_SCROLLING_FADE_ADJACENT, !item.isChecked()).commit();
+                                .putBoolean(
+                                        SettingsProvider.SETTINGS_UI_HOMESCREEN_SCROLLING_FADE_ADJACENT,
+                                        !item.isChecked()).commit();
                         pagedView.setFadeInAdjacentScreens(!item.isChecked());
                         break;
                     default:

@@ -99,6 +99,7 @@ public class TransitionEffectsFragment extends Fragment {
             }
         });
         View options = v.findViewById(R.id.transition_options_menu);
+        options.setVisibility(mIsDrawer ? View.GONE : View.VISIBLE);
         options.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
