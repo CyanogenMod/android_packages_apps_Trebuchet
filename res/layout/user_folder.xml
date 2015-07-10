@@ -15,30 +15,20 @@
 -->
 <com.android.launcher3.Folder
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:launcher="http://schemas.android.com/apk/res-auto/com.android.launcher3"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical"
+    android:paddingTop="16dp"
     android:paddingStart="@dimen/folder_preview_padding"
     android:paddingEnd="@dimen/folder_preview_padding"
-    android:layout_gravity="center">
-
-    <ImageView
-        android:id="@+id/folder_lock"
-        android:layout_width="@dimen/folder_lock_icon"
-        android:layout_height="@dimen/folder_lock_icon"
-        android:paddingBottom="@dimen/folder_name_padding"
-        android:paddingTop="@dimen/folder_name_padding"
-        android:paddingLeft="@dimen/folder_name_padding"
-        android:paddingRight="@dimen/folder_name_padding"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="@dimen/folder_lock_margin"
-        android:src="@drawable/folder_unlocked" />
+    android:paddingBottom="@dimen/folder_preview_padding"
+    android:layout_gravity="center"
+    android:background="@drawable/folder_bg">
 
     <ScrollView
         android:id="@+id/scroll_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal">
         <com.android.launcher3.CellLayout
             android:id="@+id/folder_content"
@@ -48,24 +38,42 @@
             android:hapticFeedbackEnabled="false" />
     </ScrollView>
 
-    <com.android.launcher3.FolderEditText
-        android:id="@+id/folder_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:background="#00000000"
-        android:fontFamily="sans-serif-condensed"
-        android:gravity="center_horizontal"
-        android:layout_gravity="center_horizontal"
-        android:hint="@string/folder_hint_text"
-        android:imeOptions="flagNoExtractUi"
-        android:paddingBottom="@dimen/folder_name_padding"
-        android:paddingTop="@dimen/folder_name_padding"
-        android:singleLine="true"
-        android:textColor="@color/workspace_icon_text_color"
-        android:textColorHighlight="#ffCCCCCC"
-        android:textColorHint="#78ffffff"
-        android:textCursorDrawable="@null"
-        android:textSize="20sp" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/folder_name_lock_container">
 
+        <ImageView
+            android:id="@+id/folder_lock"
+            android:layout_width="@dimen/folder_lock_icon"
+            android:layout_height="@dimen/folder_lock_icon"
+            android:padding="@dimen/folder_name_padding"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:src="@drawable/folder_unlocked" />
+
+        <com.android.launcher3.FolderEditText
+            android:id="@+id/folder_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:fontFamily="sans-serif-condensed"
+            android:hint="@string/folder_hint_text"
+            android:imeOptions="flagNoExtractUi"
+            android:paddingBottom="@dimen/folder_name_padding"
+            android:paddingTop="@dimen/folder_name_padding"
+            android:layout_marginStart="@dimen/folder_name_padding"
+            android:gravity="center_vertical"
+            android:singleLine="true"
+            android:textColor="@color/workspace_icon_text_color"
+            android:textColorHighlight="#ffCCCCCC"
+            android:textColorHint="#78ffffff"
+            android:textCursorDrawable="@null"
+            android:textSize="18sp"
+            android:layout_toStartOf="@id/folder_lock"
+            android:layout_alignTop="@id/folder_lock"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentBottom="true"/>
+
+    </RelativeLayout>
 </com.android.launcher3.Folder>

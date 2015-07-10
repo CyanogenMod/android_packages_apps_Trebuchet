@@ -3134,6 +3134,11 @@ public class Launcher extends Activity
         final FolderInfo info = folderIcon.getFolderInfo();
         Folder openFolder = mWorkspace.getFolderForTag(info);
 
+        int[] folderTouchXY = new int[2];
+        v.getLocationOnScreen(folderTouchXY);
+        int[] folderTouchXYOffset = {folderTouchXY[0] + v.getWidth() / 2,
+                folderTouchXY[1] + v.getHeight() / 2};
+
         // If the folder info reports that the associated folder is open, then verify that
         // it is actually opened. There have been a few instances where this gets out of sync.
         if (info.opened && openFolder == null) {
@@ -3146,7 +3151,7 @@ public class Launcher extends Activity
             // Close any open folder
             closeFolder();
             // Open the requested folder
-            openFolder(folderIcon);
+            openFolder(folderIcon, folderTouchXYOffset);
         } else {
             // Find the open folder...
             int folderScreen;
@@ -3158,7 +3163,7 @@ public class Launcher extends Activity
                     // Close any folder open on the current screen
                     closeFolder();
                     // Pull the folder onto this screen
-                    openFolder(folderIcon);
+                    openFolder(folderIcon, folderTouchXYOffset);
                 }
             }
         }
@@ -3447,7 +3452,7 @@ public class Launcher extends Activity
      *
      * @param folderInfo The FolderInfo describing the folder to open.
      */
-    public void openFolder(FolderIcon folderIcon) {
+    public void openFolder(FolderIcon folderIcon, int[] folderTouch) {
         Folder folder = folderIcon.getFolder();
         FolderInfo info = folder.mInfo;
 
@@ -3471,7 +3476,7 @@ public class Launcher extends Activity
             Log.w(TAG, "Opening folder (" + folder + ") which already has a parent (" +
                     folder.getParent() + ").");
         }
-        folder.animateOpen(getWorkspace());
+        folder.animateOpen(getWorkspace(), folderTouch);
 
         // Notify the accessibility manager that this folder "window" has appeared and occluded
         // the workspace items
