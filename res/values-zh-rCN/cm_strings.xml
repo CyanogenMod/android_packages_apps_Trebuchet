@@ -31,6 +31,7 @@
   <string name="grid_size_condensed">紧凑</string>
   <string name="grid_size_custom">自定义(<xliff:g id="rows">%1$d</xliff:g>\u00d7<xliff:g id="columns">%2$d</xliff:g>)</string>
   <string name="preferences_interface_homescreen_custom">选择自定义尺寸</string>
+  <string name="play_folder_title">Play</string>
   <string name="scroll_effect_text">滚动特效</string>
   <string name="drawer_sorting_text">排序模式</string>
   <string name="sort_mode_title">标题</string>

@@ -31,6 +31,7 @@
   <string name="grid_size_condensed">Comprimida</string>
   <string name="grid_size_custom">Personalizado (<xliff:g id="rows">%1$d</xliff:g> \u00d7 <xliff:g id="columns">%2$d</xliff:g>)</string>
   <string name="preferences_interface_homescreen_custom">Selecciona el tamaño personalizado</string>
+  <string name="play_folder_title">Reproducir</string>
   <string name="scroll_effect_text">Efecto de desplazamiento</string>
   <string name="drawer_sorting_text">Modo de ordenación</string>
   <string name="sort_mode_title">Título</string>

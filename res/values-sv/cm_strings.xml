@@ -29,7 +29,9 @@
   <string name="grid_size_comfortable">Komfortabel</string>
   <string name="grid_size_cozy">Mysig</string>
   <string name="grid_size_condensed">Kondenserad</string>
+  <string name="grid_size_custom">Anpassad (<xliff:g id="rows">%1$d</xliff:g> \u00d7 <xliff:g id="columns">%2$d</xliff:g>)</string>
   <string name="preferences_interface_homescreen_custom">Välj anpassad storlek</string>
+  <string name="play_folder_title">Spela</string>
   <string name="scroll_effect_text">Rullningseffekt</string>
   <string name="drawer_sorting_text">Sorteringsläge</string>
   <string name="sort_mode_title">Titel</string>
@@ -42,5 +44,9 @@
   <string name="icon_labels_hide">Dölj</string>
   <string name="protected_app_settings">Skyddade appar</string>
   <string name="dialog_confirm">Bekräfta</string>
+  <string name="drawer_type">Layout</string>
+  <string name="drawer_type_drawer">Vertikal</string>
+  <string name="drawer_type_pager">Paginerad</string>
   <string name="setting_state_disabled">INAKTIVERAD</string>
+  <string name="search_activity_not_found">Kunde inte hitta en sökaktivitet!</string>
 </resources>

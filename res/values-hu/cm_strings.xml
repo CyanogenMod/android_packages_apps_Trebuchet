@@ -31,6 +31,7 @@
   <string name="grid_size_condensed">Tömörített</string>
   <string name="grid_size_custom">Egyéni (<xliff:g id="rows">%1$d</xliff:g> \u00d7 <xliff:g id="columns">%2$d</xliff:g>)</string>
   <string name="preferences_interface_homescreen_custom">Válassza ki az egyéni méretet</string>
+  <string name="play_folder_title">Play</string>
   <string name="scroll_effect_text">Görgetés effekt</string>
   <string name="drawer_sorting_text">Rendezési mód</string>
   <string name="sort_mode_title">Név</string>

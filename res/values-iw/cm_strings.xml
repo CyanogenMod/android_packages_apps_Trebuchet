@@ -33,7 +33,7 @@
   <string name="preferences_interface_homescreen_custom">בחר גודל מותאם אישית</string>
   <string name="play_folder_title">נגן</string>
   <string name="scroll_effect_text">אפקט גלילה</string>
-  <string name="drawer_sorting_text">מצב המיון</string>
+  <string name="drawer_sorting_text">מצב מיון</string>
   <string name="sort_mode_title">כותרת</string>
   <string name="sort_mode_launch_count">מספר הפעלות</string>
   <string name="sort_mode_install_time">זמן התקנה</string>
@@ -45,7 +45,7 @@
   <string name="protected_app_settings">יישומים מוגנים</string>
   <string name="dialog_confirm">אשר</string>
   <string name="drawer_type">פריסה</string>
-  <string name="drawer_type_drawer">אנכי</string>
+  <string name="drawer_type_drawer">לאורך</string>
   <string name="drawer_type_pager">דפים</string>
   <string name="setting_state_disabled">כבוי</string>
   <string name="search_activity_not_found">לא ניתן היה למצוא פעולת חיפוש!</string>

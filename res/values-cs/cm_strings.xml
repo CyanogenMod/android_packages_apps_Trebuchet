@@ -31,6 +31,7 @@
   <string name="grid_size_condensed">Zůžená</string>
   <string name="grid_size_custom">Vlastní (<xliff:g id="rows">%1$d</xliff:g> \u00d7 <xliff:g id="columns">%2$d</xliff:g>)</string>
   <string name="preferences_interface_homescreen_custom">Zvolte vlastní velikost</string>
+  <string name="play_folder_title">Hry Play</string>
   <string name="scroll_effect_text">Efekt přechodu</string>
   <string name="drawer_sorting_text">Režim třídění</string>
   <string name="sort_mode_title">Název</string>

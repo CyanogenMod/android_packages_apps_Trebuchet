@@ -31,6 +31,7 @@
   <string name="grid_size_condensed">Condensada</string>
   <string name="grid_size_custom">Personalitzat (<xliff:g id="rows">%1$d</xliff:g> \u00d7 <xliff:g id="columns">%2$d</xliff:g>)</string>
   <string name="preferences_interface_homescreen_custom">Selecciona la mida personalitzada</string>
+  <string name="play_folder_title">Play</string>
   <string name="scroll_effect_text">Efecte desplaçament</string>
   <string name="drawer_sorting_text">Mode d\'ordenació</string>
   <string name="sort_mode_title">Títol</string>

@@ -31,6 +31,7 @@
   <string name="grid_size_condensed">Densiga</string>
   <string name="grid_size_custom">Propra (<xliff:g id="rows">%1$d</xliff:g> \u00d7 <xliff:g id="columns">%2$d</xliff:g>)</string>
   <string name="preferences_interface_homescreen_custom">Elekti propran tipar-grandecon</string>
+  <string name="play_folder_title">Ludi</string>
   <string name="scroll_effect_text">Ruluma efekto</string>
   <string name="drawer_sorting_text">Reĝimo de ordigo</string>
   <string name="sort_mode_title">Titolo</string>
