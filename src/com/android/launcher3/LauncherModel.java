@@ -1650,7 +1650,7 @@ public class LauncherModel extends BroadcastReceiver
             }
 
             // Bind the workspace
-            bindWorkspace(-1, isUpgradePath);
+            bindWorkspace(PagedView.INVALID_RESTORE_PAGE, isUpgradePath);
             return isUpgradePath;
         }
 
