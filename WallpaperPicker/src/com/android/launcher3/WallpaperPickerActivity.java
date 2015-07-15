@@ -84,6 +84,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class WallpaperPickerActivity extends WallpaperCropActivity {
     static final String TAG = "Launcher.WallpaperPickerActivity";
@@ -927,40 +928,46 @@ public class WallpaperPickerActivity extends WallpaperCropActivity {
         final PackageManager pm = getContext().getPackageManager();
         final ArrayList<WallpaperTileInfo> bundled = new ArrayList<WallpaperTileInfo>(24);
 
-        Partner partner = Partner.get(pm);
-        if (partner != null) {
-            final Resources partnerRes = partner.getResources();
-            final int resId = partnerRes.getIdentifier(Partner.RES_WALLPAPERS, "array",
-                    partner.getPackageName());
-            if (resId != 0) {
-                addWallpapers(bundled, partnerRes, partner.getPackageName(), resId);
-            }
+        List<Partner> partners = Partner.getAllPartners(pm);
+        boolean hideDefault = false;
+        if (partners != null) {
+            for (Partner partner : partners) {
+                final Resources partnerRes = partner.getResources();
+                final int resId = partnerRes.getIdentifier(Partner.RES_WALLPAPERS, "array",
+                        partner.getPackageName());
+                if (resId != 0) {
+                    addWallpapers(bundled, partnerRes, partner.getPackageName(), resId);
+                }
 
-            // Add system wallpapers
-            File systemDir = partner.getWallpaperDirectory();
-            if (systemDir != null && systemDir.isDirectory()) {
-                for (File file : systemDir.listFiles()) {
-                    if (!file.isFile()) {
-                        continue;
-                    }
-                    String name = file.getName();
-                    int dotPos = name.lastIndexOf('.');
-                    String extension = "";
-                    if (dotPos >= -1) {
-                        extension = name.substring(dotPos);
-                        name = name.substring(0, dotPos);
-                    }
+                // Add system wallpapers
+                File systemDir = partner.getWallpaperDirectory();
+                if (systemDir != null && systemDir.isDirectory()) {
+                    for (File file : systemDir.listFiles()) {
+                        if (!file.isFile()) {
+                            continue;
+                        }
+                        String name = file.getName();
+                        int dotPos = name.lastIndexOf('.');
+                        String extension = "";
+                        if (dotPos >= -1) {
+                            extension = name.substring(dotPos);
+                            name = name.substring(0, dotPos);
+                        }
 
-                    if (name.endsWith("_small")) {
-                        // it is a thumbnail
-                        continue;
-                    }
+                        if (name.endsWith("_small")) {
+                            // it is a thumbnail
+                            continue;
+                        }
 
-                    File thumbnail = new File(systemDir, name + "_small" + extension);
-                    Bitmap thumb = BitmapFactory.decodeFile(thumbnail.getAbsolutePath());
-                    if (thumb != null) {
-                        bundled.add(new FileWallpaperInfo(file, new BitmapDrawable(thumb)));
+                        File thumbnail = new File(systemDir, name + "_small" + extension);
+                        Bitmap thumb = BitmapFactory.decodeFile(thumbnail.getAbsolutePath());
+                        if (thumb != null) {
+                            bundled.add(new FileWallpaperInfo(file, new BitmapDrawable(thumb)));
+                        }
                     }
+                }
+                if (partner.hideDefaultWallpaper()) {
+                    hideDefault = true;
                 }
             }
         }
@@ -975,7 +982,7 @@ public class WallpaperPickerActivity extends WallpaperCropActivity {
             }
         }
 
-        if (partner == null || !partner.hideDefaultWallpaper()) {
+        if (!hideDefault) {
             // Add an entry for the default wallpaper (stored in system resources)
             WallpaperTileInfo defaultWallpaperInfo = Utilities.ATLEAST_KITKAT
                     ? getDefaultWallpaper() : getPreKKDefaultWallpaperInfo();

@@ -63,6 +63,7 @@ import com.android.launcher3.settings.SettingsProvider;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -525,6 +526,29 @@ public final class Utilities {
             // A proxy call which returns null, if the view is not attached to the window.
             return v.getKeyDispatcherState() != null;
         }
+    }
+
+    /*
+     * Finds all system apks which had a broadcast receiver listening to a particular action.
+     * @param action intent action used to find the apk
+     * @return a list of pairs of apk package name and the resources.
+     */
+    static List<Pair<String, Resources>> findSystemApks(String action, PackageManager pm) {
+        final Intent intent = new Intent(action);
+        List<Pair<String, Resources>> systemApks = new ArrayList<Pair<String, Resources>>();
+        for (ResolveInfo info : pm.queryBroadcastReceivers(intent, 0)) {
+            if (info.activityInfo != null &&
+                    (info.activityInfo.applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) != 0) {
+                final String packageName = info.activityInfo.packageName;
+                try {
+                    final Resources res = pm.getResourcesForApplication(packageName);
+                    systemApks.add(Pair.create(packageName, res));
+                } catch (NameNotFoundException e) {
+                    Log.w(TAG, "Failed to find resources for " + packageName);
+                }
+            }
+        }
+        return systemApks;
     }
 
     /**

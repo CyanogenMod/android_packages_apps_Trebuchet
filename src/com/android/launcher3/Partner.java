@@ -23,6 +23,8 @@ import android.util.Log;
 import android.util.Pair;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Utilities to discover and interact with partner customizations. There can
@@ -52,20 +54,33 @@ public class Partner {
     public static final String RES_GRID_ICON_SIZE_DP = "grid_icon_size_dp";
 
     private static boolean sSearched = false;
-    private static Partner sPartner;
+    private static List<Partner> sPartners;
+
+    static {
+        sPartners = new ArrayList<Partner>();
+    }
 
     /**
-     * Find and return partner details, or {@code null} if none exists.
+     * Find and return first partner details, or {@code null} if none exists.
      */
     public static synchronized Partner get(PackageManager pm) {
+        getAllPartners(pm);
+        return sPartners.size() > 0 ? sPartners.get(0) : null;
+    }
+
+    /**
+     * Find and return all partner details, or {@code null} if none exists.
+     */
+    public static synchronized List<Partner> getAllPartners(PackageManager pm) {
         if (!sSearched) {
-            Pair<String, Resources> apkInfo = Utilities.findSystemApk(ACTION_PARTNER_CUSTOMIZATION, pm);
-            if (apkInfo != null) {
-                sPartner = new Partner(apkInfo.first, apkInfo.second);
+            List<Pair<String, Resources>> apkInfos =
+                    Utilities.findSystemApks(ACTION_PARTNER_CUSTOMIZATION, pm);
+            for (Pair<String, Resources> apkInfo : apkInfos) {
+                sPartners.add(new Partner(apkInfo.first, apkInfo.second));
             }
             sSearched = true;
         }
-        return sPartner;
+        return sPartners;
     }
 
     private final String mPackageName;
