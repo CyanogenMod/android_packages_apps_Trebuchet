@@ -4948,6 +4948,90 @@ public class Workspace extends SmoothPagedView
         stripEmptyScreens();
     }
 
+    void updateUnvailableItemsInCellLayout(CellLayout parent, ArrayList<String> packages) {
+        final HashSet<String> packageNames = new HashSet<String>();
+        packageNames.addAll(packages);
+
+        ViewGroup layout = parent.getShortcutsAndWidgets();
+        int childCount = layout.getChildCount();
+        for (int i = 0; i < childCount; ++i) {
+            View view = layout.getChildAt(i);
+            if (view instanceof BubbleTextView) {
+                ItemInfo info = (ItemInfo) view.getTag();
+                if (info instanceof ShortcutInfo) {
+                    Intent intent = info.getIntent();
+                    ComponentName cn = intent != null ? intent.getComponent() : null;
+                    if (cn != null && packageNames.contains(cn.getPackageName())) {
+                        ShortcutInfo shortcut = (ShortcutInfo) info;
+                        if (!shortcut.isDisabled) {
+                            shortcut.isDisabled = true;
+                            ((BubbleTextView) view)
+                                    .applyFromShortcutInfo(shortcut, mIconCache, true);
+                        }
+                    }
+                }
+            } else if (view instanceof FolderIcon) {
+                final Folder folder = ((FolderIcon)view).getFolder();
+                updateUnvailableItemsInCellLayout(folder.getContent(), packages);
+                folder.invalidate();
+            }
+        }
+    }
+
+    void updateUnavailableItemsByPackageName(final ArrayList<String> packages) {
+        ArrayList<CellLayout> cellLayouts = getWorkspaceAndHotseatCellLayouts();
+        for (CellLayout layoutParent : cellLayouts) {
+            updateUnvailableItemsInCellLayout(layoutParent, packages);
+        }
+    }
+
+    /**
+     * Updates shortcuts to an app that was previously unavailable in the given cell layout
+     * @param parent CellLayout to check childen for shortcuts to the available app
+     * @param appInfos List of item infos.  Items are assumed to be of type AppInfo
+     */
+    void updateAvailabeItemsInCellLayout(CellLayout parent, final ArrayList<ItemInfo> appInfos) {
+        ViewGroup layout = parent.getShortcutsAndWidgets();
+        int childCount = layout.getChildCount();
+        for (int i = 0; i < childCount; ++i) {
+            View view = layout.getChildAt(i);
+            if (view instanceof BubbleTextView) {
+                ItemInfo info = (ItemInfo) view.getTag();
+                if (info instanceof ShortcutInfo) {
+                    Intent intent = info.getIntent();
+                    ComponentName cn = intent != null ? intent.getComponent() : null;
+                    for (ItemInfo itemInfo : appInfos) {
+                        AppInfo appInfo = (AppInfo) itemInfo;
+                        if (cn != null && cn.getPackageName().equals(
+                                appInfo.componentName.getPackageName())) {
+                            ShortcutInfo shortcut = (ShortcutInfo) info;
+                            if (shortcut.isDisabled) {
+                                shortcut.isDisabled = false;
+                                ((BubbleTextView) view)
+                                        .applyFromShortcutInfo(shortcut, mIconCache, true);
+                            }
+                        }
+                    }
+                }
+            } else if (view instanceof FolderIcon) {
+                final Folder folder = ((FolderIcon)view).getFolder();
+                updateAvailabeItemsInCellLayout(folder.getContent(), appInfos);
+                folder.invalidate();
+            }
+        }
+    }
+
+    /**
+     * Updates shortcuts to an app that was previously unavailable
+     * @param appInfos List of item infos.  Items are assumed to be of type AppInfo
+     */
+    void updateAvailableItems(final ArrayList<ItemInfo> appInfos) {
+        ArrayList<CellLayout> cellLayouts = getWorkspaceAndHotseatCellLayouts();
+        for (CellLayout layoutParent : cellLayouts) {
+            updateAvailabeItemsInCellLayout(layoutParent, appInfos);
+        }
+    }
+
     interface ItemOperator {
         /**
          * Process the next itemInfo, possibly with side-effect on {@link ItemOperator#value}.

@@ -85,4 +85,7 @@
     <string name="drawer_type_pager">Paged</string>
 
     <string name="setting_state_disabled">DISABLED</string>
+
+    <!-- App not available toast text -->
+    <string name="app_not_available">App not available</string>
 </resources>
