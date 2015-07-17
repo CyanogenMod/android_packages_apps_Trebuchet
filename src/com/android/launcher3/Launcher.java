@@ -3068,6 +3068,10 @@ public class Launcher extends Activity
         final Intent intent;
         if (tag instanceof ShortcutInfo) {
             shortcut = (ShortcutInfo) tag;
+            if (shortcut.isDisabled == 1) {
+                Toast.makeText(this, R.string.app_not_available, Toast.LENGTH_SHORT).show();
+                return;
+            }
             intent = shortcut.intent;
             int[] pos = new int[2];
             v.getLocationOnScreen(pos);
@@ -4784,11 +4788,52 @@ public class Launcher extends Activity
         }
     }
 
+    /**
+     * A package has become unavailable.
+     *
+     * Implementation of the method from LauncherModel.Callbacks.
+     */
+    public void bindComponentsUnavailable(final ArrayList<String> packageNames,
+            final ArrayList<AppInfo> appInfos) {
+        if (!packageNames.isEmpty()) {
+            mWorkspace.updateUnavailableItemsByPackageName(packageNames);
+        }
+        HashSet<ComponentName> cns = new HashSet<>();
+        for (AppInfo appInfo : appInfos) {
+           cns.add(appInfo.componentName);
+        }
+        // Notify the drag controller
+        mDragController.onAppsRemoved(packageNames, cns);
+        mAppsView.removeApps(appInfos);
+    }
+
+    /**
+     * A package has become unavailable.
+     *
+     * Implementation of the method from LauncherModel.Callbacks.
+     */
+    public void bindComponentsAvailable(final ArrayList<ItemInfo> itemInfos) {
+        if (!itemInfos.isEmpty()) {
+            mWorkspace.updateAvailableItems(itemInfos);
+        }
+    }
+
+    /**
+     * A number of packages were updated.
+     */
+    private ArrayList<Object> mWidgetsAndShortcuts;
     private Runnable mBindPackagesUpdatedRunnable = new Runnable() {
             public void run() {
                 bindAllPackages(mWidgetsModel);
             }
         };
+
+    public void bindPackagesUpdated(final ArrayList<Object> widgetsAndShortcuts) {
+        if (waitUntilResume(mBindPackagesUpdatedRunnable, true)) {
+            mWidgetsAndShortcuts = widgetsAndShortcuts;
+            return;
+        }
+    }
 
     @Override
     public void bindAllPackages(final WidgetsModel model) {
