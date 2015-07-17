@@ -74,4 +74,7 @@
 
     <!-- Search Manager doesn't exist -->
     <string name="search_activity_not_found">A search activity could not be found!</string>
+
+    <!-- App not available toast text -->
+    <string name="app_not_available">App not available</string>
 </resources>

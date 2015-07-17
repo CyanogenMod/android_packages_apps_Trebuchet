@@ -211,8 +211,12 @@ public class LauncherModel extends BroadcastReceiver
         public void bindRestoreItemsChange(HashSet<ItemInfo> updates);
         public void bindComponentsRemoved(ArrayList<String> packageNames,
                         ArrayList<AppInfo> appInfos, UserHandleCompat user, int reason);
+        public void bindPackagesUpdated(ArrayList<Object> widgetsAndShortcuts);
         public void bindAllPackages(WidgetsModel model);
         public void bindSearchProviderChanged();
+        public void bindComponentsUnavailable(ArrayList<String> packageNames,
+                ArrayList<AppInfo> appInfos);
+        public void bindComponentsAvailable(ArrayList<ItemInfo> itemInfos);
         public boolean isAllAppsButtonRank(int rank);
         public void onPageBoundSynchronously(int page);
         public void dumpLogsToLocalData();
@@ -3290,6 +3294,7 @@ public class LauncherModel extends BroadcastReceiver
 
             final String[] packages = mPackages;
             final int N = packages.length;
+            final ArrayList<String> unavailable = new ArrayList<String>();
             switch (mOp) {
                 case OP_ADD: {
                     for (int i=0; i<N; i++) {
@@ -3328,6 +3333,9 @@ public class LauncherModel extends BroadcastReceiver
                         if (DEBUG_LOADERS) Log.d(TAG, "mAllAppsList.removePackage " + packages[i]);
                         mBgAllAppsList.removePackage(packages[i], mUser);
                         mApp.getWidgetCache().removePackage(packages[i], mUser);
+                        if (mOp == OP_UNAVAILABLE) {
+                            unavailable.add(packages[i]);
+                        }
                     }
                     break;
             }
@@ -3359,10 +3367,21 @@ public class LauncherModel extends BroadcastReceiver
                     new HashMap<ComponentName, AppInfo>();
 
             if (added != null) {
+                final ArrayList<ItemInfo> addedInfos = new ArrayList<ItemInfo>(added);
                 addAppsToAllApps(context, added);
                 for (AppInfo ai : added) {
                     addedOrUpdatedApps.put(ai.componentName, ai);
                 }
+                mHandler.post(new Runnable() {
+                    public void run() {
+                        Callbacks cb = mCallbacks != null ? mCallbacks.get() : null;
+                        if (callbacks == cb && cb != null) {
+                            if (DEBUG_LOADERS) Log.d(TAG, "bindComponentsAvailable: " +
+                                    addedInfos.size());
+                            callbacks.bindComponentsAvailable(addedInfos);
+                        }
+                    }
+                });
             }
 
             if (modified != null) {
@@ -3536,6 +3555,17 @@ public class LauncherModel extends BroadcastReceiver
                 final int removeReason;
                 if (mOp == OP_UNAVAILABLE) {
                     removeReason = ShortcutInfo.FLAG_DISABLED_NOT_AVAILABLE;
+                    // Call the packages-unavailable callback
+                    mHandler.post(new Runnable() {
+                        public void run() {
+                            Callbacks cb = mCallbacks != null ? mCallbacks.get() : null;
+                            if (callbacks == cb && cb != null) {
+                                if (DEBUG_LOADERS) Log.d(TAG, "bindComponentsUnavailable: " +
+                                        removedApps.size());
+                                callbacks.bindComponentsUnavailable(unavailable, removedApps);
+                            }
+                        }
+                    });
                 } else {
                     // Remove all the components associated with this package
                     for (String pn : removedPackageNames) {
@@ -3551,16 +3581,28 @@ public class LauncherModel extends BroadcastReceiver
 
                 // Remove any queued items from the install queue
                 InstallShortcutReceiver.removeFromInstallQueue(context, removedPackageNames, mUser);
-                // Call the components-removed callback
-                mHandler.post(new Runnable() {
-                    public void run() {
-                        Callbacks cb = getCallback();
-                        if (callbacks == cb && cb != null) {
-                            callbacks.bindComponentsRemoved(
-                                    removedPackageNames, removedApps, mUser, removeReason);
+                if (mOp == OP_UNAVAILABLE) {
+                    // Call the packages-unavailable callback
+                    mHandler.post(new Runnable() {
+                        public void run() {
+                            Callbacks cb = mCallbacks != null ? mCallbacks.get() : null;
+                            if (callbacks == cb && cb != null) {
+                                 callbacks.bindComponentsUnavailable(unavailable, removedApps);
+                            }
                         }
-                    }
-                });
+                    });
+                } else {
+                    // Call the components-removed callback
+                    mHandler.post(new Runnable() {
+                        public void run() {
+                             Callbacks cb = getCallback();
+                             if (callbacks == cb && cb != null) {
+                                 callbacks.bindComponentsRemoved(
+                                    removedPackageNames, removedApps, mUser, removeReason);
+                             }
+                        }
+                    });
+                }
             }
 
             // Update widgets
