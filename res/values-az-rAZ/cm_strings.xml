@@ -40,4 +40,5 @@
   <string name="icon_labels_hide">Gizlət</string>
   <string name="protected_app_settings">Qorunan tətbiqetmələr</string>
   <string name="dialog_confirm">Təsdiqlə</string>
+  <string name="setting_state_disabled">LƏĞV EDİLDİ</string>
 </resources>
