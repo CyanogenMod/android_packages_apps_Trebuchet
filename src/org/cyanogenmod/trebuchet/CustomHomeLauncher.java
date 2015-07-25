@@ -118,10 +118,15 @@ public class CustomHomeLauncher extends Launcher {
 
     private CustomContentCallbacks mCustomContentCallbacks = new CustomContentCallbacks() {
         @Override
-        public void onShow() {
+        public void onShow(boolean fromResume) {
             if (mCurrentHomeApp != null) {
                 mCurrentHomeApp.mInstance.onShow();
             }
+        }
+
+        @Override
+        public boolean isScrollingAllowed() {
+            return true;
         }
 
         @Override
@@ -236,8 +241,10 @@ public class CustomHomeLauncher extends Launcher {
     }
 
     @Override
-    public void updateDynamicGrid() {
-        super.updateDynamicGrid();
+    public boolean updateGridIfNeeded() {
+        if (!super.updateGridIfNeeded()) {
+            return false;
+        }
 
         if (isCustomContentModeGel() && mCurrentHomeApp != null) {
             mCurrentHomeApp.mInstance.setShowContent(false);
@@ -245,6 +252,8 @@ public class CustomHomeLauncher extends Launcher {
                    && mCurrentHomeApp != null) {
             mCurrentHomeApp.mInstance.setShowContent(true);
         }
+
+        return true;
     }
 
     private synchronized void obtainCurrentHomeAppStubLocked(boolean invalidate) {

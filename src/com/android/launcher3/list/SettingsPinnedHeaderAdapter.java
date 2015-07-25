@@ -110,17 +110,20 @@ public class SettingsPinnedHeaderAdapter extends PinnedHeaderListAdapter {
                         ((TextView) v.findViewById(R.id.item_state)).setText(state);
                         break;
                     case 1:
+                        updateSearchPanelItem(v);
+                        break;
+                    case 2:
                         state = mLauncher.getWorkspaceTransitionEffect();
                         state = mapEffectToValue(state);
                         ((TextView) v.findViewById(R.id.item_state)).setText(state);
                         break;
-                    case 2:
+                    case 3:
                         current = mLauncher.shouldHideWorkspaceIconLables();
                         state = current ? res.getString(R.string.icon_labels_hide)
                                 : res.getString(R.string.icon_labels_show);
                         ((TextView) v.findViewById(R.id.item_state)).setText(state);
                         break;
-                    case 3:
+                    case 4:
                         current = SettingsProvider.getBoolean(mContext,
                                 SettingsProvider.SETTINGS_UI_HOMESCREEN_SCROLLING_WALLPAPER_SCROLL,
                                 R.bool.preferences_interface_homescreen_scrolling_wallpaper_scroll_default);
@@ -128,7 +131,7 @@ public class SettingsPinnedHeaderAdapter extends PinnedHeaderListAdapter {
                                 : res.getString(R.string.setting_state_off);
                         ((TextView) v.findViewById(R.id.item_state)).setText(state);
                         break;
-                    case 4:
+                    case 5:
                         updateDynamicGridSizeSettingsItem(v);
                         break;
                     default:
@@ -308,21 +311,29 @@ public class SettingsPinnedHeaderAdapter extends PinnedHeaderListAdapter {
                             mLauncher.setUpdateDynamicGrid(false);
                             break;
                         case 1:
-                            mLauncher.onClickTransitionEffectButton(v, false);
+                            onClickSearchPanelButton();
+                            boolean customContentEnabled = mLauncher.getCustomContentMode()
+                                    != Launcher.CustomContentMode.DISABLED;
+                            mLauncher.getWorkspace().updatePageScrollForCustomPage(
+                                    customContentEnabled);
+                            mLauncher.setUpdateDynamicGrid(false);
                             break;
                         case 2:
+                            mLauncher.onClickTransitionEffectButton(v, false);
+                            break;
+                        case 3:
                             onIconLabelsBooleanChanged(v,
                                     SettingsProvider.SETTINGS_UI_HOMESCREEN_HIDE_ICON_LABELS,
                                     R.bool.preferences_interface_homescreen_hide_icon_labels_default);
                             mLauncher.setUpdateDynamicGrid(false);
                             break;
-                        case 3:
+                        case 4:
                             onSettingsBooleanChanged(v,
                                     SettingsProvider.SETTINGS_UI_HOMESCREEN_SCROLLING_WALLPAPER_SCROLL,
                                     R.bool.preferences_interface_homescreen_scrolling_wallpaper_scroll_default);
                             mLauncher.setUpdateDynamicGrid(false);
                             break;
-                        case 4:
+                        case 5:
                             mLauncher.onClickDynamicGridSizeButton();
                             break;
 
