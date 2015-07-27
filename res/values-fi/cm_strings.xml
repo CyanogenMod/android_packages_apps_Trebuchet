@@ -49,4 +49,5 @@
   <string name="drawer_type_pager">Vaaka</string>
   <string name="setting_state_disabled">POIS KÄYTÖSTÄ</string>
   <string name="search_activity_not_found">Hakuhistoriaa ei löytynyt!</string>
+  <string name="app_not_available">Sovellus ei käytettävissä</string>
 </resources>
