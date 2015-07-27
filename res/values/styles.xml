@@ -138,4 +138,27 @@
     <style name="SearchButton.WithPaddingStart">
         <item name="android:paddingLeft">8dp</item>
     </style>
+
+    <!-- CM Home -->
+    <style name="dashclock_card_inner_status_text">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@android:color/darker_gray</item>
+        <item name="android:layout_marginLeft">@dimen/card_header_simple_title_margin_left</item>
+    </style>
+
+    <style name="dashclock_card_inner_body_text">
+        <item name="android:textSize">14sp</item>
+        <item name="android:layout_marginLeft">@dimen/card_header_simple_title_margin_left</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
+    <style name="simple_message_card_inner_title_text">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+    <style name="simple_message_card_inner_body_text">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
 </resources>

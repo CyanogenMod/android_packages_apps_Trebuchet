@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:layout_marginBottom="10dp"
+    android:layout_marginTop="10dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    style="@style/card"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Button
+        tools:text="Action"
+        android:layout_width="0px"
+        android:layout_height="50dp"
+        android:id="@+id/dashclock_card_expand_action_button"
+        android:textColor="@color/card_expand_title_color"
+        android:text="@string/dashclock_card_expand_action"
+        android:textSize="20sp"
+        android:layout_weight="1"
+    />
+    <Button
+        tools:text="Settings"
+        android:layout_width="0px"
+        android:layout_height="50dp"
+        android:id="@+id/dashclock_card_expand_settings_button"
+        android:textColor="@color/card_expand_title_color"
+        android:text="@string/dashclock_card_expand_settings"
+        android:textSize="20sp"
+        android:layout_weight="1"
+    />
+</LinearLayout>

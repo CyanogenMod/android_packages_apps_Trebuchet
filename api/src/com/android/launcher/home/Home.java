@@ -111,14 +111,15 @@ public interface Home {
      * resources.
      * @param context the current {@link Context} of the host launcher.
      */
-    void onStart(Context context);
+     void onStart(Context context);
 
     /**
      * Load and show the content of this home app if true,
      * hide and remove providers if false.
      * @param showContent Should content be shown
+     *
      */
-    void setShowContent(Context context, boolean showContent);
+     void setShowContent(Context context, boolean showContent);
 
     /**
      * Invoked when the <code>Home</code> app should be destroy.<br/>

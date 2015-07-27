@@ -25,15 +25,36 @@ LOCAL_MODULE_TAGS := optional
 
 LOCAL_STATIC_JAVA_LIBRARIES := android-support-v13 \
                                android-support-v7-recyclerview \
-                               guava
+                               guava \
+                               org.cyanogenmod.launcher.home \
+                               CMHomeSDK \
+                               dashclockapiv2 \
+                               android-support-v13 \
+                               cmfm-android-support-v7-appcompat \
+                               cmfm-android-support-design \
+                               android-support-v7-recyclerview \
+                               android-support-v7-cardview \
+                               de-hdodenhof-circleimageview
+
+library_src_files += ../../../external/cardslib/library/src/main/java \
+                     ../../../external/cyanogen/cmhomeapi/src/main/java
+
 
 LOCAL_SRC_FILES := $(call all-java-files-under, src) \
     $(call all-java-files-under, WallpaperPicker/src) \
+    $(call all-java-files-under, $(library_src_files)) \
     $(call all-renderscript-files-under, src) \
     $(call all-proto-files-under, protos)
-LOCAL_RESOURCE_DIR := $(LOCAL_PATH)/WallpaperPicker/res $(LOCAL_PATH)/res
 
-LOCAL_AAPT_FLAGS := --auto-add-overlay
+LOCAL_RESOURCE_DIR += $(LOCAL_PATH)/res \
+    $(LOCAL_PATH)/WallpaperPicker/res \
+    frameworks/support/v7/cardview/res \
+    $(LOCAL_PATH)/../../../external/cardslib/library/src/main/res \
+    $(LOCAL_PATH)/../../../external/cyanogen/cmhomeapi/src/main/res
+
+LOCAL_AAPT_FLAGS := --auto-add-overlay \
+    --extra-packages android.support.v7.cardview \
+    --extra-packages it.gmariotti.cardslib.library \
 
 LOCAL_PROTOC_OPTIMIZE_TYPE := nano
 LOCAL_PROTOC_FLAGS := --proto_path=$(LOCAL_PATH)/protos/
@@ -50,6 +71,10 @@ LOCAL_OVERRIDES_PACKAGES := Launcher3
 
 LOCAL_PROGUARD_FLAG_FILES := proguard.flags
 LOCAL_PROGUARD_ENABLED := disabled
+
+LOCAL_PREBUILT_STATIC_JAVA_LIBRARIES := \
+    dashclockapiv2:libs/dashclock-api-r2.0.jar \
+    de-hdodenhof-circleimageview:libs/de-hdodenhof-circleimageview.jar
 
 include $(BUILD_PACKAGE)
 
@@ -71,6 +96,7 @@ LOCAL_MODULE := launcher_protoutil_lib
 LOCAL_IS_HOST_MODULE := true
 LOCAL_JAR_MANIFEST := util/etc/manifest.txt
 LOCAL_STATIC_JAVA_LIBRARIES := host-libprotobuf-java-2.3.0-nano
+
 
 include $(BUILD_HOST_JAVA_LIBRARY)
 

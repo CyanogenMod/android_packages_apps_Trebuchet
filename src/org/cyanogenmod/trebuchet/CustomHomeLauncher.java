@@ -16,16 +16,21 @@
 
 package org.cyanogenmod.trebuchet;
 
+import android.app.Application;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.animation.AccelerateInterpolator;
@@ -35,38 +40,39 @@ import com.android.launcher.home.Home;
 import com.android.launcher3.Launcher;
 import com.android.launcher3.R;
 
+import org.cyanogenmod.launcher.home.HomeStub;
 import org.cyanogenmod.trebuchet.home.HomeUtils;
 import org.cyanogenmod.trebuchet.home.HomeWrapper;
 
 import java.lang.Override;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 public class CustomHomeLauncher extends Launcher {
 
     private static final String TAG = "CustomHomeLauncher";
 
-    private static final boolean DEBUG = false;
+    private static final boolean DEBUG = true;
     private static final float MIN_PROGRESS = 0;
     private static final float MAX_PROGRESS = 1;
 
 
     private static class HomeAppStub {
-        private final int mUid;
         private final ComponentName mComponentName;
         private final HomeWrapper mInstance;
 
-        private HomeAppStub(int uid, ComponentName componentName,
-                            Context context, Context homeActivityContext)
+        private HomeAppStub(ComponentName componentName,
+                            Context context)
                 throws SecurityException, ReflectiveOperationException {
             super();
-            mUid = uid;
             mComponentName = componentName;
 
             // Load a new instance of the Home app
             ClassLoader classloader = context.getClassLoader();
             Class<?> homeInterface = classloader.loadClass(Home.class.getName());
             Class<?> homeClazz = classloader.loadClass(mComponentName.getClassName());
-            mInstance = new HomeWrapper(context, homeInterface,
-                         homeClazz.newInstance(), homeActivityContext);
+            mInstance = new HomeWrapper(context, homeInterface, homeClazz.newInstance());
         }
 
         @Override
@@ -104,13 +110,13 @@ public class CustomHomeLauncher extends Launcher {
             if (action.equals(Intent.ACTION_PACKAGE_CHANGED) ||
                     action.equals(Intent.ACTION_PACKAGE_REPLACED) ||
                     action.equals(Intent.ACTION_PACKAGE_RESTARTED)) {
-                if (mCurrentHomeApp != null && intent.getIntExtra(Intent.EXTRA_UID, -1)
+                /*if (mCurrentHomeApp != null && intent.getIntExtra(Intent.EXTRA_UID, -1)
                         == mCurrentHomeApp.mUid) {
                     // The current Home app has changed or restarted. Invalidate the current
                     // one to be sure we will get all the new changes (if any)
                     if (DEBUG) Log.d(TAG, "Home package has changed. Invalidate layout.");
                     invalidate = true;
-                }
+                }*/
             }
             obtainCurrentHomeAppStubLocked(invalidate);
         }
@@ -260,8 +266,8 @@ public class CustomHomeLauncher extends Launcher {
         if (DEBUG) Log.d(TAG, "obtainCurrentHomeAppStubLocked called (" + invalidate + ")");
 
         SparseArray<ComponentName> packages = HomeUtils.getInstalledHomePackages(this);
-        if (!invalidate && mCurrentHomeApp != null &&
-                packages.get(mCurrentHomeApp.mUid) != null) {
+        if (!invalidate && mCurrentHomeApp != null/* &&
+                packages.get(mCurrentHomeApp.mUid) != null*/) {
             // We still have a valid Home app
             return;
         }
@@ -269,7 +275,7 @@ public class CustomHomeLauncher extends Launcher {
         // We don't have a valid Home app, so we need to destroy the current the custom content
         destroyHomeStub();
 
-        // Return the default valid home app
+        /*// Return the default valid home app
         int size = packages.size();
         for (int i = 0; i < size; i++) {
             int key = packages.keyAt(i);
@@ -301,6 +307,29 @@ public class CustomHomeLauncher extends Launcher {
             if (mCurrentHomeApp != null) {
                 mCurrentHomeApp.mInstance.onStart();
             }
+        }*/
+
+        ComponentName pkg = new ComponentName(getPackageName(), HomeStub.class.getName());
+        try {
+            mCurrentHomeApp = new HomeAppStub(pkg, this);
+        } catch (ReflectiveOperationException e) {
+            if (!DEBUG) {
+                Log.w(TAG, "Cannot instantiate home package: " + pkg + ". Ignored.");
+            } else {
+                Log.w(TAG, "Cannot instantiate home package: " + pkg +
+                        ". Ignored.", e);
+            }
+        } catch (SecurityException ex) {
+            if (!DEBUG) {
+                Log.w(TAG, "Home package is insecure: " + pkg + ". Ignored.");
+            } else {
+                Log.w(TAG, "Home package is insecure: " + pkg + ". Ignored.", ex);
+            }
+        }
+
+        // Notify home app that is going to be used
+        if (mCurrentHomeApp != null) {
+            mCurrentHomeApp.mInstance.onStart();
         }
 
         // Don't have a valid package. Anyway notify the launcher that custom content has changed

@@ -145,4 +145,8 @@
     <!-- Folder open animation -->
     <integer name="folder_translate_y_dist">300</integer>
     <integer name="folder_icon_translate_y_dist">100</integer>
+
+    <!-- CM Home -->
+    <dimen name="card_background_default_radius">2dip</dimen>
+
 </resources>

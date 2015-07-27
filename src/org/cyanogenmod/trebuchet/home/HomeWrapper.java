@@ -56,11 +56,10 @@ public class HomeWrapper {
     private final int mOperationFlags;
 
     public HomeWrapper(Context context, Class<?> cls,
-                       Object instance,
-                       Context hostActivityContext) throws SecurityException {
+                       Object instance) throws SecurityException {
         super();
         mContext = context;
-        mHostActivityContext = hostActivityContext;
+        mHostActivityContext = context;
         mClass = cls;
         mInstance = instance;
         cachedMethods = new SparseArray<Method>(M_LAST_ID);

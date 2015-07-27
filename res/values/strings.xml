@@ -308,4 +308,82 @@ s -->
     <string name="abandoned_promise_explanation">The app for this icon isn\'t installed.
         You can remove it, or search for the app and install it manually.
     </string>
+
+    <!-- CM Home -->
+    <!-- Permissions -->
+    <string name="permission_label_read_extension_data">request DashClock extension data</string>
+    <string name="permission_desc_read_extension_data">Allows the app to request DashClock extension data</string>
+
+    <!-- CM Home API permissions -->
+    <string name="permission_desc_feed_host">Allows the app to read and write to any application
+        that publishes cards to CM Home</string>
+    <string name="permission_label_feed_host">publish and unpublish cards from CM Home</string>
+    <string name="permission_desc_feed_publish">Allows the app to add new cards to CM Home</string>
+    <string name="permission_label_feed_publish">publish cards to launcher CM Home</string>
+
+    <string name="dashclock_activity_not_found_toast_message">The intended Activity for this extension was not found. Please contact the developer for more info.</string>
+    <string name="dashclock_card_expand_action">Action</string>
+    <string name="dashclock_card_expand_settings">Settings</string>
+    <string name="no_extensions_card_title">Get some extensions!</string>
+    <string name="no_extensions_card_body">Looks like you don\'t have any installed extensions. CM Home currently supports DashClock extensions, so go get some and check back here!</string>
+
+    <string name="contact_card_title">Recent Contacts</string>
+    <string name="calendar_card_title">Today</string>
+    <string name="news_card_title">News</string>
+
+
+    <string-array name="contact_card">
+        <item name="uri_1">URI one</item>
+        <item name="uri_2">URI two</item>
+        <item name="uri_3">URI three</item>
+        <item name="uri_4">URI four</item>
+    </string-array>
+
+    <string-array name="calendar_card">
+        <item name="start_time">1437850800000</item>
+        <item name="end_time">1437811200000</item>
+        <item name="title">Stand-up</item>
+        <item name="location">Conference Room</item>
+    </string-array>
+
+    <string-array name="news_1">
+        <item name="news_image_url">http://slidell-independent.com/wp-content/uploads/2013/01/wsne.jpg</item>
+        <item name="news_title">Fiat recalls 1.4 million vehicles after hack of Jeep Cherokee</item>
+        <item name="source">Los Angeles Times</item>
+        <item name="time">1437834180000</item>
+        <item name="url">www.google.com</item>
+    </string-array>
+
+    <string-array name="news_2">
+        <item name="news_image_url">http://slidell-independent.com/wp-content/uploads/2013/01/wsne.jpg</item>
+        <item name="news_title">Fiat recalls 1.4 million vehicles after hack of Jeep Cherokee</item>
+        <item name="source">Los Angeles Times</item>
+        <item name="time">1437834180000</item>
+        <item name="url">www.google.com</item>
+    </string-array>
+
+    <string-array name="news_3">
+        <item name="news_image_url">http://slidell-independent.com/wp-content/uploads/2013/01/wsne.jpg</item>
+        <item name="news_title">Fiat recalls 1.4 million vehicles after hack of Jeep Cherokee</item>
+        <item name="source">Los Angeles Times</item>
+        <item name="time">1437834180000</item>
+        <item name="url">www.google.com</item>
+    </string-array>
+
+    <string-array name="news_4">
+        <item name="news_image_url">http://slidell-independent.com/wp-content/uploads/2013/01/wsne.jpg</item>
+        <item name="news_title">Fiat recalls 1.4 million vehicles after hack of Jeep Cherokee</item>
+        <item name="source">Los Angeles Times</item>
+        <item name="time">1437834180000</item>
+        <item name="url">www.google.com</item>
+    </string-array>
+
+    <string-array name="spoof_data">
+        <item>@array/contact_card</item>
+        <item>@array/calendar_card</item>
+        <item>@array/news_1</item>
+        <item>@array/news_2</item>
+        <item>@array/news_3</item>
+        <item>@array/news_4</item>
+    </string-array>
 </resources>

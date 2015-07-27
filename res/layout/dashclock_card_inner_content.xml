@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:gravity="top"
+    style="@style/card"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        tools:text="Gmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/dashclock_card_inner_title_text"
+        style="@style/card.header_simple_title"
+        android:textSize="20sp"
+        />
+
+    <TextView
+        tools:text="42 new messages"
+        android:id="@+id/dashclock_card_inner_status_text"
+        style="@style/dashclock_card_inner_status_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        tools:text="This is an expanded body message for testing purposes."
+        android:id="@+id/dashclock_card_inner_body_text"
+        style="@style/dashclock_card_inner_body_text"
+        android:lines="4"
+        android:ellipsize="end"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+</LinearLayout>
