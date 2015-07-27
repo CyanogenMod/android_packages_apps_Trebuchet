@@ -195,8 +195,8 @@
             launcher:packageName="com.android.browser"
             launcher:className="com.android.browser.BrowserActivity" />
         <favorite
-            launcher:packageName="com.android.swe.browser"
-            launcher:className="com.android.browser.BrowserActivity" />
+            launcher:packageName="com.cyngn.browser"
+            launcher:className="com.android.browser.BrowserLauncher" />
         <favorite
             launcher:packageName="com.android.chrome"
             launcher:className="com.google.android.apps.chrome.Main" />
