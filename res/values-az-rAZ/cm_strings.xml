@@ -26,10 +26,14 @@
   <string name="scrolling_fade_adjacent">Yan səhifələri soldur</string>
   <string name="scrolling_wallpaper">Divar kağızını sürüşdür</string>
   <string name="grid_size_text">Tor ölçüsü</string>
+  <string name="grid_size_comfortable">Geniş</string>
   <string name="grid_size_cozy">Rahat</string>
   <string name="grid_size_condensed">Sıx</string>
+  <string name="grid_size_custom">Özəl (<xliff:g id="rows">%1$d</xliff:g> \u00d7 <xliff:g id="columns">%2$d</xliff:g>)</string>
   <string name="preferences_interface_homescreen_custom">Xüsusi ölçü seçin</string>
+  <string name="play_folder_title">Play</string>
   <string name="scroll_effect_text">Sürüşdürmə effekti</string>
+  <string name="drawer_sorting_text">Sıralama rejimi</string>
   <string name="sort_mode_title">Başlıq</string>
   <string name="sort_mode_launch_count">Başlatma sayı</string>
   <string name="sort_mode_install_time">Quraşdırma müddəti</string>
@@ -40,5 +44,10 @@
   <string name="icon_labels_hide">Gizlət</string>
   <string name="protected_app_settings">Qorunan tətbiqetmələr</string>
   <string name="dialog_confirm">Təsdiqlə</string>
+  <string name="drawer_type">Düzüm</string>
+  <string name="drawer_type_drawer">Şaquli</string>
+  <string name="drawer_type_pager">Səhifəli</string>
   <string name="setting_state_disabled">LƏĞV EDİLDİ</string>
+  <string name="search_activity_not_found">Axtarış fəaliyyəti tapılmadı!</string>
+  <string name="app_not_available">Tətbiq mövcud deyil</string>
 </resources>

@@ -49,4 +49,5 @@
   <string name="drawer_type_pager">Met pagina\'s</string>
   <string name="setting_state_disabled">UITGESCHAKELD</string>
   <string name="search_activity_not_found">Geen zoekactiviteit gevonden</string>
+  <string name="app_not_available">App niet beschikbaar</string>
 </resources>

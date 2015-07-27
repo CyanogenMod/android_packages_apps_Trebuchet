@@ -29,7 +29,9 @@
   <string name="grid_size_comfortable">مريحة</string>
   <string name="grid_size_cozy">مريح</string>
   <string name="grid_size_condensed">مكثف</string>
+  <string name="grid_size_custom">مخصص (<xliff:g id="rows">%1$d </xliff:g> \u00d7 <xliff:g id="columns">%2$d </xliff:g>)</string>
   <string name="preferences_interface_homescreen_custom">حدد حجم مخصص</string>
+  <string name="play_folder_title">تشغيل</string>
   <string name="scroll_effect_text">تأثير التمرير</string>
   <string name="drawer_sorting_text">وضع الفرز</string>
   <string name="sort_mode_title">العنوان</string>
@@ -42,4 +44,10 @@
   <string name="icon_labels_hide">إخفاء</string>
   <string name="protected_app_settings">التطبيقات المحمية</string>
   <string name="dialog_confirm">تأكيد</string>
+  <string name="drawer_type">تخطيط</string>
+  <string name="drawer_type_drawer">رأسي</string>
+  <string name="drawer_type_pager">مقسم إلى صفحات</string>
+  <string name="setting_state_disabled">معطل</string>
+  <string name="search_activity_not_found">لا يمكن العثور على نشاط بحثي!</string>
+  <string name="app_not_available">التطبيق غير متوافر</string>
 </resources>

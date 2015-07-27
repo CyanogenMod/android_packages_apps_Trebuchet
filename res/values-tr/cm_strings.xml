@@ -49,4 +49,5 @@
   <string name="drawer_type_pager">Sayfalı</string>
   <string name="setting_state_disabled">DEVRE DIŞI</string>
   <string name="search_activity_not_found">Arama etkinliği bulunamadı!</string>
+  <string name="app_not_available">Uyg. kullanılabilir değil</string>
 </resources>
