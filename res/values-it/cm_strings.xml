@@ -49,4 +49,5 @@
   <string name="drawer_type_pager">Paginato</string>
   <string name="setting_state_disabled">DISATTIVATO</string>
   <string name="search_activity_not_found">Impossibile trovare un\'activity di ricerca!</string>
+  <string name="app_not_available">App non disponibile</string>
 </resources>

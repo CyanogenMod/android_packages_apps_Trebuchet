@@ -49,4 +49,5 @@
   <string name="drawer_type_pager">Strony</string>
   <string name="setting_state_disabled">WYŁĄCZONE</string>
   <string name="search_activity_not_found">Nie można odnaleźć aktywności związanej z wyszukiwaniem!</string>
+  <string name="app_not_available">Aplikacja niedostępna</string>
 </resources>
