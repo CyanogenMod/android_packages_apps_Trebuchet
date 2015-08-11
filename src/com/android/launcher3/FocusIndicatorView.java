@@ -79,36 +79,43 @@ public class FocusIndicatorView extends View implements View.OnFocusChangeListen
         }
 
         if (hasFocus) {
-            int indicatorWidth = getWidth();
-            int indicatorHeight = getHeight();
-
-            float scaleX = v.getScaleX() * v.getWidth() / indicatorWidth;
-            float scaleY = v.getScaleY() * v.getHeight() / indicatorHeight;
-
-            getLocationRelativeToParentPagedView(v, mTargetViewPos);
-            float x = mTargetViewPos[0] - mIndicatorPos[0] - (1 - scaleX) * indicatorWidth / 2;
-            float y = mTargetViewPos[1] - mIndicatorPos[1] - (1 - scaleY) * indicatorHeight / 2;
-
-            if (getAlpha() > MIN_VISIBLE_ALPHA) {
-                animate()
-                .translationX(x)
-                .translationY(y)
-                .scaleX(scaleX)
-                .scaleY(scaleY)
-                .alpha(1);
-            } else {
-                setTranslationX(x);
-                setTranslationY(y);
-                setScaleX(scaleX);
-                setScaleY(scaleY);
-                animate().alpha(1);
-            }
+            setViewAnimation(getAlpha() > MIN_VISIBLE_ALPHA, v);
             mLastFocusedView = v;
         } else {
             if (mLastFocusedView == v) {
                 mLastFocusedView = null;
+                // force the translation to the target position
+                setViewAnimation(false, v);
                 animate().alpha(0);
             }
+        }
+    }
+
+    private void setViewAnimation(boolean animate, View v) {
+        int indicatorWidth = getWidth();
+        int indicatorHeight = getHeight();
+
+        float scaleX = v.getScaleX() * v.getWidth() / indicatorWidth;
+        float scaleY = v.getScaleY() * v.getHeight() / indicatorHeight;
+
+        getLocationRelativeToParentPagedView(v, mTargetViewPos);
+        float x = mTargetViewPos[0] - mIndicatorPos[0] - (1 - scaleX) * indicatorWidth / 2;
+        float y = mTargetViewPos[1] - mIndicatorPos[1] - (1 - scaleY) * indicatorHeight / 2;
+
+        if (animate) {
+            animate()
+            .translationX(x)
+            .translationY(y)
+            .scaleX(scaleX)
+            .scaleY(scaleY)
+            .alpha(1)
+            .setDuration(100);
+        } else {
+            setTranslationX(x);
+            setTranslationY(y);
+            setScaleX(scaleX);
+            setScaleY(scaleY);
+            animate().alpha(1);
         }
     }
 
