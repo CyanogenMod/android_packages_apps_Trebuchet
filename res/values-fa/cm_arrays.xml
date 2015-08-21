@@ -22,14 +22,14 @@
     <item>کوچک‌نمایی</item>
     <item>چرخش به بالا</item>
     <item>چرخش به پایین</item>
-    <item>داخل مکعب</item>
-    <item>خارج مکعب</item>
-    <item>توده</item>
+    <item>درون مکعب</item>
+    <item>بیرون مکعب</item>
+    <item>روی هم</item>
     <item>آکوردیون</item>
-    <item>تلنگر</item>
-    <item>داخل استوانه</item>
-    <item>خارج استوانه</item>
-    <item>چرخ‌وفلک</item>
-    <item>شمای کلی</item>
+    <item>ورق‌خور</item>
+    <item>درون استوانه</item>
+    <item>بیرون استوانه</item>
+    <item>چرخ و فلک</item>
+    <item>نمای کلی</item>
   </string-array>
 </resources>
