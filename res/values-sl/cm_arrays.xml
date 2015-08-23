@@ -16,11 +16,20 @@
      limitations under the License.
 -->
 <resources>
-  <string name="home_screen_settings">تنظیمات صفحه اصلی</string>
-  <string name="search_panel_custom_home">خانه CM</string>
-  <string name="themes_button_text">تم‌ها</string>
-  <string name="scrolling_wallpaper">حرکت کاغذدیواری</string>
-  <string name="preferences_interface_homescreen_custom">انتخاب اندازه سفارشی</string>
-  <string name="scroll_effect_text">جلوه حرکت</string>
-  <string name="home_screen_search_text">نوار جستجو</string>
+  <string-array name="transition_effect_entries">
+    <item>Brez</item>
+    <item>Približaj</item>
+    <item>Pomanjšaj</item>
+    <item>Zasukaj gor</item>
+    <item>Zasukaj dol</item>
+    <item>Kocka noter</item>
+    <item>Kocka ven</item>
+    <item>Zloži</item>
+    <item>Harmonika</item>
+    <item>Obrni</item>
+    <item>Valj noter</item>
+    <item>Valj ven</item>
+    <item>Vrtiljak</item>
+    <item>Pregled</item>
+  </string-array>
 </resources>

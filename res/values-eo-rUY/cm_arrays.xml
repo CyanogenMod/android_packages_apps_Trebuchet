@@ -16,11 +16,20 @@
      limitations under the License.
 -->
 <resources>
-  <string name="home_screen_settings">تنظیمات صفحه اصلی</string>
-  <string name="search_panel_custom_home">خانه CM</string>
-  <string name="themes_button_text">تم‌ها</string>
-  <string name="scrolling_wallpaper">حرکت کاغذدیواری</string>
-  <string name="preferences_interface_homescreen_custom">انتخاب اندازه سفارشی</string>
-  <string name="scroll_effect_text">جلوه حرکت</string>
-  <string name="home_screen_search_text">نوار جستجو</string>
+  <string-array name="transition_effect_entries">
+    <item>Nenio</item>
+    <item>Zoom in</item>
+    <item>Zoom out</item>
+    <item>Rotate up</item>
+    <item>Rotate down</item>
+    <item>Cube in</item>
+    <item>Cube out</item>
+    <item>Stack</item>
+    <item>Accordion</item>
+    <item>Flip</item>
+    <item>Cylinder in</item>
+    <item>Cylinder out</item>
+    <item>Carousel</item>
+    <item>Overview</item>
+  </string-array>
 </resources>
