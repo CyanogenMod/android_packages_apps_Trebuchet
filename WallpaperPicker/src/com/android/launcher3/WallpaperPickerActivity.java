@@ -281,7 +281,7 @@ public class WallpaperPickerActivity extends WallpaperCropActivity {
             CropView c = a.getCropView();
 
             Drawable defaultWallpaper = WallpaperManager.getInstance(a).getBuiltInDrawable(
-                    c.getWidth(), c.getHeight(), false, 0.5f, 0.5f);
+                    0, 0, false, 0.5f, 0.5f);
 
             if (defaultWallpaper == null) {
                 Log.w(TAG, "Null default wallpaper encountered.");
@@ -289,9 +289,14 @@ public class WallpaperPickerActivity extends WallpaperCropActivity {
                 return;
             }
 
-            c.setTileSource(
-                    new DrawableTileSource(a, defaultWallpaper, DrawableTileSource.MAX_PREVIEW_SIZE), null);
-            c.setScale(1f);
+            c.setTileSource(new DrawableTileSource(
+                    a, defaultWallpaper, DrawableTileSource.MAX_PREVIEW_SIZE), null);
+            Point wallpaperSize = WallpaperCropActivity.getDefaultWallpaperSize(
+                    a.getResources(), a.getWindowManager());
+            RectF crop = WallpaperCropActivity.getMaxCropRect(
+                    defaultWallpaper.getIntrinsicWidth(), defaultWallpaper.getIntrinsicHeight(),
+                    wallpaperSize.x, wallpaperSize.y, false);
+            c.setScale(wallpaperSize.x / crop.width());
             c.setTouchEnabled(false);
             a.setSystemWallpaperVisiblity(false);
         }
