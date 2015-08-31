@@ -31,6 +31,7 @@
   <string name="grid_size_condensed">Zhustená</string>
   <string name="grid_size_custom">Vlastná (<xliff:g id="rows">%1$d</xliff:g> \u00d7 <xliff:g id="columns">%2$d</xliff:g>)</string>
   <string name="preferences_interface_homescreen_custom">Vyberte vlastnú veľkosť</string>
+  <string name="play_folder_title">Play</string>
   <string name="scroll_effect_text">Efekt posunu</string>
   <string name="drawer_sorting_text">Režim triedenia</string>
   <string name="sort_mode_title">Názov</string>
@@ -48,4 +49,5 @@
   <string name="drawer_type_pager">Stránkované</string>
   <string name="setting_state_disabled">ZAKÁZANÉ</string>
   <string name="search_activity_not_found">Aktivita vyhľadávania sa nenašla!</string>
+  <string name="app_not_available">Aplikácia nie je k dispozícii</string>
 </resources>
