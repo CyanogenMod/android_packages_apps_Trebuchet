@@ -3014,7 +3014,19 @@ public abstract class PagedView extends ViewGroup implements ViewGroup.OnHierarc
             mName = name;
         }
 
-        public abstract void screenScrolled(View v, int i, float scrollProgress);
+        public abstract void onScreenScrolled(View v, int i, float scrollProgress);
+
+        public void screenScrolled(View v, int i, float scrollProgress) {
+            // Get and set the default camera distance.
+            // Several of the TransitionEffects set a custom distance, reset it here.
+            Float defaultCameraDistance = (Float) v.getTag(R.id.tag_key_default_camera_distance);
+            if (defaultCameraDistance == null) {
+                defaultCameraDistance = v.getCameraDistance();
+                v.setTag(R.id.tag_key_default_camera_distance, defaultCameraDistance);
+            }
+            v.setCameraDistance(defaultCameraDistance);
+            onScreenScrolled(v, i, scrollProgress);
+        }
 
         public final String getName() {
             return mName;
@@ -3061,7 +3073,7 @@ public abstract class PagedView extends ViewGroup implements ViewGroup.OnHierarc
             }
 
             @Override
-            public void screenScrolled(View v, int i, float scrollProgress) {
+            public void onScreenScrolled(View v, int i, float scrollProgress) {
                 float scale = 1.0f + (mIn ? -0.2f : 0.1f) * Math.abs(scrollProgress);
 
                 // Extra translation to account for the increase in size
@@ -3084,7 +3096,7 @@ public abstract class PagedView extends ViewGroup implements ViewGroup.OnHierarc
             }
 
             @Override
-            public void screenScrolled(View v, int i, float scrollProgress) {
+            public void onScreenScrolled(View v, int i, float scrollProgress) {
                 float rotation =
                         (mUp ? TRANSITION_SCREEN_ROTATION : -TRANSITION_SCREEN_ROTATION) * scrollProgress;
 
@@ -3114,7 +3126,7 @@ public abstract class PagedView extends ViewGroup implements ViewGroup.OnHierarc
             }
 
             @Override
-            public void screenScrolled(View v, int i, float scrollProgress) {
+            public void onScreenScrolled(View v, int i, float scrollProgress) {
                 float rotation = (mIn ? 90.0f : -90.0f) * scrollProgress;
 
                 if (mIn) {
@@ -3137,7 +3149,7 @@ public abstract class PagedView extends ViewGroup implements ViewGroup.OnHierarc
             }
 
             @Override
-            public void screenScrolled(View v, int i, float scrollProgress) {
+            public void onScreenScrolled(View v, int i, float scrollProgress) {
                 final boolean isRtl = mPagedView.isLayoutRtl();
                 float interpolatedProgress;
                 float translationX;
@@ -3189,7 +3201,7 @@ public abstract class PagedView extends ViewGroup implements ViewGroup.OnHierarc
             }
 
             @Override
-            public void screenScrolled(View v, int i, float scrollProgress) {
+            public void onScreenScrolled(View v, int i, float scrollProgress) {
                 float scale = 1.0f - Math.abs(scrollProgress);
 
                 v.setScaleX(scale);
@@ -3204,7 +3216,7 @@ public abstract class PagedView extends ViewGroup implements ViewGroup.OnHierarc
             }
 
             @Override
-            public void screenScrolled(View v, int i, float scrollProgress) {
+            public void onScreenScrolled(View v, int i, float scrollProgress) {
                 float rotation = -180.0f * Math.max(-1f, Math.min(1f, scrollProgress));
 
                 v.setCameraDistance(mPagedView.mDensity * PagedView.CAMERA_DISTANCE);
@@ -3232,7 +3244,7 @@ public abstract class PagedView extends ViewGroup implements ViewGroup.OnHierarc
             }
 
             @Override
-            public void screenScrolled(View v, int i, float scrollProgress) {
+            public void onScreenScrolled(View v, int i, float scrollProgress) {
                 float rotation = (mIn ? TRANSITION_SCREEN_ROTATION : -TRANSITION_SCREEN_ROTATION) * scrollProgress;
 
                 v.setPivotX((scrollProgress + 1) * v.getMeasuredWidth() * 0.5f);
@@ -3247,7 +3259,7 @@ public abstract class PagedView extends ViewGroup implements ViewGroup.OnHierarc
             }
 
             @Override
-            public void screenScrolled(View v, int i, float scrollProgress) {
+            public void onScreenScrolled(View v, int i, float scrollProgress) {
                 float rotation = 90.0f * scrollProgress;
 
                 v.setCameraDistance(mPagedView.mDensity * PagedView.CAMERA_DISTANCE);
@@ -3266,7 +3278,7 @@ public abstract class PagedView extends ViewGroup implements ViewGroup.OnHierarc
             }
 
             @Override
-            public void screenScrolled(View v, int i, float scrollProgress) {
+            public void onScreenScrolled(View v, int i, float scrollProgress) {
                 float scale = 1.0f - 0.1f *
                         mScaleInterpolator.getInterpolation(Math.min(0.3f, Math.abs(scrollProgress)) / 0.3f);
 
