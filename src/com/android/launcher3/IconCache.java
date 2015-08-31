@@ -336,10 +336,12 @@ public class IconCache {
                 getBoolean(R.bool.config_launcher_stkAppRename))
                 && info.getComponentName().getPackageName().toString()
                         .equalsIgnoreCase(STK_PACKAGE_NAME);
+        String activity = info.getComponentName().getClassName().toString();
+
         boolean isCustomTitle = false;
         if (condition
                 && !TextUtils.isEmpty(((LauncherApplication) mContext)
-                        .getStkAppName())) {
+                        .getStkAppName(activity))) {
             isCustomTitle = true;
         }
         if (entry == null || unreadNum >= 0) {
@@ -352,14 +354,14 @@ public class IconCache {
                 if (labelCache != null && labelCache.containsKey(labelKey)) {
                     if (isCustomTitle) {
                         entry.title = ((LauncherApplication) mContext)
-                                .getStkAppName();
+                                .getStkAppName(activity);
                     } else {
                         entry.title = labelCache.get(labelKey).toString();
                     }
                 } else {
                     if (isCustomTitle) {
                         entry.title = ((LauncherApplication) mContext)
-                                .getStkAppName();
+                                .getStkAppName(activity);
                     } else {
                         entry.title = info.getLabel().toString();
                     }
