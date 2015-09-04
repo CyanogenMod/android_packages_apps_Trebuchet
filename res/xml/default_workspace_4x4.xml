@@ -208,6 +208,9 @@
             launcher:packageName="com.cyngn.cameranext"
             launcher:className="com.android.camera.CameraLauncher" />
         <favorite
+            launcher:packageName="org.cyanogenmod.snap"
+            launcher:className="com.android.camera.CameraLauncher" />
+        <favorite
             launcher:packageName="com.android.camera2"
             launcher:className="com.android.camera.CameraLauncher" />
     </resolve>
