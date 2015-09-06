@@ -568,15 +568,18 @@ public class IconCache {
             UserHandleCompat user, boolean usePackageIcon, boolean useLowResIcon) {
         ComponentKey cacheKey = new ComponentKey(componentName, user);
         CacheEntry entry = mCache.get(cacheKey);
-        boolean condition = (mContext.getResources().
-                getBoolean(R.bool.config_launcher_stkAppRename))
-                && info.getComponentName().getPackageName().toString()
-                        .equalsIgnoreCase(STK_PACKAGE_NAME);
+
         boolean isCustomTitle = false;
-        if (condition
-                && !TextUtils.isEmpty(((LauncherApplication) mContext)
-                        .getStkAppName())) {
-            isCustomTitle = true;
+        if (info != null) {
+            boolean condition = (mContext.getResources().
+                    getBoolean(R.bool.config_launcher_stkAppRename))
+                    && info.getComponentName().getPackageName().toString()
+                            .equalsIgnoreCase(STK_PACKAGE_NAME);
+            if (condition
+                    && !TextUtils.isEmpty(((LauncherApplication) mContext)
+                            .getStkAppName())) {
+                isCustomTitle = true;
+            }
         }
         if (entry == null || (entry.isLowResIcon && !useLowResIcon)) {
             entry = new CacheEntry();
