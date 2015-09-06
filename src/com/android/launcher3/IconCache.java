@@ -332,17 +332,21 @@ public class IconCache {
             boolean usePackageIcon, int unreadNum) {
         CacheKey cacheKey = new CacheKey(componentName, user);
         CacheEntry entry = mCache.get(cacheKey);
-        boolean condition = (mContext.getResources().
-                getBoolean(R.bool.config_launcher_stkAppRename))
-                && info.getComponentName().getPackageName().toString()
-                        .equalsIgnoreCase(STK_PACKAGE_NAME);
-        String activity = info.getComponentName().getClassName().toString();
 
         boolean isCustomTitle = false;
-        if (condition
-                && !TextUtils.isEmpty(((LauncherApplication) mContext)
-                        .getStkAppName(activity))) {
-            isCustomTitle = true;
+        String activity = null;
+        if (info != null) {
+            boolean condition = (mContext.getResources().
+                    getBoolean(R.bool.config_launcher_stkAppRename))
+                    && info.getComponentName().getPackageName().toString()
+                            .equalsIgnoreCase(STK_PACKAGE_NAME);
+            activity = info.getComponentName().getClassName().toString();
+
+            if (condition
+                    && !TextUtils.isEmpty(((LauncherApplication) mContext)
+                            .getStkAppName(activity))) {
+                isCustomTitle = true;
+            }
         }
         if (entry == null || unreadNum >= 0) {
             entry = new CacheEntry();
