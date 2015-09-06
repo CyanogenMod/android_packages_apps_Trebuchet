@@ -698,10 +698,10 @@ public class WallpaperCropActivity extends Activity {
                             // Adjust the width
                             roundedTrueCrop.right = roundedTrueCrop.left + fullSize.getWidth();
                         }
-                        if (roundedTrueCrop.right > fullSize.getWidth()) {
+                        if (roundedTrueCrop.right >= fullSize.getWidth()) {
                             // Adjust the left value
-                            int adjustment = roundedTrueCrop.left -
-                                    Math.max(0, roundedTrueCrop.right - roundedTrueCrop.width());
+                            int adjustment = Math.max(0,
+                                    roundedTrueCrop.right - fullSize.getWidth());
                             roundedTrueCrop.left -= adjustment;
                             roundedTrueCrop.right -= adjustment;
                         }
@@ -709,10 +709,10 @@ public class WallpaperCropActivity extends Activity {
                             // Adjust the height
                             roundedTrueCrop.bottom = roundedTrueCrop.top + fullSize.getHeight();
                         }
-                        if (roundedTrueCrop.bottom > fullSize.getHeight()) {
+                        if (roundedTrueCrop.bottom >= fullSize.getHeight()) {
                             // Adjust the top value
-                            int adjustment = roundedTrueCrop.top -
-                                    Math.max(0, roundedTrueCrop.bottom - roundedTrueCrop.height());
+                            int adjustment = Math.max(0,
+                                    roundedTrueCrop.bottom - fullSize.getHeight());
                             roundedTrueCrop.top -= adjustment;
                             roundedTrueCrop.bottom -= adjustment;
                         }
