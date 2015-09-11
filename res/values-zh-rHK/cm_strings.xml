@@ -24,6 +24,13 @@
   <string name="scrolling_page_outlines">頁面輪廓</string>
   <string name="scrolling_fade_adjacent">邊頁淡出</string>
   <string name="scrolling_wallpaper">捲動牆紙</string>
+  <string name="grid_size_text">格子大小</string>
+  <string name="grid_size_comfortable">舒適</string>
+  <string name="grid_size_cozy">愜意</string>
+  <string name="grid_size_condensed">濃縮</string>
+  <string name="grid_size_custom">自訂 (<xliff:g id="rows">%1$d</xliff:g> \u00d7 <xliff:g id="columns">%2$d</xliff:g>)</string>
+  <string name="preferences_interface_homescreen_custom">選擇自訂大小</string>
+  <string name="play_folder_title">播放</string>
   <string name="scroll_effect_text">滾動效果</string>
   <string name="drawer_sorting_text">排序模式</string>
   <string name="sort_mode_title">標題</string>
@@ -31,4 +38,14 @@
   <string name="sort_mode_install_time">安裝時間</string>
   <string name="home_screen_search_text">搜尋列</string>
   <string name="larger_icons_text">大圖示</string>
+  <string name="icon_labels">圖示標籤</string>
+  <string name="icon_labels_show">顯示</string>
+  <string name="icon_labels_hide">隱藏</string>
+  <string name="protected_app_settings">受保護的應用程式</string>
+  <string name="dialog_confirm">確認</string>
+  <string name="drawer_type">佈局</string>
+  <string name="drawer_type_drawer">垂直</string>
+  <string name="drawer_type_pager">分頁</string>
+  <string name="search_activity_not_found">找不到搜尋活動！</string>
+  <string name="app_not_available">應用程式不可用</string>
 </resources>
