@@ -1875,7 +1875,7 @@ public class LauncherModel extends BroadcastReceiver
             long containerIndex = item.screenId;
             if (item.container == LauncherSettings.Favorites.CONTAINER_HOTSEAT) {
                 // Return early if we detect that an item is under the hotseat button
-                if (mCallbacks == null ||
+                if (mCallbacks == null || mCallbacks.get() == null ||
                         mCallbacks.get().isAllAppsButtonRank((int) item.screenId)) {
                     deleteOnInvalidPlacement.set(true);
                     Log.e(TAG, "Error loading shortcut into hotseat " + item
