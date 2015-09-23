@@ -4614,21 +4614,29 @@ public class Launcher extends Activity
         if (mAppWidgetManager == null) return null;
 
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        final Intent assistIntent = searchManager.getAssistIntent(this, false);
-        if (assistIntent == null) {
-            return null;
-        }
-        ComponentName searchComponent = assistIntent.getComponent();
+        ComponentName searchComponent = searchManager.getGlobalSearchActivity();
+
 
         // Find the first widget from the same package as the global assist activity
         List<AppWidgetProviderInfo> widgets = AppWidgetManager.getInstance(this)
-                .getInstalledProviders(AppWidgetProviderInfo.WIDGET_CATEGORY_HOME_SCREEN);
+                .getInstalledProviders();
+
+        AppWidgetProviderInfo defaultWidgetForSearchPackage = null;
+
         for (AppWidgetProviderInfo info : widgets) {
             if (info.provider.getPackageName().equals(searchComponent.getPackageName())) {
-                return info;
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                    if ((info.widgetCategory & AppWidgetProviderInfo.WIDGET_CATEGORY_SEARCHBOX) != 0) {
+                        return info;
+                    } else if (defaultWidgetForSearchPackage == null) {
+                        defaultWidgetForSearchPackage = info;
+                    }
+                } else {
+                    return info;
+                }
             }
         }
-        return null;
+        return defaultWidgetForSearchPackage;
     }
 
     public Pair<Integer, AppWidgetProviderInfo> bindSearchAppWidget(AppWidgetHost host) {
