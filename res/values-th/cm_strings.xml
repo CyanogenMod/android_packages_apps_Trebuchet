@@ -31,6 +31,7 @@
   <string name="grid_size_condensed">บีบ</string>
   <string name="grid_size_custom">กำหนดเอง  (<xliff:g id="rows">%1$d</xliff:g> \u00d7 <xliff:g id="columns">%2$d</xliff:g>)</string>
   <string name="preferences_interface_homescreen_custom">เลือกขนาดกำหนดเอง</string>
+  <string name="play_folder_title">เล่น</string>
   <string name="scroll_effect_text">เอฟเฟกต์เลื่อน</string>
   <string name="drawer_sorting_text">วิธีการเรียง</string>
   <string name="sort_mode_title">ชื่อเรื่อง</string>
@@ -48,4 +49,5 @@
   <string name="drawer_type_pager">หน้า</string>
   <string name="setting_state_disabled">ปิดการใช้งาน</string>
   <string name="search_activity_not_found">ไม่มีกิจกรรมที่ค้นหา!</string>
+  <string name="app_not_available">ไม่สามารถใช้งานแอพได้</string>
 </resources>

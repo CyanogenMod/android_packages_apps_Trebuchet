@@ -100,7 +100,6 @@
   <string name="folder_cling_title">Esto ye una carpeta</string>
   <string name="folder_cling_create_folder">Pa crear una carpeta como esta, caltén primida una aplicación y muévila sobre otra.</string>
   <string name="cling_dismiss">Aceutar</string>
-  <string name="dummy_custom_cling_error_message">Error: custom workspace layout passed in but custom cling was not overwritten</string>
   <string name="folder_opened">Carpeta abierta, <xliff:g id="WIDTH">%1$d</xliff:g> por <xliff:g id="HEIGHT">%2$d</xliff:g></string>
   <string name="folder_tap_to_close">Primi pa zarrar la carpeta</string>
   <string name="folder_tap_to_rename">Primi pa camudar el nome nuevu</string>
