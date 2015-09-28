@@ -74,11 +74,6 @@ public class TransitionEffectsFragment extends Fragment {
         mListView = (ListView) v.findViewById(R.id.settings_transitions_list);
 
         final Launcher launcher = (Launcher) getActivity();
-        LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams)
-                mListView.getLayoutParams();
-        lp.bottomMargin = ((FrameLayout.LayoutParams) launcher.getOverviewPanel()
-                .findViewById(R.id.settings_container).getLayoutParams()).bottomMargin;
-        mListView.setLayoutParams(lp);
 
         mIsDrawer = getArguments().getBoolean(PAGE_OR_DRAWER_SCROLL_SELECT);
 

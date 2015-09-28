@@ -27,7 +27,7 @@ public class OverviewPanel extends SlidingUpPanelLayout implements Insettable {
                 findViewById(R.id.settings_container);
         FrameLayout.LayoutParams lp =
                 (FrameLayout.LayoutParams) layout.getLayoutParams();
-        lp.bottomMargin += insets.bottom - insets.bottom;
+        lp.bottomMargin = insets.bottom;
         layout.setLayoutParams(lp);
     }
 }

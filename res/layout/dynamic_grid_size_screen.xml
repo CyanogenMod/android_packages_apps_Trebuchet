@@ -1,15 +1,15 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.android.launcher3.InsettableLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:insettable="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center_horizontal|bottom"
     android:background="@color/settings_bg_color"
     android:orientation="vertical"
-    android:paddingBottom="@dimen/overview_panel_bottom_padding"
-    android:paddingTop="@dimen/overview_panel_bottom_padding"
     android:clickable="true" >
 
     <LinearLayout
         android:id="@+id/dynamic_grid_title"
+        insettable:layout_ignoreBottomInsets="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -36,6 +36,7 @@
     </LinearLayout>
 
     <view
+        insettable:layout_ignoreInsets="true"
         class="com.android.launcher3.DynamicGridSizeFragment$GridSizeView"
         android:id="@+id/dynamic_grid_size_image"
         android:layout_width="150dp"
@@ -44,10 +45,10 @@
         android:layout_marginBottom="@dimen/grid_padding"/>
 
     <ListView
-        xmlns:android="http://schemas.android.com/apk/res/android"
+        insettable:layout_ignoreTopInsets="true"
         android:id="@+id/dynamic_grid_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:listSelector="@android:color/transparent"
         android:splitMotionEvents="false"/>
-</LinearLayout>
+</com.android.launcher3.InsettableLinearLayout>

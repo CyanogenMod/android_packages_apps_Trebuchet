@@ -6,19 +6,19 @@ import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 
-public class InsettableFrameLayout extends FrameLayout implements
+public class InsettableLinearLayout extends LinearLayout implements
     ViewGroup.OnHierarchyChangeListener, Insettable {
 
     protected Rect mInsets = new Rect();
 
-    public InsettableFrameLayout(Context context, AttributeSet attrs) {
+    public InsettableLinearLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
         setOnHierarchyChangeListener(this);
     }
 
-    public void setFrameLayoutChildInsets(View child, Rect newInsets, Rect oldInsets) {
+    public void setLinearLayoutChildInsets(View child, Rect newInsets, Rect oldInsets) {
         final LayoutParams lp = (LayoutParams) child.getLayoutParams();
 
         if (child instanceof Insettable) {
@@ -41,14 +41,14 @@ public class InsettableFrameLayout extends FrameLayout implements
         final int n = getChildCount();
         for (int i = 0; i < n; i++) {
             final View child = getChildAt(i);
-            setFrameLayoutChildInsets(child, insets, mInsets);
+            setLinearLayoutChildInsets(child, insets, mInsets);
         }
         mInsets.set(insets);
     }
 
     @Override
     public LayoutParams generateLayoutParams(AttributeSet attrs) {
-        return new InsettableFrameLayout.LayoutParams(getContext(), attrs);
+        return new InsettableLinearLayout.LayoutParams(getContext(), attrs);
     }
 
     @Override
@@ -59,7 +59,7 @@ public class InsettableFrameLayout extends FrameLayout implements
     // Override to allow type-checking of LayoutParams.
     @Override
     protected boolean checkLayoutParams(ViewGroup.LayoutParams p) {
-        return p instanceof InsettableFrameLayout.LayoutParams;
+        return p instanceof InsettableLinearLayout.LayoutParams;
     }
 
     @Override
@@ -67,7 +67,7 @@ public class InsettableFrameLayout extends FrameLayout implements
         return new LayoutParams(p);
     }
 
-    public static class LayoutParams extends FrameLayout.LayoutParams {
+    public static class LayoutParams extends LinearLayout.LayoutParams {
         boolean ignoreInsets = false;
         boolean ignoreTopInsets = false;
         boolean ignoreBottomInsets = false;
@@ -75,13 +75,13 @@ public class InsettableFrameLayout extends FrameLayout implements
         public LayoutParams(Context c, AttributeSet attrs) {
             super(c, attrs);
             TypedArray a = c.obtainStyledAttributes(attrs,
-                    R.styleable.InsettableFrameLayout_Layout);
+                    R.styleable.InsettableLinearLayout_Layout);
             ignoreInsets = a.getBoolean(
-                    R.styleable.InsettableFrameLayout_Layout_layout_ignoreInsets, false);
+                    R.styleable.InsettableLinearLayout_Layout_layout_ignoreInsets, false);
             ignoreTopInsets = a.getBoolean(
-                    R.styleable.InsettableFrameLayout_Layout_layout_ignoreTopInsets, false);
+                    R.styleable.InsettableLinearLayout_Layout_layout_ignoreTopInsets, false);
             ignoreBottomInsets = a.getBoolean(
-                    R.styleable.InsettableFrameLayout_Layout_layout_ignoreBottomInsets, false);
+                    R.styleable.InsettableLinearLayout_Layout_layout_ignoreBottomInsets, false);
             a.recycle();
         }
 
@@ -96,7 +96,7 @@ public class InsettableFrameLayout extends FrameLayout implements
 
     @Override
     public void onChildViewAdded(View parent, View child) {
-        setFrameLayoutChildInsets(child, mInsets, new Rect());
+        setLinearLayoutChildInsets(child, mInsets, new Rect());
     }
 
     @Override
