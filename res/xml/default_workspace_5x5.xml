@@ -166,6 +166,9 @@
             launcher:packageName="com.android.dialer"
             launcher:className="com.android.dialer.DialtactsActivity" />
         <favorite
+            launcher:packageName="com.cyngn.dialer"
+            launcher:className="com.android.dialer.DialtactsActivity" />
+        <favorite
             launcher:packageName="com.android.contacts"
             launcher:className="com.android.contacts.activities.PeopleActivity" />
     </resolve>
