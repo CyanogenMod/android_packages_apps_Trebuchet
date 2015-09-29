@@ -26,7 +26,7 @@ public class AppDrawerContainer extends InsettableFrameLayout {
         // Scrubber
         view = findViewById(R.id.app_drawer_scrubber_container);
         LinearLayout.LayoutParams llp = (LinearLayout.LayoutParams) view.getLayoutParams();
-        llp.bottomMargin += insets.bottom - mInsets.bottom;
+        llp.bottomMargin = insets.bottom - mInsets.bottom;
         view.setLayoutParams(llp);
     }
 }

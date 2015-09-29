@@ -5247,6 +5247,7 @@ public class Launcher extends Activity
             mQsb = null;
         }
         mSearchDropTargetBar.setQsbSearchBar(getQsbBar());
+        mGrid.layout(this);
     }
 
     /**
