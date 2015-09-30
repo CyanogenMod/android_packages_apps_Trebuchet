@@ -80,8 +80,16 @@ public class SearchDropTargetBar extends FrameLayout implements DragController.D
     }
 
     public void setQsbSearchBar(View qsb) {
+        float alpha = 1f;
+        int visibility = View.VISIBLE;
+        if (mQSBSearchBar != null) {
+            alpha = mQSBSearchBar.getAlpha();
+            visibility = mQSBSearchBar.getVisibility();
+        }
         mQSBSearchBar = qsb;
         if (mQSBSearchBar != null) {
+            mQSBSearchBar.setAlpha(alpha);
+            mQSBSearchBar.setVisibility(visibility);
             if (mEnableDropDownDropTargets) {
                 mQSBSearchBarAnim = LauncherAnimUtils.ofFloat(mQSBSearchBar, "translationY", 0,
                         -mBarHeight);

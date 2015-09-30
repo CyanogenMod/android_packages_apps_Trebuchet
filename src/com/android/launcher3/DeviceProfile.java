@@ -766,11 +766,9 @@ public class DeviceProfile {
                 (visibleChildCount-1) * overviewModeBarSpacerWidthPx;
     }
 
-    public void layout(Launcher launcher) {
+    public void layoutSearchBar(Launcher launcher) {
         // Update search bar for live settings
         searchBarVisible = isSearchBarEnabled(launcher);
-        searchBarSpaceHeightPx = 2 * edgeMarginPx + (searchBarVisible ?
-                searchBarSpaceHeightPx - getSearchBarTopOffset() : 3 * edgeMarginPx);
         FrameLayout.LayoutParams lp;
         Resources res = launcher.getResources();
         boolean hasVerticalBarLayout = isVerticalBarLayout();
@@ -818,10 +816,15 @@ public class DeviceProfile {
             vglp.height = LayoutParams.MATCH_PARENT;
             qsbBar.setLayoutParams(vglp);
         }
+    }
 
+    public void layout(Launcher launcher) {
+        layoutSearchBar(launcher);
+        Resources res = launcher.getResources();
+        boolean hasVerticalBarLayout = isVerticalBarLayout();
         // Layout the workspace
         PagedView workspace = (PagedView) launcher.findViewById(R.id.workspace);
-        lp = (FrameLayout.LayoutParams) workspace.getLayoutParams();
+        FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) workspace.getLayoutParams();
         lp.gravity = Gravity.CENTER;
         int orientation = isLandscape ? CellLayout.LANDSCAPE : CellLayout.PORTRAIT;
         Rect padding = getWorkspacePadding(orientation);
