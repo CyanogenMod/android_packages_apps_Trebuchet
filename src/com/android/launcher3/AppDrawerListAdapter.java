@@ -257,16 +257,42 @@ public class AppDrawerListAdapter extends RecyclerView.Adapter<AppDrawerListAdap
                     .setUpdateListener(new ItemAnimator(holder, mItemAnimatorSet))
                     .setListener(new AnimatorListenerAdapter() {
                         @Override
+                        public void onAnimationStart(Animator animation) {
+                            animateStart(holder, animation);
+                        }
+
+                        @Override
                         public void onAnimationEnd(final Animator animation) {
                             animateEnd(holder, animation);
+                        }
+
+                        @Override
+                        public void onAnimationCancel(final Animator animation) {
+                            animateCancel(holder, animation);
                         }
                     })
                     .setDuration(ANIMATION_DURATION)
                     .start();
         }
 
+        public void animateStart(ViewHolder holder, Animator animation) {
+            setLayerType(holder, View.LAYER_TYPE_HARDWARE);
+        }
+
         public void animateEnd(ViewHolder holder, Animator animation) {
             animate(holder, animation, 1f);
+            setLayerType(holder, View.LAYER_TYPE_NONE);
+        }
+
+        public void animateCancel(ViewHolder holder, Animator animation) {
+            animate(holder, animation, 1f);
+            setLayerType(holder, View.LAYER_TYPE_NONE);
+
+        }
+
+        private void setLayerType(ViewHolder holder, int layerType) {
+            holder.mFadingBackgroundBackView.setLayerType(layerType, null);
+            holder.mFadingBackgroundFrontView.setLayerType(layerType, null);
         }
 
         public void animate(ViewHolder holder, Animator animation) {
