@@ -243,7 +243,7 @@ public class SearchDropTargetBar extends FrameLayout implements DragController.D
             mDropTargetBarAnim.reverse();
             if (!isAnyFolderOpen() && (!mIsSearchBarHidden ||
                     (mQSBSearchBar != null && mQSBSearchBar.getAlpha() < 1f))) {
-                if (mLauncher != null && mLauncher.shouldShowSearchBar()
+                if (mLauncher != null && mQSBSearchBar != null && mLauncher.shouldShowSearchBar()
                         && mQSBSearchBar.getVisibility() != View.VISIBLE) {
                     mQSBSearchBar.setVisibility(View.VISIBLE);
                 }
