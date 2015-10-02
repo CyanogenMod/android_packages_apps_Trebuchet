@@ -49,5 +49,4 @@
   <string name="drawer_type_pager">หน้า</string>
   <string name="setting_state_disabled">ปิดการใช้งาน</string>
   <string name="search_activity_not_found">ไม่มีกิจกรรมที่ค้นหา!</string>
-  <string name="app_not_available">ไม่สามารถใช้งานแอพได้</string>
 </resources>

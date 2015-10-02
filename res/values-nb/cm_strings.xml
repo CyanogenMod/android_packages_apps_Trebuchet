@@ -49,5 +49,4 @@
   <string name="drawer_type_pager">Sidevekslet</string>
   <string name="setting_state_disabled">DEAKTIVERT</string>
   <string name="search_activity_not_found">Finner ikke en søkeaktivitet!</string>
-  <string name="app_not_available">App ikke tilgjengelig</string>
 </resources>

@@ -49,5 +49,4 @@
   <string name="drawer_type_pager">Puslapiai</string>
   <string name="setting_state_disabled">NELEIDŽIAMA</string>
   <string name="search_activity_not_found">Paieškos veikla negali būti rasta!</string>
-  <string name="app_not_available">Programa nepasiekiama</string>
 </resources>

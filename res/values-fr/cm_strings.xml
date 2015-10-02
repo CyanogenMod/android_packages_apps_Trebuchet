@@ -49,5 +49,4 @@
   <string name="drawer_type_pager">Paginée</string>
   <string name="setting_state_disabled">DÉSACTIVÉ</string>
   <string name="search_activity_not_found">Aucune recherche n\'a pu être trouvée !</string>
-  <string name="app_not_available">Application non disponible</string>
 </resources>

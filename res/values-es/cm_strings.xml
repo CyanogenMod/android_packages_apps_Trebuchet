@@ -49,5 +49,4 @@
   <string name="drawer_type_pager">Paginado</string>
   <string name="setting_state_disabled">DESHABILITADO</string>
   <string name="search_activity_not_found">¡No se pudo encontrar un asistente de búsqueda!</string>
-  <string name="app_not_available">Aplicación no disponible</string>
 </resources>

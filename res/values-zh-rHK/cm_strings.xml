@@ -47,5 +47,4 @@
   <string name="drawer_type_drawer">垂直</string>
   <string name="drawer_type_pager">分頁</string>
   <string name="search_activity_not_found">找不到搜尋活動！</string>
-  <string name="app_not_available">應用程式不可用</string>
 </resources>

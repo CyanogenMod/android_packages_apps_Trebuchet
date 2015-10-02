@@ -49,5 +49,4 @@
   <string name="drawer_type_pager">Leheküljed</string>
   <string name="setting_state_disabled">KEELATUD</string>
   <string name="search_activity_not_found">Otsimise tegevusala ei leitud!</string>
-  <string name="app_not_available">Rakendus pole saadaval</string>
 </resources>

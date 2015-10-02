@@ -49,5 +49,4 @@
   <string name="drawer_type_pager">صفحه به صفحه</string>
   <string name="setting_state_disabled">غیرفعال</string>
   <string name="search_activity_not_found">عملگری برای جستجو یافت نشد!</string>
-  <string name="app_not_available">برنامه در دسترس نیست</string>
 </resources>

@@ -49,5 +49,4 @@
   <string name="drawer_type_pager">Paginat</string>
   <string name="setting_state_disabled">DEZACTIVAT</string>
   <string name="search_activity_not_found">Imposibil de găsit o activitate de căutare!</string>
-  <string name="app_not_available">Aplicația nu este disponibilă</string>
 </resources>

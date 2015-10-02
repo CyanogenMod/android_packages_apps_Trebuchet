@@ -49,5 +49,4 @@
   <string name="drawer_type_pager">مقسم إلى صفحات</string>
   <string name="setting_state_disabled">معطل</string>
   <string name="search_activity_not_found">لا يمكن العثور على نشاط بحثي!</string>
-  <string name="app_not_available">التطبيق غير متوافر</string>
 </resources>

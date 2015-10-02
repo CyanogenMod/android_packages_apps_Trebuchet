@@ -27,7 +27,6 @@
   <string name="widget_adder">Widgeten</string>
   <string name="toggle_weight_watcher">Späicher uweisen</string>
   <string name="long_press_widget_to_add">Drécken an halen, fir e Widget opzerafen.</string>
-  <string name="market">Geschäft</string>
   <string name="widget_dims_format">%1$d \u00d7 %2$d</string>
   <string name="external_drop_widget_error">Konnt d\'Element net um Startschierm ofleeën.</string>
   <string name="external_drop_widget_pick_title">Widget auswielen den erstallt soll ginn</string>
@@ -55,8 +54,6 @@
   <string name="delete_target_label">Läschen</string>
   <string name="delete_target_uninstall_label">Desinstalléieren</string>
   <string name="info_target_label">App-Info</string>
-  <string name="accessibility_search_button">Sichen</string>
-  <string name="accessibility_voice_search_button">Stëmmsich</string>
   <string name="accessibility_all_apps_button">Appen</string>
   <string name="accessibility_delete_button">Ewechhuelen</string>
   <string name="delete_zone_label_all_apps_system_app">Aktualiséierung desinstalléieren</string>

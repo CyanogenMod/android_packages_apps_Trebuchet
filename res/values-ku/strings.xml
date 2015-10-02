@@ -26,7 +26,6 @@
   <string name="widget_adder">ویدجێتەکان</string>
   <string name="toggle_weight_watcher">پیشاندانی بیرگە</string>
   <string name="long_press_widget_to_add">بیسوو &amp; دەست ڕاگرە بۆ هەڵگرتنی ویجێتێک.</string>
-  <string name="market">فرۆشگا</string>
   <string name="widget_dims_format">%1$d \u00d7 %2$d</string>
   <string name="external_drop_widget_error">نەیتوانی بڕگەکە فڕێداتە سەر ئەم ڕوونمایە.</string>
   <string name="external_drop_widget_pick_title">ویجێت هەڵبژێرە بۆ دروستکردن</string>
@@ -54,8 +53,6 @@
   <string name="delete_target_label">لابردن</string>
   <string name="delete_target_uninstall_label">دامه‌زرانسڕینه‌وه‌</string>
   <string name="info_target_label">زانیاریی بەرنامە</string>
-  <string name="accessibility_search_button">گه‌ڕان</string>
-  <string name="accessibility_voice_search_button">گەڕانی دەنگی</string>
   <string name="accessibility_all_apps_button">بەرنامەکان</string>
   <string name="accessibility_delete_button">لابردن</string>
   <string name="delete_zone_label_all_apps_system_app">دامه‌زرانسڕینه‌وه‌ی بەڕۆژکردنەوە</string>
