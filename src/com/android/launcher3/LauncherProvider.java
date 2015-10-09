@@ -30,6 +30,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.OperationApplicationException;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.content.res.AssetManager;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.SQLException;
@@ -40,8 +43,10 @@ import android.database.sqlite.SQLiteStatement;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.SystemProperties;
 import android.provider.Settings;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.SparseArray;
 
@@ -89,6 +94,8 @@ public class LauncherProvider extends ContentProvider {
      */
     static final Uri CONTENT_APPWIDGET_RESET_URI =
             Uri.parse("content://" + AUTHORITY + "/appWidgetReset");
+
+    private static final String MCC_PROP_NAME = "ro.prebundled.mcc";
 
     private DatabaseHelper mOpenHelper;
     private static boolean sJustLoadedFromOldDb;
@@ -311,10 +318,56 @@ public class LauncherProvider extends ContentProvider {
         SharedPreferences sp = getContext().getSharedPreferences(spKey, Context.MODE_PRIVATE);
 
         if (sp.getBoolean(EMPTY_DATABASE_CREATED, false)) {
-            Log.d(TAG, "loading default workspace");
+            if (LOGD) Log.d(TAG, "loading default workspace");
 
             AutoInstallsLayout loader = AutoInstallsLayout.get(getContext(),
                     mOpenHelper.mAppWidgetHost, mOpenHelper);
+
+            String mcc = SystemProperties.get(MCC_PROP_NAME);
+
+            if (!TextUtils.isEmpty(mcc)) {
+                if (LOGD) Log.d(TAG, "mcc: " + mcc);
+
+                Configuration tempConfiguration = new Configuration(getContext().getResources().
+                        getConfiguration());
+                boolean shouldUseTempConfig = false;
+
+                try {
+                    tempConfiguration.mcc = Integer.parseInt(mcc);
+                    shouldUseTempConfig = true;
+                } catch (NumberFormatException e) {
+                    // not able to parse mcc, catch exception and exit out of this logic
+                    e.printStackTrace();
+                }
+
+                if (shouldUseTempConfig) {
+                    String publicSrcDir = null;
+                    try {
+                        String packageName = getContext().getPackageName();
+                        publicSrcDir = getContext().getPackageManager().
+                                getApplicationInfo(packageName, 0).publicSourceDir;
+                    } catch (PackageManager.NameNotFoundException e) {
+                        e.printStackTrace();
+                    }
+
+                    AssetManager assetManager = new AssetManager();
+                    if (!TextUtils.isEmpty(publicSrcDir)) {
+                        assetManager.addAssetPath(publicSrcDir);
+                    }
+                    Resources customResources = new Resources(assetManager, new DisplayMetrics(),
+                            tempConfiguration);
+
+                    int mccLayout = LauncherAppState.getInstance()
+                            .getDynamicGrid().getDeviceProfile().defaultLayoutId;
+
+                    if (mccLayout != 0) {
+                        if (LOGD) Log.d(TAG, "mcc layout id: " + mccLayout);
+
+                        loader = new DefaultLayoutParser(getContext(), mOpenHelper.mAppWidgetHost,
+                                mOpenHelper, customResources, mccLayout);
+                    }
+                }
+            }
 
             if (loader == null) {
                 final Partner partner = Partner.get(getContext().getPackageManager());
