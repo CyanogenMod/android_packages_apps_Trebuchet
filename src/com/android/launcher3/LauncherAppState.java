@@ -27,6 +27,11 @@ import android.content.res.Resources;
 import android.database.ContentObserver;
 import android.os.Handler;
 import android.util.Log;
+import android.content.pm.PackageManager;
+import android.content.res.AssetManager;
+import android.os.SystemProperties;
+import android.text.TextUtils;
+import android.util.DisplayMetrics;
 
 import com.android.launcher3.compat.LauncherAppsCompat;
 import com.android.launcher3.compat.PackageInstallerCompat.PackageInstallInfo;
@@ -39,6 +44,8 @@ public class LauncherAppState implements DeviceProfile.DeviceProfileCallbacks {
     private static final String SHARED_PREFERENCES_KEY = "com.android.launcher3.prefs";
 
     private static final boolean DEBUG = false;
+
+    private static final String MCC_PROP_NAME = "ro.prebundled.mcc";
 
     private final AppFilter mAppFilter;
     private final BuildInfo mBuildInfo;
@@ -200,15 +207,52 @@ public class LauncherAppState implements DeviceProfile.DeviceProfileCallbacks {
                                   int width, int height,
                                   int availableWidth, int availableHeight) {
 
+        Resources resources = context.getResources();
+        String mcc = SystemProperties.get(MCC_PROP_NAME);
+        if (!TextUtils.isEmpty(mcc)) {
+            Log.d(TAG, "mcc not empty: " + mcc);
+
+            Configuration tempConfiguration = new Configuration(resources.getConfiguration());
+            boolean shouldUseTempConfig = false;
+
+            try {
+                tempConfiguration.mcc = Integer.parseInt(mcc);
+                shouldUseTempConfig = true;
+            } catch (NumberFormatException e) {
+                // not able to parse mcc, catch exception and exit out of this logic
+                e.printStackTrace();
+            }
+
+            if (shouldUseTempConfig) {
+                String publicSrcDir = null;
+                try {
+                    String packageName = sContext.getPackageName();
+                    publicSrcDir = sContext.getPackageManager().getApplicationInfo(packageName,
+                            0).publicSourceDir;
+                } catch (PackageManager.NameNotFoundException e) {
+                    e.printStackTrace();
+                }
+
+                AssetManager assetManager = new AssetManager();
+                if (!TextUtils.isEmpty(publicSrcDir)) {
+                    assetManager.addAssetPath(publicSrcDir);
+                }
+
+                resources = new Resources(assetManager, new DisplayMetrics(),
+                        tempConfiguration);
+            }
+        }
+
+
         mDynamicGrid = new DynamicGrid(context,
-                context.getResources(),
+                resources,
                 minWidth, minHeight, width, height,
                 availableWidth, availableHeight);
         mDynamicGrid.getDeviceProfile().addCallback(this);
 
         // Update the icon size
         DeviceProfile grid = mDynamicGrid.getDeviceProfile();
-        grid.updateFromConfiguration(context, context.getResources(), width, height,
+        grid.updateFromConfiguration(context, resources, width, height,
                 availableWidth, availableHeight);
         return grid;
     }
