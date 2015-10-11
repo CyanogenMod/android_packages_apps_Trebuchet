@@ -4571,7 +4571,7 @@ public class Launcher extends Activity
         if (mAppWidgetManager == null) return null;
 
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        final Intent assistIntent = searchManager.getAssistIntent(this, false);
+        final Intent assistIntent = searchManager.getAssistIntent(false);
         if (assistIntent == null) {
             return null;
         }
