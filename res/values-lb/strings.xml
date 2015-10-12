@@ -22,7 +22,9 @@
   <string name="home">Startschierm</string>
   <string name="uid_name">Kär-Appe vun Android</string>
   <string name="activity_not_found">D\'App ass net installéiert.</string>
+  <string name="activity_not_available">App ass net disponibel</string>
   <string name="safemode_shortcut_error">Erofgelueden App am séchere Modus desaktivéiert</string>
+  <string name="safemode_widget_error">Widgeten desaktivéiert am Sécherheetsmodus</string>
   <string name="widgets_tab_label">Widgeten</string>
   <string name="widget_adder">Widgeten</string>
   <string name="toggle_weight_watcher">Späicher uweisen</string>
