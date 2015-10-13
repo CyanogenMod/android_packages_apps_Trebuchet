@@ -49,5 +49,4 @@
   <string name="drawer_type_pager">Поставка</string>
   <string name="setting_state_disabled">ОНЕМОГУЋЕНО</string>
   <string name="search_activity_not_found">Претрага активности не може бити пронађена!</string>
-  <string name="app_not_available">Апликација није доступна</string>
 </resources>

@@ -23,12 +23,16 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
+import android.content.res.AssetManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.database.ContentObserver;
 import android.graphics.Point;
 import android.os.Build;
 import android.os.Handler;
+import android.os.SystemProperties;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
@@ -43,6 +47,8 @@ public class LauncherAppState implements DeviceProfile.DeviceProfileCallbacks {
     private static final String TAG = "LauncherAppState";
 
     private static final boolean DEBUG = false;
+
+    private static final String MCC_PROP_NAME = "ro.prebundled.mcc";
 
     private final AppFilter mAppFilter;
     private final BuildInfo mBuildInfo;
@@ -210,13 +216,52 @@ public class LauncherAppState implements DeviceProfile.DeviceProfileCallbacks {
         DisplayMetrics dm = new DisplayMetrics();
         display.getMetrics(dm);
 
+        Resources resources = context.getResources();
+
         if (dynamicGrid == null) {
             Point smallestSize = new Point();
             Point largestSize = new Point();
             display.getCurrentSizeRange(smallestSize, largestSize);
 
+            String mcc = SystemProperties.get(MCC_PROP_NAME);
+
+            if (!TextUtils.isEmpty(mcc)) {
+                Log.d(TAG, "mcc not empty: " + mcc);
+
+                Configuration tempConfiguration = new Configuration(resources.getConfiguration());
+                boolean shouldUseTempConfig = false;
+
+                try {
+                    tempConfiguration.mcc = Integer.parseInt(mcc);
+                    shouldUseTempConfig = true;
+                } catch (NumberFormatException e) {
+                    // not able to parse mcc, catch exception and exit out of this logic
+                    e.printStackTrace();
+                }
+
+                if (shouldUseTempConfig) {
+                    String publicSrcDir = null;
+                    try {
+                        String packageName = sContext.getPackageName();
+                        publicSrcDir = sContext.getPackageManager().getApplicationInfo(packageName,
+                                0).publicSourceDir;
+                    } catch (PackageManager.NameNotFoundException e) {
+                        e.printStackTrace();
+                    }
+
+                    AssetManager assetManager = new AssetManager();
+                    if (!TextUtils.isEmpty(publicSrcDir)) {
+                        assetManager.addAssetPath(publicSrcDir);
+                    }
+
+                    resources = new Resources(assetManager, new DisplayMetrics(),
+                            tempConfiguration);
+                }
+
+            }
+
             dynamicGrid = new DynamicGrid(context,
-                    context.getResources(),
+                    resources,
                     Math.min(smallestSize.x, smallestSize.y),
                     Math.min(largestSize.x, largestSize.y),
                     realSize.x, realSize.y,
@@ -225,7 +270,7 @@ public class LauncherAppState implements DeviceProfile.DeviceProfileCallbacks {
 
         // Update the icon size
         DeviceProfile grid = dynamicGrid.getDeviceProfile();
-        grid.updateFromConfiguration(context, context.getResources(),
+        grid.updateFromConfiguration(context, resources,
                 realSize.x, realSize.y,
                 dm.widthPixels, dm.heightPixels);
         return dynamicGrid;

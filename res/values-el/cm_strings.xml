@@ -49,5 +49,4 @@
   <string name="drawer_type_pager">Οριζόντια</string>
   <string name="setting_state_disabled">ΑΠΕΝΕΡΓΟΠΟΙΗΜΕΝΟ</string>
   <string name="search_activity_not_found">Δεν βρέθηκε καμία δραστηριότητα αναζήτησης!</string>
-  <string name="app_not_available">Η εφαρμογή δεν είναι διαθέσιμη</string>
 </resources>

@@ -8,8 +8,12 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 public class AppDrawerContainer extends InsettableFrameLayout {
+
+    private int mScrubberHeight;
+
     public AppDrawerContainer(Context context, AttributeSet attrs) {
         super(context, attrs);
+        mScrubberHeight = getResources().getDimensionPixelSize(R.dimen.scrubber_height);
     }
 
     @Override
@@ -18,8 +22,8 @@ public class AppDrawerContainer extends InsettableFrameLayout {
         View view = findViewById(R.id.app_drawer_recyclerview);
         FrameLayout.LayoutParams lp =
                 (FrameLayout.LayoutParams) view.getLayoutParams();
-        int paddingBottom = view.getPaddingBottom() + insets.bottom - mInsets.bottom;
-        int paddingTop = view.getPaddingTop() + insets.top - mInsets.top;
+        int paddingBottom =  mScrubberHeight + insets.bottom - mInsets.bottom;
+        int paddingTop = insets.top - mInsets.top;
         view.setLayoutParams(lp);
         view.setPadding(view.getPaddingLeft(), paddingTop, view.getPaddingRight(), paddingBottom);
 

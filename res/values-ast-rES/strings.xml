@@ -27,7 +27,6 @@
   <string name="widget_adder">Widgets</string>
   <string name="toggle_weight_watcher">Amosar memoria</string>
   <string name="long_press_widget_to_add">Caltén primíu\'l widget que quieras esbillar.</string>
-  <string name="market">Tienda</string>
   <string name="widget_dims_format">%1$d \u00d7 %2$d</string>
   <string name="external_drop_widget_error">Fallu al arrastrar l\'elementu a la pantalla d\'aniciu.</string>
   <string name="external_drop_widget_pick_title">Esbilla un widget p\'amestar</string>
@@ -55,8 +54,6 @@
   <string name="delete_target_label">Desaniciar</string>
   <string name="delete_target_uninstall_label">Desinstalar</string>
   <string name="info_target_label">Información de l\'aplicación</string>
-  <string name="accessibility_search_button">Guetar</string>
-  <string name="accessibility_voice_search_button">Gueta por voz</string>
   <string name="accessibility_all_apps_button">Aplicaciones</string>
   <string name="accessibility_delete_button">Desaniciar</string>
   <string name="delete_zone_label_all_apps_system_app">Desinstalar anovamientu</string>
