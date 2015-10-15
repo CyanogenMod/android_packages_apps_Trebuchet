@@ -1037,7 +1037,7 @@ public class LauncherProvider extends ContentProvider {
 
                                 String updateWhere = Favorites._ID + "=" + favoriteId;
                                 db.update(TABLE_FAVORITES, values, updateWhere, null);
-                                if (Log.isLoggable(TAG, Log.INFO)) {
+                                if (LOGD) {
                                     Log.i(TAG, "Updated " + componentName + " to " + newName);
                                 }
                             }
