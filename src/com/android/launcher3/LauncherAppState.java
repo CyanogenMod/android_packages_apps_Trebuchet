@@ -218,55 +218,53 @@ public class LauncherAppState implements DeviceProfile.DeviceProfileCallbacks {
 
         Resources resources = context.getResources();
 
-        if (dynamicGrid == null) {
-            Point smallestSize = new Point();
-            Point largestSize = new Point();
-            display.getCurrentSizeRange(smallestSize, largestSize);
+        Point smallestSize = new Point();
+        Point largestSize = new Point();
+        display.getCurrentSizeRange(smallestSize, largestSize);
 
-            String mcc = SystemProperties.get(MCC_PROP_NAME);
+        String mcc = SystemProperties.get(MCC_PROP_NAME);
 
-            if (!TextUtils.isEmpty(mcc)) {
-                Log.d(TAG, "mcc not empty: " + mcc);
+        if (!TextUtils.isEmpty(mcc)) {
+            Log.d(TAG, "mcc not empty: " + mcc);
 
-                Configuration tempConfiguration = new Configuration(resources.getConfiguration());
-                boolean shouldUseTempConfig = false;
+            Configuration tempConfiguration = new Configuration(resources.getConfiguration());
+            boolean shouldUseTempConfig = false;
 
+            try {
+                tempConfiguration.mcc = Integer.parseInt(mcc);
+                shouldUseTempConfig = true;
+            } catch (NumberFormatException e) {
+                // not able to parse mcc, catch exception and exit out of this logic
+                e.printStackTrace();
+            }
+
+            if (shouldUseTempConfig) {
+                String publicSrcDir = null;
                 try {
-                    tempConfiguration.mcc = Integer.parseInt(mcc);
-                    shouldUseTempConfig = true;
-                } catch (NumberFormatException e) {
-                    // not able to parse mcc, catch exception and exit out of this logic
+                    String packageName = sContext.getPackageName();
+                    publicSrcDir = sContext.getPackageManager().getApplicationInfo(packageName,
+                            0).publicSourceDir;
+                } catch (PackageManager.NameNotFoundException e) {
                     e.printStackTrace();
                 }
 
-                if (shouldUseTempConfig) {
-                    String publicSrcDir = null;
-                    try {
-                        String packageName = sContext.getPackageName();
-                        publicSrcDir = sContext.getPackageManager().getApplicationInfo(packageName,
-                                0).publicSourceDir;
-                    } catch (PackageManager.NameNotFoundException e) {
-                        e.printStackTrace();
-                    }
-
-                    AssetManager assetManager = new AssetManager();
-                    if (!TextUtils.isEmpty(publicSrcDir)) {
-                        assetManager.addAssetPath(publicSrcDir);
-                    }
-
-                    resources = new Resources(assetManager, new DisplayMetrics(),
-                            tempConfiguration);
+                AssetManager assetManager = new AssetManager();
+                if (!TextUtils.isEmpty(publicSrcDir)) {
+                    assetManager.addAssetPath(publicSrcDir);
                 }
 
+                resources = new Resources(assetManager, new DisplayMetrics(),
+                        tempConfiguration);
             }
 
-            dynamicGrid = new DynamicGrid(context,
-                    resources,
-                    Math.min(smallestSize.x, smallestSize.y),
-                    Math.min(largestSize.x, largestSize.y),
-                    realSize.x, realSize.y,
-                    dm.widthPixels, dm.heightPixels);
         }
+
+        dynamicGrid = new DynamicGrid(context,
+                resources,
+                Math.min(smallestSize.x, smallestSize.y),
+                Math.min(largestSize.x, largestSize.y),
+                realSize.x, realSize.y,
+                dm.widthPixels, dm.heightPixels);
 
         // Update the icon size
         DeviceProfile grid = dynamicGrid.getDeviceProfile();
