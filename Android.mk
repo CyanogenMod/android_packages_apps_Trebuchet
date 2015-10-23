@@ -32,8 +32,10 @@ LOCAL_SRC_FILES := $(call all-java-files-under, src) \
     $(call all-renderscript-files-under, src) \
     $(call all-proto-files-under, protos)
 LOCAL_RESOURCE_DIR := $(LOCAL_PATH)/WallpaperPicker/res $(LOCAL_PATH)/res
+LOCAL_RESOURCE_DIR += $(TOP)/frameworks/support/v7/recyclerview/res
 
 LOCAL_AAPT_FLAGS := --auto-add-overlay
+LOCAL_AAPT_FLAGS += --extra-packages android.support.v7.recyclerview
 
 LOCAL_PROTOC_OPTIMIZE_TYPE := nano
 LOCAL_PROTOC_FLAGS := --proto_path=$(LOCAL_PATH)/protos/
