@@ -614,10 +614,15 @@ public class DeviceProfile {
                 bounds.set(desiredWorkspaceLeftRightMarginPx - defaultWidgetPadding.left,
                         getSearchBarTopOffset(),
                         availableWidthPx - (desiredWorkspaceLeftRightMarginPx -
-                        defaultWidgetPadding.right), searchBarVisible ? searchBarSpaceHeightPx : edgeMarginPx);
+                        defaultWidgetPadding.right),
+                        edgeMarginPx + (searchBarVisible ? searchBarSpaceHeightPx : 0));
             }
         }
         return bounds;
+    }
+
+    boolean shouldAnimQSBWithWorkspace() {
+        return !isLandscape && !isTablet();
     }
 
     /** Returns the bounds of the workspace page indicators. */

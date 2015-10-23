@@ -21,6 +21,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.View;
@@ -59,6 +60,10 @@ public class SearchDropTargetBar extends FrameLayout implements DragController.D
 
     public SearchDropTargetBar(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+
+        // Ensure a minimal height while view is finishing to inflate
+        final Resources res = context.getResources();
+        mBarHeight = res.getDimensionPixelSize(R.dimen.dynamic_grid_search_bar_height);
     }
 
     public void setup(Launcher launcher, DragController dragController) {
@@ -86,11 +91,18 @@ public class SearchDropTargetBar extends FrameLayout implements DragController.D
             alpha = mQSBSearchBar.getAlpha();
             visibility = mQSBSearchBar.getVisibility();
         }
+        if (mQSBSearchBarAnim != null) {
+            // Revert the current animation before swap it
+            mQSBSearchBarAnim.reverse();
+        }
         mQSBSearchBar = qsb;
         if (mQSBSearchBar != null) {
             mQSBSearchBar.setAlpha(alpha);
             mQSBSearchBar.setVisibility(visibility);
-            if (mEnableDropDownDropTargets) {
+            if (!mLauncher.isSearchBarEnabled() && mLauncher.mGrid.shouldAnimQSBWithWorkspace()) {
+                mQSBSearchBarAnim = LauncherAnimUtils.ofFloat(mLauncher.getWorkspace(),
+                        "translationY", 0, mBarHeight);
+            } else if (mEnableDropDownDropTargets) {
                 mQSBSearchBarAnim = LauncherAnimUtils.ofFloat(mQSBSearchBar, "translationY", 0,
                         -mBarHeight);
             } else {

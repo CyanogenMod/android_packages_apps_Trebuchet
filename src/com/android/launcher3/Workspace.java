@@ -2256,6 +2256,7 @@ public class Workspace extends SmoothPagedView
         State finalState = Workspace.State.OVERVIEW;
         if (!enable) {
             finalState = Workspace.State.NORMAL;
+            mLauncher.bindSearchBar();
         }
 
         Animator workspaceAnim = getChangeStateAnimation(finalState, animated, 0, snapPage);
