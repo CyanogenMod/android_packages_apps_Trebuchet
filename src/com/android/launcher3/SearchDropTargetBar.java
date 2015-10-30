@@ -18,6 +18,7 @@ package com.android.launcher3;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.Context;
@@ -25,6 +26,7 @@ import android.content.res.Resources;
 import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
 import android.widget.FrameLayout;
 
@@ -38,7 +40,7 @@ public class SearchDropTargetBar extends FrameLayout implements DragController.D
     private static final int sTransitionOutDuration = 175;
 
     private ObjectAnimator mDropTargetBarAnim;
-    private ValueAnimator mQSBSearchBarAnim;
+    private AnimatorSet mQSBSearchBarAnim;
     private static final AccelerateInterpolator sAccelerateInterpolator =
             new AccelerateInterpolator();
 
@@ -48,6 +50,7 @@ public class SearchDropTargetBar extends FrameLayout implements DragController.D
     private ButtonDropTarget mInfoDropTarget;
     private ButtonDropTarget mDeleteDropTarget;
     private int mBarHeight;
+    private int mWorkspaceHeight;
     private boolean mDeferOnDragEnd = false;
 
     private boolean mEnableDropDownDropTargets;
@@ -91,27 +94,44 @@ public class SearchDropTargetBar extends FrameLayout implements DragController.D
             alpha = mQSBSearchBar.getAlpha();
             visibility = mQSBSearchBar.getVisibility();
         }
-        if (mQSBSearchBarAnim != null) {
-            // Revert the current animation before swap it
-            mQSBSearchBarAnim.reverse();
-        }
         mQSBSearchBar = qsb;
+        mQSBSearchBarAnim = new AnimatorSet();
         if (mQSBSearchBar != null) {
             mQSBSearchBar.setAlpha(alpha);
             mQSBSearchBar.setVisibility(visibility);
+            View animView = mQSBSearchBar;
             if (!mLauncher.isSearchBarEnabled() && mLauncher.mGrid.shouldAnimQSBWithWorkspace()) {
-                mQSBSearchBarAnim = LauncherAnimUtils.ofFloat(mLauncher.getWorkspace(),
-                        "translationY", 0, mBarHeight);
+                final ViewGroup view = mLauncher.getWorkspace();
+                animView = view;
+
+                ValueAnimator anim1 = LauncherAnimUtils.ofFloat(
+                        animView, "translationY", 0, mBarHeight / 2);
+                ValueAnimator  anim2 = ValueAnimator.ofInt(0, mBarHeight);
+                anim2.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                    @Override
+                    public void onAnimationUpdate(ValueAnimator animation) {
+                        final int val = (int) animation.getAnimatedValue();
+                        final int height = mWorkspaceHeight - val;
+                        final ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
+                        if (val == 0) {
+                            layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT;
+                        } else {
+                            layoutParams.height = height;
+                        }
+                        view.setLayoutParams(layoutParams);
+                    }
+                });
+                mQSBSearchBarAnim.playTogether(anim1, anim2);
             } else if (mEnableDropDownDropTargets) {
-                mQSBSearchBarAnim = LauncherAnimUtils.ofFloat(mQSBSearchBar, "translationY", 0,
-                        -mBarHeight);
+                mQSBSearchBarAnim.play(LauncherAnimUtils.ofFloat(
+                        animView, "translationY", 0, -mBarHeight));
             } else {
-                mQSBSearchBarAnim = LauncherAnimUtils.ofFloat(mQSBSearchBar, "alpha", 1f, 0f);
+                mQSBSearchBarAnim.play(LauncherAnimUtils.ofFloat(animView, "alpha", 1f, 0f));
             }
-            setupAnimation(mQSBSearchBarAnim, mQSBSearchBar);
+            setupAnimation(mQSBSearchBarAnim, animView);
         } else {
             // Create a no-op animation of the search bar is null
-            mQSBSearchBarAnim = ValueAnimator.ofFloat(0, 0);
+            mQSBSearchBarAnim.play(ValueAnimator.ofFloat(0, 0));
             mQSBSearchBarAnim.setDuration(sTransitionInDuration);
         }
     }
@@ -124,7 +144,7 @@ public class SearchDropTargetBar extends FrameLayout implements DragController.D
         }
     }
 
-    private void setupAnimation(ValueAnimator anim, final View v) {
+    private void setupAnimation(Animator anim, final View v) {
         anim.setInterpolator(sAccelerateInterpolator);
         anim.setDuration(sTransitionInDuration);
         anim.addListener(new AnimatorListenerAdapter() {
@@ -168,6 +188,15 @@ public class SearchDropTargetBar extends FrameLayout implements DragController.D
         setupAnimation(mDropTargetBarAnim, mDropTargetBar);
     }
 
+
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
+        if (mLauncher.getWorkspace() != null) {
+            mWorkspaceHeight = ((ViewGroup)mLauncher.getWorkspace().getParent()).getHeight();
+        }
+    }
+
     public void finishAnimations() {
         prepareStartAnimation(mDropTargetBar);
         mDropTargetBarAnim.reverse();
@@ -180,7 +209,10 @@ public class SearchDropTargetBar extends FrameLayout implements DragController.D
      */
     public void showSearchBar(boolean animated) {
         boolean needToCancelOngoingAnimation = mQSBSearchBarAnim.isRunning() && !animated;
-        if (!mIsSearchBarHidden && !needToCancelOngoingAnimation) return;
+        if ((!mIsSearchBarHidden && !needToCancelOngoingAnimation) ||
+                (!mLauncher.isSearchBarEnabled() && mLauncher.mGrid.shouldAnimQSBWithWorkspace())) {
+            return;
+        }
         if (animated) {
             prepareStartAnimation(mQSBSearchBar);
             mQSBSearchBarAnim.reverse();
@@ -196,7 +228,10 @@ public class SearchDropTargetBar extends FrameLayout implements DragController.D
     }
     public void hideSearchBar(boolean animated) {
         boolean needToCancelOngoingAnimation = mQSBSearchBarAnim.isRunning() && !animated;
-        if (mIsSearchBarHidden && !needToCancelOngoingAnimation) return;
+        if ((mIsSearchBarHidden && !needToCancelOngoingAnimation) ||
+                (!mLauncher.isSearchBarEnabled() && mLauncher.mGrid.shouldAnimQSBWithWorkspace())) {
+            return;
+        }
         if (animated) {
             prepareStartAnimation(mQSBSearchBar);
             mQSBSearchBarAnim.start();
