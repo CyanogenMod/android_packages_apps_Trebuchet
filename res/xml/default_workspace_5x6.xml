@@ -50,33 +50,24 @@
             launcher:className="com.google.android.apps.docs.app.NewMainProxyActivity"
             launcher:packageName="com.google.android.apps.docs" />
         <favorite
+            launcher:className="com.android.music.activitymanagement.TopLevelActivity"
+            launcher:packageName="com.google.android.music" />
+        <favorite
+            launcher:className="com.google.android.youtube.videos.EntryPoint"
+            launcher:packageName="com.google.android.videos" />
+        <favorite
             launcher:className="com.google.android.talk.SigningInActivity"
             launcher:packageName="com.google.android.talk" />
         <favorite
             launcher:className="com.google.android.apps.photos.home.HomeActivity"
             launcher:packageName="com.google.android.apps.photos" />
         <favorite
-            launcher:className="com.android.calendar.AllInOneActivity"
-            launcher:packageName="com.google.android.calendar" />
-        <favorite
-            launcher:className="com.google.android.apps.plus.phone.HomeActivity"
-            launcher:packageName="com.google.android.apps.plus" />
-        <favorite
             launcher:className="com.google.android.apps.wallet.entrypoint.WalletRootActivity"
             launcher:packageName="com.google.android.apps.walletnfcrel" />
-        <favorite
-            launcher:className="com.google.android.apps.genie.geniewidget.activities.NewsActivity"
-            launcher:packageName="com.google.android.apps.genie.geniewidget" />
     </folder>
 
     <!-- Play Folder -->
     <folder launcher:screen="1" launcher:x="1" launcher:y="4" launcher:title="@string/play_folder_title">
-        <favorite
-            launcher:className="com.android.music.activitymanagement.TopLevelActivity"
-            launcher:packageName="com.google.android.music" />
-        <favorite
-            launcher:className="com.google.android.youtube.videos.EntryPoint"
-            launcher:packageName="com.google.android.videos" />
         <favorite
             launcher:className="com.google.android.gms.games.ui.destination.main.MainActivity"
             launcher:packageName="com.google.android.play.games" />
