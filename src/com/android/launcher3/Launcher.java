@@ -4616,6 +4616,9 @@ public class Launcher extends Activity
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         ComponentName searchComponent = searchManager.getGlobalSearchActivity();
 
+        if (searchComponent == null) {
+            return null;
+        }
 
         // Find the first widget from the same package as the global assist activity
         List<AppWidgetProviderInfo> widgets = AppWidgetManager.getInstance(this)
