@@ -25,7 +25,7 @@
         launcher:className="com.cyanogenmod.lockclock.ClockWidgetProvider"
         launcher:screen="1"
         launcher:x="0"
-        launcher:y="0"
+        launcher:y="1"
         launcher:spanX="4"
         launcher:spanY="2" />
 
@@ -176,8 +176,8 @@
         launcher:x="1"
         launcher:y="0" >
         <favorite
-            launcher:packageName="com.android.mms"
-            launcher:className="com.android.mms.ui.ConversationList" />
+            launcher:packageName="com.android.messaging"
+            launcher:className="com.android.messaging.ui.conversationlist.ConversationListActivity" />
         <favorite
             launcher:packageName="com.android.email"
             launcher:className="com.android.email.activity.Welcome" />
