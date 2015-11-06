@@ -144,8 +144,8 @@
 
     <!-- Hotseat (We use the screen as the position of the item in the hotseat) -->
     <favorite
-        launcher:packageName="com.android.mms"
-        launcher:className="com.android.mms.ui.ConversationList"
+        launcher:packageName="com.android.messaging"
+        launcher:className="com.android.messaging.ui.conversationlist.ConversationListActivity"
         launcher:container="-101"
         launcher:screen="0"
         launcher:x="0"

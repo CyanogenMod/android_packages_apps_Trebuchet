@@ -33,8 +33,8 @@
         launcher:x="1"
         launcher:y="0" />
     <favorite
-        launcher:packageName="com.android.mms"
-        launcher:className="com.android.mms.ui.ConversationList"
+        launcher:packageName="com.android.messaging"
+        launcher:className="com.android.messaging.ui.conversationlist.ConversationListActivity"
         launcher:container="-101"
         launcher:screen="3"
         launcher:x="3"
