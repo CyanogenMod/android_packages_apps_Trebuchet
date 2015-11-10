@@ -132,6 +132,14 @@ public class SettingsPinnedHeaderAdapter extends PinnedHeaderListAdapter {
                     case 4:
                         updateDynamicGridSizeSettingsItem(v);
                         break;
+                    case 5:
+                        current = SettingsProvider.getBoolean(mContext,
+                                SettingsProvider.SETTINGS_UI_HOMESCREEN_REMOTE_FOLDER,
+                                R.bool.preferences_interface_homescreen_remote_folder_default);
+                        state = current ? res.getString(R.string.setting_state_on)
+                                : res.getString(R.string.setting_state_off);
+                        ((TextView) v.findViewById(R.id.item_state)).setText(state);
+                        break;
                     default:
                         ((TextView) v.findViewById(R.id.item_state)).setText("");
                 }
@@ -308,7 +316,12 @@ public class SettingsPinnedHeaderAdapter extends PinnedHeaderListAdapter {
                         case 4:
                             mLauncher.onClickDynamicGridSizeButton();
                             break;
-
+                        case 5:
+                            boolean newValue = onSettingsBooleanChanged(v,
+                                    SettingsProvider.SETTINGS_UI_HOMESCREEN_REMOTE_FOLDER,
+                                    R.bool.preferences_interface_homescreen_remote_folder_default);
+                            mLauncher.getRemoteFolderManager().onSettingChanged(newValue);
+                            break;
                     }
                     break;
                 case OverviewSettingsPanel.DRAWER_SETTINGS_POSITION:
@@ -372,7 +385,7 @@ public class SettingsPinnedHeaderAdapter extends PinnedHeaderListAdapter {
                 R.bool.preferences_interface_homescreen_search_default);
     }
 
-    private void onSettingsBooleanChanged(View v, String key, int res) {
+    private boolean onSettingsBooleanChanged(View v, String key, int res) {
         boolean current = SettingsProvider.getBoolean(
                 mContext, key, res);
 
@@ -384,6 +397,8 @@ public class SettingsPinnedHeaderAdapter extends PinnedHeaderListAdapter {
                 R.string.setting_state_off) : mLauncher.getResources().getString(
                 R.string.setting_state_on);
         ((TextView) v.findViewById(R.id.item_state)).setText(state);
+
+        return !current;
     }
 
     private void onIconLabelsBooleanChanged(View v, String key, int res) {

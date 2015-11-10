@@ -32,9 +32,7 @@ import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.app.Dialog;
 import android.app.SearchManager;
-import android.appwidget.AppWidgetHost;
 import android.appwidget.AppWidgetHostView;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProviderInfo;
@@ -62,7 +60,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -73,8 +70,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.StrictMode;
 import android.os.SystemClock;
-import android.os.UserHandle;
-import android.preference.PreferenceManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Selection;
@@ -82,7 +77,6 @@ import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.method.TextKeyListener;
 import android.util.Log;
-import android.util.Pair;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.HapticFeedbackConstants;
@@ -124,7 +118,6 @@ import com.android.launcher3.compat.UserManagerCompat;
 import com.android.launcher3.PagedView.TransitionEffect;
 import com.android.launcher3.settings.SettingsProvider;
 import com.android.launcher3.stats.LauncherStats;
-import com.android.launcher3.stats.internal.service.AggregationIntentService;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -294,6 +287,7 @@ public class Launcher extends Activity
     private DynamicGridSizeFragment mDynamicGridSizeFragment;
     private LauncherClings mLauncherClings;
     protected HiddenFolderFragment mHiddenFolderFragment;
+    private RemoteFolderManager mRemoteFolderManager;
 
     private AppWidgetManagerCompat mAppWidgetManager;
     private LauncherAppWidgetHost mAppWidgetHost;
@@ -511,6 +505,8 @@ public class Launcher extends Activity
 
         mAppWidgetHost = new LauncherAppWidgetHost(this, APPWIDGET_HOST_ID);
         mAppWidgetHost.startListening();
+
+        mRemoteFolderManager = new RemoteFolderManager(this);
 
         // If we are getting an onCreate, we can actually preempt onResume and unset mPaused here,
         // this also ensures that any synchronous binding below doesn't re-trigger another
@@ -2252,6 +2248,14 @@ public class Launcher extends Activity
         return mWorkspace;
     }
 
+    public RemoteFolderManager getRemoteFolderManager() {
+        return mRemoteFolderManager;
+    }
+
+    public AppDrawerListAdapter getAppDrawerListAdapter() {
+        return mAppDrawerAdapter;
+    }
+
     public Hotseat getHotseat() {
         return mHotseat;
     }
@@ -2814,10 +2818,14 @@ public class Launcher extends Activity
     }
 
     FolderIcon addFolder(CellLayout layout, long container, final long screenId, int cellX,
-            int cellY) {
-        final FolderInfo folderInfo = new FolderInfo();
+                         int cellY) {
+        FolderInfo folderInfo = new FolderInfo();
         folderInfo.title = getText(R.string.folder_name);
+        return addFolder(layout, container, screenId, cellX, cellY, folderInfo);
+    }
 
+    FolderIcon addFolder(CellLayout layout, long container, final long screenId, int cellX,
+            int cellY, FolderInfo folderInfo) {
         // Update the model
         LauncherModel.addItemToDatabase(Launcher.this, folderInfo, container, screenId, cellX, cellY,
                 false);
@@ -2987,10 +2995,11 @@ public class Launcher extends Activity
         } else if (v == mAllAppsButton) {
             onClickAllAppsButton(v);
         } else if (tag instanceof AppInfo) {
+            AppInfo info = (AppInfo) tag;
             startAppShortcutOrInfoActivity(v);
             LauncherApplication.getLauncherStats().sendAppLaunchEvent(
-                    LauncherStats.ORIGIN_APPDRAWER, ((AppInfo)tag).componentName.getPackageName());
-            String packageName = ((AppInfo)tag).getIntent().getComponent().getPackageName();
+                    LauncherStats.ORIGIN_APPDRAWER, info.componentName.getPackageName());
+            String packageName = info.getIntent().getComponent().getPackageName();
             if (LauncherStats.SETTINGS_PACKAGE_NAME.equals(packageName)) {
                 LauncherApplication.getLauncherStats()
                         .sendSettingsOpenedEvent(LauncherStats.ORIGIN_APPDRAWER);
@@ -3845,6 +3854,7 @@ public class Launcher extends Activity
 
         if (drawer && contentType == AppsCustomizePagedView.ContentType.Applications) {
             toView = findViewById(R.id.app_drawer_container);
+            mRemoteFolderManager.onAppDrawerOpened();
         } else {
             toView = mAppsCustomizeTabHost;
         }
@@ -4872,6 +4882,7 @@ public class Launcher extends Activity
                 addedApps != null && mAppsCustomizeContent != null) {
             mAppsCustomizeContent.addApps(addedApps);
             mAppDrawerAdapter.addApps(addedApps);
+            mRemoteFolderManager.onBindAddApps(addedApps);
         }
     }
 
@@ -4895,7 +4906,7 @@ public class Launcher extends Activity
         final AnimatorSet anim = LauncherAnimUtils.createAnimatorSet();
         final Collection<Animator> bounceAnims = new ArrayList<Animator>();
         final boolean animateIcons = forceAnimateIcons && canRunNewAppsAnimation();
-        Workspace workspace = mWorkspace;
+        final Workspace workspace = mWorkspace;
         long newShortcutsScreenId = -1;
         for (int i = start; i < end; i++) {
             final ItemInfo item = shortcuts.get(i);
@@ -4946,12 +4957,14 @@ public class Launcher extends Activity
                     }
                     break;
                 case LauncherSettings.Favorites.ITEM_TYPE_FOLDER:
-                    FolderIcon newFolder = FolderIcon.fromXml(R.layout.folder_icon, this,
+                    final FolderIcon newFolder = FolderIcon.fromXml(R.layout.folder_icon, this,
                             (ViewGroup) workspace.getChildAt(workspace.getCurrentPage()),
                             (FolderInfo) item, mIconCache);
-                    newFolder.setTextVisible(!mHideIconLabels);
-                    workspace.addInScreenFromBind(newFolder, item.container, item.screenId, item.cellX,
-                            item.cellY, 1, 1);
+                    if (newFolder != null) {
+                        newFolder.setTextVisible(!mHideIconLabels);
+                        workspace.addInScreenFromBind(newFolder, item.container, item.screenId, item.cellX,
+                                item.cellY, 1, 1);
+                    }
                     break;
                 default:
                     throw new RuntimeException("Invalid Item Type");
@@ -5203,6 +5216,8 @@ public class Launcher extends Activity
             mWorkspace.resetOverviewMode();
         }
         mModel.updateCount();
+
+        mRemoteFolderManager.bindFinished();
     }
 
     private void sendLoadingCompleteBroadcastIfNecessary() {
@@ -5289,6 +5304,7 @@ public class Launcher extends Activity
         } else {
             if (mAppDrawerAdapter != null) {
                 mAppDrawerAdapter.setApps(apps);
+                mRemoteFolderManager.onSetApps();
             }
             if (mAppsCustomizeContent != null) {
                 mAppsCustomizeContent.setApps(apps);
@@ -5433,7 +5449,7 @@ public class Launcher extends Activity
             for (AppInfo info : appInfos) {
                 removedComponents.add(info.componentName);
             }
-            if (!packageNames.isEmpty()) {
+            if (packageNames != null && !packageNames.isEmpty()) {
                 mWorkspace.removeItemsByPackageName(packageNames, user);
             }
             if (!removedComponents.isEmpty()) {

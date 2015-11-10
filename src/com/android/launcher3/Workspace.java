@@ -31,10 +31,7 @@ import android.appwidget.AppWidgetHostView;
 import android.appwidget.AppWidgetProviderInfo;
 import android.content.ComponentName;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
@@ -81,7 +78,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -396,6 +392,13 @@ public class Workspace extends SmoothPagedView
                 ((Insettable) customContent).setInsets(mInsets);
             }
         }
+    }
+
+    /**
+     * @return A {@link Set} of {@link Long}s representing ids of the workspace screens
+     */
+    public Set<Long> getWorkspaceScreenIds() {
+        return mWorkspaceScreens.keySet();
     }
 
     // estimate the size of a widget with spans hSpan, vSpan. return MAX_VALUE for each
@@ -4460,6 +4463,7 @@ public class Workspace extends SmoothPagedView
             }
             if (cellLayout != null) {
                 cellLayout.onDropChild(mDragInfo.cell);
+                cellLayout.setUseTempCoords(false);
             }
         }
         if ((d.cancelled || (beingCalledAfterUninstall && !mUninstallSuccessful))

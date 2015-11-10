@@ -30,7 +30,6 @@ import android.content.Intent;
 import android.content.Intent.ShortcutIconResource;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.content.pm.LauncherApps.Callback;
 import android.content.pm.PackageManager;
 import android.content.pm.ProviderInfo;
 import android.content.pm.ResolveInfo;
@@ -933,10 +932,10 @@ public class LauncherModel extends BroadcastReceiver
         String userSerial = Long.toString(UserManagerCompat.getInstance(context)
                 .getSerialNumberForUser(user));
         Cursor c = cr.query(LauncherSettings.Favorites.CONTENT_URI,
-            new String[] { "title", "intent", "profileId" },
-            "title=? and (intent=? or intent=?) and profileId=?",
-            new String[] { title, intentWithPkg.toUri(0), intentWithoutPkg.toUri(0), userSerial },
-            null);
+                new String[] { "title", "intent", "profileId" },
+                "title=? and (intent=? or intent=?) and profileId=?",
+                new String[] { title, intentWithPkg.toUri(0), intentWithoutPkg.toUri(0), userSerial},
+                null);
         try {
             return c.moveToFirst();
         } finally {
@@ -1012,6 +1011,7 @@ public class LauncherModel extends BroadcastReceiver
                 final int cellXIndex = c.getColumnIndexOrThrow(LauncherSettings.Favorites.CELLX);
                 final int cellYIndex = c.getColumnIndexOrThrow(LauncherSettings.Favorites.CELLY);
                 final int hiddenIndex = c.getColumnIndexOrThrow(LauncherSettings.Favorites.HIDDEN);
+                final int subType = c.getColumnIndexOrThrow(LauncherSettings.Favorites.SUBTYPE);
 
                 FolderInfo folderInfo = null;
                 switch (c.getInt(itemTypeIndex)) {
@@ -1027,6 +1027,7 @@ public class LauncherModel extends BroadcastReceiver
                 folderInfo.cellX = c.getInt(cellXIndex);
                 folderInfo.cellY = c.getInt(cellYIndex);
                 folderInfo.hidden = c.getInt(hiddenIndex) > 0;
+                folderInfo.subType = subType;
 
                 return folderInfo;
             }
@@ -2126,6 +2127,7 @@ public class LauncherModel extends BroadcastReceiver
                     //final int displayModeIndex = c.getColumnIndexOrThrow(
                     final int hiddenIndex = c.getColumnIndexOrThrow(
                             LauncherSettings.Favorites.HIDDEN);
+                    final int subTypeIndex = c.getColumnIndexOrThrow(LauncherSettings.Favorites.SUBTYPE);
                     //final int uriIndex = c.getColumnIndexOrThrow(LauncherSettings.Favorites.URI); //final int displayModeIndex = c.getColumnIndexOrThrow(
                     //        LauncherSettings.Favorites.DISPLAY_MODE);
 
@@ -2363,6 +2365,7 @@ public class LauncherModel extends BroadcastReceiver
                                 folderInfo.spanX = 1;
                                 folderInfo.spanY = 1;
                                 folderInfo.hidden = c.getInt(hiddenIndex) > 0;
+                                folderInfo.subType = c.getInt(subTypeIndex);
 
                                 // check & update map of what's occupied
                                 if (!checkItemPlacement(occupied, folderInfo, shouldResize)) {
@@ -2859,7 +2862,7 @@ public class LauncherModel extends BroadcastReceiver
                             }
                             workspaceItems.remove(i);
                             folders.remove(Long.valueOf(item.id));
-                        } else if (folder.contents.size() == 0 /*&& !(folder instanceof LiveFolderInfo)*/) {
+                        } else if (folder.contents.size() == 0 && !folder.isRemote()) {
                             LauncherModel.deleteFolderContentsFromDatabase(mContext, folder);
                             workspaceItems.remove(i);
                             folders.remove(Long.valueOf(item.id));

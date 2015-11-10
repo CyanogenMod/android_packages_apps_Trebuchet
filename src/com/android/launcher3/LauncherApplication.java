@@ -66,7 +66,7 @@ public class LauncherApplication extends Application {
         if (getResources().getBoolean(R.bool.config_launcher_stkAppRename)) {
             registerAppNameChangeReceiver();
         }
-        sLauncherStats = LauncherStats.createInstance(this);
+        sLauncherStats = LauncherStats.getInstance(this);
         AggregationIntentService.scheduleService(this);
     }
 

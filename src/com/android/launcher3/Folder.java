@@ -37,7 +37,6 @@ import android.support.v4.widget.AutoScrollHelper;
 import android.text.InputType;
 import android.text.Selection;
 import android.text.Spannable;
-import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -49,6 +48,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityManager;
 import android.view.animation.AccelerateInterpolator;
@@ -102,7 +102,7 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
     private int mMaterialExpandDuration;
     private int mMaterialExpandStagger;
     protected CellLayout mContent;
-    private ScrollView mScrollView;
+    protected ScrollView mScrollView;
     private final LayoutInflater mInflater;
     private final IconCache mIconCache;
     private int mState = STATE_NONE;
@@ -132,7 +132,7 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
     private boolean mDeleteFolderOnDropCompleted = false;
     private boolean mSuppressFolderDeletion = false;
     private boolean mItemAddedBackToSelfViaIcon = false;
-    View mFolderNameLockContainer;
+    protected View mFolderNameLockContainer;
     FolderEditText mFolderName;
     ImageView mFolderLock;
     private int mScreenWidth;
@@ -218,7 +218,6 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
         super.onFinishInflate();
         mScrollView = (ScrollView) findViewById(R.id.scroll_view);
         mContent = (CellLayout) findViewById(R.id.folder_content);
-        int measureSpec = MeasureSpec.UNSPECIFIED;
 
         mFocusIndicatorHandler = new FocusIndicatorView(getContext());
         mContent.addView(mFocusIndicatorHandler, 0);
@@ -232,15 +231,10 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
         mContent.setGridSize(0, 0);
         mContent.getShortcutsAndWidgets().setMotionEventSplittingEnabled(false);
         mContent.setInvertIfRtl(true);
-        mFolderNameLockContainer = findViewById(R.id.folder_name_lock_container);
+
         mFolderName = (FolderEditText) findViewById(R.id.folder_name);
         mFolderName.setFolder(this);
         mFolderName.setOnFocusChangeListener(this);
-
-        // We find out how tall the text view wants to be (it is set to wrap_content), so that
-        // we can allocate the appropriate amount of space for it.
-        mFolderName.measure(measureSpec, measureSpec);
-        mFolderNameHeight = mFolderName.getMeasuredHeight();
 
         // We disable action mode for now since it messes up the view on phones
         mFolderName.setCustomSelectionActionModeCallback(mActionModeCallback);
@@ -257,11 +251,13 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
             mFolderName.setVisibility(View.GONE);
         }
 
+        mFolderNameLockContainer = findViewById(R.id.folder_name_lock_container);
         mFolderLock = (ImageView) findViewById(R.id.folder_lock);
-        mFolderLock.measure(measureSpec, measureSpec);
-        mFolderLock.setOnClickListener(this);
-        mFolderLockHeight = mFolderLock.getMeasuredHeight();
 
+        // Could be null if this Folder an instance of the RemoteFolder subclass
+        if (mFolderLock != null) {
+            mFolderLock.setOnClickListener(this);
+        }
         DisplayMetrics displayMetrics = this.getResources().getDisplayMetrics();
         mScreenWidth = displayMetrics.widthPixels;
     }
@@ -476,7 +472,7 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
         }
     }
 
-    void bind(FolderInfo info) {
+    void bind(final FolderInfo info) {
         mInfo = info;
         ArrayList<ShortcutInfo> children = info.contents;
         ArrayList<ShortcutInfo> overflow = new ArrayList<ShortcutInfo>();
@@ -533,11 +529,12 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
      * Creates a new UserFolder, inflated from R.layout.user_folder.
      *
      * @param context The application's context.
+     * @param root The {@link View} parent of this folder.
      *
      * @return A new UserFolder.
      */
-    static Folder fromXml(Context context) {
-        return (Folder) LayoutInflater.from(context).inflate(R.layout.user_folder, null);
+    static Folder fromXml(Context context, ViewGroup root) {
+        return (Folder) LayoutInflater.from(context).inflate(R.layout.user_folder, root, false);
     }
 
     /**
@@ -659,7 +656,8 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
                     circX, circY, 0, mScreenWidth);
 
             final View[] alphaViewSet = new View[] { mFolderNameLockContainer,
-                    mContent, mFolderName, mFolderLock };
+                        mContent, mFolderName, mFolderLock };
+
             for (View view : alphaViewSet) {
                 view.setAlpha(0f);
             }
@@ -1218,7 +1216,16 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
         // Do nothing
     }
 
+    /**
+     * @return true if contents should persist their status to the database.
+     */
+    protected boolean shouldUpdateContentsInDatabase() {
+        return true;
+    }
+
     private void updateItemLocationsInDatabase() {
+        if (!shouldUpdateContentsInDatabase()) return;
+
         ArrayList<View> list = getItemsInReadingOrder();
         for (int i = 0; i < list.size(); i++) {
             View v = list.get(i);
@@ -1229,6 +1236,8 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
     }
 
     private void updateItemLocationsInDatabaseBatch() {
+        if (!shouldUpdateContentsInDatabase()) return;
+
         ArrayList<View> list = getItemsInReadingOrder();
         ArrayList<ItemInfo> items = new ArrayList<ItemInfo>();
         for (int i = 0; i < list.size(); i++) {
@@ -1241,6 +1250,8 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
     }
 
     public void addItemLocationsInDatabase() {
+        if (!shouldUpdateContentsInDatabase()) return;
+
         ArrayList<View> list = getItemsInReadingOrder();
         for (int i = 0; i < list.size(); i++) {
             View v = list.get(i);
@@ -1260,7 +1271,7 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
         return true;
     }
 
-    private void setupContentDimensions(int count) {
+    protected void setupContentDimensions(int count) {
         ArrayList<View> list = getItemsInReadingOrder();
 
         int countX = mContent.getCountX();
@@ -1297,12 +1308,19 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
         return mMaxNumItems;
     }
 
-    private void centerAboutIcon() {
+    protected void centerAboutIcon() {
+        requestLayout();
+        int width = getMeasuredWidth();
+        int height = getMeasuredHeight();
+        if (width > 0 && height > 0) {
+            centerAboutIcon(width, height);
+        }
+    }
+
+    private void centerAboutIcon(int width, int height) {
         DragLayer.LayoutParams lp = (DragLayer.LayoutParams) getLayoutParams();
 
         DragLayer parent = (DragLayer) mLauncher.findViewById(R.id.drag_layer);
-        int width = getPaddingLeft() + getPaddingRight() + mContent.getDesiredWidth();
-        int height = getFolderHeight();
 
         float scale = parent.getDescendantRectRelativeToSelf(mFolderIcon, mTempRect);
 
@@ -1329,6 +1347,8 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
         int left = (grid.availableWidthPx - width) / 2;
         // Drop the top down a little so it isn't bounded by the page indicators
         int top = (int) (bounds.top + (bounds.height() * 1.15) - height);
+        // Make sure the top margin stays consistent
+        lp.topMargin = getResources().getDimensionPixelSize(R.dimen.folder_margin);
 
         if (width >= bounds.width()) {
             // If the folder doesn't fit within the bounds, center it about the desired bounds
@@ -1361,38 +1381,17 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
 
     private void setupContentForNumItems(int count) {
         setupContentDimensions(count);
-
-        DragLayer.LayoutParams lp = (DragLayer.LayoutParams) getLayoutParams();
-        if (lp == null) {
-            lp = new DragLayer.LayoutParams(0, 0);
-            lp.customPosition = true;
-            setLayoutParams(lp);
-        }
-        centerAboutIcon();
     }
 
-    private int getContentAreaHeight() {
+    protected int getContentAreaHeight() {
         return Math.max(mContent.getDesiredHeight(), MIN_CONTENT_DIMEN);
     }
 
-    private int getContentAreaWidth() {
+    protected int getContentAreaWidth() {
         return Math.max(mContent.getDesiredWidth(), MIN_CONTENT_DIMEN);
     }
 
-    private int getFolderHeight() {
-        int height = getPaddingTop() + getPaddingBottom() + mFolderNameHeight
-                + getContentAreaHeight();
-        return height;
-    }
-
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        int width = getPaddingLeft() + getPaddingRight() + mContent.getDesiredWidth();
-        int height = getFolderHeight();
-        int contentAreaWidthSpec = MeasureSpec.makeMeasureSpec(getContentAreaWidth(),
-                MeasureSpec.EXACTLY);
-        int contentAreaHeightSpec = MeasureSpec.makeMeasureSpec(getContentAreaHeight(),
-                MeasureSpec.EXACTLY);
-
         if (LauncherAppState.isDisableAllApps()) {
             // Don't cap the height of the content to allow scrolling.
             mContent.setFixedSize(getContentAreaWidth(), mContent.getDesiredHeight());
@@ -1400,14 +1399,7 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
             mContent.setFixedSize(getContentAreaWidth(), getContentAreaHeight());
         }
 
-        mScrollView.measure(contentAreaWidthSpec, contentAreaHeightSpec);
-        if (TextUtils.isEmpty(mInfo.title)) {
-            mFolderName.measure(contentAreaWidthSpec, MeasureSpec.makeMeasureSpec(
-                    mFolderNameHeight, MeasureSpec.EXACTLY));
-        }
-        mFolderNameLockContainer.measure(contentAreaWidthSpec,
-                MeasureSpec.makeMeasureSpec(mFolderNameHeight,MeasureSpec.EXACTLY));
-        setMeasuredDimension(width, height);
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 
     private void arrangeChildren(ArrayList<View> list) {
@@ -1427,8 +1419,11 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
             if (info.cellX != vacant[0] || info.cellY != vacant[1]) {
                 info.cellX = vacant[0];
                 info.cellY = vacant[1];
-                LauncherModel.addOrMoveItemInDatabase(mLauncher, info, mInfo.id, 0,
-                        info.cellX, info.cellY);
+
+                if (shouldUpdateContentsInDatabase()) {
+                    LauncherModel.addOrMoveItemInDatabase(mLauncher, info, mInfo.id, 0,
+                            info.cellX, info.cellY);
+                }
             }
             boolean insert = false;
             mContent.addViewToCellLayout(v, insert ? 0 : -1, (int)info.id, lp, true);
@@ -1467,7 +1462,7 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
         mSuppressFolderDeletion = false;
     }
 
-    private void replaceFolderWithFinalItem() {
+    protected void replaceFolderWithFinalItem() {
         if (mInfo.hidden && getItemCount() >= 1) {
             return;
         }
@@ -1557,8 +1552,10 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
 
             // Actually move the item in the database if it was an external drag. Call this
             // before creating the view, so that ShortcutInfo is updated appropriately.
-            LauncherModel.addOrMoveItemInDatabase(
-                    mLauncher, si, mInfo.id, 0, si.cellX, si.cellY);
+            if (shouldUpdateContentsInDatabase()) {
+                LauncherModel.addOrMoveItemInDatabase(
+                        mLauncher, si, mInfo.id, 0, si.cellX, si.cellY);
+            }
 
             // We only need to update the locations if it doesn't get handled in #onDropCompleted.
             if (d.dragSource != this) {
@@ -1624,8 +1621,11 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
             findAndSetEmptyCells(item);
         }
         createAndAddShortcut(item);
-        LauncherModel.addOrMoveItemInDatabase(
-                mLauncher, item, mInfo.id, 0, item.cellX, item.cellY);
+
+        if (shouldUpdateContentsInDatabase()) {
+            LauncherModel.addOrMoveItemInDatabase(
+                    mLauncher, item, mInfo.id, 0, item.cellX, item.cellY);
+        }
     }
 
     public void onRemove(ShortcutInfo item) {
@@ -1633,8 +1633,7 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
         // If this item is being dragged from this open folder, we have already handled
         // the work associated with removing the item, so we don't have to do anything here.
         if (item == mCurrentDragInfo) return;
-        View v = getViewForInfo(item);
-        mContent.removeView(v);
+        mContent.removeView(getViewForInfo(item));
         if (mState == STATE_ANIMATING) {
             mRearrangeOnClose = true;
         } else {
@@ -1645,16 +1644,52 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
         }
     }
 
-    private View getViewForInfo(ShortcutInfo item) {
-        for (int j = 0; j < mContent.getCountY(); j++) {
-            for (int i = 0; i < mContent.getCountX(); i++) {
-                View v = mContent.getChildAt(i, j);
-                if (v.getTag() == item) {
-                    return v;
-                }
+    @Override
+    public void onRemoveAll() {
+        // Clear the UX after folder contents are removed from the DB
+        removeViewsForItems(null);
+        mLauncher.closeFolder(this);
+        replaceFolderWithFinalItem();
+    }
+
+    @Override
+    public void onRemoveAll(ArrayList<ShortcutInfo> items) {
+        removeViewsForItems(items);
+        if (mInfo.contents.isEmpty()) {
+            mLauncher.closeFolder(this);
+        }
+        replaceFolderWithFinalItem();
+    }
+
+    /**
+     * Remove all the supplied item views from this folder.
+     * @param items info of views to remove, or null if all views should be removed.
+     */
+    protected void removeViewsForItems(ArrayList<ShortcutInfo> items) {
+        if (items == null) {
+            mContent.removeAllViews();
+        } else {
+            for (ShortcutInfo item : items) {
+                mContent.removeView(getViewForInfo(item));
             }
         }
-        return null;
+    }
+
+    /**
+     * Update the view tied to this shortcut.
+     * @param info updated info to be applied to view.
+     */
+    public void updateViewForInfo(final ShortcutInfo info) {
+        View v = getViewForInfo(info);
+        if (v != null & v instanceof BubbleTextView) {
+            ((BubbleTextView) v).applyFromShortcutInfo(info, mIconCache, false);
+
+            mItemsInvalidated = true;
+        }
+    }
+
+    public View getViewForInfo(ShortcutInfo item) {
+        return mContent.getChildAt(item.cellX, item.cellY);
     }
 
     public void onItemsChanged() {

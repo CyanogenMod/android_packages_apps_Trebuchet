@@ -45,6 +45,10 @@ class LauncherSettings {
         static final String HIDDEN = "hidden";
 
         /**
+         * Folder subtype, used for Remote Folders
+         */
+        static final String SUBTYPE = "subType";
+        /**
          * The Intent URL of the gesture, describing what it points to. This
          * value is given to {@link android.content.Intent#parseUri(String, int)} to create
          * an Intent that can be launched.

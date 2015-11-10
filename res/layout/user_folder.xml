@@ -23,12 +23,17 @@
     android:paddingStart="@dimen/folder_preview_padding"
     android:paddingEnd="@dimen/folder_preview_padding"
     android:paddingBottom="@dimen/folder_preview_padding"
-    android:layout_gravity="center"
+    android:layout_margin="@dimen/folder_margin"
+    android:layout_gravity="bottom|center_horizontal"
     android:background="@drawable/folder_bg">
+
+    <include layout="@layout/remote_folder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
     <ScrollView
         android:id="@+id/scroll_view"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal">
         <com.android.launcher3.CellLayout
@@ -41,7 +46,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:id="@+id/folder_name_lock_container">
 
         <ImageView
@@ -50,7 +55,6 @@
             android:layout_height="@dimen/folder_lock_icon"
             android:padding="@dimen/folder_name_padding"
             android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
             android:src="@drawable/folder_unlocked" />
 
         <com.android.launcher3.FolderEditText
@@ -73,8 +77,7 @@
             android:textSize="18sp"
             android:layout_toStartOf="@id/folder_lock"
             android:layout_alignTop="@id/folder_lock"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentBottom="true"/>
+            android:layout_alignParentStart="true"/>
 
     </RelativeLayout>
 </com.android.launcher3.Folder>

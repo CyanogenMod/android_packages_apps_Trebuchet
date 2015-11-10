@@ -118,15 +118,21 @@ public class BubbleTextView extends TextView {
 
     public void applyFromShortcutInfo(ShortcutInfo info, IconCache iconCache,
             boolean setDefaultPadding, boolean promiseStateChanged) {
-        Bitmap b = info.getIcon(iconCache);
         LauncherAppState app = LauncherAppState.getInstance();
+        DeviceProfile grid = app.getDynamicGrid().getDeviceProfile();
 
-        FastBitmapDrawable iconDrawable = Utilities.createIconDrawable(b);
-        iconDrawable.setGhostModeEnabled(info.isDisabled != 0);
+        Drawable iconDrawable;
+        if (info.customDrawable != null) {
+            iconDrawable = info.customDrawable;
+        } else {
+            Bitmap b = info.getIcon(iconCache);
+            iconDrawable = Utilities.createIconDrawable(b);
+            ((FastBitmapDrawable) iconDrawable).setGhostModeEnabled(info.isDisabled != 0);
+        }
 
+        iconDrawable.setBounds(0, 0, grid.iconSizePx, grid.iconSizePx);
         setCompoundDrawables(null, iconDrawable, null, null);
         if (setDefaultPadding) {
-            DeviceProfile grid = app.getDynamicGrid().getDeviceProfile();
             setCompoundDrawablePadding(grid.iconDrawablePaddingPx);
         }
         if (info.contentDescription != null) {
@@ -144,7 +150,12 @@ public class BubbleTextView extends TextView {
         LauncherAppState app = LauncherAppState.getInstance();
         DeviceProfile grid = app.getDynamicGrid().getDeviceProfile();
 
-        Drawable topDrawable = Utilities.createIconDrawable(info.iconBitmap);
+        Drawable topDrawable;
+        if (info.customDrawable != null) {
+            topDrawable = info.customDrawable;
+        } else {
+            topDrawable = Utilities.createIconDrawable(info.iconBitmap);
+        }
         topDrawable.setBounds(0, 0, grid.allAppsIconSizePx, grid.allAppsIconSizePx);
         setCompoundDrawables(null, topDrawable, null, null);
         setCompoundDrawablePadding(grid.iconDrawablePaddingPx);
@@ -154,7 +165,6 @@ public class BubbleTextView extends TextView {
         }
         setTag(info);
     }
-
 
     @Override
     protected boolean setFrame(int left, int top, int right, int bottom) {

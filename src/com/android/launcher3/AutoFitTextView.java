@@ -143,6 +143,14 @@ public class AutoFitTextView extends TextView {
         setRawTextSize(TypedValue.applyDimension(unit, size, r.getDisplayMetrics()));
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setTextSize(float size) {
+        setRawTextSize(size);
+    }
+
     private void setRawTextSize(float size) {
         if (size != mMaxTextSize) {
             mMaxTextSize = size;

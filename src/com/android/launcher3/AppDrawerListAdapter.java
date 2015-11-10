@@ -33,7 +33,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.SectionIndexer;
 import com.android.launcher3.locale.LocaleSetManager;
@@ -53,6 +52,9 @@ import java.util.List;
 public class AppDrawerListAdapter extends RecyclerView.Adapter<AppDrawerListAdapter.ViewHolder>
         implements View.OnLongClickListener, DragSource, SectionIndexer {
 
+    public static final String REMOTE_HEADER = "☆";
+    public static final String REMOTE_SCRUBBER = "★";
+
     private static final String TAG = AppDrawerListAdapter.class.getSimpleName();
     private static final String NUMERIC_OR_SPECIAL_HEADER = "#";
 
@@ -71,6 +73,34 @@ public class AppDrawerListAdapter extends RecyclerView.Adapter<AppDrawerListAdap
         }
     }
 
+    private static class Bucket {
+        private int index;
+        private String startString;
+
+        public Bucket(int index, String startString) {
+            this.index = index;
+            this.startString = startString;
+        }
+    }
+
+    private static Bucket getBucketForApp(AppInfo app) {
+        if (app.hasFlag(AppInfo.REMOTE_APP_FLAG)) {
+            return new Bucket(Integer.MIN_VALUE, REMOTE_HEADER);
+        } else {
+            LocaleUtils localeUtils = LocaleUtils.getInstance();
+            int index = localeUtils.getBucketIndex(app.title.toString());
+            String start = localeUtils.getBucketLabel(index);
+            if (TextUtils.isEmpty(start)) {
+                start = NUMERIC_OR_SPECIAL_HEADER;
+                index = localeUtils.getBucketIndex(start);
+            }
+            return new Bucket(index, start);
+        }
+    }
+
+    private final RemoteFolderManager mRemoteFolderManager;
+
+    private HashSet<AppInfo> mAllApps;
     private ArrayList<AppItemIndexedInfo> mHeaderList;
     private LayoutInflater mLayoutInflater;
 
@@ -113,8 +143,11 @@ public class AppDrawerListAdapter extends RecyclerView.Adapter<AppDrawerListAdap
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public AutoFitTextView mTextView;
-        public ViewGroup mLayout;
+        public static int TYPE_NORMAL = 0;
+        public static int TYPE_CUSTOM = 1;
+
+        public AutoFitTextView mHeaderTextView;
+        public ViewGroup mIconLayout;
         public View mContainerView;
         public View mFadingBackgroundBackView;
         public View mFadingBackgroundFrontView;
@@ -123,9 +156,9 @@ public class AppDrawerListAdapter extends RecyclerView.Adapter<AppDrawerListAdap
             mContainerView = itemView;
             mFadingBackgroundBackView = itemView.findViewById(R.id.fading_background_back);
             mFadingBackgroundFrontView = itemView.findViewById(R.id.fading_background_front);
-            mTextView = (AutoFitTextView) itemView.findViewById(R.id.drawer_item_title);
-            mTextView.bringToFront();
-            mLayout = (ViewGroup) itemView.findViewById(R.id.drawer_item_flow);
+            mHeaderTextView = (AutoFitTextView) itemView.findViewById(R.id.drawer_item_title);
+            mHeaderTextView.bringToFront();
+            mIconLayout = (ViewGroup) itemView.findViewById(R.id.drawer_item_flow);
         }
     }
 
@@ -180,14 +213,14 @@ public class AppDrawerListAdapter extends RecyclerView.Adapter<AppDrawerListAdap
 
         public void add(ViewHolder holder) {
             mViewHolderSet.add(holder);
-            holder.mTextView.addOnLayoutChangeListener(mLayoutChangeListener);
+            holder.mHeaderTextView.addOnLayoutChangeListener(mLayoutChangeListener);
 
             createAnimationHook(holder);
         }
 
         public void remove(ViewHolder holder) {
             mViewHolderSet.remove(holder);
-            holder.mTextView.removeOnLayoutChangeListener(mLayoutChangeListener);
+            holder.mHeaderTextView.removeOnLayoutChangeListener(mLayoutChangeListener);
         }
 
         public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -252,8 +285,8 @@ public class AppDrawerListAdapter extends RecyclerView.Adapter<AppDrawerListAdap
         }
 
         public void createAnimationHook(final ViewHolder holder) {
-            holder.mTextView.animate().cancel();
-            holder.mTextView.animate()
+            holder.mHeaderTextView.animate().cancel();
+            holder.mHeaderTextView.animate()
                     .setUpdateListener(new ItemAnimator(holder, mItemAnimatorSet))
                     .setListener(new AnimatorListenerAdapter() {
                         @Override
@@ -325,8 +358,8 @@ public class AppDrawerListAdapter extends RecyclerView.Adapter<AppDrawerListAdap
 
             // Scale header text letters
             final float targetScale = (MAX_SCALE - MIN_SCALE) * percentage + MIN_SCALE;
-            holder.mTextView.setScaleX(targetScale);
-            holder.mTextView.setScaleY(targetScale);
+            holder.mHeaderTextView.setScaleX(targetScale);
+            holder.mHeaderTextView.setScaleY(targetScale);
 
             // Perform animation
             if (getSectionForPosition(holder.getPosition()) == mSectionTarget) {
@@ -370,7 +403,10 @@ public class AppDrawerListAdapter extends RecyclerView.Adapter<AppDrawerListAdap
     public AppDrawerListAdapter(Launcher launcher) {
         mLauncher = launcher;
         mHeaderList = new ArrayList<AppItemIndexedInfo>();
+        mAllApps = new HashSet<AppInfo>();
         mLayoutInflater = LayoutInflater.from(launcher);
+
+        mRemoteFolderManager = mLauncher.getRemoteFolderManager();
 
         mLocaleSetManager = new LocaleSetManager(mLauncher);
         mLocaleSetManager.updateLocaleSet(mLocaleSetManager.getSystemLocaleSet());
@@ -388,7 +424,6 @@ public class AppDrawerListAdapter extends RecyclerView.Adapter<AppDrawerListAdap
         mItemAnimatorSet.onScrolled(recyclerView, dx, dy);
     }
 
-
     public void setDragging(boolean dragging) {
         mItemAnimatorSet.setDragging(dragging);
     }
@@ -400,6 +435,13 @@ public class AppDrawerListAdapter extends RecyclerView.Adapter<AppDrawerListAdap
         mItemAnimatorSet.setSectionTarget(sectionIndex);
     }
 
+    /**
+     * @return the number of columns shown in the app drawer
+     */
+    public int getNumColumns() {
+        return mNumColumns;
+    }
+
     private void initParams() {
         mDeviceProfile = LauncherAppState.getInstance().getDynamicGrid().getDeviceProfile();
 
@@ -407,7 +449,7 @@ public class AppDrawerListAdapter extends RecyclerView.Adapter<AppDrawerListAdap
 
         // set aside the space needed for the container character
         int neededWidth = mLauncher.getResources()
-                .getDimensionPixelSize(R.dimen.app_drawer_char_width);
+                .getDimensionPixelSize(R.dimen.drawer_header_text_char_width);
         int availableWidth = mDeviceProfile.availableWidthPx - neededWidth;
         mNumColumns = (int) Math.floor(availableWidth / iconWidth);
         int leftOverPx = availableWidth % iconWidth;
@@ -432,77 +474,65 @@ public class AppDrawerListAdapter extends RecyclerView.Adapter<AppDrawerListAdap
 
     /**
      * Create and populate mHeaderList (buckets for app sorting)
-     * @param info
      */
-    public void populateByCharacter(ArrayList<AppInfo> info) {
-        if (info == null || info.size() <= 0) {
-            Collections.sort(mHeaderList);
-            return;
-        }
+    public void populateByCharacter() {
+        mHeaderList.clear();
 
         // Create a clone of AppInfo ArrayList to preserve data
-        ArrayList<AppInfo> tempInfo = (ArrayList<AppInfo>) info.clone();
+        HashSet<AppInfo> appsToProcess = (HashSet<AppInfo>) mAllApps.clone();
+        while (!appsToProcess.isEmpty()) {
+            ArrayList<AppInfo> matchingApps = new ArrayList<AppInfo>();
 
-        ArrayList<AppInfo> appInfos = new ArrayList<AppInfo>();
+            AppInfo app = appsToProcess.iterator().next();
+            Bucket bucket = getBucketForApp(app);
 
-        // get next app
-        AppInfo app = tempInfo.get(0);
+            // Find other apps that fall into the same bucket
+            for (Iterator<AppInfo> iter = appsToProcess.iterator(); iter.hasNext(); ) {
+                AppInfo otherApp = iter.next();
+                Bucket otherBucket = getBucketForApp(otherApp);
 
-        // get starting character
-        LocaleUtils localeUtils = LocaleUtils.getInstance();
-        int bucketIndex = localeUtils.getBucketIndex(app.title.toString());
-            String startString
-                = localeUtils.getBucketLabel(bucketIndex);
-        if (TextUtils.isEmpty(startString)) {
-            startString = NUMERIC_OR_SPECIAL_HEADER;
-            bucketIndex = localeUtils.getBucketIndex(startString);
-        }
+                if (bucket.index == otherBucket.index) {
+                    matchingApps.add(otherApp);
 
-        // now iterate through
-        for (AppInfo info1 : tempInfo) {
-            int newBucketIndex = localeUtils.getBucketIndex(info1.title.toString());
-
-            String newChar
-                    = localeUtils.getBucketLabel(newBucketIndex);
-            if (TextUtils.isEmpty(newChar)) {
-                newChar = NUMERIC_OR_SPECIAL_HEADER;
+                    // This app doesn't need to be processed again for other strings
+                    iter.remove();
+                }
             }
-            // if same character
-            if (newChar.equals(startString)) {
-                // add it
-                appInfos.add(info1);
+
+            // Sort so they display in alphabetical order
+            Collections.sort(matchingApps, LauncherModel.getAppNameComparator());
+
+            // Split app list by number of columns and add rows to header list
+            for (int i = 0; i < matchingApps.size(); i += mNumColumns) {
+                int endIndex = Math.min(i + mNumColumns, matchingApps.size());
+                ArrayList<AppInfo> subList =
+                        new ArrayList<AppInfo>(matchingApps.subList(i, endIndex));
+                AppItemIndexedInfo indexedInfo =
+                        new AppItemIndexedInfo(bucket.startString, bucket.index, subList, i != 0);
+                mHeaderList.add(indexedInfo);
             }
         }
 
-        Collections.sort(appInfos, LauncherModel.getAppNameComparator());
-
-        for (int i = 0; i < appInfos.size(); i += mNumColumns) {
-            int endIndex = (int) Math.min(i + mNumColumns, appInfos.size());
-            ArrayList<AppInfo> subList = new ArrayList<AppInfo>(appInfos.subList(i, endIndex));
-            AppItemIndexedInfo indexInfo;
-            indexInfo = new AppItemIndexedInfo(startString, bucketIndex, subList, i != 0);
-            mHeaderList.add(indexInfo);
-        }
-
-        for (AppInfo remove : appInfos) {
-            // remove from mApps
-            tempInfo.remove(remove);
-        }
-        populateByCharacter(tempInfo);
+        Collections.sort(mHeaderList);
     }
 
-    public void setApps(ArrayList<AppInfo> list) {
+    public void setApps(List<AppInfo> list) {
         if (!LauncherAppState.isDisableAllApps()) {
             initParams();
 
             filterProtectedApps(list);
+            mAllApps.clear();
+            mAllApps.addAll(list);
 
-            mHeaderList.clear();
-            populateByCharacter(list);
-            populateSectionHeaders();
-            mLauncher.updateScrubber();
-            this.notifyDataSetChanged();
+            processApps();
         }
+    }
+
+    private void processApps() {
+        populateByCharacter();
+        populateSectionHeaders();
+        mLauncher.updateScrubber();
+        this.notifyDataSetChanged();
     }
 
     private void populateSectionHeaders() {
@@ -521,126 +551,28 @@ public class AppDrawerListAdapter extends RecyclerView.Adapter<AppDrawerListAdap
     }
 
     public void reset() {
-        ArrayList<AppInfo> infos = getAllApps();
-
         mLauncher.mAppDrawer.getLayoutManager().removeAllViews();
 
-        setApps(infos);
+        processApps();
     }
 
-    private ArrayList<AppInfo> getAllApps() {
-        ArrayList<AppInfo> indexedInfos = new ArrayList<AppInfo>();
-
-        for (int j = 0; j < mHeaderList.size(); ++j) {
-            AppItemIndexedInfo indexedInfo = mHeaderList.get(j);
-            for (AppInfo info : indexedInfo.mInfo) {
-                indexedInfos.add(info);
-            }
-        }
-        return indexedInfos;
-    }
-
-    public void updateApps(ArrayList<AppInfo> list) {
-        // We remove and re-add the updated applications list because it's properties may have
-        // changed (ie. the title), and this will ensure that the items will be in their proper
-        // place in the list.
+    public void updateApps(List<AppInfo> list) {
         if (!LauncherAppState.isDisableAllApps()) {
-            removeAppsWithoutInvalidate(list);
-            addAppsWithoutInvalidate(list);
+            mAllApps.removeAll(list);
+            mAllApps.addAll(list);
             reset();
         }
     }
 
+    public void addApps(List<AppInfo> list) {
+        updateApps(list);
+    }
 
-    public void addApps(ArrayList<AppInfo> list) {
+    public void removeApps(List<AppInfo> appInfos) {
         if (!LauncherAppState.isDisableAllApps()) {
-            addAppsWithoutInvalidate(list);
+            mAllApps.removeAll(appInfos);
             reset();
         }
-    }
-
-    private void addAppsWithoutInvalidate(ArrayList<AppInfo> list) {
-        // We add it in place, in alphabetical order
-        LocaleUtils localeUtils = LocaleUtils.getInstance();
-
-        int count = list.size();
-        for (int i = 0; i < count; ++i) {
-            AppInfo info = list.get(i);
-            boolean found = false;
-            AppItemIndexedInfo lastInfoForSection = null;
-            int bucketIndex = localeUtils.getBucketIndex(info.title.toString());
-            String start = localeUtils.getBucketLabel(bucketIndex);
-            if (TextUtils.isEmpty(start)) {
-                start = NUMERIC_OR_SPECIAL_HEADER;
-                bucketIndex = localeUtils.getBucketIndex(start);
-            }
-            for (int j = 0; j < mHeaderList.size(); ++j) {
-                AppItemIndexedInfo indexedInfo = mHeaderList.get(j);
-                if (start.equals(indexedInfo.mStartString)) {
-                    Collections.sort(indexedInfo.mInfo, LauncherModel.getAppNameComparator());
-                    int index =
-                            Collections.binarySearch(indexedInfo.mInfo,
-                                    info, LauncherModel.getAppNameComparator());
-                    if (index >= 0) {
-                        found = true;
-                        break;
-                    } else {
-                        lastInfoForSection = indexedInfo;
-                    }
-                }
-            }
-            if (!found) {
-                if (lastInfoForSection != null) {
-                    lastInfoForSection.mInfo.add(info);
-                } else {
-                    // we need to create a new section
-                    ArrayList<AppInfo> newInfos = new ArrayList<AppInfo>();
-                    newInfos.add(info);
-                    AppItemIndexedInfo newInfo =
-                            new AppItemIndexedInfo(start, bucketIndex, newInfos, false);
-                    mHeaderList.add(newInfo);
-                    Collections.sort(mHeaderList);
-                }
-            }
-        }
-    }
-
-    public void removeApps(ArrayList<AppInfo> appInfos) {
-        if (!LauncherAppState.isDisableAllApps()) {
-            removeAppsWithoutInvalidate(appInfos);
-            //recreate everything
-            reset();
-        }
-    }
-
-    private void removeAppsWithoutInvalidate(ArrayList<AppInfo> list) {
-        // loop through all the apps and remove apps that have the same component
-        int length = list.size();
-        for (int i = 0; i < length; ++i) {
-            AppInfo info = list.get(i);
-            for (int j = 0; j < mHeaderList.size(); ++j) {
-                AppItemIndexedInfo indexedInfo = mHeaderList.get(j);
-                ArrayList<AppInfo> clonedIndexedInfoApps =
-                        (ArrayList<AppInfo>) indexedInfo.mInfo.clone();
-                int index =
-                        findAppByComponent(clonedIndexedInfoApps, info);
-                if (index > -1) {
-                    indexedInfo.mInfo.remove(info);
-                }
-            }
-        }
-    }
-
-    private int findAppByComponent(List<AppInfo> list, AppInfo item) {
-        ComponentName removeComponent = item.intent.getComponent();
-        int length = list.size();
-        for (int i = 0; i < length; ++i) {
-            AppInfo info = list.get(i);
-            if (info.intent.getComponent().equals(removeComponent)) {
-                return i;
-            }
-        }
-        return -1;
     }
 
     /*
@@ -655,25 +587,31 @@ public class AppDrawerListAdapter extends RecyclerView.Adapter<AppDrawerListAdap
         View v = LayoutInflater.from(parent.getContext()).
                 inflate(R.layout.app_drawer_item, parent, false);
         ViewHolder holder = new ViewHolder(v);
-        ViewGroup.LayoutParams params = holder.mTextView.getLayoutParams();
-
-        // set the margin parameter to account for the text size of the icons so that the text view
-        // is based on the icon size only
-        if (params instanceof ViewGroup.MarginLayoutParams) {
-            ViewGroup.MarginLayoutParams marginParams = (ViewGroup.MarginLayoutParams) params;
-            marginParams.setMargins(marginParams.leftMargin, marginParams.topMargin,
-                    marginParams.rightMargin, marginParams.bottomMargin);
-            holder.mTextView.setLayoutParams(marginParams);
-        }
 
         for (int i = 0; i < mNumColumns; i++) {
             AppDrawerIconView icon = (AppDrawerIconView) mLayoutInflater.inflate(
-                    R.layout.drawer_icon, holder.mLayout, false);
+                    R.layout.drawer_icon, holder.mIconLayout, false);
             icon.setOnClickListener(mLauncher);
             icon.setOnLongClickListener(this);
-            holder.mLayout.addView(icon);
+            holder.mIconLayout.addView(icon);
+
+            icon.mIcon.setPadding(mDeviceProfile.iconDrawablePaddingPx,
+                    mDeviceProfile.iconDrawablePaddingPx,
+                    mDeviceProfile.iconDrawablePaddingPx,
+                    mDeviceProfile.iconDrawablePaddingPx);
         }
+
+        if (viewType == ViewHolder.TYPE_CUSTOM) {
+            mRemoteFolderManager.onCreateViewHolder(holder);
+        }
+
         return holder;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return mHeaderList.get(position).isRemote() ?
+                ViewHolder.TYPE_CUSTOM : ViewHolder.TYPE_NORMAL;
     }
 
     @Override
@@ -704,23 +642,24 @@ public class AppDrawerListAdapter extends RecyclerView.Adapter<AppDrawerListAdap
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         AppItemIndexedInfo indexedInfo = mHeaderList.get(position);
-        holder.mTextView.setVisibility(indexedInfo.isChild ? View.INVISIBLE : View.VISIBLE);
-        if (!indexedInfo.isChild) {
-            if (indexedInfo.mStartString.equals(NUMERIC_OR_SPECIAL_HEADER)) {
-                holder.mTextView.setText(NUMERIC_OR_SPECIAL_HEADER);
-            } else {
-                holder.mTextView.setText(String.valueOf(indexedInfo.mStartString));
-            }
+
+        if (indexedInfo.isRemote()) {
+            mRemoteFolderManager.onBindViewHolder(holder, indexedInfo);
         }
 
-        holder.mTextView.setPivotX(0);
-        holder.mTextView.setPivotY(holder.mTextView.getHeight() / 2);
+        holder.mHeaderTextView.setVisibility(indexedInfo.isChild ? View.INVISIBLE : View.VISIBLE);
+        if (!indexedInfo.isChild) {
+            holder.mHeaderTextView.setText(indexedInfo.mStartString);
+        }
+
+        holder.mHeaderTextView.setPivotX(0);
+        holder.mHeaderTextView.setPivotY(holder.mHeaderTextView.getHeight() / 2);
 
         final int size = indexedInfo.mInfo.size();
 
-        int childSize = holder.mLayout.getChildCount();
+        int childSize = holder.mIconLayout.getChildCount();
         for (int i = 0; i < childSize; i++) {
-            AppDrawerIconView icon = (AppDrawerIconView) holder.mLayout.getChildAt(i);
+            AppDrawerIconView icon = (AppDrawerIconView) holder.mIconLayout.getChildAt(i);
             icon.setLayoutParams(mIconParams);
             int extraStart = mExtraPadding;
             int extraEnd = mExtraPadding;
@@ -742,13 +681,16 @@ public class AppDrawerListAdapter extends RecyclerView.Adapter<AppDrawerListAdap
                 icon.setVisibility(View.VISIBLE);
                 AppInfo info = indexedInfo.mInfo.get(i);
                 icon.setTag(info);
-                Drawable d = Utilities.createIconDrawable(info.iconBitmap);
+
+                Drawable d;
+                if (info.customDrawable != null) {
+                    d = info.customDrawable;
+                } else {
+                    d = Utilities.createIconDrawable(info.iconBitmap);
+                }
                 d.setBounds(mIconRect);
                 icon.mIcon.setImageDrawable(d);
-                icon.mIcon.setPadding(mDeviceProfile.iconDrawablePaddingPx,
-                        mDeviceProfile.iconDrawablePaddingPx,
-                        mDeviceProfile.iconDrawablePaddingPx,
-                        mDeviceProfile.iconDrawablePaddingPx);
+
                 icon.mLabel.setText(info.title);
                 icon.mLabel.setVisibility(mHideIconLabels ? View.INVISIBLE : View.VISIBLE);
             }
@@ -877,6 +819,14 @@ public class AppDrawerListAdapter extends RecyclerView.Adapter<AppDrawerListAdap
             }
             return 0;
         }
+
+        public boolean isRemote() {
+            return mStartString == REMOTE_HEADER;
+        }
+
+        public ArrayList<AppInfo> getInfo() {
+            return mInfo;
+        }
     }
 
     @Override
@@ -916,7 +866,7 @@ public class AppDrawerListAdapter extends RecyclerView.Adapter<AppDrawerListAdap
         return index;
     }
 
-    private void filterProtectedApps(ArrayList<AppInfo> list) {
+    private void filterProtectedApps(List<AppInfo> list) {
         updateProtectedAppsList(mLauncher);
 
         Iterator<AppInfo> iterator = list.iterator();
