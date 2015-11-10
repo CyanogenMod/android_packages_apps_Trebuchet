@@ -27,13 +27,22 @@ LOCAL_STATIC_JAVA_LIBRARIES := android-support-v13 \
                                android-support-v7-recyclerview \
                                guava
 
+<<<<<<< HEAD
+REMOTE_FOLDER_UPDATER ?= $(LOCAL_PATH)/RemoteFolder
+
+
 LOCAL_SRC_FILES := $(call all-java-files-under, src) \
+    $(call all-java-files-under, $(REMOTE_FOLDER_UPDATER)/src) \
+=======
+LOCAL_SRC_FILES := $(call all-java-files-under, src) \
+>>>>>>> 861f6e8... Trebuchet: Remote Folder hooks setup. Updater call still needs to be moved from Folder to LauncherModel
     $(call all-java-files-under, WallpaperPicker/src) \
     $(call all-renderscript-files-under, src) \
     $(call all-proto-files-under, protos)
 LOCAL_RESOURCE_DIR := $(LOCAL_PATH)/WallpaperPicker/res $(LOCAL_PATH)/res
 
-LOCAL_AAPT_FLAGS := --auto-add-overlay
+LOCAL_AAPT_FLAGS := --auto-add-overlay \
+    --extra-packages com.cyngn.RemoteFolder
 
 LOCAL_PROTOC_OPTIMIZE_TYPE := nano
 LOCAL_PROTOC_FLAGS := --proto_path=$(LOCAL_PATH)/protos/
@@ -49,10 +58,16 @@ LOCAL_AAPT_FLAGS += --rename-manifest-package com.cyanogenmod.trebuchet
 LOCAL_OVERRIDES_PACKAGES := Launcher3
 
 LOCAL_PROGUARD_FLAG_FILES := proguard.flags
-LOCAL_PROGUARD_ENABLED := disabled
+LOCAL_PROGUARD_ENABLED := full
+
+REMOTE_FOLDER_UPDATER ?= $(LOCAL_PATH)/RemoteFolder
+include $(REMOTE_FOLDER_UPDATER)/Android.mk
 
 include $(BUILD_PACKAGE)
 
+include $(CLEAR_VARS)
+include $(REMOTE_FOLDER_UPDATER)/Android.mk
+include $(BUILD_MULTI_PREBUILT)
 
 #
 # Protocol Buffer Debug Utility in Java
@@ -72,6 +87,7 @@ LOCAL_JAR_MANIFEST := util/etc/manifest.txt
 
 include $(BUILD_HOST_JAVA_LIBRARY)
 
+
 #
 # Protocol Buffer Debug Utility Wrapper Script
 #
@@ -89,4 +105,9 @@ $(LOCAL_BUILT_MODULE): $(LOCAL_PATH)/util/etc/launcher_protoutil | $(ACP)
 	$(copy-file-to-new-target)
 	$(hide) chmod 755 $@
 
+<<<<<<< HEAD
+include $(REMOTE_FOLDER_UPDATER)/Android.mk
+
+=======
+>>>>>>> 861f6e8... Trebuchet: Remote Folder hooks setup. Updater call still needs to be moved from Folder to LauncherModel
 include $(call all-makefiles-under,$(LOCAL_PATH))

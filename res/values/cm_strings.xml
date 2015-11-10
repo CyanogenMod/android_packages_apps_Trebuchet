@@ -87,4 +87,10 @@
 
     <!-- Search Manager doesn't exist -->
     <string name="search_activity_not_found">A search activity could not be found!</string>
+
+    <!-- Featured Apps Strings -->
+    <string name="recommendations_title">Featured Apps</string>
+    <string name="recommendations_help_text">This is a dynamic folder that will automatically load with recommended and featured apps from us at Cyanogen Inc. If you would not like to receive these awesome offers, simply disable below and the folder will be removed.</string>
+    <string name="disable">DISABLE</string>
+    <string name="close">CLOSE</string>
 </resources>

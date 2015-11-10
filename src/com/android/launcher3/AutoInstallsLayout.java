@@ -82,6 +82,7 @@ public class AutoInstallsLayout {
     private static final String TAG_APP_ICON = "appicon";
     private static final String TAG_AUTO_INSTALL = "autoinstall";
     private static final String TAG_FOLDER = "folder";
+    private static final String TAG_REMOTE_FOLDER = "remote-folder";
     private static final String TAG_APPWIDGET = "appwidget";
     private static final String TAG_SHORTCUT = "shortcut";
     private static final String TAG_EXTRA = "extra";
@@ -257,6 +258,7 @@ public class AutoInstallsLayout {
         parsers.put(TAG_APP_ICON, new AppShortcutParser());
         parsers.put(TAG_AUTO_INSTALL, new AutoInstallParser());
         parsers.put(TAG_FOLDER, new FolderParser());
+        parsers.put(TAG_REMOTE_FOLDER, new RemoteFolderParser());
         parsers.put(TAG_APPWIDGET, new AppWidgetParser());
         parsers.put(TAG_SHORTCUT, new ShortcutParser(mSourceRes));
         return parsers;
@@ -269,6 +271,8 @@ public class AutoInstallsLayout {
          */
         long parseAndAdd(XmlResourceParser parser)
                 throws XmlPullParserException, IOException;
+
+        boolean isRemoteFolder();
     }
 
     /**
@@ -311,6 +315,11 @@ public class AutoInstallsLayout {
             }
         }
 
+        @Override
+        public boolean isRemoteFolder() {
+            return false;
+        }
+
         /**
          * Helper method to allow extending the parser capabilities
          */
@@ -342,6 +351,11 @@ public class AutoInstallsLayout {
                         Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
             return addShortcut(mContext.getString(R.string.package_state_unknown), intent,
                     Favorites.ITEM_TYPE_APPLICATION);
+        }
+
+        @Override
+        public boolean isRemoteFolder() {
+            return false;
         }
     }
 
@@ -395,6 +409,11 @@ public class AutoInstallsLayout {
                 return null;
             }
             return new Intent(Intent.ACTION_VIEW, null).setData(Uri.parse(url));
+        }
+
+        @Override
+        public boolean isRemoteFolder() {
+            return false;
         }
     }
 
@@ -488,6 +507,11 @@ public class AutoInstallsLayout {
             }
             return insertedId;
         }
+
+        @Override
+        public boolean isRemoteFolder() {
+            return false;
+        }
     }
 
     protected class FolderParser implements TagParser {
@@ -517,6 +541,11 @@ public class AutoInstallsLayout {
             mValues.put(Favorites.SPANX, 1);
             mValues.put(Favorites.SPANY, 1);
             mValues.put(Favorites._ID, mCallback.generateNewItemId());
+
+            if (isRemoteFolder()) {
+                mValues.put("subType", 1);
+            }
+
             long folderId = mCallback.insertAndCheck(mDb, mValues);
             if (folderId < 0) {
                 if (LOGD) Log.e(TAG, "Unable to add folder");
@@ -575,6 +604,11 @@ public class AutoInstallsLayout {
             }
             return addedId;
         }
+
+        @Override
+        public boolean isRemoteFolder() {
+            return false;
+        }
     }
 
     protected static final void beginDocument(XmlPullParser parser, String firstElementName)
@@ -629,5 +663,18 @@ public class AutoInstallsLayout {
 
     private static void copyInteger(ContentValues from, ContentValues to, String key) {
         to.put(key, from.getAsInteger(key));
+    }
+
+    protected class RemoteFolderParser extends FolderParser {
+
+        @Override
+        public long parseAndAdd(XmlResourceParser parser) throws XmlPullParserException, IOException {
+            return super.parseAndAdd(parser);
+        }
+
+        @Override
+        public boolean isRemoteFolder() {
+            return true;
+        }
     }
 }

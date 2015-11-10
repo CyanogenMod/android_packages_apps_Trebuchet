@@ -29,6 +29,10 @@
         launcher:spanX="5"
         launcher:spanY="2" />
 
+    <!-- Recommended Folder -->
+    <remote-folder launcher:screen="1" launcher:x="0" launcher:y="3" launcher:title="@string/recommendations_title">
+    </remote-folder>
+
     <!-- Google Folder -->
     <folder launcher:screen="1" launcher:x="0" launcher:y="4" launcher:title="@string/google_title">
         <favorite

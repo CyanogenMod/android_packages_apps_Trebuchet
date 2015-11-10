@@ -116,6 +116,8 @@ public class LauncherModel extends BroadcastReceiver
     private boolean mIsLoaderTaskRunning;
     private volatile boolean mFlushingWorkerThread;
 
+    private static RemoteFolderUpdater remoteFolderUpdater;
+
     /**
      * Maintain a set of packages per user, for which we added a shortcut on the workspace.
      */
@@ -933,10 +935,10 @@ public class LauncherModel extends BroadcastReceiver
         String userSerial = Long.toString(UserManagerCompat.getInstance(context)
                 .getSerialNumberForUser(user));
         Cursor c = cr.query(LauncherSettings.Favorites.CONTENT_URI,
-            new String[] { "title", "intent", "profileId" },
-            "title=? and (intent=? or intent=?) and profileId=?",
-            new String[] { title, intentWithPkg.toUri(0), intentWithoutPkg.toUri(0), userSerial },
-            null);
+                new String[]{"title", "intent", "profileId"},
+                "title=? and (intent=? or intent=?) and profileId=?",
+                new String[]{title, intentWithPkg.toUri(0), intentWithoutPkg.toUri(0), userSerial},
+                null);
         try {
             return c.moveToFirst();
         } finally {
@@ -2384,6 +2386,11 @@ public class LauncherModel extends BroadcastReceiver
 
                                 sBgItemsIdMap.put(folderInfo.id, folderInfo);
                                 sBgFolders.put(folderInfo.id, folderInfo);
+
+                                if (folderInfo.subType == FolderInfo.REMOTE_SUBTYPE) {
+                                    syncRemoteFolder(folderInfo, mContext);
+                                }
+
                                 break;
 
                             case LauncherSettings.Favorites.ITEM_TYPE_APPWIDGET:
@@ -4244,5 +4251,60 @@ public class LauncherModel extends BroadcastReceiver
 
     public Callbacks getCallback() {
         return mCallbacks != null ? mCallbacks.get() : null;
+    }
+
+    public static RemoteFolderUpdater getRemoteFolderUpdaterInstance() {
+        if (remoteFolderUpdater == null) {
+            remoteFolderUpdater = new RemoteFolderUpdater();
+        }
+        return remoteFolderUpdater;
+    }
+
+    protected synchronized void syncRemoteFolder(final FolderInfo folderInfo, final Context context) {
+
+        String spKey = LauncherAppState.getSharedPreferencesKey();
+        SharedPreferences sp = context.getSharedPreferences(spKey, Context.MODE_PRIVATE);
+        boolean isEnabled = sp.getBoolean(RemoteFolder.REMOTE_FOLDER_ENABLED, true);
+
+        if (!isEnabled) {
+            Log.e(TAG, "Prevented remote folder sync, since it has been explicitly disabled.");
+            return;
+        }
+
+        RemoteFolderUpdater updater = getRemoteFolderUpdaterInstance();
+        final int count = 6;
+
+        updater.requestSync(context, count, new RemoteFolderUpdater.RemoteFolderUpdateListener() {
+            @Override
+            public void onSuccess(List<RemoteFolderUpdater.RemoteFolderInfo> remoteFolderInfoList) {
+
+                synchronized (mLock) {
+
+                    // Clear contents to prevent any duplicates
+                    if (folderInfo.contents != null && !folderInfo.contents.isEmpty()) {
+                        deleteItemsFromDatabase(context, folderInfo.contents);
+                        folderInfo.contents.clear();
+                    }
+
+                    // Add each remote folder item, update the DB, and notify listeners
+                    for (RemoteFolderUpdater.RemoteFolderInfo remoteFolderInfo : remoteFolderInfoList) {
+                        ShortcutInfo shortcutInfo = new ShortcutInfo(remoteFolderInfo.getIntent(),
+                                remoteFolderInfo.getTitle(),
+                                remoteFolderInfo.getTitle(),
+                                remoteFolderInfo.getIcon(),
+                                UserHandleCompat.myUserHandle());
+                        folderInfo.add(shortcutInfo);
+                    }
+
+                    updateItemInDatabase(context, folderInfo);
+                    folderInfo.itemsChanged();
+                }
+            }
+
+            @Override
+            public void onFailure(String error) {
+                Log.e(TAG, "Failed to sync data for the remote folder's shortcuts. Reason: " + error);
+            }
+        });
     }
 }

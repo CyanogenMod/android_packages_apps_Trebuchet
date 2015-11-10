@@ -125,6 +125,7 @@ import com.android.launcher3.PagedView.TransitionEffect;
 import com.android.launcher3.settings.SettingsProvider;
 import com.android.launcher3.stats.LauncherStats;
 import com.android.launcher3.stats.internal.service.AggregationIntentService;
+import com.cyngn.RemoteFolder.RemoteFolderUpdater;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -402,6 +403,9 @@ public class Launcher extends Activity
     private Rect mRectForFolderAnimation = new Rect();
 
     private BubbleTextView mWaitingForResume;
+
+    // Remote Folder Updater, used in Workspace and Folder
+    private RemoteFolderUpdater remoteFolderUpdater;
 
     // Search widget
     int mSearchWidgetId;
@@ -3225,6 +3229,10 @@ public class Launcher extends Activity
             closeFolder();
             // Open the requested folder
             openFolder(folderIcon, folderTouchXYOffset);
+
+            if (info.subType == FolderInfo.REMOTE_SUBTYPE) {
+                mModel.syncRemoteFolder(info, this);
+            }
         } else {
             // Find the open folder...
             int folderScreen;
@@ -4883,7 +4891,7 @@ public class Launcher extends Activity
         final AnimatorSet anim = LauncherAnimUtils.createAnimatorSet();
         final Collection<Animator> bounceAnims = new ArrayList<Animator>();
         final boolean animateIcons = forceAnimateIcons && canRunNewAppsAnimation();
-        Workspace workspace = mWorkspace;
+        final Workspace workspace = mWorkspace;
         long newShortcutsScreenId = -1;
         for (int i = start; i < end; i++) {
             final ItemInfo item = shortcuts.get(i);
@@ -4934,7 +4942,7 @@ public class Launcher extends Activity
                     }
                     break;
                 case LauncherSettings.Favorites.ITEM_TYPE_FOLDER:
-                    FolderIcon newFolder = FolderIcon.fromXml(R.layout.folder_icon, this,
+                    final FolderIcon newFolder = FolderIcon.fromXml(R.layout.folder_icon, this,
                             (ViewGroup) workspace.getChildAt(workspace.getCurrentPage()),
                             (FolderInfo) item, mIconCache);
                     newFolder.setTextVisible(!mHideIconLabels);
@@ -5937,6 +5945,13 @@ public class Launcher extends Activity
         return SettingsProvider.getBoolean(this,
                 SettingsProvider.SETTINGS_UI_HOMESCREEN_SEARCH,
                 R.bool.preferences_interface_homescreen_search_default);
+    }
+
+    public RemoteFolderUpdater getRemoteFolderUpdaterInstance() {
+        if (remoteFolderUpdater == null) {
+            remoteFolderUpdater = new RemoteFolderUpdater();
+        }
+        return remoteFolderUpdater;
     }
 }
 
