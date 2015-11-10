@@ -50,6 +50,7 @@ import android.widget.Toast;
 import com.android.launcher3.DropTarget.DragObject;
 import com.android.launcher3.compat.AppWidgetManagerCompat;
 import com.android.launcher3.settings.SettingsProvider;
+import cyanogenmod.providers.CMSettings;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -1909,7 +1910,7 @@ public class AppsCustomizePagedView extends PagedViewWithDraggableItems implemen
 
 
     private void updateProtectedAppsList(Context context) {
-        String protectedComponents = Settings.Secure.getString(context.getContentResolver(),
+        String protectedComponents = CMSettings.Secure.getString(context.getContentResolver(),
                 LauncherModel.SETTINGS_PROTECTED_COMPONENTS);
         protectedComponents = protectedComponents == null ? "" : protectedComponents;
         String [] flattened = protectedComponents.split("\\|");

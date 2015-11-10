@@ -62,6 +62,7 @@ import com.android.launcher3.compat.UserHandleCompat;
 import com.android.launcher3.compat.UserManagerCompat;
 import com.android.launcher3.settings.SettingsProvider;
 import com.android.launcher3.stats.internal.service.AggregationIntentService;
+import cyanogenmod.providers.CMSettings;
 
 import java.lang.ref.WeakReference;
 import java.net.URISyntaxException;
@@ -2781,7 +2782,7 @@ public class LauncherModel extends BroadcastReceiver
             ArrayList<String> mHiddenAppsPackages = new ArrayList<String>();
             Context context = mApp.getContext();
             // Since Trebuchet is compiled using the SDK we have to hardcode this string
-            String protectedComponents = Settings.Secure.getString(context.getContentResolver(),
+            String protectedComponents = CMSettings.Secure.getString(context.getContentResolver(),
                     SETTINGS_PROTECTED_COMPONENTS);
             protectedComponents = protectedComponents == null ? "" : protectedComponents;
             String[] flattened = protectedComponents.split("\\|");

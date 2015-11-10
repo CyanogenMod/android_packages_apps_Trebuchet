@@ -39,6 +39,7 @@ import android.widget.SectionIndexer;
 import com.android.launcher3.locale.LocaleSetManager;
 import com.android.launcher3.locale.LocaleUtils;
 import com.android.launcher3.settings.SettingsProvider;
+import cyanogenmod.providers.CMSettings;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -929,7 +930,7 @@ public class AppDrawerListAdapter extends RecyclerView.Adapter<AppDrawerListAdap
     }
 
     private void updateProtectedAppsList(Context context) {
-        String protectedComponents = Settings.Secure.getString(context.getContentResolver(),
+        String protectedComponents = CMSettings.Secure.getString(context.getContentResolver(),
                 LauncherModel.SETTINGS_PROTECTED_COMPONENTS);
         protectedComponents = protectedComponents == null ? "" : protectedComponents;
         String [] flattened = protectedComponents.split("\\|");
