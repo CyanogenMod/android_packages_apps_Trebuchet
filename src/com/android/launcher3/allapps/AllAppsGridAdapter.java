@@ -37,9 +37,12 @@ import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityEvent;
 import android.widget.TextView;
 import com.android.launcher3.AppInfo;
+import com.android.launcher3.BaseRecyclerViewFastScrollBar.FastScrollFocusApplicator;
+import com.android.launcher3.BaseRecyclerViewFastScrollBar.FastScrollFocusable;
 import com.android.launcher3.BubbleTextView;
 import com.android.launcher3.Launcher;
 import com.android.launcher3.R;
+import com.android.launcher3.RemoteFolderManager;
 import com.android.launcher3.Utilities;
 import com.android.launcher3.settings.SettingsProvider;
 import com.android.launcher3.util.Thunk;
@@ -68,6 +71,10 @@ public class AllAppsGridAdapter extends RecyclerView.Adapter<AllAppsGridAdapter.
     public static final int SEARCH_MARKET_DIVIDER_VIEW_TYPE = 4;
     // The message to continue to a market search when there are no filtered results
     public static final int SEARCH_MARKET_VIEW_TYPE = 5;
+    // Section header for customized predicated apps.
+    public static final int CUSTOM_PREDICTED_APPS_HEADER_VIEW_TYPE = 6;
+    // Additional spacing between predicted apps and regular apps.
+    public static final int CUSTOM_PREDICTED_APPS_FOOTER_VIEW_TYPE = 7;
 
     private boolean mIconsDimmed = false;
 
@@ -185,36 +192,34 @@ public class AllAppsGridAdapter extends RecyclerView.Adapter<AllAppsGridAdapter.
                             mPredictedAppsDividerPaint);
                     hasDrawnPredictedAppsDivider = true;
 
-                } else if (showSectionNames && shouldDrawItemSection(holder, i, items)) {
-                    // At this point, we only draw sections for each section break;
+                    // Only customized predicted apps will draw a section name.
+                    if (!mApps.mCustomPredictedAppsEnabled) continue;
+                }
+
+                if (showSectionNames && shouldDrawItemSection(holder, items)) {
+                    // Draw the section name for the first visible item
                     int viewTopOffset = (2 * child.getPaddingTop());
                     int pos = holder.getPosition();
                     AlphabeticalAppsList.AdapterItem item = items.get(pos);
                     AlphabeticalAppsList.SectionInfo sectionInfo = item.sectionInfo;
-
-                    // Draw all the sections for this index
                     String lastSectionName = item.sectionName;
-                    for (int j = item.sectionAppIndex; j < sectionInfo.numApps; j++, pos++) {
-                        AlphabeticalAppsList.AdapterItem nextItem = items.get(pos);
-                        String sectionName = nextItem.sectionName;
-                        if (nextItem.sectionInfo != sectionInfo) {
-                            break;
-                        }
-                        if (j > item.sectionAppIndex && sectionName.equals(lastSectionName)) {
-                            continue;
-                        }
 
+                    // Find the section name bounds
+                    PointF sectionBounds = getAndCacheSectionBounds(lastSectionName);
 
-                        // Find the section name bounds
-                        PointF sectionBounds = getAndCacheSectionBounds(sectionName);
+                    // Calculate where to draw the section
+                    int sectionBaseline = (int) (viewTopOffset + sectionBounds.y);
+                    int x = mIsRtl ?
+                            parent.getWidth() - mBackgroundPadding.left - mSectionNamesMargin :
+                                    mBackgroundPadding.left;
+                    x += (int) ((mSectionNamesMargin - sectionBounds.x) / 2f);
 
-                        // Calculate where to draw the section
-                        int sectionBaseline = (int) (viewTopOffset + sectionBounds.y);
-                        int x = mIsRtl ?
-                                parent.getWidth() - mBackgroundPadding.left - mSectionNamesMargin :
-                                        mBackgroundPadding.left;
-                        x += (int) ((mSectionNamesMargin - sectionBounds.x) / 2f);
-                        int y = child.getTop() + sectionBaseline;
+                    int y;
+                    boolean fixedToRow = false;
+                    if (item.viewType == PREDICTION_ICON_VIEW_TYPE) {
+                        y = child.getTop() - (int) mSectionTextPaint.getTextSize() / 2;
+                    } else {
+                        y = child.getTop() + sectionBaseline;
 
                         // Determine whether this is the last row with apps in that section, if
                         // so, then fix the section to the row allowing it to scroll past the
@@ -223,7 +228,7 @@ public class AllAppsGridAdapter extends RecyclerView.Adapter<AllAppsGridAdapter.
                         int nextRowPos = Math.min(items.size() - 1,
                                 pos + mAppsPerRow - (appIndexInSection % mAppsPerRow));
                         AlphabeticalAppsList.AdapterItem nextRowItem = items.get(nextRowPos);
-                        boolean fixedToRow = !sectionName.equals(nextRowItem.sectionName);
+                        fixedToRow = !lastSectionName.equals(nextRowItem.sectionName);
                         if (!fixedToRow) {
                             y = Math.max(sectionBaseline, y);
                         }
@@ -233,22 +238,21 @@ public class AllAppsGridAdapter extends RecyclerView.Adapter<AllAppsGridAdapter.
                         if (lastSectionHeight > 0 && y <= (lastSectionTop + lastSectionHeight)) {
                             y += lastSectionTop - y + lastSectionHeight;
                         }
-
-                        // Draw the section header
-                        if (FADE_OUT_SECTIONS) {
-                            int alpha = 255;
-                            if (fixedToRow) {
-                                alpha = Math.min(255,
-                                        (int) (255 * (Math.max(0, y) / (float) sectionBaseline)));
-                            }
-                            mSectionTextPaint.setAlpha(alpha);
-                        }
-                        c.drawText(sectionName, x, y, mSectionTextPaint);
-
-                        lastSectionTop = y;
-                        lastSectionHeight = (int) (sectionBounds.y + mSectionHeaderOffset);
-                        lastSectionName = sectionName;
                     }
+
+                    // Draw the section header
+                    if (FADE_OUT_SECTIONS) {
+                        int alpha = 255;
+                        if (fixedToRow) {
+                            alpha = Math.min(255,
+                                    (int) (255 * (Math.max(0, y) / (float) sectionBaseline)));
+                        }
+                        mSectionTextPaint.setAlpha(alpha);
+                    }
+                    c.drawText(lastSectionName, x, y, mSectionTextPaint);
+
+                    lastSectionTop = y;
+                    lastSectionHeight = (int) (sectionBounds.y + mSectionHeaderOffset);
                     i += (sectionInfo.numApps - item.sectionAppIndex);
                 }
             }
@@ -308,20 +312,21 @@ public class AllAppsGridAdapter extends RecyclerView.Adapter<AllAppsGridAdapter.
         /**
          * Returns whether to draw the section for the given child.
          */
-        private boolean shouldDrawItemSection(ViewHolder holder, int childIndex,
+        private boolean shouldDrawItemSection(ViewHolder holder,
                 List<AlphabeticalAppsList.AdapterItem> items) {
             int pos = holder.getPosition();
             AlphabeticalAppsList.AdapterItem item = items.get(pos);
 
             // Ensure it's an icon
-            if (item.viewType != AllAppsGridAdapter.ICON_VIEW_TYPE) {
+            if (item.viewType != ICON_VIEW_TYPE && item.viewType != PREDICTION_ICON_VIEW_TYPE) {
                 return false;
             }
-            // Draw the section header for the first item in each section
-            return (childIndex == 0) ||
-                    (items.get(pos - 1).viewType == AllAppsGridAdapter.SECTION_BREAK_VIEW_TYPE);
+
+            return true;
         }
     }
+
+    private final RemoteFolderManager mRemoteFolderManager;
 
     private Launcher mLauncher;
     private LayoutInflater mLayoutInflater;
@@ -358,6 +363,9 @@ public class AllAppsGridAdapter extends RecyclerView.Adapter<AllAppsGridAdapter.
     @Thunk Paint mPredictedAppsDividerPaint;
 
     private int mAllAppsTextColor;
+
+    private int mCustomPredictedAppsHeaderHeight;
+    private int mCustomPredictedAppsFooterHeight;
 
     public AllAppsGridAdapter(Launcher launcher, AlphabeticalAppsList apps,
             View.OnTouchListener touchListener, View.OnClickListener iconClickListener,
@@ -399,8 +407,7 @@ public class AllAppsGridAdapter extends RecyclerView.Adapter<AllAppsGridAdapter.
         mPredictedAppsDividerPaint.setColor(0x1E000000);
         mPredictedAppsDividerPaint.setAntiAlias(true);
         mPredictionBarDividerOffset =
-                (-res.getDimensionPixelSize(R.dimen.all_apps_prediction_icon_bottom_padding) +
-                        res.getDimensionPixelSize(R.dimen.all_apps_icon_top_bottom_padding)) / 2;
+                res.getDimensionPixelSize(R.dimen.all_apps_prediction_bar_divider_offset);
 
         // Resolve the market app handling additional searches
         PackageManager pm = launcher.getPackageManager();
@@ -409,6 +416,8 @@ public class AllAppsGridAdapter extends RecyclerView.Adapter<AllAppsGridAdapter.
         if (marketInfo != null) {
             mMarketAppName = marketInfo.loadLabel(pm).toString();
         }
+
+        mRemoteFolderManager = launcher.getRemoteFolderManager();
     }
 
     /**
@@ -494,6 +503,10 @@ public class AllAppsGridAdapter extends RecyclerView.Adapter<AllAppsGridAdapter.
                 icon.setLongPressTimeout(ViewConfiguration.get(parent.getContext())
                         .getLongPressTimeout());
                 icon.setFocusable(true);
+                FastScrollFocusApplicator.createApplicator(icon,
+                        FastScrollFocusable.FAST_SCROLL_FOCUS_DIMMABLE |
+                                FastScrollFocusable.FAST_SCROLL_FOCUS_SCALABLE);
+
                 return new ViewHolder(icon);
             }
             case PREDICTION_ICON_VIEW_TYPE: {
@@ -508,7 +521,14 @@ public class AllAppsGridAdapter extends RecyclerView.Adapter<AllAppsGridAdapter.
                 icon.setLongPressTimeout(ViewConfiguration.get(parent.getContext())
                         .getLongPressTimeout());
                 icon.setFocusable(true);
-                return new ViewHolder(icon);
+                FastScrollFocusApplicator.createApplicator(icon,
+                        FastScrollFocusable.FAST_SCROLL_FOCUS_DIMMABLE |
+                                FastScrollFocusable.FAST_SCROLL_FOCUS_SCALABLE);
+
+                ViewHolder holder = new ViewHolder(icon);
+                mRemoteFolderManager.onCreateViewHolder(holder, viewType);
+
+                return holder;
             }
             case EMPTY_SEARCH_VIEW_TYPE:
                 return new ViewHolder(mLayoutInflater.inflate(R.layout.all_apps_empty_search,
@@ -526,6 +546,22 @@ public class AllAppsGridAdapter extends RecyclerView.Adapter<AllAppsGridAdapter.
                     }
                 });
                 return new ViewHolder(searchMarketView);
+            case CUSTOM_PREDICTED_APPS_HEADER_VIEW_TYPE: {
+                View v = mLayoutInflater.inflate(
+                        R.layout.custom_predicted_apps_header, parent, false);
+                FastScrollFocusApplicator.createApplicator(v,
+                        FastScrollFocusable.FAST_SCROLL_FOCUS_DIMMABLE);
+                ViewHolder holder = new ViewHolder(v);
+                mRemoteFolderManager.onCreateViewHolder(holder, viewType);
+                return holder;
+            }
+            case CUSTOM_PREDICTED_APPS_FOOTER_VIEW_TYPE: {
+                View v = mLayoutInflater.inflate(R.layout.custom_predicted_apps_footer,
+                        parent, false);
+                ViewHolder holder = new ViewHolder(v);
+                mRemoteFolderManager.onCreateViewHolder(holder, viewType);
+                return holder;
+            }
             default:
                 throw new RuntimeException("Unexpected view type");
         }
@@ -545,7 +581,8 @@ public class AllAppsGridAdapter extends RecyclerView.Adapter<AllAppsGridAdapter.
                     icon.setTextVisibility(!hideIconLabels);
                 }
                 icon.applyFromApplicationInfo(info);
-                icon.setFastScrollDimmed(mIconsDimmed, !mIconsDimmed);
+                FastScrollFocusApplicator.setFastScrollDimmed(icon, mIconsDimmed, !mIconsDimmed);
+                FastScrollFocusApplicator.setFastScrollFocused(icon, false, !mIconsDimmed);
                 break;
             }
             case PREDICTION_ICON_VIEW_TYPE: {
@@ -556,6 +593,10 @@ public class AllAppsGridAdapter extends RecyclerView.Adapter<AllAppsGridAdapter.
                     icon.setTextVisibility(!hideIconLabels);
                 }
                 icon.applyFromApplicationInfo(info);
+                FastScrollFocusApplicator.setFastScrollDimmed(icon, mIconsDimmed, !mIconsDimmed);
+                FastScrollFocusApplicator.setFastScrollFocused(icon, false, !mIconsDimmed);
+
+                mRemoteFolderManager.onBindViewHolder(holder, info);
                 break;
             }
             case EMPTY_SEARCH_VIEW_TYPE:
@@ -576,7 +617,30 @@ public class AllAppsGridAdapter extends RecyclerView.Adapter<AllAppsGridAdapter.
                     searchView.setVisibility(View.GONE);
                 }
                 break;
+            case CUSTOM_PREDICTED_APPS_HEADER_VIEW_TYPE: {
+                TextView title = (TextView) holder.mContent.findViewById(R.id.title);
+                title.setTextColor(mAllAppsTextColor);
+                FastScrollFocusApplicator.setFastScrollDimmed(holder.mContent, mIconsDimmed, !mIconsDimmed);
+                FastScrollFocusApplicator.setFastScrollFocused(holder.mContent, false, !mIconsDimmed);
+
+                ViewGroup.MarginLayoutParams lp =
+                        (ViewGroup.MarginLayoutParams) holder.mContent.getLayoutParams();
+                mCustomPredictedAppsHeaderHeight = holder.mContent.getHeight() +
+                        lp.topMargin + lp.bottomMargin;
+                break;
+            }
+            case CUSTOM_PREDICTED_APPS_FOOTER_VIEW_TYPE:
+                ViewGroup.MarginLayoutParams lp =
+                        (ViewGroup.MarginLayoutParams) holder.mContent.getLayoutParams();
+                mCustomPredictedAppsFooterHeight = holder.mContent.getHeight() +
+                        lp.topMargin + lp.bottomMargin;
         }
+    }
+
+    public int getCustomPredictedAppsOffset(int rowIndex) {
+        int offset = mCustomPredictedAppsHeaderHeight;
+        if (rowIndex > 0) offset += mCustomPredictedAppsFooterHeight;
+        return offset;
     }
 
     @Override
@@ -602,11 +666,15 @@ public class AllAppsGridAdapter extends RecyclerView.Adapter<AllAppsGridAdapter.
         int sectionTextColorId = mGridTheme == AllAppsContainerView.GRID_THEME_DARK ?
                 R.color.all_apps_grid_section_text_color_dark :
                 R.color.all_apps_grid_section_text_color;
-        mSectionTextPaint.setColor(mLauncher.getResources().getColor(sectionTextColorId));
-        Resources res = mLauncher.getResources();
+        mSectionTextPaint.setColor(mLauncher.getColor(sectionTextColorId));
+
         mAllAppsTextColor = mGridTheme == AllAppsContainerView.GRID_THEME_DARK ?
-                res.getColor(R.color.quantum_panel_text_color_dark) :
-                res.getColor(R.color.quantum_panel_text_color);
+                mLauncher.getColor(R.color.quantum_panel_text_color_dark) :
+                mLauncher.getColor(R.color.quantum_panel_text_color);
+
+        int mPredictedAppsDividerColorId = mGridTheme == AllAppsContainerView.GRID_THEME_DARK ?
+                R.color.drawer_divider_dark : R.color.drawer_divider_light;
+        mPredictedAppsDividerPaint.setColor(mLauncher.getColor(mPredictedAppsDividerColorId));
     }
 
     /**

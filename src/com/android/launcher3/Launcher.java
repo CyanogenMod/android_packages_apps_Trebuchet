@@ -112,7 +112,6 @@ import com.android.launcher3.list.SettingsPinnedHeaderAdapter;
 import com.android.launcher3.model.WidgetsModel;
 import com.android.launcher3.settings.SettingsProvider;
 import com.android.launcher3.stats.LauncherStats;
-import com.android.launcher3.stats.internal.service.AggregationIntentService;
 import com.android.launcher3.util.ComponentKey;
 import com.android.launcher3.util.LongArrayMap;
 import com.android.launcher3.util.Thunk;
@@ -266,6 +265,9 @@ public class Launcher extends Activity
     protected HiddenFolderFragment mHiddenFolderFragment;
     private DynamicGridSizeFragment mDynamicGridSizeFragment;
 
+    private static RemoteFolderManager sRemoteFolderManager;
+    private boolean mRemoteDrawerEnabled;
+
     private AppWidgetManagerCompat mAppWidgetManager;
     private LauncherAppWidgetHost mAppWidgetHost;
 
@@ -376,7 +378,7 @@ public class Launcher extends Activity
     // This is set to the view that launched the activity that navigated the user away from
     // launcher. Since there is no callback for when the activity has finished launching, enable
     // the press state and keep this reference to reset the press state when we return to launcher.
-    private BubbleTextView mWaitingForResume;
+    BubbleTextView mWaitingForResume;
 
     private long mDefaultScreenId;
 
@@ -518,6 +520,14 @@ public class Launcher extends Activity
 
         mAppWidgetHost = new LauncherAppWidgetHost(this, APPWIDGET_HOST_ID);
         mAppWidgetHost.startListening();
+
+        if (sRemoteFolderManager == null) {
+            sRemoteFolderManager = new RemoteFolderManager(this);
+        } else {
+            sRemoteFolderManager.onRecreateLauncher(this);
+        }
+        mRemoteDrawerEnabled = SettingsProvider.getBoolean(this, null,
+                R.bool.preferences_interface_homescreen_remote_folder_default);
 
         // If we are getting an onCreate, we can actually preempt onResume and unset mPaused here,
         // this also ensures that any synchronous binding below doesn't re-trigger another
@@ -1825,7 +1835,8 @@ public class Launcher extends Activity
                 SettingsProvider.SETTINGS_UI_HOMESCREEN_HIDE_ICON_LABELS,
                 R.bool.preferences_interface_homescreen_hide_icon_labels_default);
         mDefaultScreenId = SettingsProvider.getLongCustomDefault(this,
-                SettingsProvider.SETTINGS_UI_HOMESCREEN_DEFAULT_SCREEN_ID, 1);
+                SettingsProvider.SETTINGS_UI_HOMESCREEN_DEFAULT_SCREEN_ID,
+                R.integer.preferences_interface_homescreen_id_default);
 
         mModel = app.setLauncher(this);
         mIconCache = app.getIconCache();
@@ -1884,6 +1895,7 @@ public class Launcher extends Activity
         mAppsView.addApps(addedApps);
         tryAndUpdatePredictedApps();
         mAppsView.reset();
+        sRemoteFolderManager.onReloadAppDrawer();
     }
 
     public void reloadWidgetView() {
@@ -2146,6 +2158,10 @@ public class Launcher extends Activity
 
     public Workspace getWorkspace() {
         return mWorkspace;
+    }
+
+    public RemoteFolderManager getRemoteFolderManager() {
+        return sRemoteFolderManager;
     }
 
     public Hotseat getHotseat() {
@@ -2719,10 +2735,14 @@ public class Launcher extends Activity
     }
 
     FolderIcon addFolder(CellLayout layout, long container, final long screenId, int cellX,
-            int cellY) {
-        final FolderInfo folderInfo = new FolderInfo();
+                         int cellY) {
+        FolderInfo folderInfo = new FolderInfo();
         folderInfo.title = getText(R.string.folder_name);
+        return addFolder(layout, container, screenId, cellX, cellY, folderInfo);
+    }
 
+    FolderIcon addFolder(CellLayout layout, long container, final long screenId, int cellX,
+            int cellY, FolderInfo folderInfo) {
         // Update the model
         LauncherModel.addItemToDatabase(Launcher.this, folderInfo, container, screenId,
                 cellX, cellY);
@@ -2869,10 +2889,11 @@ public class Launcher extends Activity
         } else if (v == mAllAppsButton) {
             onClickAllAppsButton(v);
         } else if (tag instanceof AppInfo) {
+            AppInfo info = (AppInfo) tag;
             startAppShortcutOrInfoActivity(v);
             LauncherApplication.getLauncherStats().sendAppLaunchEvent(
-                    LauncherStats.ORIGIN_APPDRAWER, ((AppInfo)tag).componentName.getPackageName());
-            String packageName = ((AppInfo)tag).getIntent().getComponent().getPackageName();
+                    LauncherStats.ORIGIN_APPDRAWER, info.componentName.getPackageName());
+            String packageName = info.getIntent().getComponent().getPackageName();
             if (LauncherStats.SETTINGS_PACKAGE_NAME.equals(packageName)) {
                 LauncherApplication.getLauncherStats()
                         .sendSettingsOpenedEvent(LauncherStats.ORIGIN_APPDRAWER);
@@ -3539,7 +3560,7 @@ public class Launcher extends Activity
                     folder.getParent() + ").");
             return;
         }
-        folder.animateOpen(getWorkspace(), folderTouch);
+        folder.animateOpen();
         /*growAndFadeOutFolderIcon(folderIcon);*/
 
         // Notify the accessibility manager that this folder "window" has appeared and occluded
@@ -3783,6 +3804,8 @@ public class Launcher extends Activity
             tryAndUpdatePredictedApps();
         }
         showAppsOrWidgets(State.APPS, animated, focusSearchBar);
+
+        sRemoteFolderManager.onAppDrawerOpened();
     }
 
     /**
@@ -3902,10 +3925,12 @@ public class Launcher extends Activity
      * resumed.
      */
     private void tryAndUpdatePredictedApps() {
-        if (mLauncherCallbacks != null) {
-            List<ComponentKey> apps = mLauncherCallbacks.getPredictedApps();
-            if (apps != null) {
-                mAppsView.setPredictedApps(apps);
+        if (!mRemoteDrawerEnabled) {
+            if (mLauncherCallbacks != null) {
+                List<ComponentKey> apps = mLauncherCallbacks.getPredictedApps();
+                if (apps != null) {
+                    mAppsView.setPredictedAppComponents(apps);
+                }
             }
         }
     }
@@ -4196,6 +4221,7 @@ public class Launcher extends Activity
 
         if (addedApps != null && mAppsView != null) {
             mAppsView.addApps(addedApps);
+            sRemoteFolderManager.onBindAddApps(addedApps);
         }
     }
 
@@ -4219,7 +4245,7 @@ public class Launcher extends Activity
         final AnimatorSet anim = LauncherAnimUtils.createAnimatorSet();
         final Collection<Animator> bounceAnims = new ArrayList<Animator>();
         final boolean animateIcons = forceAnimateIcons && canRunNewAppsAnimation();
-        Workspace workspace = mWorkspace;
+        final Workspace workspace = mWorkspace;
         long newShortcutsScreenId = -1;
         for (int i = start; i < end; i++) {
             final ItemInfo item = shortcuts.get(i);
@@ -4259,6 +4285,9 @@ public class Launcher extends Activity
                     view = FolderIcon.fromXml(R.layout.folder_icon, this,
                             (ViewGroup) workspace.getChildAt(workspace.getCurrentPage()),
                             (FolderInfo) item, mIconCache);
+                    if (view == null) {
+                        continue;
+                    }
                     ((FolderIcon) view).setTextVisible(!mHideIconLabels);
                     break;
                 default:
@@ -4518,6 +4547,8 @@ public class Launcher extends Activity
         }
 
         mWorkspace.stripEmptyScreens();
+
+        sRemoteFolderManager.bindFinished();
     }
 
     private void sendLoadingCompleteBroadcastIfNecessary() {
@@ -4717,7 +4748,7 @@ public class Launcher extends Activity
             for (AppInfo info : appInfos) {
                 removedComponents.add(info.componentName);
             }
-            if (!packageNames.isEmpty()) {
+            if (packageNames != null && !packageNames.isEmpty()) {
                 mWorkspace.removeItemsByPackageName(packageNames, user);
             }
             if (!removedComponents.isEmpty()) {

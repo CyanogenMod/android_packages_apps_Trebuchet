@@ -60,6 +60,7 @@ public class AppInfo extends ItemInfo {
 
     public static final int DOWNLOADED_FLAG = 1;
     static final int UPDATED_SYSTEM_APP_FLAG = 2;
+    static final int REMOTE_APP_FLAG = 4;
 
     public int flags = 0;
 
@@ -91,6 +92,15 @@ public class AppInfo extends ItemInfo {
         this.user = user;
     }
 
+    public AppInfo(Intent intent, String title, UserHandleCompat user) {
+        this.componentName = intent.getComponent();
+        this.container = ItemInfo.NO_ID;
+
+        this.intent = intent;
+        this.title = title;
+        this.user = user;
+    }
+
     public static int initFlags(LauncherActivityInfoCompat info) {
         int appFlags = info.getApplicationInfo().flags;
         int flags = 0;
@@ -112,6 +122,23 @@ public class AppInfo extends ItemInfo {
         flags = info.flags;
         firstInstallTime = info.firstInstallTime;
         iconBitmap = info.iconBitmap;
+    }
+
+    /**
+     * Check if this app has a specific flag.
+     * @param flag flag to check.
+     * @return true if the flag is present, false otherwise.
+     */
+    public boolean hasFlag(int flag) {
+        return (flags & flag) != 0;
+    }
+
+    /**
+     * Set a flag for this app
+     * @param flag flag to apply.
+     */
+    public void setFlag(int flag) {
+        flags |= flag;
     }
 
     @Override
@@ -151,5 +178,19 @@ public class AppInfo extends ItemInfo {
             .setComponent(info.getComponentName())
             .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED)
             .putExtra(EXTRA_PROFILE, serialNumber);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o != null && o instanceof AppInfo) {
+            return componentName.equals(((AppInfo) o).componentName);
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public int hashCode() {
+        return componentName.hashCode();
     }
 }

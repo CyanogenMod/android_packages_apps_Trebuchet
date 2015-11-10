@@ -54,6 +54,9 @@
     <color name="all_apps_grid_section_text_color_dark">#FFF</color>
     <color name="all_apps_search_market_button_focused_bg_color">#DDDDDD</color>
 
+    <color name="drawer_divider_light">#14000000</color>
+    <color name="drawer_divider_dark">#14ffffff</color>
+
     <!-- Widgets view -->
     <color name="widgets_view_section_text_color">#FFFFFF</color>
     <color name="widgets_view_item_text_color">#C4C4C4</color>

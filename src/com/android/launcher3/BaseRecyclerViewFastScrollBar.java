@@ -18,6 +18,7 @@ package com.android.launcher3;
 import android.animation.AnimatorSet;
 import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
+import android.animation.PropertyValuesHolder;
 import android.animation.ValueAnimator;
 import android.content.res.Resources;
 import android.graphics.Canvas;
@@ -27,8 +28,11 @@ import android.graphics.Path;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.view.MotionEvent;
+import android.view.View;
 import android.view.ViewConfiguration;
 
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.DecelerateInterpolator;
 import com.android.launcher3.util.Thunk;
 
 /**
@@ -36,9 +40,128 @@ import com.android.launcher3.util.Thunk;
  */
 public class BaseRecyclerViewFastScrollBar {
 
-    public interface FastScrollFocusableView {
+    public interface FastScrollFocusable {
+        int FAST_SCROLL_FOCUS_DIMMABLE = 1;
+        int FAST_SCROLL_FOCUS_SCALABLE = 2;
+
         void setFastScrollFocused(boolean focused, boolean animated);
         void setFastScrollDimmed(boolean dimmed, boolean animated);
+    }
+
+    /**
+     * Helper class to apply fast scroll focus functionality to any view.
+     */
+    public static class FastScrollFocusApplicator implements FastScrollFocusable {
+        private static final int FAST_SCROLL_FOCUS_FADE_IN_DURATION = 175;
+        private static final int FAST_SCROLL_FOCUS_FADE_OUT_DURATION = 125;
+        private static final float FAST_SCROLL_FOCUS_MAX_SCALE = 1.15f;
+
+        private final View mView;
+        private final int mFastScrollMode;
+
+        private ObjectAnimator mFastScrollFocusAnimator;
+        private ObjectAnimator mFastScrollDimAnimator;
+        private boolean mFastScrollFocused;
+        private boolean mFastScrollDimmed;
+
+        public static void createApplicator(final View v, int mode) {
+            FastScrollFocusApplicator applicator = new FastScrollFocusApplicator(v, mode);
+            v.setTag(R.id.fast_scroll_focus_applicator_tag, applicator);
+        }
+
+        public static void setFastScrollFocused(final View v, boolean focused, boolean animated) {
+            FastScrollFocusable focusable = getFromView(v);
+            if (focusable == null) return;
+
+            focusable.setFastScrollFocused(focused, animated);
+        }
+
+        public static void setFastScrollDimmed(final View v, boolean dimmed, boolean animated) {
+            FastScrollFocusable focusable = getFromView(v);
+            if (focusable == null) return;
+
+            focusable.setFastScrollDimmed(dimmed, animated);
+        }
+
+        private static FastScrollFocusable getFromView(final View v) {
+            Object tag = v.getTag(R.id.fast_scroll_focus_applicator_tag);
+            if (tag != null) {
+                return (FastScrollFocusApplicator) tag;
+            }
+            return null;
+        }
+
+        private FastScrollFocusApplicator(final View v, final int mode) {
+            mView = v;
+            mFastScrollMode = mode;
+        }
+
+        public void setFastScrollFocused(boolean focused, boolean animated) {
+            if ((mFastScrollMode & FAST_SCROLL_FOCUS_SCALABLE) == 0) {
+                return;
+            }
+
+            if (mFastScrollFocused != focused) {
+                mFastScrollFocused = focused;
+
+                if (animated) {
+                    // Clean up the previous focus animator
+                    if (mFastScrollFocusAnimator != null) {
+                        mFastScrollFocusAnimator.cancel();
+                    }
+
+                    // Setup animator for bi-directional scaling.
+                    float value = focused ? FAST_SCROLL_FOCUS_MAX_SCALE : 1f;
+                    PropertyValuesHolder pvhScaleX =
+                            PropertyValuesHolder.ofFloat(View.SCALE_X, value);
+                    PropertyValuesHolder pvhScaleY =
+                            PropertyValuesHolder.ofFloat(View.SCALE_Y, value);
+                    mFastScrollFocusAnimator = ObjectAnimator.ofPropertyValuesHolder(mView,
+                            pvhScaleX, pvhScaleY);
+
+                    if (focused) {
+                        mFastScrollFocusAnimator.setInterpolator(new DecelerateInterpolator());
+                    } else {
+                        mFastScrollFocusAnimator.setInterpolator(new AccelerateInterpolator());
+                    }
+                    mFastScrollFocusAnimator.setDuration(focused ?
+                            FAST_SCROLL_FOCUS_FADE_IN_DURATION : FAST_SCROLL_FOCUS_FADE_OUT_DURATION);
+                    mFastScrollFocusAnimator.start();
+                }
+            }
+
+            // Let the view do any additional operations if it wants.
+            if (mView instanceof FastScrollFocusable) {
+                ((FastScrollFocusable) mView).setFastScrollFocused(focused, animated);
+            }
+        }
+
+        public void setFastScrollDimmed(boolean dimmed, boolean animated) {
+            if ((mFastScrollMode & FAST_SCROLL_FOCUS_DIMMABLE) == 0) {
+                return;
+            }
+
+            if (!animated) {
+                mFastScrollDimmed = dimmed;
+                mView.setAlpha(dimmed ? 0.4f : 1f);
+            } else  if (mFastScrollDimmed != dimmed) {
+                mFastScrollDimmed = dimmed;
+
+                // Clean up the previous dim animator
+                if (mFastScrollDimAnimator != null) {
+                    mFastScrollDimAnimator.cancel();
+                }
+                mFastScrollDimAnimator = ObjectAnimator.ofFloat(mView, View.ALPHA, dimmed ? 0.4f : 1f);
+                mFastScrollDimAnimator.setDuration(dimmed ?
+                        FAST_SCROLL_FOCUS_FADE_IN_DURATION : FAST_SCROLL_FOCUS_FADE_OUT_DURATION);
+                mFastScrollDimAnimator.start();
+            }
+
+            // Let the view do any additional operations if it wants.
+            if (mView instanceof FastScrollFocusable) {
+                ((FastScrollFocusable) mView).setFastScrollDimmed(dimmed, animated);
+            }
+        }
     }
 
     private final static int MAX_TRACK_ALPHA = 30;

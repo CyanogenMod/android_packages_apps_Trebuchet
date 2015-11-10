@@ -2224,7 +2224,7 @@ public class CellLayout extends ViewGroup implements BubbleTextShadowHandler {
         mLauncher.getWorkspace().updateItemLocationsInDatabase(this);
     }
 
-    private void setUseTempCoords(boolean useTempCoords) {
+    public void setUseTempCoords(boolean useTempCoords) {
         int childCount = mShortcutsAndWidgets.getChildCount();
         for (int i = 0; i < childCount; i++) {
             LayoutParams lp = (LayoutParams) mShortcutsAndWidgets.getChildAt(i).getLayoutParams();

@@ -20,12 +20,18 @@
     android:layout_height="wrap_content"
     android:background="@drawable/folder_bg"
     android:elevation="5dp"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:layout_margin="@dimen/folder_margin"
+    android:layout_gravity="bottom|center_horizontal">
+
+    <include layout="@layout/remote_folder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
     <FrameLayout
         android:id="@+id/folder_content_wrapper"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
 
         <!-- Actual size of the indicator doesn't matter as it is scaled to match the view size -->
 
@@ -36,8 +42,8 @@
 
         <com.android.launcher3.FolderPagedView
             android:id="@+id/folder_content"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:paddingLeft="4dp"
             android:paddingRight="4dp"
             android:paddingTop="8dp"

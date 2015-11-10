@@ -20,6 +20,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 
 import com.android.launcher3.compat.UserHandleCompat;
 import com.android.launcher3.compat.UserManagerCompat;
@@ -126,6 +127,12 @@ public class ItemInfo {
     public int[] dropPos = null;
 
     public UserHandleCompat user;
+
+    /**
+     * A custom drawable to use for the icon. Not persisted to the database because
+     * it is not guaranteed to be a bitmap (could be a vector).
+     */
+    Drawable customDrawable;
 
     public ItemInfo() {
         user = UserHandleCompat.myUserHandle();

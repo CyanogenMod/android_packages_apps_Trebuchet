@@ -37,7 +37,7 @@ public class LauncherApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        sLauncherStats = LauncherStats.createInstance(this);
+        sLauncherStats = LauncherStats.getInstance(this);
         AggregationIntentService.scheduleService(this);
     }
 

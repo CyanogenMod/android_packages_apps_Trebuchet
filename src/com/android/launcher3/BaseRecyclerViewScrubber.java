@@ -400,6 +400,9 @@ public class BaseRecyclerViewScrubber extends LinearLayout {
         }
 
         private void progressChanged(SeekBar seekBar, int index, boolean fromUser) {
+            if (!fromUser) {
+                return;
+            }
 
             sendAnimatePickMessage(index, seekBar.getWidth(), mLastIndex);
 

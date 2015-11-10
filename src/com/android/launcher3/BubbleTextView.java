@@ -16,7 +16,6 @@
 
 package com.android.launcher3;
 
-import android.animation.ObjectAnimator;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -37,13 +36,10 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewParent;
-import android.view.animation.AccelerateInterpolator;
-import android.view.animation.DecelerateInterpolator;
 import android.widget.TextView;
 
 import com.android.launcher3.IconCache.IconLoadRequest;
 import com.android.launcher3.model.PackageItemInfo;
-import com.android.launcher3.settings.SettingsProvider;
 
 /**
  * TextView that draws a bubble behind the text. We cannot use a LineBackgroundSpan
@@ -51,7 +47,7 @@ import com.android.launcher3.settings.SettingsProvider;
  * too aggressive.
  */
 public class BubbleTextView extends TextView
-        implements BaseRecyclerViewFastScrollBar.FastScrollFocusableView {
+        implements BaseRecyclerViewFastScrollBar.FastScrollFocusable {
 
     private static SparseArray<Theme> sPreloaderThemes = new SparseArray<Theme>(2);
 
@@ -64,12 +60,9 @@ public class BubbleTextView extends TextView
     private static final int DISPLAY_WORKSPACE = 0;
     private static final int DISPLAY_ALL_APPS = 1;
 
-    private static final float FAST_SCROLL_FOCUS_MAX_SCALE = 1.15f;
     private static final int FAST_SCROLL_FOCUS_MODE_NONE = 0;
     private static final int FAST_SCROLL_FOCUS_MODE_SCALE_ICON = 1;
     private static final int FAST_SCROLL_FOCUS_MODE_DRAW_CIRCLE_BG = 2;
-    private static final int FAST_SCROLL_FOCUS_FADE_IN_DURATION = 175;
-    private static final int FAST_SCROLL_FOCUS_FADE_OUT_DURATION = 125;
 
     private final Launcher mLauncher;
     private Drawable mIcon;
@@ -94,12 +87,8 @@ public class BubbleTextView extends TextView
     private boolean mIgnorePressedStateChange;
     private boolean mDisableRelayout = false;
 
-    private ObjectAnimator mFastScrollFocusAnimator;
-    private ObjectAnimator mFastScrollDimAnimator;
     private Paint mFastScrollFocusBgPaint;
     private float mFastScrollFocusFraction;
-    private boolean mFastScrollFocused;
-    private boolean mFastScrollDimmed;
     private final int mFastScrollMode = FAST_SCROLL_FOCUS_MODE_SCALE_ICON;
 
     private IconLoadRequest mIconLoadRequest;
@@ -170,16 +159,21 @@ public class BubbleTextView extends TextView
 
     public void applyFromShortcutInfo(ShortcutInfo info, IconCache iconCache,
             boolean promiseStateChanged) {
-        Bitmap b = info.getIcon(iconCache);
+        Drawable iconDrawable;
+        if (info.customDrawable != null) {
+            iconDrawable = info.customDrawable;
+        } else {
+            Bitmap b = info.getIcon(iconCache);
 
-        if (b.getWidth() > mIconSize || b.getHeight() > mIconSize) {
-            b = Bitmap.createScaledBitmap(b, mIconSize, mIconSize, false);
-            info.setIcon(b);
-            info.updateIcon(iconCache);
+            if (b.getWidth() > mIconSize || b.getHeight() > mIconSize) {
+                b = Bitmap.createScaledBitmap(b, mIconSize, mIconSize, false);
+                info.setIcon(b);
+                info.updateIcon(iconCache);
+            }
+
+            iconDrawable = mLauncher.createIconDrawable(b);
+            ((FastBitmapDrawable) iconDrawable).setGhostModeEnabled(info.isDisabled != 0);
         }
-
-        FastBitmapDrawable iconDrawable = mLauncher.createIconDrawable(b);
-        iconDrawable.setGhostModeEnabled(info.isDisabled != 0);
 
         setIcon(iconDrawable, mIconSize);
         if (info.contentDescription != null) {
@@ -194,7 +188,13 @@ public class BubbleTextView extends TextView
     }
 
     public void applyFromApplicationInfo(AppInfo info) {
-        setIcon(mLauncher.createIconDrawable(info.iconBitmap), mIconSize);
+        Drawable iconDrawable;
+        if (info.customDrawable != null) {
+            iconDrawable = info.customDrawable;
+        } else {
+            iconDrawable = mLauncher.createIconDrawable(info.iconBitmap);
+        }
+        setIcon(iconDrawable, mIconSize);
         setText(info.title);
         if (info.contentDescription != null) {
             setContentDescription(info.contentDescription);
@@ -567,6 +567,11 @@ public class BubbleTextView extends TextView
      * Verifies that the current icon is high-res otherwise posts a request to load the icon.
      */
     public void verifyHighRes() {
+        // Custom drawables cannot be verified.
+        if (getTag() instanceof ItemInfo && ((ItemInfo) getTag()).customDrawable != null) {
+                return;
+        }
+
         if (mIconLoadRequest != null) {
             mIconLoadRequest.cancel();
             mIconLoadRequest = null;
@@ -592,73 +597,20 @@ public class BubbleTextView extends TextView
         }
     }
 
-    // Setters & getters for the animation
-    public void setFastScrollFocus(float fraction) {
-        mFastScrollFocusFraction = fraction;
-        if (mFastScrollMode == FAST_SCROLL_FOCUS_MODE_SCALE_ICON) {
-            setScaleX(1f + fraction * (FAST_SCROLL_FOCUS_MAX_SCALE - 1f));
-            setScaleY(1f + fraction * (FAST_SCROLL_FOCUS_MAX_SCALE - 1f));
-        } else {
-            invalidate();
-        }
-    }
-
-    public float getFastScrollFocus() {
-        return mFastScrollFocusFraction;
-    }
-
     @Override
     public void setFastScrollFocused(final boolean focused, boolean animated) {
         if (mFastScrollMode == FAST_SCROLL_FOCUS_MODE_NONE) {
             return;
         }
 
-        if (mFastScrollFocused != focused) {
-            mFastScrollFocused = focused;
-
-            if (animated) {
-                // Clean up the previous focus animator
-                if (mFastScrollFocusAnimator != null) {
-                    mFastScrollFocusAnimator.cancel();
-                }
-                mFastScrollFocusAnimator = ObjectAnimator.ofFloat(this, "fastScrollFocus",
-                        focused ? 1f : 0f);
-                if (focused) {
-                    mFastScrollFocusAnimator.setInterpolator(new DecelerateInterpolator());
-                } else {
-                    mFastScrollFocusAnimator.setInterpolator(new AccelerateInterpolator());
-                }
-                mFastScrollFocusAnimator.setDuration(focused ?
-                        FAST_SCROLL_FOCUS_FADE_IN_DURATION : FAST_SCROLL_FOCUS_FADE_OUT_DURATION);
-                mFastScrollFocusAnimator.start();
-            } else {
-                mFastScrollFocusFraction = focused ? 1f : 0f;
-            }
+        if (!animated) {
+            mFastScrollFocusFraction = focused ? 1f : 0f;
         }
     }
 
     @Override
     public void setFastScrollDimmed(boolean dimmed, boolean animated) {
-        if (mFastScrollMode == FAST_SCROLL_FOCUS_MODE_NONE) {
-            return;
-        }
-
-        if (!animated) {
-            mFastScrollDimmed = dimmed;
-            setAlpha(dimmed ? 0.4f : 1f);
-        } else  if (mFastScrollDimmed != dimmed) {
-            mFastScrollDimmed = dimmed;
-
-            // Clean up the previous dim animator
-            if (mFastScrollDimAnimator != null) {
-                mFastScrollDimAnimator.cancel();
-            }
-            mFastScrollDimAnimator = ObjectAnimator.ofFloat(this, View.ALPHA,
-                    dimmed ? 0.4f : 1f);
-            mFastScrollDimAnimator.setDuration(dimmed ?
-                    FAST_SCROLL_FOCUS_FADE_IN_DURATION : FAST_SCROLL_FOCUS_FADE_OUT_DURATION);
-            mFastScrollDimAnimator.start();
-        }
+        // No special functionality here.
     }
 
     /**

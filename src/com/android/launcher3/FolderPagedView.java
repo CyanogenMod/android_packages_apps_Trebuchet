@@ -114,7 +114,7 @@ public class FolderPagedView extends PagedView {
      * The grid size is calculated such that countY <= countX and countX = ceil(sqrt(count)) while
      * maintaining the restrictions of {@link #mMaxCountX} &amp; {@link #mMaxCountY}.
      */
-    private void setupContentDimensions(int count) {
+    public void setupContentDimensions(int count) {
         mAllocatedContentSize = count;
         boolean done;
         if (count >= mMaxItemsPerPage) {
@@ -271,6 +271,51 @@ public class FolderPagedView extends PagedView {
     public void removeItem(View v) {
         for (int i = getChildCount() - 1; i >= 0; i --) {
             getPageAt(i).removeView(v);
+        }
+    }
+
+    public void removeAllItems() {
+        for (int i = 0; i < getChildCount(); i++) {
+            getPageAt(i).removeAllViews();
+        }
+    }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        if (getChildCount() == 0) {
+            super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        } else {
+            // We should only be as large as our pages, so measure all of them first.
+            View page = null;
+            for (int i = 0; i < getChildCount(); i++) {
+                page = getChildAt(i);
+                page.measure(widthMeasureSpec, heightMeasureSpec);
+            }
+
+            // And then set ourselves to their size.
+            int width = getPaddingLeft() + page.getMeasuredWidth() + getPaddingRight();
+            int height = getPaddingTop() + page.getMeasuredHeight() + getPaddingBottom();
+            mViewport.set(0, 0, width, height);
+            setMeasuredDimension(width, height);
+        }
+    }
+
+    /**
+     * Find the child view for the given rank.
+     * @param rank sorted index of child.
+     * @return view of child at given rank.
+     */
+    public View getChildAtRank(int rank) {
+        int pagePos = rank % mMaxItemsPerPage;
+        int pageNo = rank / mMaxItemsPerPage;
+        int cellX = pagePos % mGridCountX;
+        int cellY = pagePos / mGridCountX;
+
+        CellLayout page = getPageAt(pageNo);
+        if (page != null) {
+            return page.getChildAt(cellX, cellY);
+        } else {
+            return null;
         }
     }
 

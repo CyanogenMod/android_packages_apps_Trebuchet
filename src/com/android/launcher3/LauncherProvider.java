@@ -69,7 +69,7 @@ public class LauncherProvider extends ContentProvider {
     private static final String TAG = "LauncherProvider";
     private static final boolean LOGD = false;
 
-    private static final int DATABASE_VERSION = 27;
+    private static final int DATABASE_VERSION = 28;
 
     public static final String AUTHORITY = ProviderConfig.AUTHORITY;
 
@@ -540,7 +540,8 @@ public class LauncherProvider extends ContentProvider {
                     "profileId INTEGER DEFAULT " + userSerialNumber + "," +
                     "hidden INTEGER DEFAULT 0" + "," +
                     "rank INTEGER NOT NULL DEFAULT 0," +
-                    "options INTEGER NOT NULL DEFAULT 0" +
+                    "options INTEGER NOT NULL DEFAULT 0," +
+                    "subType INTEGER DEFAULT 0" +
                     ");");
             addWorkspacesTable(db);
 
@@ -767,7 +768,6 @@ public class LauncherProvider extends ContentProvider {
                         break;
                     }
                 case 27: {
-                    // DB Upgraded successfully
                     migrateLauncherFavorite(db, "com.android.dialer", "com.cyngn.dialer",
                             "com.android.dialer.DialtactsActivity",
                             "com.android.dialer.DialtactsActivity");
@@ -780,7 +780,20 @@ public class LauncherProvider extends ContentProvider {
                     migrateLauncherFavorite(db, "org.cyanogenmod.snap", "com.android.camera2",
                             "com.android.camera.CameraLauncher",
                             "com.android.camera.CameraLauncher");
-                    return;
+                }
+                case 28: {
+                    db.beginTransaction();
+                    try {
+                        db.execSQL("ALTER TABLE favorites " +
+                                "ADD COLUMN subType INTEGER DEFAULT 0;");
+                        db.setTransactionSuccessful();
+                        db.endTransaction();
+                        return;
+                    } catch (SQLException ex) {
+                        // Old version remains, which means we wipe old data
+                        Log.e(TAG, ex.getMessage(), ex);
+                        db.endTransaction();
+                    }
                 }
             }
 
