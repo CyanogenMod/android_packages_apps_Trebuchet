@@ -77,7 +77,7 @@ public abstract class BaseRecyclerView extends RecyclerView
         mDeltaThreshold = getResources().getDisplayMetrics().density * SCROLL_DELTA_THRESHOLD_DP;
 
         ScrollListener listener = new ScrollListener();
-        setOnScrollListener(listener);
+        addOnScrollListener(listener);
     }
 
     private class ScrollListener extends OnScrollListener {
@@ -286,8 +286,7 @@ public abstract class BaseRecyclerView extends RecyclerView
         // Calculate the current scroll position, the scrollY of the recycler view accounts for the
         // view padding, while the scrollBarY is drawn right up to the background padding (ignoring
         // padding)
-        int scrollY = getPaddingTop() +
-                (scrollPosState.rowIndex * scrollPosState.rowHeight) - scrollPosState.rowTopOffset;
+        int scrollY = getCurrentScroll(scrollPosState);
         int scrollBarY = mBackgroundPadding.top +
                 (int) (((float) scrollY / availableScrollHeight) * availableScrollBarHeight);
 
@@ -299,6 +298,15 @@ public abstract class BaseRecyclerView extends RecyclerView
             scrollBarX = getWidth() - mBackgroundPadding.right - mScrollbar.getThumbWidth();
         }
         mScrollbar.setThumbOffset(scrollBarX, scrollBarY);
+    }
+
+    /**
+     * @param scrollPosState current state of view scrolling.
+     * @return the vertical scroll position
+     */
+    protected int getCurrentScroll(ScrollPositionState scrollPosState) {
+        return getPaddingTop() + (scrollPosState.rowIndex * scrollPosState.rowHeight) -
+                scrollPosState.rowTopOffset;
     }
 
     /**

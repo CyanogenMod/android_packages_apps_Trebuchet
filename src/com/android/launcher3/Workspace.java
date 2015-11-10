@@ -78,6 +78,8 @@ import com.android.launcher3.widget.PendingAddWidgetInfo;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -357,6 +359,13 @@ public class Workspace extends PagedView
                 ((Insettable) customContent).setInsets(mInsets);
             }
         }
+    }
+
+    /**
+     * @return A {@link List} of {@link Long}s representing ids of the workspace screens
+     */
+    public List<Long> getWorkspaceScreenIds() {
+        return mScreenOrder;
     }
 
     // estimate the size of a widget with spans hSpan, vSpan. return MAX_VALUE for each
@@ -3805,6 +3814,11 @@ public class Workspace extends PagedView
                 }
             };
             return;
+        }
+
+        // Drop is finished, so we should use our actual cell coordinates now.
+        if (mDragInfo != null) {
+            ((CellLayout.LayoutParams) mDragInfo.cell.getLayoutParams()).useTmpCoords = false;
         }
 
         boolean beingCalledAfterUninstall = mDeferredAction != null;

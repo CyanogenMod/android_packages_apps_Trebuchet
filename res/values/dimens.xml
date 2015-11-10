@@ -85,14 +85,12 @@
     <dimen name="all_apps_icon_width_gap">24dp</dimen>
     <dimen name="all_apps_icon_width_gap_with_sections">12dp</dimen>
     <dimen name="all_apps_icon_size_with_sections">48dp</dimen>
-    <!-- The top padding should account for the existing all_apps_list_top_bottom_padding -->
-    <dimen name="all_apps_prediction_icon_top_padding">8dp</dimen>
-    <dimen name="all_apps_prediction_icon_bottom_padding">18dp</dimen>
     <dimen name="all_apps_list_top_bottom_padding">8dp</dimen>
     <dimen name="all_apps_empty_search_message_top_offset">40dp</dimen>
     <dimen name="all_apps_empty_search_bg_top_offset">144dp</dimen>
     <dimen name="all_apps_background_canvas_width">700dp</dimen>
     <dimen name="all_apps_background_canvas_height">475dp</dimen>
+    <dimen name="all_apps_prediction_bar_divider_offset">5dp</dimen>
 
 <!-- Widget tray -->
     <dimen name="widget_container_inset">8dp</dimen>
@@ -139,6 +137,7 @@
     <dimen name="folder_lock_margin">6dp</dimen>
     <dimen name="folder_name_padding">10dp</dimen>
     <dimen name="folder_lock_icon">48dp</dimen>
+    <dimen name="folder_margin">24dp</dimen>
 
     <!-- Folder icon dimens -->
     <dimen name="folder_icon">64dp</dimen>

@@ -823,6 +823,7 @@ public class DragLayer extends InsettableFrameLayout {
 
     @Override
     public void onChildViewRemoved(View parent, View child) {
+        super.onChildViewRemoved(parent, child);
         updateChildIndices();
     }
 

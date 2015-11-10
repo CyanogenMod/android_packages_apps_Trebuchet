@@ -11,4 +11,6 @@
     <bool name="preferences_interface_use_horizontal_scrubber_default">true</bool>
     <bool name="preferences_interface_drawer_search_default">true</bool>
     <bool name="preferences_interface_allow_rotation">false</bool>
+    <bool name="preferences_interface_homescreen_remote_folder_default">false</bool>
+    <integer name="preferences_interface_homescreen_id_default">1</integer>
 </resources>

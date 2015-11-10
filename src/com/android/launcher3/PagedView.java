@@ -169,7 +169,7 @@ public abstract class PagedView extends ViewGroup implements ViewGroup.OnHierarc
     @Thunk PageIndicator mPageIndicator;
     // The viewport whether the pages are to be contained (the actual view may be larger than the
     // viewport)
-    private Rect mViewport = new Rect();
+    protected Rect mViewport = new Rect();
 
     // Reordering
     // We use the min scale to determine how much to expand the actually PagedView measured

@@ -441,6 +441,33 @@ public class LauncherModel extends BroadcastReceiver
             ArrayList<Long> workspaceScreens,
             ArrayList<Long> addedWorkspaceScreensFinal,
             int spanX, int spanY) {
+
+        // Preferred screen is the next one after the default.
+        long preferredScreenId = SettingsProvider.getLongCustomDefault(context,
+                SettingsProvider.SETTINGS_UI_HOMESCREEN_DEFAULT_SCREEN_ID,
+                R.integer.preferences_interface_homescreen_id_default);
+        int preferredScreenIndex = 0;
+        for (int i = 0; i < workspaceScreens.size(); i++) {
+            if (workspaceScreens.get(i) == preferredScreenId) {
+                preferredScreenIndex = i + 1;
+                break;
+            }
+        }
+
+        return findSpaceForItem(context, workspaceScreens, addedWorkspaceScreensFinal,
+                spanX, spanY, preferredScreenIndex);
+    }
+
+    /**
+     * Find a position on the screen for the given size or adds a new screen. Checks
+     * preferredScreen first, and if no space is found then starts searching from the left.
+     * @return screenId and the coordinates for the item.
+     */
+    @Thunk Pair<Long, int[]> findSpaceForItem(
+            Context context,
+            ArrayList<Long> workspaceScreens,
+            ArrayList<Long> addedWorkspaceScreensFinal,
+            int spanX, int spanY, int preferredScreenIndex) {
         LongSparseArray<ArrayList<ItemInfo>> screenItems = new LongSparseArray<>();
 
         // Use sBgItemsIdMap as all the items are already loaded.
@@ -458,6 +485,12 @@ public class LauncherModel extends BroadcastReceiver
             }
         }
 
+        // If we have a zero-id screen then we skip over it.
+        boolean hasZero = false;
+        if (!workspaceScreens.isEmpty() && workspaceScreens.get(0) == 0) {
+            hasZero = true;
+        }
+
         // Find appropriate space for the item.
         long screenId = 0;
         int[] cordinates = new int[2];
@@ -465,7 +498,6 @@ public class LauncherModel extends BroadcastReceiver
 
         int screenCount = workspaceScreens.size();
         // First check the preferred screen.
-        int preferredScreenIndex = workspaceScreens.isEmpty() ? 0 : 1;
         if (preferredScreenIndex < screenCount) {
             screenId = workspaceScreens.get(preferredScreenIndex);
             found = findNextAvailableIconSpaceInScreen(
@@ -474,7 +506,8 @@ public class LauncherModel extends BroadcastReceiver
 
         if (!found) {
             // Search on any of the screens starting from the first screen.
-            for (int screen = 1; screen < screenCount; screen++) {
+            int firstScreen = hasZero ? 1 : 0;
+            for (int screen = firstScreen; screen < screenCount; screen++) {
                 screenId = workspaceScreens.get(screen);
                 if (findNextAvailableIconSpaceInScreen(
                         screenItems.get(screenId), cordinates, spanX, spanY)) {
@@ -988,6 +1021,7 @@ public class LauncherModel extends BroadcastReceiver
                 final int cellYIndex = c.getColumnIndexOrThrow(LauncherSettings.Favorites.CELLY);
                 final int optionsIndex = c.getColumnIndexOrThrow(LauncherSettings.Favorites.OPTIONS);
                 final int hiddenIndex = c.getColumnIndexOrThrow(LauncherSettings.Favorites.HIDDEN);
+                final int subType = c.getColumnIndexOrThrow(LauncherSettings.Favorites.SUBTYPE);
 
                 FolderInfo folderInfo = null;
                 switch (c.getInt(itemTypeIndex)) {
@@ -1005,6 +1039,7 @@ public class LauncherModel extends BroadcastReceiver
                 folderInfo.cellY = c.getInt(cellYIndex);
                 folderInfo.options = c.getInt(optionsIndex);
                 folderInfo.hidden = c.getInt(hiddenIndex) > 0;
+                folderInfo.subType = subType;
 
                 return folderInfo;
             }
@@ -1937,6 +1972,7 @@ public class LauncherModel extends BroadcastReceiver
                             LauncherSettings.Favorites.OPTIONS);
                     final int hiddenIndex = c.getColumnIndexOrThrow(
                             LauncherSettings.Favorites.HIDDEN);
+                    final int subTypeIndex = c.getColumnIndexOrThrow(LauncherSettings.Favorites.SUBTYPE);
                     final CursorIconInfo cursorIconInfo = new CursorIconInfo(c);
 
                     final LongSparseArray<UserHandleCompat> allUsers = new LongSparseArray<>();
@@ -2216,6 +2252,7 @@ public class LauncherModel extends BroadcastReceiver
                                 folderInfo.spanY = 1;
                                 folderInfo.options = c.getInt(optionsIndex);
                                 folderInfo.hidden = c.getInt(hiddenIndex) > 0;
+                                folderInfo.subType = c.getInt(subTypeIndex);
 
                                 // check & update map of what's occupied
                                 if (!checkItemPlacement(occupied, folderInfo, sBgWorkspaceScreens,
@@ -2704,7 +2741,9 @@ public class LauncherModel extends BroadcastReceiver
                         }
                         workspaceItems.remove(i);
                         folders.remove(Long.valueOf(item.id));
-                    } else if (folder.contents.size() == 0) {
+
+                    // Remote folders are always empty on bind.
+                    } else if (folder.contents.size() == 0 && !folder.isRemote()) {
                         LauncherModel.deleteFolderContentsFromDatabase(mContext, folder);
                         workspaceItems.remove(i);
                         folders.remove(Long.valueOf(item.id));

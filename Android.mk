@@ -28,6 +28,7 @@ LOCAL_STATIC_JAVA_LIBRARIES := \
     android-support-v7-recyclerview \
     org.cyanogenmod.platform.internal
 
+
 LOCAL_SRC_FILES := $(call all-java-files-under, src) \
     $(call all-java-files-under, WallpaperPicker/src) \
     $(call all-proto-files-under, protos)
@@ -53,8 +54,22 @@ LOCAL_AAPT_FLAGS += --rename-manifest-package com.cyanogenmod.trebuchet
 
 LOCAL_OVERRIDES_PACKAGES := Launcher3
 
+LOCAL_PROGUARD_FLAG_FILES := proguard.flags
+LOCAL_PROGUARD_ENABLED := full
+
+REMOTE_FOLDER_UPDATER ?= $(LOCAL_PATH)/RemoteFolder
+include $(REMOTE_FOLDER_UPDATER)/Android.mk
+
 include $(BUILD_PACKAGE)
 
+include $(CLEAR_VARS)
+
+REMOTE_FOLDER_UPDATER ?= $(LOCAL_PATH)/RemoteFolder
+include $(REMOTE_FOLDER_UPDATER)/Android-prebuilt-libs.mk
+
+include $(BUILD_MULTI_PREBUILT)
+
+include $(CLEAR_VARS)
 
 #
 # Protocol Buffer Debug Utility in Java
@@ -73,6 +88,7 @@ LOCAL_IS_HOST_MODULE := true
 LOCAL_JAR_MANIFEST := util/etc/manifest.txt
 
 include $(BUILD_HOST_JAVA_LIBRARY)
+
 
 #
 # Protocol Buffer Debug Utility Wrapper Script

@@ -30,6 +30,8 @@ public class CheckLongPressHelper {
 
     class CheckForLongPress implements Runnable {
         public void run() {
+            if (!mView.isLongClickable()) return;
+
             if ((mView.getParent() != null) && mView.hasWindowFocus()
                     && !mHasPerformedLongPress) {
                 boolean handled;

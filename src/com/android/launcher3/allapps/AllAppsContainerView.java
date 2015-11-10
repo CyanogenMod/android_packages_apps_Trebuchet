@@ -57,75 +57,6 @@ import java.nio.charset.CharsetEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
-
-
-/**
- * A merge algorithm that merges every section indiscriminately.
- */
-final class FullMergeAlgorithm implements AlphabeticalAppsList.MergeAlgorithm {
-
-    @Override
-    public boolean continueMerging(AlphabeticalAppsList.SectionInfo section,
-           AlphabeticalAppsList.SectionInfo withSection,
-           int sectionAppCount, int numAppsPerRow, int mergeCount) {
-        // Don't merge the predicted apps
-        if (section.firstAppItem.viewType != AllAppsGridAdapter.ICON_VIEW_TYPE) {
-            return false;
-        }
-        // Otherwise, merge every other section
-        return true;
-    }
-}
-
-/**
- * The logic we use to merge multiple sections.  We only merge sections when their final row
- * contains less than a certain number of icons, and stop at a specified max number of merges.
- * In addition, we will try and not merge sections that identify apps from different scripts.
- */
-final class SimpleSectionMergeAlgorithm implements AlphabeticalAppsList.MergeAlgorithm {
-
-    private int mMinAppsPerRow;
-    private int mMinRowsInMergedSection;
-    private int mMaxAllowableMerges;
-    private CharsetEncoder mAsciiEncoder;
-
-    public SimpleSectionMergeAlgorithm(int minAppsPerRow, int minRowsInMergedSection,
-            int maxNumMerges) {
-        mMinAppsPerRow = minAppsPerRow;
-        mMinRowsInMergedSection = minRowsInMergedSection;
-        mMaxAllowableMerges = maxNumMerges;
-        mAsciiEncoder = Charset.forName("US-ASCII").newEncoder();
-    }
-
-    @Override
-    public boolean continueMerging(AlphabeticalAppsList.SectionInfo section,
-           AlphabeticalAppsList.SectionInfo withSection,
-           int sectionAppCount, int numAppsPerRow, int mergeCount) {
-        // Don't merge the predicted apps
-        if (section.firstAppItem.viewType != AllAppsGridAdapter.ICON_VIEW_TYPE) {
-            return false;
-        }
-
-        // Continue merging if the number of hanging apps on the final row is less than some
-        // fixed number (ragged), the merged rows has yet to exceed some minimum row count,
-        // and while the number of merged sections is less than some fixed number of merges
-        int rows = sectionAppCount / numAppsPerRow;
-        int cols = sectionAppCount % numAppsPerRow;
-
-        // Ensure that we do not merge across scripts, currently we only allow for english and
-        // native scripts so we can test if both can just be ascii encoded
-        boolean isCrossScript = false;
-        if (section.firstAppItem != null && withSection.firstAppItem != null) {
-            isCrossScript = mAsciiEncoder.canEncode(section.firstAppItem.sectionName) !=
-                    mAsciiEncoder.canEncode(withSection.firstAppItem.sectionName);
-        }
-        return (0 < cols && cols < mMinAppsPerRow) &&
-                rows < mMinRowsInMergedSection &&
-                mergeCount < mMaxAllowableMerges &&
-                !isCrossScript;
-    }
-}
-
 /**
  * The all apps view container.
  */
@@ -138,9 +69,6 @@ public class AllAppsContainerView extends BaseContainerView implements DragSourc
 
     public static final int GRID_THEME_LIGHT = 1;
     public static final int GRID_THEME_DARK = 2;
-
-    private static final int MIN_ROWS_IN_MERGED_SECTION_PHONE = 3;
-    private static final int MAX_NUM_MERGES_PHONE = 1;
 
     @Thunk Launcher mLauncher;
     @Thunk AlphabeticalAppsList mApps;
@@ -204,12 +132,33 @@ public class AllAppsContainerView extends BaseContainerView implements DragSourc
         Selection.setSelection(mSearchQueryBuilder, 0);
     }
 
+    public int getNumPredictedAppsPerRow() {
+        return mNumPredictedAppsPerRow;
+    }
+
     /**
-     * Sets the current set of predicted apps.
+     * Sets the current set of predicted apps by component.
+     * Only usable when custom predicted apps are disabled.
      */
-    public void setPredictedApps(List<ComponentKey> apps) {
+    public void setPredictedAppComponents(List<ComponentKey> apps) {
+        mApps.setPredictedAppComponents(apps);
+        updateScrubber();
+    }
+
+    /**
+     * Sets the current set of predicted apps by info.
+     * Only usable when custom predicated apps are enabled.
+     */
+    public void setPredictedApps(List<AppInfo> apps) {
         mApps.setPredictedApps(apps);
         updateScrubber();
+    }
+
+    /**
+     * Set whether the predicted apps row will have a customized selection of apps.
+     */
+    public void setCustomPredictedAppsEnabled(boolean enabled) {
+        mApps.mCustomPredictedAppsEnabled = enabled;
     }
 
     /**
@@ -260,6 +209,10 @@ public class AllAppsContainerView extends BaseContainerView implements DragSourc
 
     public List<AppInfo> getApps() {
         return mApps.getApps();
+    }
+
+    public int getSectionStrategy() {
+        return mSectionStrategy;
     }
 
     private void updateSectionStrategy() {
@@ -415,17 +368,13 @@ public class AllAppsContainerView extends BaseContainerView implements DragSourc
             mNumAppsPerRow = grid.allAppsNumCols;
             mNumPredictedAppsPerRow = grid.allAppsNumPredictiveCols;
 
-            // If there is a start margin to draw section names, determine how we are going to merge
-            // app sections
-            boolean mergeSectionsFully = mSectionStrategy == SECTION_STRATEGY_GRID;
-            AlphabeticalAppsList.MergeAlgorithm mergeAlgorithm = mergeSectionsFully ?
-                    new FullMergeAlgorithm() :
-                    new SimpleSectionMergeAlgorithm((int) Math.ceil(mNumAppsPerRow / 2f),
-                            MIN_ROWS_IN_MERGED_SECTION_PHONE, MAX_NUM_MERGES_PHONE);
-
             mAppsRecyclerView.setNumAppsPerRow(grid, mNumAppsPerRow);
             mAdapter.setNumAppsPerRow(mNumAppsPerRow);
-            mApps.setNumAppsPerRow(mNumAppsPerRow, mNumPredictedAppsPerRow, mergeAlgorithm);
+
+            boolean mergeSections = mSectionStrategy == SECTION_STRATEGY_GRID;
+            mApps.setNumAppsPerRow(mNumAppsPerRow, mNumPredictedAppsPerRow, mergeSections);
+
+            mLauncher.getRemoteFolderManager().onMeasureDrawer(mNumPredictedAppsPerRow);
         }
 
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);

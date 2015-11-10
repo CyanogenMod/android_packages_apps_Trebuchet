@@ -100,7 +100,7 @@ public class ShortcutInfo extends ItemInfo {
     /**
      * The application icon.
      */
-    private Bitmap mIcon;
+    Bitmap mIcon;
 
     /**
      * Indicates that the icon is disabled due to safe mode restrictions.
@@ -265,6 +265,14 @@ public class ShortcutInfo extends ItemInfo {
         return (status & flag) != 0;
     }
 
+    /**
+     * Check if this shortcut has a specific flag.
+     * @param flag flag to check.
+     * @return true if the flag is present, false otherwise.
+     */
+    public boolean hasFlag(int flag) {
+        return (flags & flag) != 0;
+    }
 
     public final boolean isPromise() {
         return hasStatusFlag(FLAG_RESTORED_ICON | FLAG_AUTOINTALL_ICON);

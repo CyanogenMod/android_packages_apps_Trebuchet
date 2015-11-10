@@ -174,7 +174,16 @@ public class FolderIcon extends FrameLayout implements FolderListener {
         icon.mLauncher = launcher;
         icon.setContentDescription(String.format(launcher.getString(R.string.folder_name_format),
                 folderInfo.title));
-        Folder folder = Folder.fromXml(launcher);
+        Folder folder;
+        if (folderInfo.isRemote()) {
+            folder = launcher.getRemoteFolderManager().createRemoteFolder(icon, launcher.getDragLayer());
+            if (folder == null) {
+                LauncherModel.deleteItemFromDatabase(launcher, folderInfo);
+                return null;
+            }
+        } else {
+            folder = Folder.fromXml(launcher, launcher.getDragLayer());
+        }
         folder.setDragController(launcher.getDragController());
         folder.setFolderIcon(icon);
         folder.bind(folderInfo);
@@ -234,6 +243,11 @@ public class FolderIcon extends FrameLayout implements FolderListener {
 
                 appIcon.setLayoutParams(layoutParams);
             }
+        }
+
+        // Create an overlay badge if this FolderIcon is for a RemoteFolder
+        if (folderInfo.isRemote()) {
+            icon = RemoteFolderManager.addBadgeToFolderIcon(icon);
         }
 
         return icon;
@@ -377,10 +391,14 @@ public class FolderIcon extends FrameLayout implements FolderListener {
     }
 
     private boolean willAcceptItem(ItemInfo item) {
+        if (mInfo.isRemote()) return false;
+
         final int itemType = item.itemType;
 
         boolean hidden = false;
         if (item instanceof FolderInfo){
+            if (((FolderInfo) item).isRemote()) return false;
+
             hidden = ((FolderInfo) item).hidden;
         }
         return ((itemType == LauncherSettings.Favorites.ITEM_TYPE_APPLICATION ||
@@ -686,7 +704,7 @@ public class FolderIcon extends FrameLayout implements FolderListener {
         super.dispatchDraw(canvas);
 
         if (mFolder == null) return;
-        if (mFolder.getItemCount() == 0 && !mAnimating) return;
+        if (mFolder.getItemCount() == 0 && !mAnimating && !mInfo.isRemote()) return;
 
         ArrayList<View> items = mFolder.getItemsInReadingOrder();
         Drawable d;
@@ -695,13 +713,13 @@ public class FolderIcon extends FrameLayout implements FolderListener {
         // Update our drawing parameters if necessary
         if (mAnimating) {
             computePreviewDrawingParams(mAnimParams.drawable);
-        } else {
+        } else if (!items.isEmpty()) {
             v = (TextView) items.get(0);
             d = getTopDrawable(v);
-            computePreviewDrawingParams(d);
+            if (d != null) computePreviewDrawingParams(d);
         }
 
-        int nItemsInPreview = Math.min(items.size(), NUM_ITEMS_IN_PREVIEW);
+        int ntemsInPreview = Math.min(items.size(), NUM_ITEMS_IN_PREVIEW);
 
         // Hidden folder - don't display Preview
         View folderLock = findViewById(R.id.folder_lock_image);
@@ -720,15 +738,20 @@ public class FolderIcon extends FrameLayout implements FolderListener {
         }
 
         if (!mAnimating) {
-            for (int i = NUM_ITEMS_IN_PREVIEW; i >= 0; i--) {
+            for (int i = 0; i < NUM_ITEMS_IN_PREVIEW; i++) {
                 d = null;
-                if (i < items.size()) {
+                if (mInfo.isRemote()) {
+                    d = mLauncher.getRemoteFolderManager().getFolderIconDrawable(items, i);
+                } else if (i < items.size()) {
                     v = (TextView) items.get(i);
                     if (!mHiddenItems.contains(v.getTag())) {
                         d = getTopDrawable(v);
-                        mParams = computePreviewItemDrawingParams(i, mParams);
-                        mParams.drawable = d;
                     }
+                }
+
+                if (d != null) {
+                    mParams = computePreviewItemDrawingParams(i, mParams);
+                    mParams.drawable = d;
                 }
 
                 ImageView appIcon = null;
@@ -825,6 +848,18 @@ public class FolderIcon extends FrameLayout implements FolderListener {
     }
 
     public void onRemove(ShortcutInfo item) {
+        invalidate();
+        requestLayout();
+    }
+
+    @Override
+    public void onRemoveAll() {
+        invalidate();
+        requestLayout();
+    }
+
+    @Override
+    public void onRemoveAll(ArrayList<ShortcutInfo> items) {
         invalidate();
         requestLayout();
     }
