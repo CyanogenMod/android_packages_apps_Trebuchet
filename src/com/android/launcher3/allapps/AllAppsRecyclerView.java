@@ -15,7 +15,6 @@
  */
 package com.android.launcher3.allapps;
 
-import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Canvas;
@@ -34,6 +33,7 @@ import com.android.launcher3.Stats;
 import com.android.launcher3.Utilities;
 import com.android.launcher3.util.Thunk;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -50,9 +50,15 @@ public class AllAppsRecyclerView extends BaseRecyclerView
 
     private AlphabeticalAppsList mApps;
     private int mNumAppsPerRow;
+    private int mSectionStrategy = AllAppsContainerView.SECTION_STRATEGY_RAGGED;
+
+    private boolean mFocusSection = false;
 
     @Thunk BaseRecyclerViewFastScrollBar.FastScrollFocusableView mLastFastScrollFocusedView;
+    @Thunk ArrayList<BaseRecyclerViewFastScrollBar.FastScrollFocusableView>
+            mLastFastScrollFocusedViews = new ArrayList();
     @Thunk int mPrevFastScrollFocusedPosition;
+    @Thunk AlphabeticalAppsList.SectionInfo mPrevFastScrollFocusedSection;
     @Thunk int mFastScrollFrameIndex;
     @Thunk final int[] mFastScrollFrames = new int[10];
 
@@ -81,7 +87,9 @@ public class AllAppsRecyclerView extends BaseRecyclerView
         super(context, attrs, defStyleAttr);
 
         Resources res = getResources();
-        mScrollbar.setDetachThumbOnFastScroll();
+        if (mUseScrollbar) {
+            mScrollbar.setDetachThumbOnFastScroll();
+        }
         mEmptySearchBackgroundTopOffset = res.getDimensionPixelSize(
                 R.dimen.all_apps_empty_search_bg_top_offset);
     }
@@ -109,13 +117,20 @@ public class AllAppsRecyclerView extends BaseRecyclerView
         pool.setMaxRecycledViews(AllAppsGridAdapter.SECTION_BREAK_VIEW_TYPE, approxRows);
     }
 
+    public void setSectionStrategy(int sectionStrategy) {
+        mSectionStrategy = sectionStrategy;
+        mFocusSection = mSectionStrategy == AllAppsContainerView.SECTION_STRATEGY_RAGGED;
+    }
+
     /**
      * Scrolls this recycler view to the top.
      */
     public void scrollToTop() {
-        // Ensure we reattach the scrollbar if it was previously detached while fast-scrolling
-        if (mScrollbar.isThumbDetached()) {
-            mScrollbar.reattachThumbToScroll();
+        if (mUseScrollbar) {
+            // Ensure we reattach the scrollbar if it was previously detached while fast-scrolling
+            if (mScrollbar.isThumbDetached()) {
+                mScrollbar.reattachThumbToScroll();
+            }
         }
         scrollToPosition(0);
     }
@@ -235,10 +250,18 @@ public class AllAppsRecyclerView extends BaseRecyclerView
         }
 
         if (mPrevFastScrollFocusedPosition != lastInfo.fastScrollToItem.position) {
+            if (mFocusSection) {
+                setSectionFastScrollDimmed(mPrevFastScrollFocusedPosition, true, true);
+            } else if (mLastFastScrollFocusedView != null){
+                mLastFastScrollFocusedView.setFastScrollDimmed(true, true);
+            }
             mPrevFastScrollFocusedPosition = lastInfo.fastScrollToItem.position;
-
-            // Reset the last focused view
-            if (mLastFastScrollFocusedView != null) {
+            mPrevFastScrollFocusedSection =
+                    getSectionInfoForPosition(lastInfo.fastScrollToItem.position);
+            // Reset the last focused section
+            if (mFocusSection) {
+                clearSectionFocusedItems();
+            } else if (mLastFastScrollFocusedView != null) {
                 mLastFastScrollFocusedView.setFastScrollFocused(false, true);
                 mLastFastScrollFocusedView = null;
             }
@@ -246,12 +269,17 @@ public class AllAppsRecyclerView extends BaseRecyclerView
             if (mFastScrollMode == FAST_SCROLL_MODE_JUMP_TO_FIRST_ICON) {
                 smoothSnapToPosition(mPrevFastScrollFocusedPosition, mScrollPosState);
             } else if (mFastScrollMode == FAST_SCROLL_MODE_FREE_SCROLL) {
-                final ViewHolder vh = findViewHolderForPosition(mPrevFastScrollFocusedPosition);
-                if (vh != null &&
-                        vh.itemView instanceof BaseRecyclerViewFastScrollBar.FastScrollFocusableView) {
-                    mLastFastScrollFocusedView =
-                            (BaseRecyclerViewFastScrollBar.FastScrollFocusableView) vh.itemView;
-                    mLastFastScrollFocusedView.setFastScrollFocused(true, true);
+                if (mFocusSection) {
+                    setSectionFastScrollFocused(mPrevFastScrollFocusedPosition);
+                } else {
+                    final ViewHolder vh = findViewHolderForPosition(mPrevFastScrollFocusedPosition);
+                    if (vh != null &&
+                            vh.itemView instanceof
+                                    BaseRecyclerViewFastScrollBar.FastScrollFocusableView) {
+                        mLastFastScrollFocusedView =
+                                (BaseRecyclerViewFastScrollBar.FastScrollFocusableView) vh.itemView;
+                        mLastFastScrollFocusedView.setFastScrollFocused(true, true);
+                    }
                 }
             } else {
                 throw new RuntimeException("Unexpected fast scroll mode");
@@ -264,11 +292,14 @@ public class AllAppsRecyclerView extends BaseRecyclerView
     public void onFastScrollCompleted() {
         super.onFastScrollCompleted();
         // Reset and clean up the last focused view
-        if (mLastFastScrollFocusedView != null) {
+        if (mFocusSection) {
+            clearSectionFocusedItems();
+        } else if (mLastFastScrollFocusedView != null) {
             mLastFastScrollFocusedView.setFastScrollFocused(false, true);
             mLastFastScrollFocusedView = null;
         }
         mPrevFastScrollFocusedPosition = -1;
+        mPrevFastScrollFocusedSection = null;
     }
 
     /**
@@ -276,6 +307,9 @@ public class AllAppsRecyclerView extends BaseRecyclerView
      */
     @Override
     public void onUpdateScrollbar(int dy) {
+        if (!mUseScrollbar) {
+            return;
+        }
         List<AlphabeticalAppsList.AdapterItem> items = mApps.getAdapterItems();
 
         // Skip early if there are no items or we haven't been measured
@@ -294,7 +328,8 @@ public class AllAppsRecyclerView extends BaseRecyclerView
 
         // Only show the scrollbar if there is height to be scrolled
         int availableScrollBarHeight = getAvailableScrollBarHeight();
-        int availableScrollHeight = getAvailableScrollHeight(mApps.getNumAppRows(), mScrollPosState.rowHeight);
+        int availableScrollHeight = getAvailableScrollHeight(mApps.getNumAppRows(),
+                mScrollPosState.rowHeight);
         if (availableScrollHeight <= 0) {
             mScrollbar.setThumbOffset(-1, -1);
             return;
@@ -354,6 +389,97 @@ public class AllAppsRecyclerView extends BaseRecyclerView
         }
     }
 
+    @Override
+    public String scrollToSection(String sectionName) {
+        List<AlphabeticalAppsList.FastScrollSectionInfo> scrollSectionInfos =
+                mApps.getFastScrollerSections();
+        if (scrollSectionInfos != null) {
+            for (int i = 0; i < scrollSectionInfos.size(); i++) {
+                AlphabeticalAppsList.FastScrollSectionInfo info = scrollSectionInfos.get(i);
+                if (info.sectionName.equals(sectionName))  {
+                    scrollToPositionAtProgress(info.touchFraction);
+                    return info.sectionName;
+                }
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public String[] getSectionNames() {
+        List<AlphabeticalAppsList.FastScrollSectionInfo> scrollSectionInfos =
+                mApps.getFastScrollerSections();
+        if (scrollSectionInfos != null) {
+            String[] sectionNames = new String[scrollSectionInfos.size()];
+            for (int i = 0; i < scrollSectionInfos.size(); i++) {
+                AlphabeticalAppsList.FastScrollSectionInfo info = scrollSectionInfos.get(i);
+                sectionNames[i] = info.sectionName;
+            }
+
+        return sectionNames;
+        }
+        return new String[0];
+    }
+
+    private AlphabeticalAppsList.SectionInfo getSectionInfoForPosition(int position) {
+        List<AlphabeticalAppsList.SectionInfo> sections =
+                mApps.getSections();
+        for (AlphabeticalAppsList.SectionInfo section : sections) {
+           if (section.firstAppItem.position == position) {
+               return section;
+           }
+        }
+        return null;
+    }
+
+    private void setSectionFastScrollFocused(int position) {
+        if (mPrevFastScrollFocusedSection != null) {
+            for (int i = 0; i < mPrevFastScrollFocusedSection.numApps; i++) {
+                int sectionPosition = position+i;
+                final ViewHolder vh = findViewHolderForAdapterPosition(sectionPosition);
+                if (vh != null &&
+                        vh.itemView instanceof
+                                BaseRecyclerViewFastScrollBar.FastScrollFocusableView) {
+                    final BaseRecyclerViewFastScrollBar.FastScrollFocusableView view =
+                            (BaseRecyclerViewFastScrollBar.FastScrollFocusableView) vh.itemView;
+                    view.setFastScrollFocused(true, true);
+                    mLastFastScrollFocusedViews.add(view);
+                }
+            }
+        }
+    }
+
+    private void setSectionFastScrollDimmed(int position, boolean dimmed, boolean animate) {
+        if (mPrevFastScrollFocusedSection != null) {
+            for (int i = 0; i < mPrevFastScrollFocusedSection.numApps; i++) {
+                int sectionPosition = position+i;
+                final ViewHolder vh = findViewHolderForAdapterPosition(sectionPosition);
+                if (vh != null &&
+                        vh.itemView instanceof
+                                BaseRecyclerViewFastScrollBar.FastScrollFocusableView) {
+                    final BaseRecyclerViewFastScrollBar.FastScrollFocusableView view =
+                            (BaseRecyclerViewFastScrollBar.FastScrollFocusableView) vh.itemView;
+                    view.setFastScrollDimmed(dimmed, animate);
+                }
+            }
+        }
+    }
+
+    private void clearSectionFocusedItems() {
+        final int N = mLastFastScrollFocusedViews.size();
+        for (int i = 0; i < N; i++) {
+            BaseRecyclerViewFastScrollBar.FastScrollFocusableView view =
+                    mLastFastScrollFocusedViews.get(i);
+            view.setFastScrollFocused(false, true);
+        }
+        mLastFastScrollFocusedViews.clear();
+    }
+
+    @Override
+    public void setFastScrollDragging(boolean dragging) {
+        ((AllAppsGridAdapter) getAdapter()).setIconsDimmed(dragging);
+    }
+
     /**
      * This runnable runs a single frame of the smooth scroll animation and posts the next frame
      * if necessary.
@@ -362,18 +488,27 @@ public class AllAppsRecyclerView extends BaseRecyclerView
         @Override
         public void run() {
             if (mFastScrollFrameIndex < mFastScrollFrames.length) {
+                if (mFocusSection) {
+                    setSectionFastScrollDimmed(mPrevFastScrollFocusedPosition, false, true);
+                }
                 scrollBy(0, mFastScrollFrames[mFastScrollFrameIndex]);
                 mFastScrollFrameIndex++;
                 postOnAnimation(mSmoothSnapNextFrameRunnable);
             } else {
-                // Animation completed, set the fast scroll state on the target view
-                final ViewHolder vh = findViewHolderForPosition(mPrevFastScrollFocusedPosition);
-                if (vh != null &&
-                        vh.itemView instanceof BaseRecyclerViewFastScrollBar.FastScrollFocusableView &&
-                        mLastFastScrollFocusedView != vh.itemView) {
-                    mLastFastScrollFocusedView =
-                            (BaseRecyclerViewFastScrollBar.FastScrollFocusableView) vh.itemView;
-                    mLastFastScrollFocusedView.setFastScrollFocused(true, true);
+                if (mFocusSection) {
+                    setSectionFastScrollFocused(mPrevFastScrollFocusedPosition);
+                } else {
+                    // Animation completed, set the fast scroll state on the target view
+                    final ViewHolder vh = findViewHolderForPosition(mPrevFastScrollFocusedPosition);
+                    if (vh != null &&
+                            vh.itemView instanceof
+                                    BaseRecyclerViewFastScrollBar.FastScrollFocusableView &&
+                            mLastFastScrollFocusedView != vh.itemView) {
+                        mLastFastScrollFocusedView =
+                                (BaseRecyclerViewFastScrollBar.FastScrollFocusableView) vh.itemView;
+                        mLastFastScrollFocusedView.setFastScrollFocused(true, true);
+                        mLastFastScrollFocusedView.setFastScrollDimmed(false, true);
+                    }
                 }
             }
         }

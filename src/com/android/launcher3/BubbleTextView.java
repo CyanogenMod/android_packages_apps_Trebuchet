@@ -86,7 +86,7 @@ public class BubbleTextView extends TextView
     private final boolean mDeferShadowGenerationOnTouch;
     private final boolean mCustomShadowsEnabled;
     private final boolean mLayoutHorizontal;
-    private final int mIconSize;
+    private int mIconSize;
     private int mTextColor;
 
     private boolean mStayPressed;
@@ -94,9 +94,11 @@ public class BubbleTextView extends TextView
     private boolean mDisableRelayout = false;
 
     private ObjectAnimator mFastScrollFocusAnimator;
+    private ObjectAnimator mFastScrollDimAnimator;
     private Paint mFastScrollFocusBgPaint;
     private float mFastScrollFocusFraction;
     private boolean mFastScrollFocused;
+    private boolean mFastScrollDimmed;
     private final int mFastScrollMode = FAST_SCROLL_FOCUS_MODE_SCALE_ICON;
 
     private IconLoadRequest mIconLoadRequest;
@@ -433,6 +435,10 @@ public class BubbleTextView extends TextView
         if (mBackground != null) mBackground.setCallback(null);
     }
 
+    public void setIconSize(int iconSize) {
+        mIconSize = iconSize;
+    }
+
     @Override
     public void setTextColor(int color) {
         mTextColor = color;
@@ -625,6 +631,30 @@ public class BubbleTextView extends TextView
             } else {
                 mFastScrollFocusFraction = focused ? 1f : 0f;
             }
+        }
+    }
+
+    @Override
+    public void setFastScrollDimmed(boolean dimmed, boolean animated) {
+        if (mFastScrollMode == FAST_SCROLL_FOCUS_MODE_NONE) {
+            return;
+        }
+
+        if (!animated) {
+            mFastScrollDimmed = dimmed;
+            setAlpha(dimmed ? 0.4f : 1f);
+        } else  if (mFastScrollDimmed != dimmed) {
+            mFastScrollDimmed = dimmed;
+
+            // Clean up the previous dim animator
+            if (mFastScrollDimAnimator != null) {
+                mFastScrollDimAnimator.cancel();
+            }
+            mFastScrollDimAnimator = ObjectAnimator.ofFloat(this, View.ALPHA,
+                    dimmed ? 0.4f : 1f);
+            mFastScrollDimAnimator.setDuration(dimmed ?
+                    FAST_SCROLL_FOCUS_FADE_IN_DURATION : FAST_SCROLL_FOCUS_FADE_OUT_DURATION);
+            mFastScrollDimAnimator.start();
         }
     }
 

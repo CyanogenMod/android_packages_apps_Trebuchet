@@ -57,6 +57,7 @@ public abstract class BaseRecyclerView extends RecyclerView
     }
 
     protected BaseRecyclerViewFastScrollBar mScrollbar;
+    protected boolean mUseScrollbar = false;
 
     private int mDownX;
     private int mDownY;
@@ -74,7 +75,6 @@ public abstract class BaseRecyclerView extends RecyclerView
     public BaseRecyclerView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         mDeltaThreshold = getResources().getDisplayMetrics().density * SCROLL_DELTA_THRESHOLD_DP;
-        mScrollbar = new BaseRecyclerViewFastScrollBar(this, getResources());
 
         ScrollListener listener = new ScrollListener();
         setOnScrollListener(listener);
@@ -93,12 +93,16 @@ public abstract class BaseRecyclerView extends RecyclerView
             //                initiate that here if the recycler view scroll state is not
             //                RecyclerView.SCROLL_STATE_IDLE.
 
-            onUpdateScrollbar(dy);
+            if (mUseScrollbar) {
+                onUpdateScrollbar(dy);
+            }
         }
     }
 
     public void reset() {
-        mScrollbar.reattachThumbToScroll();
+        if (mUseScrollbar) {
+            mScrollbar.reattachThumbToScroll();
+        }
     }
 
     @Override
@@ -137,19 +141,28 @@ public abstract class BaseRecyclerView extends RecyclerView
                 if (shouldStopScroll(ev)) {
                     stopScroll();
                 }
-                mScrollbar.handleTouchEvent(ev, mDownX, mDownY, mLastY);
+                if (mScrollbar != null) {
+                    mScrollbar.handleTouchEvent(ev, mDownX, mDownY, mLastY);
+                }
                 break;
             case MotionEvent.ACTION_MOVE:
                 mLastY = y;
-                mScrollbar.handleTouchEvent(ev, mDownX, mDownY, mLastY);
+                if (mScrollbar != null) {
+                    mScrollbar.handleTouchEvent(ev, mDownX, mDownY, mLastY);
+                }
                 break;
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_CANCEL:
                 onFastScrollCompleted();
-                mScrollbar.handleTouchEvent(ev, mDownX, mDownY, mLastY);
+                if (mScrollbar != null) {
+                    mScrollbar.handleTouchEvent(ev, mDownX, mDownY, mLastY);
+                }
                 break;
         }
-        return mScrollbar.isDraggingThumb();
+        if (mUseScrollbar) {
+            return mScrollbar.isDraggingThumb();
+        }
+        return false;
     }
 
     public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
@@ -183,7 +196,10 @@ public abstract class BaseRecyclerView extends RecyclerView
      * Returns the scroll bar width when the user is scrolling.
      */
     public int getMaxScrollbarWidth() {
-        return mScrollbar.getThumbMaxWidth();
+        if (mUseScrollbar) {
+            return mScrollbar.getThumbMaxWidth();
+        }
+        return 0;
     }
 
     /**
@@ -204,9 +220,12 @@ public abstract class BaseRecyclerView extends RecyclerView
      *   AvailableScrollBarHeight = Total height of the visible view - thumb height
      */
     protected int getAvailableScrollBarHeight() {
-        int visibleHeight = getHeight() - mBackgroundPadding.top - mBackgroundPadding.bottom;
-        int availableScrollBarHeight = visibleHeight - mScrollbar.getThumbHeight();
-        return availableScrollBarHeight;
+        if (mUseScrollbar) {
+            int visibleHeight = getHeight() - mBackgroundPadding.top - mBackgroundPadding.bottom;
+            int availableScrollBarHeight = visibleHeight - mScrollbar.getThumbHeight();
+            return availableScrollBarHeight;
+        }
+        return 0;
     }
 
     /**
@@ -223,11 +242,23 @@ public abstract class BaseRecyclerView extends RecyclerView
         return defaultInactiveThumbColor;
     }
 
+    public void setUseScrollbar(boolean useScrollbar) {
+        mUseScrollbar = useScrollbar;
+        if (useScrollbar) {
+            mScrollbar = new BaseRecyclerViewFastScrollBar(this, getResources());
+        }  else {
+            mScrollbar = null;
+        }
+        invalidate();
+    }
+
     @Override
     protected void dispatchDraw(Canvas canvas) {
         super.dispatchDraw(canvas);
-        onUpdateScrollbar(0);
-        mScrollbar.draw(canvas);
+        if (mUseScrollbar) {
+            onUpdateScrollbar(0);
+            mScrollbar.draw(canvas);
+        }
     }
 
     /**
@@ -241,6 +272,9 @@ public abstract class BaseRecyclerView extends RecyclerView
      */
     protected void synchronizeScrollBarThumbOffsetToViewScroll(ScrollPositionState scrollPosState,
             int rowCount) {
+        if (!mUseScrollbar) {
+            return;
+        }
         // Only show the scrollbar if there is height to be scrolled
         int availableScrollBarHeight = getAvailableScrollBarHeight();
         int availableScrollHeight = getAvailableScrollHeight(rowCount, scrollPosState.rowHeight);
@@ -272,6 +306,12 @@ public abstract class BaseRecyclerView extends RecyclerView
      * <p>Override in each subclass of this base class.
      */
     public abstract String scrollToPositionAtProgress(float touchFraction);
+
+    public abstract String scrollToSection(String sectionName);
+
+    public abstract String[] getSectionNames();
+
+    public void setFastScrollDragging(boolean dragging) {}
 
     /**
      * Updates the bounds for the scrollbar.

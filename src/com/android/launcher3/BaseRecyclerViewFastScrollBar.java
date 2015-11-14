@@ -38,6 +38,7 @@ public class BaseRecyclerViewFastScrollBar {
 
     public interface FastScrollFocusableView {
         void setFastScrollFocused(boolean focused, boolean animated);
+        void setFastScrollDimmed(boolean dimmed, boolean animated);
     }
 
     private final static int MAX_TRACK_ALPHA = 30;
@@ -193,6 +194,7 @@ public class BaseRecyclerViewFastScrollBar {
                         Math.abs(y - downY) > config.getScaledTouchSlop()) {
                     mRv.getParent().requestDisallowInterceptTouchEvent(true);
                     mIsDragging = true;
+                    mRv.setFastScrollDragging(mIsDragging);
                     if (mCanThumbDetach) {
                         mIsThumbDetached = true;
                     }
@@ -220,6 +222,7 @@ public class BaseRecyclerViewFastScrollBar {
                 mIgnoreDragGesture = false;
                 if (mIsDragging) {
                     mIsDragging = false;
+                    mRv.setFastScrollDragging(mIsDragging);
                     mPopup.animateVisibility(false);
                     animateScrollbar(false);
                 }

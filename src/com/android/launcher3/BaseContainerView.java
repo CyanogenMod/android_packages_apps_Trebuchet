@@ -20,7 +20,10 @@ import android.content.Context;
 import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.View;
+import android.view.ViewStub;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 /**
  * A base container view, which supports resizing.
@@ -43,6 +46,11 @@ public abstract class BaseContainerView extends LinearLayout implements Insettab
     // The inset to apply to the edges and between the search bar and the container
     private int mContainerBoundsInset;
     private boolean mHasSearchBar;
+    private boolean mUseScrubber;
+
+    protected View mScrubberContainerView;
+    protected BaseRecyclerViewScrubber mScrubber;
+    protected final int mScrubberHeight;
 
     public BaseContainerView(Context context) {
         this(context, null);
@@ -55,6 +63,7 @@ public abstract class BaseContainerView extends LinearLayout implements Insettab
     public BaseContainerView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         mContainerBoundsInset = getResources().getDimensionPixelSize(R.dimen.container_bounds_inset);
+        mScrubberHeight = getResources().getDimensionPixelSize(R.dimen.scrubber_height);
     }
 
     @Override
@@ -65,6 +74,10 @@ public abstract class BaseContainerView extends LinearLayout implements Insettab
 
     protected void setHasSearchBar() {
         mHasSearchBar = true;
+    }
+
+    protected boolean hasSearchBar() {
+        return mHasSearchBar;
     }
 
     /**
@@ -87,10 +100,46 @@ public abstract class BaseContainerView extends LinearLayout implements Insettab
         });
     }
 
+    public final void setUseScrubber(boolean use) {
+        mUseScrubber = use;
+        if (use) {
+            ViewStub stub = (ViewStub) findViewById(R.id.scrubber_container_stub);
+            mScrubberContainerView = stub.inflate();
+            if (mScrubberContainerView == null) {
+                throw new IllegalStateException(
+                        "Layout must contain an id: R.id.scrubber_container");
+            }
+            mScrubber = (BaseRecyclerViewScrubber)
+                    mScrubberContainerView.findViewById(R.id.base_scrubber);
+            BaseRecyclerView recyclerView = getRecyclerView();
+            if (recyclerView != null) {
+                mScrubber.setRecycler(recyclerView);
+                mScrubber
+                        .setScrubberIndicator((TextView) mScrubberContainerView
+                                .findViewById(R.id.scrubberIndicator));
+                mScrubber.updateSections();
+            }
+        } else {
+            removeView(mScrubberContainerView);
+            BaseRecyclerView recyclerView = getRecyclerView();
+            if (recyclerView != null) {
+                recyclerView.setUseScrollbar(true);
+            }
+        }
+    }
+
+    public final boolean userScrubber() {
+        return mUseScrubber;
+    }
+
+    protected void updateBackgroundAndPaddings() {
+        updateBackgroundAndPaddings(false);
+    }
+
     /**
      * Update the backgrounds and padding in response to a change in the bounds or insets.
      */
-    protected void updateBackgroundAndPaddings() {
+    protected void updateBackgroundAndPaddings(boolean force) {
         Rect padding;
         Rect searchBarBounds = new Rect();
         if (!isValidSearchBarBounds(mFixedSearchBarBounds)) {
@@ -119,7 +168,8 @@ public abstract class BaseContainerView extends LinearLayout implements Insettab
 
         // If either the computed container padding has changed, or the computed search bar bounds
         // has changed, then notify the container
-        if (!padding.equals(mContentPadding) || !searchBarBounds.equals(mSearchBarBounds)) {
+        if (force || !padding.equals(mContentPadding) ||
+                !searchBarBounds.equals(mSearchBarBounds)) {
             mContentPadding.set(padding);
             mContentBounds.set(padding.left, padding.top,
                     getMeasuredWidth() - padding.right,
@@ -133,6 +183,11 @@ public abstract class BaseContainerView extends LinearLayout implements Insettab
      * To be implemented by container views to update themselves when the bounds changes.
      */
     protected abstract void onUpdateBackgroundAndPaddings(Rect searchBarBounds, Rect padding);
+
+    /**
+     * This might be null if the container doesn't have a recycler.
+     */
+    protected abstract BaseRecyclerView getRecyclerView();
 
     /**
      * Returns whether the search bar bounds we got are considered valid.

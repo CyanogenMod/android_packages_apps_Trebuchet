@@ -64,12 +64,15 @@
 
 <!-- All Apps -->
     <dimen name="all_apps_grid_view_start_margin">0dp</dimen>
+    <dimen name="all_apps_grid_view_start_margin_with_sections">36dp</dimen>
     <dimen name="all_apps_grid_section_y_offset">8dp</dimen>
     <dimen name="all_apps_grid_section_text_size">24sp</dimen>
     <dimen name="all_apps_search_bar_height">48dp</dimen>
     <dimen name="all_apps_search_bar_prediction_bar_padding">8dp</dimen>
     <dimen name="all_apps_icon_top_bottom_padding">8dp</dimen>
     <dimen name="all_apps_icon_width_gap">24dp</dimen>
+    <dimen name="all_apps_icon_width_gap_with_sections">12dp</dimen>
+    <dimen name="all_apps_icon_size_with_sections">48dp</dimen>
     <!-- The top padding should account for the existing all_apps_list_top_bottom_padding -->
     <dimen name="all_apps_prediction_icon_top_padding">8dp</dimen>
     <dimen name="all_apps_prediction_icon_bottom_padding">18dp</dimen>
@@ -78,6 +81,8 @@
     <dimen name="all_apps_empty_search_bg_top_offset">144dp</dimen>
     <dimen name="all_apps_background_canvas_width">700dp</dimen>
     <dimen name="all_apps_background_canvas_height">475dp</dimen>
+    <dimen name="all_apps_icon_size_grid">55dp</dimen>
+    <dimen name="all_apps_icon_size_ragged">48dp</dimen>
 
 <!-- Widget tray -->
     <dimen name="widget_container_inset">8dp</dimen>
@@ -140,9 +145,14 @@
     <dimen name="blur_size_click_shadow">4dp</dimen>
     <dimen name="click_shadow_high_shift">2dp</dimen>
 
-<!-- Pending widget -->
+    <dimen name="app_drawer_scrubber_padding">20dp</dimen>
     <dimen name="pending_widget_min_padding">8dp</dimen>
     <dimen name="pending_widget_elevation">2dp</dimen>
+
+    <!-- Scrubber -->
+    <dimen name="scrubber_bottom_padding">30dp</dimen>
+    <dimen name="scrubber_height">48dp</dimen>
+    <dimen name="app_drawer_scrubber_padding">20dp</dimen>
 
 <!-- Folder open animation -->
     <integer name="folder_translate_y_dist">300</integer>

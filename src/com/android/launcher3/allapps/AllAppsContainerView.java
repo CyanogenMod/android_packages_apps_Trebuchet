@@ -35,6 +35,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import com.android.launcher3.AppInfo;
 import com.android.launcher3.BaseContainerView;
+import com.android.launcher3.BaseRecyclerView;
 import com.android.launcher3.CellLayout;
 import com.android.launcher3.DeleteDropTarget;
 import com.android.launcher3.DeviceProfile;
@@ -130,8 +131,14 @@ public class AllAppsContainerView extends BaseContainerView implements DragSourc
         LauncherTransitionable, View.OnTouchListener, View.OnLongClickListener,
         AllAppsSearchBarController.Callbacks {
 
+    public static final int SECTION_STRATEGY_GRID = 1;
+    public static final int SECTION_STRATEGY_RAGGED = 2;
+
+    public static final int GRID_THEME_LIGHT = 1;
+    public static final int GRID_THEME_DARK = 2;
+
     private static final int MIN_ROWS_IN_MERGED_SECTION_PHONE = 3;
-    private static final int MAX_NUM_MERGES_PHONE = 2;
+    private static final int MAX_NUM_MERGES_PHONE = 1;
 
     @Thunk Launcher mLauncher;
     @Thunk AlphabeticalAppsList mApps;
@@ -147,6 +154,10 @@ public class AllAppsContainerView extends BaseContainerView implements DragSourc
     private ViewGroup mSearchBarContainerView;
     private View mSearchBarView;
     private SpannableStringBuilder mSearchQueryBuilder = null;
+
+    private int mSectionStrategy = SECTION_STRATEGY_RAGGED;
+    private int mGridTheme = GRID_THEME_DARK;
+    private int mLastGridTheme = -1;
 
     private int mSectionNamesMargin;
     private int mNumAppsPerRow;
@@ -178,9 +189,12 @@ public class AllAppsContainerView extends BaseContainerView implements DragSourc
         Resources res = context.getResources();
 
         mLauncher = (Launcher) context;
-        mSectionNamesMargin = res.getDimensionPixelSize(R.dimen.all_apps_grid_view_start_margin);
+        mSectionNamesMargin = mSectionStrategy == SECTION_STRATEGY_GRID ?
+                res.getDimensionPixelSize(R.dimen.all_apps_grid_view_start_margin) :
+                res.getDimensionPixelSize(R.dimen.all_apps_grid_view_start_margin_with_sections);
         mApps = new AlphabeticalAppsList(context);
-        mAdapter = new AllAppsGridAdapter(mLauncher, mApps, this, mLauncher, this);
+        mAdapter = new AllAppsGridAdapter(mLauncher, mApps, this, mLauncher,
+                this, mSectionStrategy, mGridTheme);
         mApps.setAdapter(mAdapter);
         mLayoutManager = mAdapter.getLayoutManager();
         mItemDecoration = mAdapter.getItemDecoration();
@@ -196,6 +210,7 @@ public class AllAppsContainerView extends BaseContainerView implements DragSourc
      */
     public void setPredictedApps(List<ComponentKey> apps) {
         mApps.setPredictedApps(apps);
+        updateScrubber();
     }
 
     /**
@@ -203,6 +218,7 @@ public class AllAppsContainerView extends BaseContainerView implements DragSourc
      */
     public void setApps(List<AppInfo> apps) {
         mApps.setApps(apps);
+        updateScrubber();
     }
 
     /**
@@ -210,6 +226,7 @@ public class AllAppsContainerView extends BaseContainerView implements DragSourc
      */
     public void addApps(List<AppInfo> apps) {
         mApps.addApps(apps);
+        updateScrubber();
     }
 
     /**
@@ -217,6 +234,7 @@ public class AllAppsContainerView extends BaseContainerView implements DragSourc
      */
     public void updateApps(List<AppInfo> apps) {
         mApps.updateApps(apps);
+        updateScrubber();
     }
 
     /**
@@ -224,6 +242,29 @@ public class AllAppsContainerView extends BaseContainerView implements DragSourc
      */
     public void removeApps(List<AppInfo> apps) {
         mApps.removeApps(apps);
+        updateScrubber();
+    }
+
+    private void updateScrubber() {
+        if (userScrubber()) {
+            mScrubber.updateSections();
+        }
+    }
+
+    public void setSectionStrategy(int sectionStrategy) {
+        Resources res = getResources();
+        mSectionStrategy = sectionStrategy;
+        mSectionNamesMargin = mSectionStrategy == SECTION_STRATEGY_GRID ?
+                res.getDimensionPixelSize(R.dimen.all_apps_grid_view_start_margin) :
+                res.getDimensionPixelSize(R.dimen.all_apps_grid_view_start_margin_with_sections);
+        mAdapter.setSectionStrategy(mSectionStrategy);
+        mAppsRecyclerView.setSectionStrategy(mSectionStrategy);
+    }
+
+    public void setGridTheme(int gridTheme) {
+        mGridTheme = gridTheme;
+        mAdapter.setGridTheme(mGridTheme);
+        updateBackgroundAndPaddings(true);
     }
 
     /**
@@ -316,6 +357,7 @@ public class AllAppsContainerView extends BaseContainerView implements DragSourc
         // Load the all apps recycler view
         mAppsRecyclerView = (AllAppsRecyclerView) findViewById(R.id.apps_list_view);
         mAppsRecyclerView.setApps(mApps);
+        mAppsRecyclerView.setSectionStrategy(mSectionStrategy);
         mAppsRecyclerView.setLayoutManager(mLayoutManager);
         mAppsRecyclerView.setAdapter(mAdapter);
         mAppsRecyclerView.setHasFixedSize(true);
@@ -337,7 +379,8 @@ public class AllAppsContainerView extends BaseContainerView implements DragSourc
         int availableWidth = !mContentBounds.isEmpty() ? mContentBounds.width() :
                 MeasureSpec.getSize(widthMeasureSpec);
         DeviceProfile grid = mLauncher.getDeviceProfile();
-        grid.updateAppsViewNumCols(getResources(), availableWidth);
+        grid.updateAppsViewNumCols(getResources(), availableWidth,
+                mSectionStrategy);
         if (mNumAppsPerRow != grid.allAppsNumCols ||
                 mNumPredictedAppsPerRow != grid.allAppsNumPredictiveCols) {
             mNumAppsPerRow = grid.allAppsNumCols;
@@ -345,7 +388,7 @@ public class AllAppsContainerView extends BaseContainerView implements DragSourc
 
             // If there is a start margin to draw section names, determine how we are going to merge
             // app sections
-            boolean mergeSectionsFully = mSectionNamesMargin == 0 || !grid.isPhone;
+            boolean mergeSectionsFully = mSectionStrategy == SECTION_STRATEGY_GRID;
             AlphabeticalAppsList.MergeAlgorithm mergeAlgorithm = mergeSectionsFully ?
                     new FullMergeAlgorithm() :
                     new SimpleSectionMergeAlgorithm((int) Math.ceil(mNumAppsPerRow / 2f),
@@ -369,8 +412,10 @@ public class AllAppsContainerView extends BaseContainerView implements DragSourc
         boolean isRtl = Utilities.isRtl(getResources());
 
         // TODO: Use quantum_panel instead of quantum_panel_shape
+        int bgRes = mGridTheme == GRID_THEME_DARK ? R.drawable.quantum_panel_shape_dark :
+                R.drawable.quantum_panel_shape;
         InsetDrawable background = new InsetDrawable(
-                getResources().getDrawable(R.drawable.quantum_panel_shape), padding.left, 0,
+                getResources().getDrawable(bgRes), padding.left, 0,
                 padding.right, 0);
         Rect bgPadding = new Rect();
         background.getPadding(bgPadding);
@@ -389,12 +434,24 @@ public class AllAppsContainerView extends BaseContainerView implements DragSourc
         // names)
         int startInset = Math.max(mSectionNamesMargin, mAppsRecyclerView.getMaxScrollbarWidth());
         int topBottomPadding = mRecyclerViewTopBottomPadding;
+        final boolean useScubber = userScrubber();
         if (isRtl) {
             mAppsRecyclerView.setPadding(padding.left + mAppsRecyclerView.getMaxScrollbarWidth(),
-                    topBottomPadding, padding.right + startInset, topBottomPadding);
+                    topBottomPadding, padding.right + startInset, useScubber ?
+                            mScrubberHeight + topBottomPadding : topBottomPadding);
+            if (useScubber) {
+                mScrubberContainerView
+                        .setPadding(padding.left + mAppsRecyclerView.getMaxScrollbarWidth(),
+                                0, padding.right, 0);
+            }
         } else {
             mAppsRecyclerView.setPadding(padding.left + startInset, topBottomPadding,
-                    padding.right + mAppsRecyclerView.getMaxScrollbarWidth(), topBottomPadding);
+                    padding.right + mAppsRecyclerView.getMaxScrollbarWidth(),
+                    useScubber ?  mScrubberHeight + topBottomPadding : topBottomPadding);
+            if (useScubber) {
+                mScrubberContainerView.setPadding(padding.left, 0,
+                        padding.right + mAppsRecyclerView.getMaxScrollbarWidth(), 0);
+            }
         }
 
         // Inset the search bar to fit its bounds above the container
@@ -556,7 +613,9 @@ public class AllAppsContainerView extends BaseContainerView implements DragSourc
     public void onLauncherTransitionEnd(Launcher l, boolean animated, boolean toWorkspace) {
         if (toWorkspace) {
             // Reset the search bar and base recycler view after transitioning home
-            mSearchBarController.reset();
+            if (hasSearchBar()) {
+                mSearchBarController.reset();
+            }
             mAppsRecyclerView.reset();
         }
     }
@@ -614,6 +673,12 @@ public class AllAppsContainerView extends BaseContainerView implements DragSourc
     public void onSearchResult(String query, ArrayList<ComponentKey> apps) {
         if (apps != null) {
             mApps.setOrderedFilter(apps);
+            if (mGridTheme != GRID_THEME_LIGHT) {
+                mLastGridTheme = mGridTheme;
+                mGridTheme = GRID_THEME_LIGHT;
+                updateBackgroundAndPaddings(true);
+                mAdapter.setGridTheme(mGridTheme);
+            }
             mAdapter.setLastSearchQuery(query);
             mAppsRecyclerView.onSearchResultsChanged();
         }
@@ -623,10 +688,20 @@ public class AllAppsContainerView extends BaseContainerView implements DragSourc
     public void clearSearchResult() {
         mApps.setOrderedFilter(null);
         mAppsRecyclerView.onSearchResultsChanged();
-
+        if (mLastGridTheme != -1 && mLastGridTheme != GRID_THEME_LIGHT) {
+            mGridTheme = mLastGridTheme;
+            updateBackgroundAndPaddings(true);
+            mAdapter.setGridTheme(mGridTheme);
+            mLastGridTheme = -1;
+        }
         // Clear the search query
         mSearchQueryBuilder.clear();
         mSearchQueryBuilder.clearSpans();
         Selection.setSelection(mSearchQueryBuilder, 0);
+    }
+
+    @Override
+    protected BaseRecyclerView getRecyclerView() {
+        return mAppsRecyclerView;
     }
 }

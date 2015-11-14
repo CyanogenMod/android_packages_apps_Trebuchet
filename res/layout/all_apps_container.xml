@@ -35,4 +35,13 @@
         android:focusable="true"
         android:descendantFocusability="afterDescendants" />
 
+    <ViewStub
+        android:id="@+id/scrubber_container_stub"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inflatedId="@+id/scrubber_container"
+        android:layout="@layout/scrubber_container"
+        android:layout_gravity="bottom"
+        android:clipToPadding="false"/>
+
 </com.android.launcher3.allapps.AllAppsRecyclerViewContainerView>

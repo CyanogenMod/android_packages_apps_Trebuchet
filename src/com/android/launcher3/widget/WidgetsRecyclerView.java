@@ -126,18 +126,32 @@ public class WidgetsRecyclerView extends BaseRecyclerView {
         // Skip early if there are no widgets.
         int rowCount = mWidgets.getPackageSize();
         if (rowCount == 0) {
-            mScrollbar.setThumbOffset(-1, -1);
+            if (mUseScrollbar) {
+                mScrollbar.setThumbOffset(-1, -1);
+            }
             return;
         }
 
         // Skip early if, there no child laid out in the container.
         getCurScrollState(mScrollPosState);
         if (mScrollPosState.rowIndex < 0) {
-            mScrollbar.setThumbOffset(-1, -1);
+            if (mUseScrollbar) {
+                mScrollbar.setThumbOffset(-1, -1);
+            }
             return;
         }
 
         synchronizeScrollBarThumbOffsetToViewScroll(mScrollPosState, rowCount);
+    }
+
+    @Override
+    public String scrollToSection(String sectionName) {
+        return null;
+    }
+
+    @Override
+    public String[] getSectionNames() {
+        return new String[0];
     }
 
     /**

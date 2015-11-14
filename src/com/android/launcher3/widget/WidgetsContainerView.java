@@ -29,6 +29,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.android.launcher3.BaseContainerView;
+import com.android.launcher3.BaseRecyclerView;
 import com.android.launcher3.CellLayout;
 import com.android.launcher3.DeleteDropTarget;
 import com.android.launcher3.DeviceProfile;
@@ -365,5 +366,10 @@ public class WidgetsContainerView extends BaseContainerView
             mWidgetPreviewLoader = LauncherAppState.getInstance().getWidgetCache();
         }
         return mWidgetPreviewLoader;
+    }
+
+    @Override
+    protected BaseRecyclerView getRecyclerView() {
+        return mView;
     }
 }

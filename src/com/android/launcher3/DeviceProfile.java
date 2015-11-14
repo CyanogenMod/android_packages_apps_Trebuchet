@@ -33,6 +33,8 @@ import android.view.ViewGroup.MarginLayoutParams;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
+import com.android.launcher3.allapps.AllAppsContainerView;
+
 public class DeviceProfile {
 
     public final InvariantDeviceProfile inv;
@@ -225,11 +227,13 @@ public class DeviceProfile {
     /**
      * @param recyclerViewWidth the available width of the AllAppsRecyclerView
      */
-    public void updateAppsViewNumCols(Resources res, int recyclerViewWidth) {
-        int appsViewLeftMarginPx =
-                res.getDimensionPixelSize(R.dimen.all_apps_grid_view_start_margin);
-        int allAppsCellWidthGap =
-                res.getDimensionPixelSize(R.dimen.all_apps_icon_width_gap);
+    public void updateAppsViewNumCols(Resources res, int recyclerViewWidth, int gridStrategy) {
+        int appsViewLeftMarginPx = gridStrategy == AllAppsContainerView.SECTION_STRATEGY_GRID ?
+                res.getDimensionPixelSize(R.dimen.all_apps_grid_view_start_margin) :
+                res.getDimensionPixelSize(R.dimen.all_apps_grid_view_start_margin_with_sections);
+        int allAppsCellWidthGap = gridStrategy == AllAppsContainerView.SECTION_STRATEGY_GRID ?
+                res.getDimensionPixelSize(R.dimen.all_apps_icon_width_gap) :
+                res.getDimensionPixelSize(R.dimen.all_apps_icon_width_gap_with_sections);
         int availableAppsWidthPx = (recyclerViewWidth > 0) ? recyclerViewWidth : availableWidthPx;
         int numAppsCols = (availableAppsWidthPx - appsViewLeftMarginPx) /
                 (allAppsIconSizePx + allAppsCellWidthGap);
