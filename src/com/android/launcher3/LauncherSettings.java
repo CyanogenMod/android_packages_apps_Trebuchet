@@ -40,7 +40,7 @@ public class LauncherSettings {
          * <P>Type: TEXT</P>
          */
         public static final String TITLE = "title";
-
+        
         /**
          * The Intent URL of the gesture, describing what it points to. This
          * value is given to {@link android.content.Intent#parseUri(String, int)} to create

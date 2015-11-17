@@ -18,11 +18,30 @@
 <com.android.launcher3.LauncherRootView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:launcher="http://schemas.android.com/apk/res-auto"
+    xmlns:insettable="http://schemas.android.com/apk/res-auto"
 
     android:id="@+id/launcher"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true">
+    android:fitsSystemWindows="true"
+    android:background="@drawable/workspace_bg">
+
+    <FrameLayout
+        android:id="@+id/reveal_fake_page_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="invisible"
+        android:alpha="1.0"
+        insettable:layout_ignoreInsets="true"
+        android:clipToPadding="false">
+
+        <ImageView
+            android:id="@+id/reveal_fake_folder_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            android:background="@drawable/folder_bg_opaque"/>
+    </FrameLayout>
 
     <com.android.launcher3.DragLayer
         android:id="@+id/drag_layer"

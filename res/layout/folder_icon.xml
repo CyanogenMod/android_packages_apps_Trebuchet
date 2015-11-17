@@ -20,17 +20,53 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:focusable="true" >
-    <ImageView
+    <RelativeLayout
         android:id="@+id/preview_background"
-        android:layout_gravity="center_horizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:antialias="true"
-        android:src="@drawable/portal_ring_inner"/>
+        android:layout_width="@dimen/folder_icon"
+        android:layout_height="@dimen/folder_icon"
+        android:layout_gravity="center_horizontal|top"
+        android:background="@drawable/folder_bg" >
+        <ImageView
+            android:id="@+id/folder_lock_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/folder_locked"
+            android:scaleType="center"
+            android:visibility="invisible" />
+        <ImageView
+            android:id="@+id/app_0"
+            android:layout_width="@dimen/folder_icon_app_preview"
+            android:layout_height="@dimen/folder_icon_app_preview"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:antialias="true"/>
+        <ImageView
+            android:id="@+id/app_1"
+            android:layout_width="@dimen/folder_icon_app_preview"
+            android:layout_height="@dimen/folder_icon_app_preview"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:antialias="true"/>
+        <ImageView
+            android:id="@+id/app_2"
+            android:layout_width="@dimen/folder_icon_app_preview"
+            android:layout_height="@dimen/folder_icon_app_preview"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentBottom="true"
+            android:antialias="true"/>
+        <ImageView
+            android:id="@+id/app_3"
+            android:layout_width="@dimen/folder_icon_app_preview"
+            android:layout_height="@dimen/folder_icon_app_preview"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:antialias="true"/>
+    </RelativeLayout>
+
     <com.android.launcher3.BubbleTextView
         style="@style/Icon"
         android:id="@+id/folder_icon_name"
-        android:layout_gravity="top"
+        android:layout_gravity="bottom"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 </com.android.launcher3.FolderIcon>

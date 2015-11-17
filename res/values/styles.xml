@@ -49,7 +49,7 @@
 
     <style name="Icon.Folder">
         <item name="android:background">@null</item>
-        <item name="android:textColor">@color/quantum_panel_text_color</item>
+        <item name="android:textColor">@color/workspace_icon_text_color</item>
         <item name="android:shadowRadius">0</item>
         <item name="customShadows">false</item>
     </style>

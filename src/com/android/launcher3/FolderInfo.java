@@ -103,7 +103,6 @@ public class FolderInfo extends ItemInfo {
         super.onAddToDatabase(context, values);
         values.put(LauncherSettings.Favorites.TITLE, title.toString());
         values.put(LauncherSettings.Favorites.OPTIONS, options);
-
     }
 
     void addListener(FolderListener listener) {

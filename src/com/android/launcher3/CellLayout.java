@@ -504,13 +504,15 @@ public class CellLayout extends ViewGroup implements BubbleTextShadowHandler {
 
                 // Draw inner ring
                 d = FolderRingAnimator.sSharedInnerRingDrawable;
-                width = (int) (fra.getInnerRingSize() * getChildrenScale());
-                height = width;
-                canvas.save();
-                canvas.translate(centerX - width / 2, centerY - width / 2);
-                d.setBounds(0, 0, width, height);
-                d.draw(canvas);
-                canvas.restore();
+                if (d != null) {
+                    width = (int) (fra.getInnerRingSize() * getChildrenScale());
+                    height = width;
+                    canvas.save();
+                    canvas.translate(centerX - width / 2, centerY - width / 2);
+                    d.setBounds(0, 0, width, height);
+                    d.draw(canvas);
+                    canvas.restore();
+                }
             }
         }
 

@@ -113,7 +113,19 @@
         <attr name="indicatorSize" format="dimension" />
     </declare-styleable>
 
+    <attr name="layout_ignoreInsets" format="boolean" />
+    <attr name="layout_ignoreBottomInsets" format="boolean" />
+    <attr name="layout_ignoreTopInsets" format="boolean" />
+
     <declare-styleable name="InsettableFrameLayout_Layout">
-        <attr name="layout_ignoreInsets" format="boolean" />
+        <attr name="layout_ignoreInsets" />
+        <attr name="layout_ignoreTopInsets" />
+        <attr name="layout_ignoreBottomInsets" />
+    </declare-styleable>
+
+    <declare-styleable name="InsettableLinearLayout_Layout">
+        <attr name="layout_ignoreInsets" />
+        <attr name="layout_ignoreTopInsets" />
+        <attr name="layout_ignoreBottomInsets" />
     </declare-styleable>
 </resources>

@@ -16,6 +16,7 @@
 
 package com.android.launcher3;
 
+import android.Manifest;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
@@ -149,6 +150,8 @@ public class Launcher extends Activity
 
     private static final int REQUEST_BIND_APPWIDGET = 11;
     private static final int REQUEST_RECONFIGURE_APPWIDGET = 12;
+
+    private static final int REQUEST_PERMISSION_CALL_PHONE = 13;
 
     private static final int WORKSPACE_BACKGROUND_GRADIENT = 0;
     private static final int WORKSPACE_BACKGROUND_TRANSPARENT = 1;
@@ -867,6 +870,24 @@ public class Launcher extends Activity
     /** @Override for MNC */
     public void onRequestPermissionsResult(int requestCode, String[] permissions,
             int[] grantResults) {
+        if (requestCode == REQUEST_PERMISSION_CALL_PHONE && sPendingAddItem != null
+                && sPendingAddItem.requestCode == REQUEST_PERMISSION_CALL_PHONE) {
+            View v = null;
+            CellLayout layout = getCellLayout(sPendingAddItem.container, sPendingAddItem.screenId);
+            if (layout != null) {
+                v = layout.getChildAt(sPendingAddItem.cellX, sPendingAddItem.cellY);
+            }
+            Intent intent = sPendingAddItem.intent;
+            sPendingAddItem = null;
+            if (grantResults.length > 0
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                startActivity(v, intent, null);
+            } else {
+                // TODO: Show a snack bar with link to settings
+                Toast.makeText(this, getString(R.string.msg_no_phone_permission,
+                        getString(R.string.app_name)), Toast.LENGTH_SHORT).show();
+            }
+        }
         if (mLauncherCallbacks != null) {
             mLauncherCallbacks.onRequestPermissionsResult(requestCode, permissions,
                     grantResults);
@@ -1821,6 +1842,10 @@ public class Launcher extends Activity
         return mHotseat;
     }
 
+    public View getPageIndicator() {
+        return mPageIndicators;
+    }
+
     public ViewGroup getOverviewPanel() {
         return mOverviewPanel;
     }
@@ -2688,6 +2713,11 @@ public class Launcher extends Activity
         final FolderInfo info = folderIcon.getFolderInfo();
         Folder openFolder = mWorkspace.getFolderForTag(info);
 
+        int[] folderTouchXY = new int[2];
+        v.getLocationOnScreen(folderTouchXY);
+        int[] folderTouchXYOffset = {folderTouchXY[0] + v.getWidth() / 2,
+                folderTouchXY[1] + v.getHeight() / 2};
+
         // If the folder info reports that the associated folder is open, then verify that
         // it is actually opened. There have been a few instances where this gets out of sync.
         if (info.opened && openFolder == null) {
@@ -2700,7 +2730,7 @@ public class Launcher extends Activity
             // Close any open folder
             closeFolder();
             // Open the requested folder
-            openFolder(folderIcon);
+            openFolder(folderIcon, folderTouchXYOffset);
         } else {
             // Find the open folder...
             int folderScreen;
@@ -2712,7 +2742,7 @@ public class Launcher extends Activity
                     // Close any folder open on the current screen
                     closeFolder();
                     // Pull the folder onto this screen
-                    openFolder(folderIcon);
+                    openFolder(folderIcon, folderTouchXYOffset);
                 }
             }
         }
@@ -2926,6 +2956,22 @@ public class Launcher extends Activity
             }
             return true;
         } catch (SecurityException e) {
+            if (Utilities.ATLEAST_MARSHMALLOW && tag instanceof ItemInfo) {
+                // Due to legacy reasons, direct call shortcuts require Launchers to have the
+                // corresponding permission. Show the appropriate permission prompt if that
+                // is the case.
+                if (intent.getComponent() == null
+                        && Intent.ACTION_CALL.equals(intent.getAction())
+                        && checkSelfPermission(Manifest.permission.CALL_PHONE) !=
+                            PackageManager.PERMISSION_GRANTED) {
+                    // TODO: Rename sPendingAddItem to a generic name.
+                    sPendingAddItem = preparePendingAddArgs(REQUEST_PERMISSION_CALL_PHONE, intent,
+                            0, (ItemInfo) tag);
+                    requestPermissions(new String[]{Manifest.permission.CALL_PHONE},
+                            REQUEST_PERMISSION_CALL_PHONE);
+                    return false;
+                }
+            }
             Toast.makeText(this, R.string.activity_not_found, Toast.LENGTH_SHORT).show();
             Log.e(TAG, "Launcher does not have the permission to launch " + intent +
                     ". Make sure to create a MAIN intent-filter for the corresponding activity " +
@@ -3063,8 +3109,13 @@ public class Launcher extends Activity
      *
      * @param folderInfo The FolderInfo describing the folder to open.
      */
-    public void openFolder(FolderIcon folderIcon) {
+    public void openFolder(FolderIcon folderIcon, int[] folderTouch) {
         Folder folder = folderIcon.getFolder();
+
+        if (folder.getState() == Folder.STATE_ANIMATING) {
+            return;
+        }
+
         Folder openFolder = mWorkspace != null ? mWorkspace.getOpenFolder() : null;
         if (openFolder != null && openFolder != folder) {
             // Close any open folder before opening a folder.
@@ -3087,8 +3138,8 @@ public class Launcher extends Activity
             Log.w(TAG, "Opening folder (" + folder + ") which already has a parent (" +
                     folder.getParent() + ").");
         }
-        folder.animateOpen();
-        growAndFadeOutFolderIcon(folderIcon);
+        folder.animateOpen(getWorkspace(), folderTouch);
+        /*growAndFadeOutFolderIcon(folderIcon);*/
 
         // Notify the accessibility manager that this folder "window" has appeared and occluded
         // the workspace items
@@ -3107,17 +3158,21 @@ public class Launcher extends Activity
     }
 
     public void closeFolder(Folder folder) {
+        closeFolder(folder, true);
+    }
+
+    public void closeFolder(Folder folder, boolean animate) {
         folder.getInfo().opened = false;
 
         ViewGroup parent = (ViewGroup) folder.getParent().getParent();
         if (parent != null) {
             FolderIcon fi = (FolderIcon) mWorkspace.getViewForTag(folder.mInfo);
-            shrinkAndFadeInFolderIcon(fi);
+            /*shrinkAndFadeInFolderIcon(fi);*/
             if (fi != null) {
                 ((CellLayout.LayoutParams) fi.getLayoutParams()).canReorder = true;
             }
         }
-        folder.animateClosed();
+        folder.animateClosed(animate);
 
         // Notify the accessibility manager that this folder "window" has disappeard and no
         // longer occludeds the workspace items

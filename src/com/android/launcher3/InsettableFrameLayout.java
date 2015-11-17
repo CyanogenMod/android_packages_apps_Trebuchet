@@ -24,10 +24,14 @@ public class InsettableFrameLayout extends FrameLayout implements
         if (child instanceof Insettable) {
             ((Insettable) child).setInsets(newInsets);
         } else if (!lp.ignoreInsets) {
-            lp.topMargin += (newInsets.top - oldInsets.top);
+            if (!lp.ignoreTopInsets) {
+                lp.topMargin += (newInsets.top - oldInsets.top);
+            }
             lp.leftMargin += (newInsets.left - oldInsets.left);
             lp.rightMargin += (newInsets.right - oldInsets.right);
-            lp.bottomMargin += (newInsets.bottom - oldInsets.bottom);
+            if (!lp.ignoreBottomInsets) {
+                lp.bottomMargin += (newInsets.bottom - oldInsets.bottom);
+            }
         }
         child.setLayoutParams(lp);
     }
@@ -65,6 +69,8 @@ public class InsettableFrameLayout extends FrameLayout implements
 
     public static class LayoutParams extends FrameLayout.LayoutParams {
         boolean ignoreInsets = false;
+        boolean ignoreTopInsets = false;
+        boolean ignoreBottomInsets = false;
 
         public LayoutParams(Context c, AttributeSet attrs) {
             super(c, attrs);
@@ -72,6 +78,10 @@ public class InsettableFrameLayout extends FrameLayout implements
                     R.styleable.InsettableFrameLayout_Layout);
             ignoreInsets = a.getBoolean(
                     R.styleable.InsettableFrameLayout_Layout_layout_ignoreInsets, false);
+            ignoreTopInsets = a.getBoolean(
+                    R.styleable.InsettableFrameLayout_Layout_layout_ignoreTopInsets, false);
+            ignoreBottomInsets = a.getBoolean(
+                    R.styleable.InsettableFrameLayout_Layout_layout_ignoreBottomInsets, false);
             a.recycle();
         }
 
