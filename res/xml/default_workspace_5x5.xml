@@ -25,7 +25,7 @@
         launcher:className="com.cyanogenmod.lockclock.ClockWidgetProvider"
         launcher:screen="1"
         launcher:x="0"
-        launcher:y="1"
+        launcher:y="0"
         launcher:spanX="5"
         launcher:spanY="2" />
 
