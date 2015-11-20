@@ -94,6 +94,7 @@ public class LauncherModel extends BroadcastReceiver
     public static final int LOADER_FLAG_NONE = 0;
     public static final int LOADER_FLAG_CLEAR_WORKSPACE = 1 << 0;
     public static final int LOADER_FLAG_MIGRATE_SHORTCUTS = 1 << 1;
+    public static final int LOADER_FLAG_RESIZE_GRID = 1 << 2;
 
     private static final int ITEMS_CHUNK = 6; // batch size for the workspace icons
     private static final long INVALID_SCREEN_ID = -1L;

@@ -30,6 +30,7 @@ import android.view.animation.OvershootInterpolator;
 import com.android.launcher3.FocusHelper.PagedFolderKeyEventListener;
 import com.android.launcher3.PageIndicator.PageMarkerResources;
 import com.android.launcher3.Workspace.ItemOperator;
+import com.android.launcher3.settings.SettingsProvider;
 import com.android.launcher3.util.Thunk;
 
 import java.util.ArrayList;
@@ -214,6 +215,11 @@ public class FolderPagedView extends PagedView {
         textView.setOnClickListener(mFolder);
         textView.setOnLongClickListener(mFolder);
         textView.setOnFocusChangeListener(mFocusIndicatorView);
+        if (SettingsProvider.getBoolean(mFolder.mLauncher,
+                SettingsProvider.SETTINGS_UI_HOMESCREEN_HIDE_ICON_LABELS,
+                R.bool.preferences_interface_homescreen_hide_icon_labels_default)) {
+            textView.setTextVisibility(false);
+        }
         textView.setOnKeyListener(mKeyListener);
 
         textView.setLayoutParams(new CellLayout.LayoutParams(

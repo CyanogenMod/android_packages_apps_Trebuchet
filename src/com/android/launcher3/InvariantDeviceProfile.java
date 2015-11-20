@@ -24,6 +24,7 @@ import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.WindowManager;
 
+import com.android.launcher3.settings.SettingsProvider;
 import com.android.launcher3.util.Thunk;
 
 import java.util.ArrayList;
@@ -132,7 +133,8 @@ public class InvariantDeviceProfile {
         minHeightDps = Utilities.dpiFromPx(Math.min(largestSize.x, largestSize.y), dm);
 
         ArrayList<InvariantDeviceProfile> closestProfiles =
-                findClosestDeviceProfiles(minWidthDps, minHeightDps, getPredefinedDeviceProfiles());
+                findClosestDeviceProfiles(minWidthDps, minHeightDps,
+                        getPredefinedDeviceProfiles(context));
         InvariantDeviceProfile interpolatedDeviceProfileOut =
                 invDistWeightedInterpolate(minWidthDps,  minHeightDps, closestProfiles);
 
@@ -169,35 +171,49 @@ public class InvariantDeviceProfile {
                 smallSide, largeSide, false /* isLandscape */);
     }
 
-    ArrayList<InvariantDeviceProfile> getPredefinedDeviceProfiles() {
+    ArrayList<InvariantDeviceProfile> getPredefinedDeviceProfiles(Context context) {
+        boolean useLargeIcons = SettingsProvider.getBoolean(context,
+                SettingsProvider.SETTINGS_UI_GENERAL_ICONS_LARGE,
+                R.bool.preferences_interface_general_icons_large_default);
         ArrayList<InvariantDeviceProfile> predefinedDeviceProfiles = new ArrayList<>();
         // width, height, #rows, #columns, #folder rows, #folder columns,
         // iconSize, iconTextSize, #hotseat, #hotseatIconSize, defaultLayoutId.
         predefinedDeviceProfiles.add(new InvariantDeviceProfile("Super Short Stubby",
-                255, 300,     2, 3, 2, 3, 3, 48, 13, 3, 48, R.xml.default_workspace_4x4));
+                255, 300,     2, 3, 2, 3, 3, (useLargeIcons? DEFAULT_ICON_SIZE_DP: 48), 13, 3,
+                (useLargeIcons? DEFAULT_ICON_SIZE_DP: 48), R.xml.default_workspace_4x4));
         predefinedDeviceProfiles.add(new InvariantDeviceProfile("Shorter Stubby",
-                255, 400,     3, 3, 3, 3, 3, 48, 13, 3, 48, R.xml.default_workspace_4x4));
+                255, 400,     3, 3, 3, 3, 3, (useLargeIcons? DEFAULT_ICON_SIZE_DP: 48), 13, 3,
+                (useLargeIcons? DEFAULT_ICON_SIZE_DP: 48), R.xml.default_workspace_4x4));
         predefinedDeviceProfiles.add(new InvariantDeviceProfile("Short Stubby",
-                275, 420,     3, 4, 3, 4, 4, 48, 13, 5, 48, R.xml.default_workspace_4x4));
+                275, 420,     3, 4, 3, 4, 4, (useLargeIcons? DEFAULT_ICON_SIZE_DP: 48), 13, 5,
+                (useLargeIcons? DEFAULT_ICON_SIZE_DP: 48), R.xml.default_workspace_4x4));
         predefinedDeviceProfiles.add(new InvariantDeviceProfile("Stubby",
-                255, 450,     3, 4, 3, 4, 4, 48, 13, 5, 48, R.xml.default_workspace_4x4));
+                255, 450,     3, 4, 3, 4, 4, (useLargeIcons? DEFAULT_ICON_SIZE_DP: 48), 13, 5,
+                (useLargeIcons? DEFAULT_ICON_SIZE_DP: 48), R.xml.default_workspace_4x4));
         predefinedDeviceProfiles.add(new InvariantDeviceProfile("Nexus S",
-                296, 491.33f, 4, 4, 4, 4, 4, 48, 13, 5, 48, R.xml.default_workspace_4x4));
+                296, 491.33f, 4, 4, 4, 4, 4, (useLargeIcons? DEFAULT_ICON_SIZE_DP : 48), 13, 5,
+                (useLargeIcons? DEFAULT_ICON_SIZE_DP: 48), R.xml.default_workspace_4x4));
         predefinedDeviceProfiles.add(new InvariantDeviceProfile("Nexus 4",
-                335, 567,     4, 4, 4, 4, 4, DEFAULT_ICON_SIZE_DP, 13, 5, 56, R.xml.default_workspace_4x4));
+                335, 567,     4, 4, 4, 4, 4, (useLargeIcons ? 70 : DEFAULT_ICON_SIZE_DP), 13, 5,
+                (useLargeIcons? 68 : 56), R.xml.default_workspace_4x4));
         predefinedDeviceProfiles.add(new InvariantDeviceProfile("Nexus 5",
-                359, 567,     4, 4, 4, 4, 4, DEFAULT_ICON_SIZE_DP, 13, 5, 56, R.xml.default_workspace_4x4));
+                359, 567,     4, 4, 4, 4, 4, (useLargeIcons ? 70 : DEFAULT_ICON_SIZE_DP), 13, 5,
+                (useLargeIcons? 68 : 56), R.xml.default_workspace_4x4));
         predefinedDeviceProfiles.add(new InvariantDeviceProfile("Large Phone",
-                406, 694,     5, 5, 4, 4, 4, 64, 14.4f,  5, 56, R.xml.default_workspace_5x5));
+                406, 694,     5, 5, 4, 4, 4, (useLargeIcons ? 76 : 64), 14.4f,  5,
+                (useLargeIcons ? 68 : 56), R.xml.default_workspace_5x5));
         // The tablet profile is odd in that the landscape orientation
         // also includes the nav bar on the side
         predefinedDeviceProfiles.add(new InvariantDeviceProfile("Nexus 7",
-                575, 904,     5, 6, 4, 5, 4, 72, 14.4f,  7, 60, R.xml.default_workspace_5x6));
+                575, 904,     5, 6, 4, 5, 4, (useLargeIcons ? 88 : 72), 14.4f,  7,
+                (useLargeIcons ? 72 : 60), R.xml.default_workspace_5x6));
         // Larger tablet profiles always have system bars on the top & bottom
         predefinedDeviceProfiles.add(new InvariantDeviceProfile("Nexus 10",
-                727, 1207,    5, 6, 4, 5, 4, 76, 14.4f,  7, 64, R.xml.default_workspace_5x6));
+                727, 1207,    5, 6, 4, 5, 4, (useLargeIcons ? 92 : 76), 14.4f,  7,
+                (useLargeIcons ? 76 : 64), R.xml.default_workspace_5x6));
         predefinedDeviceProfiles.add(new InvariantDeviceProfile("20-inch Tablet",
-                1527, 2527,   7, 7, 6, 6, 4, 100, 20,  7, 72, R.xml.default_workspace_4x4));
+                1527, 2527,   7, 7, 6, 6, 4, (useLargeIcons ? 124 : 100), 20,  7,
+                (useLargeIcons ? 84 : 72), R.xml.default_workspace_4x4));
         return predefinedDeviceProfiles;
     }
 

@@ -63,6 +63,7 @@ import com.android.launcher3.FolderInfo.FolderListener;
 import com.android.launcher3.UninstallDropTarget.UninstallSource;
 import com.android.launcher3.Workspace.ItemOperator;
 import com.android.launcher3.accessibility.LauncherAccessibilityDelegate.AccessibilityDragSource;
+import com.android.launcher3.settings.SettingsProvider;
 import com.android.launcher3.util.Thunk;
 import com.android.launcher3.util.UiThreadCircularReveal;
 
@@ -229,6 +230,13 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
         mFolderName.setInputType(mFolderName.getInputType() |
                 InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS | InputType.TYPE_TEXT_FLAG_CAP_WORDS);
 
+        boolean hideLabels = SettingsProvider.getBoolean(mLauncher,
+                SettingsProvider.SETTINGS_UI_HOMESCREEN_HIDE_ICON_LABELS,
+                R.bool.preferences_interface_homescreen_hide_icon_labels_default);
+        if (hideLabels) {
+            mFolderName.setVisibility(View.GONE);
+        }
+
         mFooter = findViewById(R.id.folder_footer);
 
         // We find out how tall footer wants to be (it is set to wrap_content), so that
@@ -326,7 +334,11 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
         // Convert to a string here to ensure that no other state associated with the text field
         // gets saved.
         String newTitle = mFolderName.getText().toString();
-        mInfo.setTitle(newTitle);
+        if (!SettingsProvider.getBoolean(mLauncher,
+                SettingsProvider.SETTINGS_UI_HOMESCREEN_HIDE_ICON_LABELS,
+                R.bool.preferences_interface_homescreen_hide_icon_labels_default)) {
+            mInfo.setTitle(newTitle);
+        }
         LauncherModel.updateItemInDatabase(mLauncher, mInfo);
 
         if (commit) {

@@ -68,6 +68,7 @@ import com.android.launcher3.accessibility.LauncherAccessibilityDelegate;
 import com.android.launcher3.accessibility.LauncherAccessibilityDelegate.AccessibilityDragSource;
 import com.android.launcher3.accessibility.OverviewScreenAccessibilityDelegate;
 import com.android.launcher3.compat.UserHandleCompat;
+import com.android.launcher3.settings.SettingsProvider;
 import com.android.launcher3.util.LongArrayMap;
 import com.android.launcher3.util.Thunk;
 import com.android.launcher3.util.WallpaperUtils;
@@ -217,6 +218,7 @@ public class Workspace extends PagedView
     private boolean mWorkspaceFadeInAdjacentScreens;
 
     WallpaperOffsetInterpolator mWallpaperOffset;
+    private boolean mScrollWallpaper;
     @Thunk boolean mWallpaperIsLiveWallpaper;
     @Thunk int mNumPagesForWallpaperParallax;
     @Thunk float mLastSetWallpaperOffsetSteps = 0;
@@ -290,6 +292,8 @@ public class Workspace extends PagedView
         }
     };
 
+    private boolean mHideIconLabels;
+
     /**
      * Used to inflate the Workspace from XML.
      *
@@ -311,6 +315,10 @@ public class Workspace extends PagedView
         super(context, attrs, defStyle);
 
         mOutlineHelper = HolographicOutlineHelper.obtain(context);
+
+        mHideIconLabels = SettingsProvider.getBoolean(context,
+                SettingsProvider.SETTINGS_UI_HOMESCREEN_HIDE_ICON_LABELS,
+                R.bool.preferences_interface_homescreen_hide_icon_labels_default);
 
         mLauncher = (Launcher) context;
         mStateTransitionAnimation = new WorkspaceStateTransitionAnimation(mLauncher, this);
@@ -964,6 +972,8 @@ public class Workspace extends PagedView
      */
     void addInScreen(View child, long container, long screenId, int x, int y, int spanX, int spanY,
             boolean insert, boolean computeXYFromRank) {
+        reloadSettings();
+
         if (container == LauncherSettings.Favorites.CONTAINER_DESKTOP) {
             if (getScreenWithId(screenId) == null) {
                 Log.e(TAG, "Skipping child, screenId " + screenId + " not found");
@@ -994,9 +1004,10 @@ public class Workspace extends PagedView
                 screenId = mLauncher.getHotseat().getOrderInHotseat(x, y);
             }
         } else {
-            // Show folder title if not in the hotseat
             if (child instanceof FolderIcon) {
-                ((FolderIcon) child).setTextVisible(true);
+                ((FolderIcon) child).setTextVisible(!mHideIconLabels);
+            } else if (child instanceof BubbleTextView) {
+                ((BubbleTextView) child).setTextVisibility(!mHideIconLabels);
             }
             layout = getScreenWithId(screenId);
             child.setOnKeyListener(new IconKeyEventListener());
@@ -1533,7 +1544,8 @@ public class Workspace extends PagedView
     @Override
     public void computeScroll() {
         super.computeScroll();
-        mWallpaperOffset.syncWithScroll();
+
+        if (mScrollWallpaper) mWallpaperOffset.syncWithScroll();
     }
 
     @Override
@@ -1702,6 +1714,8 @@ public class Workspace extends PagedView
             }
         }
 
+        setScrollingWallpaper();
+
         // Update wallpaper dimensions if they were changed since last onResume
         // (we also always set the wallpaper dimensions in the constructor)
         if (LauncherAppState.getInstance().hasWallpaperChangedSinceLastCheck()) {
@@ -1715,7 +1729,8 @@ public class Workspace extends PagedView
 
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
-        if (mFirstLayout && mCurrentPage >= 0 && mCurrentPage < getChildCount()) {
+        if (mFirstLayout && mCurrentPage >= 0 && mCurrentPage < getChildCount()
+                && mScrollWallpaper) {
             mWallpaperOffset.syncWithScroll();
             mWallpaperOffset.jumpToFinal();
         }
@@ -3523,6 +3538,7 @@ public class Workspace extends PagedView
             case LauncherSettings.Favorites.ITEM_TYPE_FOLDER:
                 view = FolderIcon.fromXml(R.layout.folder_icon, mLauncher, cellLayout,
                         (FolderInfo) info, mIconCache);
+                ((FolderIcon) view).setTextVisible(!mHideIconLabels);
                 break;
             default:
                 throw new IllegalStateException("Unknown item type: " + info.itemType);
@@ -4480,6 +4496,29 @@ public class Workspace extends PagedView
     public void fillInLaunchSourceData(Bundle sourceData) {
         sourceData.putString(Stats.SOURCE_EXTRA_CONTAINER, Stats.CONTAINER_HOMESCREEN);
         sourceData.putInt(Stats.SOURCE_EXTRA_CONTAINER_PAGE, getCurrentPage());
+    }
+
+    private void reloadSettings() {
+        mHideIconLabels = SettingsProvider.getBoolean(mLauncher,
+                SettingsProvider.SETTINGS_UI_HOMESCREEN_HIDE_ICON_LABELS,
+                R.bool.preferences_interface_homescreen_hide_icon_labels_default);
+
+        setScrollingWallpaper();
+    }
+
+    /**
+     * Gets the preference for whether to apply scrolling wallpaper effect or not and applies the
+     * preference.
+     */
+    private void setScrollingWallpaper() {
+        mScrollWallpaper = SettingsProvider.getBoolean(mLauncher,
+                SettingsProvider.SETTINGS_UI_HOMESCREEN_SCROLLING_WALLPAPER_SCROLL,
+                R.bool.preferences_interface_homescreen_scrolling_wallpaper_scroll_default);
+        if (!mScrollWallpaper) {
+            if (mWindowToken != null) mWallpaperManager.setWallpaperOffsets(mWindowToken, 0f, 0.5f);
+        } else {
+            mWallpaperOffset.syncWithScroll();
+        }
     }
 
     /**

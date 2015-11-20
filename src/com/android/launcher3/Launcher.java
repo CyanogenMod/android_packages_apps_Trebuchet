@@ -54,6 +54,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
+import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -105,6 +106,7 @@ import com.android.launcher3.compat.LauncherAppsCompat;
 import com.android.launcher3.compat.UserHandleCompat;
 import com.android.launcher3.compat.UserManagerCompat;
 import com.android.launcher3.model.WidgetsModel;
+import com.android.launcher3.settings.SettingsProvider;
 import com.android.launcher3.util.ComponentKey;
 import com.android.launcher3.util.LongArrayMap;
 import com.android.launcher3.util.Thunk;
@@ -261,6 +263,7 @@ public class Launcher extends Activity
 
     @Thunk Hotseat mHotseat;
     private ViewGroup mOverviewPanel;
+    OverviewSettingsPanel mOverviewSettingsPanel;
 
     private View mAllAppsButton;
     private View mWidgetsButton;
@@ -355,6 +358,9 @@ public class Launcher extends Activity
     // the press state and keep this reference to reset the press state when we return to launcher.
     private BubbleTextView mWaitingForResume;
 
+    // Preferences
+    private boolean mHideIconLabels;
+
     protected static HashMap<String, CustomAppWidget> sCustomAppWidgets =
             new HashMap<String, CustomAppWidget>();
 
@@ -430,17 +436,11 @@ public class Launcher extends Activity
         LauncherAppState.setApplicationContext(getApplicationContext());
         LauncherAppState app = LauncherAppState.getInstance();
 
-        // Load configuration-specific DeviceProfile
-        mDeviceProfile = getResources().getConfiguration().orientation
-                == Configuration.ORIENTATION_LANDSCAPE ?
-                        app.getInvariantDeviceProfile().landscapeProfile
-                            : app.getInvariantDeviceProfile().portraitProfile;
+        initializeDeviceProfile(app);
 
         mSharedPrefs = getSharedPreferences(LauncherAppState.getSharedPreferencesKey(),
                 Context.MODE_PRIVATE);
         mIsSafeModeEnabled = getPackageManager().isSafeMode();
-        mModel = app.setLauncher(this);
-        mIconCache = app.getIconCache();
 
         mDragController = new DragController(this);
         mInflater = getLayoutInflater();
@@ -1391,7 +1391,11 @@ public class Launcher extends Activity
             mHotseat.setOnLongClickListener(this);
         }
 
+        // Setup the overview panel
         mOverviewPanel = (ViewGroup) findViewById(R.id.overview_panel);
+        mOverviewSettingsPanel = new OverviewSettingsPanel(this);
+        mOverviewSettingsPanel.initializeAdapter();
+
         mWidgetsButton = findViewById(R.id.widget_button);
         mWidgetsButton.setOnClickListener(new OnClickListener() {
             @Override
@@ -1427,6 +1431,36 @@ public class Launcher extends Activity
             settingsButton.setOnTouchListener(getHapticFeedbackTouchListener());
         } else {
             settingsButton.setVisibility(View.GONE);
+        }
+
+        View defaultScreenButton = findViewById(R.id.default_screen_button);
+        defaultScreenButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                if (!mWorkspace.isSwitchingState()) {
+                    onClickDefaultScreenButton(arg0);
+                }
+            }
+        });
+        defaultScreenButton.setOnTouchListener(getHapticFeedbackTouchListener());
+
+        final VerticalSlidingPanel verticalSlidingPanel = ((VerticalSlidingPanel) mOverviewPanel);
+        verticalSlidingPanel.setPanelSlideListener(new SettingsPanelSlideListener());
+        verticalSlidingPanel.setEnableDragViewTouchEvents(true);
+
+        View settingsPaneHeader = mOverviewPanel.findViewById(R.id.settings_pane_header);
+        if (settingsPaneHeader != null) {
+            verticalSlidingPanel.setDragView(settingsPaneHeader);
+            settingsPaneHeader.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (verticalSlidingPanel.isExpanded()) {
+                        verticalSlidingPanel.collapsePane();
+                    } else {
+                        verticalSlidingPanel.expandPane();
+                    }
+                }
+            });
         }
 
         mOverviewPanel.setAlpha(0f);
@@ -1517,6 +1551,7 @@ public class Launcher extends Activity
         BubbleTextView favorite = (BubbleTextView) mInflater.inflate(R.layout.app_icon,
                 parent, false);
         favorite.applyFromShortcutInfo(info, mIconCache);
+        favorite.setTextVisibility(!mHideIconLabels);
         favorite.setCompoundDrawablePadding(mDeviceProfile.iconDrawablePaddingPx);
         favorite.setOnClickListener(this);
         favorite.setOnFocusChangeListener(mFocusHandler);
@@ -1659,6 +1694,38 @@ public class Launcher extends Activity
             }
         }
     };
+
+    public void initializeDeviceProfile(LauncherAppState app) {
+        // Load configuration-specific DeviceProfile
+        mDeviceProfile = getResources().getConfiguration().orientation
+                == Configuration.ORIENTATION_LANDSCAPE ?
+                app.getInvariantDeviceProfile().landscapeProfile
+                : app.getInvariantDeviceProfile().portraitProfile;
+
+        mModel = app.setLauncher(this);
+        mIconCache = app.getIconCache();
+
+        mHideIconLabels = SettingsProvider.getBoolean(this,
+                SettingsProvider.SETTINGS_UI_HOMESCREEN_HIDE_ICON_LABELS,
+                R.bool.preferences_interface_homescreen_hide_icon_labels_default);
+    }
+
+    public void reloadLauncher()
+    {
+        // Re-initialize device profile
+        LauncherAppState app = LauncherAppState.getInstance();
+        app.initInvariantDeviceProfile();
+        initializeDeviceProfile(app);
+
+        mDeviceProfile.layout(this);
+
+        // Reload
+        mModel.resetLoadedState(true, true);
+        mModel.startLoader(mWorkspace.getRestorePage(), LauncherModel.LOADER_FLAG_NONE);
+        mWorkspace.updateCustomContentVisibility();
+
+        mAppsView.reset();
+    }
 
     @Override
     public void onAttachedToWindow() {
@@ -2405,6 +2472,9 @@ public class Launcher extends Activity
         // Create the view
         FolderIcon newFolder =
             FolderIcon.fromXml(R.layout.folder_icon, this, layout, folderInfo, mIconCache);
+        if (container == LauncherSettings.Favorites.CONTAINER_DESKTOP) {
+            newFolder.setTextVisible(!mHideIconLabels);
+        }
         mWorkspace.addInScreen(newFolder, container, screenId, cellX, cellY, 1, 1,
                 isWorkspaceLocked());
         // Force measure the new folder icon
@@ -2800,6 +2870,11 @@ public class Launcher extends Activity
         } else {
             startActivity(new Intent(this, SettingsActivity.class));
         }
+    }
+
+    protected void onClickDefaultScreenButton(View v) {
+        if (LOGD) Log.d(TAG, "onClickDefaultScreenButton");
+        // TODO
     }
 
     public View.OnTouchListener getHapticFeedbackTouchListener() {
@@ -3855,6 +3930,7 @@ public class Launcher extends Activity
                     view = FolderIcon.fromXml(R.layout.folder_icon, this,
                             (ViewGroup) workspace.getChildAt(workspace.getCurrentPage()),
                             (FolderInfo) item, mIconCache);
+                    ((FolderIcon) view).setTextVisible(!mHideIconLabels);
                     break;
                 default:
                     throw new RuntimeException("Invalid Item Type");
@@ -4779,6 +4855,39 @@ public class Launcher extends Activity
                     return null;
                 }
             }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void) null);
+        }
+    }
+
+    class SettingsPanelSlideListener extends VerticalSlidingPanel.SimplePanelSlideListener {
+        ImageView mAnimatedArrow;
+
+        public SettingsPanelSlideListener() {
+            super();
+            mAnimatedArrow = (ImageView) mOverviewPanel.findViewById(R.id.settings_drag_arrow);
+        }
+
+        @Override
+        public void onPanelCollapsed(View panel) {
+            mAnimatedArrow.setBackgroundResource(R.drawable.transition_arrow_reverse);
+
+            AnimationDrawable frameAnimation = (AnimationDrawable) mAnimatedArrow.getBackground();
+            frameAnimation.start();
+
+            /*if (mLauncher.updateGridIfNeeded()) {
+                Workspace workspace = mLauncher.getWorkspace();
+                if (workspace.isInOverviewMode()) {
+                    workspace.setChildrenOutlineAlpha(1.0f);
+                    mLauncher.mSearchDropTargetBar.hideSearchBar(false);
+                }
+            }*/
+        }
+
+        @Override
+        public void onPanelExpanded(View panel) {
+            mAnimatedArrow.setBackgroundResource(R.drawable.transition_arrow);
+
+            AnimationDrawable frameAnimation = (AnimationDrawable) mAnimatedArrow.getBackground();
+            frameAnimation.start();
         }
     }
 }

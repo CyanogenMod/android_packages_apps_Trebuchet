@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <bool name="preferences_interface_homescreen_search_default">true</bool>
+    <bool name="preferences_interface_homescreen_scrolling_wallpaper_scroll_default">true</bool>
+    <bool name="preferences_interface_homescreen_hide_icon_labels_default">false</bool>
+    <bool name="preferences_interface_drawer_hide_icon_labels_default">false</bool>
+    <bool name="preferences_interface_drawer_compact_default">false</bool>
+    <bool name="preferences_interface_general_icons_large_default">false</bool>
+</resources>

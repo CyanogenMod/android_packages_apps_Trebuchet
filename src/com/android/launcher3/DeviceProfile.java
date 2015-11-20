@@ -468,7 +468,7 @@ public class DeviceProfile {
         }
 
         // Layout the Overview Mode
-        ViewGroup overviewMode = launcher.getOverviewPanel();
+        /*ViewGroup overviewMode = launcher.getOverviewPanel();
         if (overviewMode != null) {
             int overviewButtonBarHeight = getOverviewModeButtonBarHeight();
             lp = (FrameLayout.LayoutParams) overviewMode.getLayoutParams();
@@ -505,7 +505,7 @@ public class DeviceProfile {
                     }
                 }
             }
-        }
+        }*/
     }
 
     private int getCurrentWidth() {

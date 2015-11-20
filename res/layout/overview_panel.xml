@@ -14,53 +14,130 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center_horizontal|bottom"
-    android:gravity="top"
-    android:orientation="horizontal" >
+<com.android.launcher3.OverviewPanel xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:slidingpanel="http://schemas.android.com/apk/res/com.android.launcher3"
+     android:id="@+id/sliding_layout"
+     android:layout_width="match_parent"
+     android:layout_height="match_parent"
+     android:gravity="bottom"
+     slidingpanel:overlay="false"
+     slidingpanel:panelHeight="@dimen/sliding_panel_padding" >
 
-    <TextView
-        android:id="@+id/wallpaper_button"
-        android:layout_width="0dp"
+    <LinearLayout
+        android:id="@+id/default_home_screen_panel"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:drawablePadding="4dp"
-        android:drawableTop="@drawable/wallpaper_button"
-        android:fontFamily="sans-serif-condensed"
-        android:gravity="center_horizontal"
-        android:text="@string/wallpaper_button_text"
-        android:textAllCaps="true"
-        android:textColor="@android:color/white"
-        android:textSize="12sp" />
+        android:layout_gravity="center_horizontal"
+        android:background="@color/slideup_panel_bg_color"
+        android:paddingTop="@dimen/overview_panel_top_padding" >
 
-    <TextView
-        android:id="@+id/widget_button"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:drawablePadding="4dp"
-        android:drawableTop="@drawable/widget_button"
-        android:fontFamily="sans-serif-condensed"
-        android:gravity="center_horizontal"
-        android:text="@string/widget_button_text"
-        android:textAllCaps="true"
-        android:textColor="@android:color/white"
-        android:textSize="12sp" />
+        <ImageView
+            android:id="@+id/default_screen_button"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/app_icon_size"
+            android:layout_weight="1"
+            android:src="@drawable/default_screen_button"
+            android:scaleType="fitCenter"
+            android:gravity="top"
+            android:paddingLeft="@dimen/overview_panel_button_spacing"
+            android:paddingRight="@dimen/overview_panel_button_spacing"/>
+    </LinearLayout>
 
-    <TextView
-        android:id="@+id/settings_button"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:drawablePadding="4dp"
-        android:drawableTop="@drawable/setting_button"
-        android:fontFamily="sans-serif-condensed"
-        android:gravity="center_horizontal"
-        android:text="@string/settings_button_text"
-        android:textAllCaps="true"
-        android:textColor="@android:color/white"
-        android:textSize="12sp" />
+    <FrameLayout android:orientation="vertical"
+         android:layout_width="match_parent"
+         android:background="@color/slideup_panel_bg_color"
+         android:layout_height="match_parent" >
 
-</LinearLayout>
+        <LinearLayout
+            android:id="@+id/settings_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal|bottom"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:id="@+id/settings_pane_header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingTop="@dimen/overview_panel_top_padding" >
+
+                <ImageView
+                    android:id="@+id/settings_drag_arrow"
+                    android:layout_width="@dimen/overview_panel_button_spacing"
+                    android:layout_height="@dimen/overview_panel_button_spacing"
+                    android:layout_gravity="center_horizontal"
+                    android:adjustViewBounds="true"
+                    android:background="@drawable/launcheranimatedarrow_00000"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="@dimen/overview_panel_bottom_padding"
+                    android:paddingTop="@dimen/overview_panel_list_padding" >
+
+                    <TextView
+                        android:id="@+id/wallpaper_button"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:drawablePadding="4dp"
+                        android:drawableTop="@drawable/wallpaper_button"
+                        android:fontFamily="sans-serif-condensed"
+                        android:gravity="center_horizontal"
+                        android:text="@string/wallpaper_button_text"
+                        android:textAllCaps="true"
+                        android:textColor="@android:color/white"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/widget_button"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:drawablePadding="4dp"
+                        android:drawableTop="@drawable/widget_button"
+                        android:fontFamily="sans-serif-condensed"
+                        android:gravity="center_horizontal"
+                        android:text="@string/widget_button_text"
+                        android:textAllCaps="true"
+                        android:textColor="@android:color/white"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/settings_button"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:drawablePadding="4dp"
+                        android:drawableTop="@drawable/setting_button"
+                        android:fontFamily="sans-serif-condensed"
+                        android:gravity="center_horizontal"
+                        android:text="@string/settings_button_text"
+                        android:textAllCaps="true"
+                        android:textColor="@android:color/white"
+                        android:textSize="12sp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <view
+                class="com.android.launcher3.list.PinnedHeaderListView"
+                android:id="@+id/settings_home_screen_listview"
+                android:layout_width="match_parent"
+                android:layout_height="0dip"
+                android:fastScrollEnabled="true"
+                android:layout_weight="1" />
+
+        </LinearLayout>
+
+        <LinearLayout
+                android:id="@+id/dark_panel"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/background_dark"
+                android:visibility="gone" />
+    </FrameLayout>
+</com.android.launcher3.OverviewPanel>

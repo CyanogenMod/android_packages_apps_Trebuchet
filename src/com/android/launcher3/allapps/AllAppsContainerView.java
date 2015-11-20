@@ -229,6 +229,11 @@ public class AllAppsContainerView extends BaseContainerView implements DragSourc
         updateScrubber();
     }
 
+    public void reset() {
+        List<AppInfo> apps = mApps.getApps();
+        updateApps(apps);
+    }
+
     /**
      * Updates existing apps in the list
      */

@@ -43,6 +43,7 @@ import android.widget.TextView;
 
 import com.android.launcher3.IconCache.IconLoadRequest;
 import com.android.launcher3.model.PackageItemInfo;
+import com.android.launcher3.settings.SettingsProvider;
 
 /**
  * TextView that draws a bubble behind the text. We cannot use a LineBackgroundSpan
@@ -86,7 +87,7 @@ public class BubbleTextView extends TextView
     private final boolean mDeferShadowGenerationOnTouch;
     private final boolean mCustomShadowsEnabled;
     private final boolean mLayoutHorizontal;
-    private int mIconSize;
+    private final int mIconSize;
     private int mTextColor;
 
     private boolean mStayPressed;
@@ -130,6 +131,13 @@ public class BubbleTextView extends TextView
         } else if (display == DISPLAY_ALL_APPS) {
             setTextSize(TypedValue.COMPLEX_UNIT_PX, grid.allAppsIconTextSizePx);
             defaultIconSize = grid.allAppsIconSizePx;
+        }
+        boolean useCompactDrawer = SettingsProvider.getBoolean(context,
+                SettingsProvider.SETTINGS_UI_DRAWER_COMPACT,
+                R.bool.preferences_interface_drawer_compact_default);
+        if (!useCompactDrawer) {
+            defaultIconSize = getResources()
+                    .getDimensionPixelSize(R.dimen.all_apps_icon_size_ragged);
         }
 
         mIconSize = a.getDimensionPixelSize(R.styleable.BubbleTextView_iconSizeOverride,
@@ -433,10 +441,6 @@ public class BubbleTextView extends TextView
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         if (mBackground != null) mBackground.setCallback(null);
-    }
-
-    public void setIconSize(int iconSize) {
-        mIconSize = iconSize;
     }
 
     @Override

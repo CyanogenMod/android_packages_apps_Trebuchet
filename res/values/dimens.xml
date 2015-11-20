@@ -145,7 +145,7 @@
     <dimen name="blur_size_click_shadow">4dp</dimen>
     <dimen name="click_shadow_high_shift">2dp</dimen>
 
-    <dimen name="app_drawer_scrubber_padding">20dp</dimen>
+<!-- Pending widget -->
     <dimen name="pending_widget_min_padding">8dp</dimen>
     <dimen name="pending_widget_elevation">2dp</dimen>
 
@@ -157,5 +157,14 @@
 <!-- Folder open animation -->
     <integer name="folder_translate_y_dist">300</integer>
     <integer name="folder_icon_translate_y_dist">100</integer>
+
+<!-- Overview panel -->
+    <dimen name="sliding_panel_padding">175dp</dimen>
+    <dimen name="overview_panel_top_padding">20dp</dimen>
+    <dimen name="overview_panel_bottom_padding">50dp</dimen>
+    <dimen name="overview_panel_button_spacing">30dp</dimen>
+    <dimen name="overview_panel_list_padding">16dp</dimen>
+    <dimen name="overview_mode_page_offset">60dp</dimen>
+    <dimen name="overview_scaling_padding">50dp</dimen>
 
 </resources>
