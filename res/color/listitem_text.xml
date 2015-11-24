@@ -16,6 +16,6 @@
 -->
 <selector xmlns:android="http://schemas.android.com/apk/res/android" >
     <item android:state_enabled="true"
-        android:state_pressed="true" android:drawable="@android:color/white" />
-    <item android:drawable="@color/settings_bg_color" />
+        android:state_pressed="true" android:color="@color/settings_bg_color" />
+    <item android:color="@android:color/white" />
 </selector>

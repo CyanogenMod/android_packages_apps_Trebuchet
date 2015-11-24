@@ -109,6 +109,8 @@ public class LauncherModel extends BroadcastReceiver
     @Thunk boolean mIsLoaderTaskRunning;
     @Thunk boolean mHasLoaderCompletedOnce;
 
+    private volatile boolean mFlushingWorkerThread;
+
     private static final String MIGRATE_AUTHORITY = "com.android.launcher2.settings";
 
     @Thunk static final HandlerThread sWorkerThread = new HandlerThread("launcher-loader");
@@ -771,6 +773,35 @@ public class LauncherModel extends BroadcastReceiver
                 }
             } else {
                 sBgWorkspaceItems.remove(modelItem);
+            }
+        }
+    }
+
+    public void flushWorkerThread() {
+        mFlushingWorkerThread = true;
+        Runnable waiter = new Runnable() {
+                public void run() {
+                    synchronized (this) {
+                        notifyAll();
+                        mFlushingWorkerThread = false;
+                    }
+                }
+            };
+
+        synchronized(waiter) {
+            runOnWorkerThread(waiter);
+            if (mLoaderTask != null) {
+                synchronized(mLoaderTask) {
+                    mLoaderTask.notify();
+                }
+            }
+            boolean success = false;
+            while (!success) {
+                try {
+                    waiter.wait();
+                    success = true;
+                } catch (InterruptedException e) {
+                }
             }
         }
     }

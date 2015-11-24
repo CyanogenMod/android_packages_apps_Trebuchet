@@ -79,6 +79,14 @@
             android:layout_gravity="center_vertical"
             layout="@layout/page_indicator" />
 
+        <ImageView
+            android:id="@+id/folder_lock"
+            android:layout_width="@dimen/folder_lock_icon"
+            android:layout_height="@dimen/folder_lock_icon"
+            android:padding="@dimen/folder_name_padding"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/folder_unlocked" />
+
     </LinearLayout>
 
 </com.android.launcher3.Folder>

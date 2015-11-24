@@ -378,13 +378,23 @@ public class FolderIcon extends FrameLayout implements FolderListener {
 
     private boolean willAcceptItem(ItemInfo item) {
         final int itemType = item.itemType;
+
+        boolean hidden = false;
+        if (item instanceof FolderInfo){
+            hidden = ((FolderInfo) item).hidden;
+        }
         return ((itemType == LauncherSettings.Favorites.ITEM_TYPE_APPLICATION ||
-                itemType == LauncherSettings.Favorites.ITEM_TYPE_SHORTCUT) &&
-                !mFolder.isFull() && item != mInfo && !mInfo.opened);
+                itemType == LauncherSettings.Favorites.ITEM_TYPE_SHORTCUT ||
+                itemType == LauncherSettings.Favorites.ITEM_TYPE_FOLDER) &&
+                !mFolder.isFull() && item != mInfo && !mInfo.opened &&
+                !hidden);
     }
 
     public boolean acceptDrop(Object dragInfo) {
         final ItemInfo item = (ItemInfo) dragInfo;
+        if (mInfo.hidden) {
+            return false;
+        }
         return !mFolder.isDestroyed() && willAcceptItem(item);
     }
 
@@ -423,6 +433,8 @@ public class FolderIcon extends FrameLayout implements FolderListener {
                 item = ((AppInfo) mDragInfo).makeShortcut();
                 item.spanX = 1;
                 item.spanY = 1;
+            } else if (mDragInfo instanceof FolderInfo) {
+                return;
             } else {
                 // ShortcutInfo
                 item = (ShortcutInfo) mDragInfo;
@@ -690,6 +702,23 @@ public class FolderIcon extends FrameLayout implements FolderListener {
         }
 
         int nItemsInPreview = Math.min(items.size(), NUM_ITEMS_IN_PREVIEW);
+
+        // Hidden folder - don't display Preview
+        View folderLock = findViewById(R.id.folder_lock_image);
+        folderLock.setVisibility(mInfo.hidden ? VISIBLE : INVISIBLE);
+        View appView = findViewById(R.id.app_0);
+        appView.setVisibility(mInfo.hidden ? INVISIBLE : VISIBLE);
+        appView = findViewById(R.id.app_1);
+        appView.setVisibility(mInfo.hidden ? INVISIBLE : VISIBLE);
+        appView = findViewById(R.id.app_2);
+        appView.setVisibility(mInfo.hidden ? INVISIBLE : VISIBLE);
+        appView = findViewById(R.id.app_3);
+        appView.setVisibility(mInfo.hidden ? INVISIBLE : VISIBLE);
+
+        if (mInfo.hidden) {
+            return;
+        }
+
         if (!mAnimating) {
             for (int i = NUM_ITEMS_IN_PREVIEW; i >= 0; i--) {
                 d = null;

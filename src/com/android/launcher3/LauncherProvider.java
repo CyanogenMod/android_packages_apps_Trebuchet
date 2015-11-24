@@ -68,7 +68,7 @@ public class LauncherProvider extends ContentProvider {
     private static final String TAG = "LauncherProvider";
     private static final boolean LOGD = false;
 
-    private static final int DATABASE_VERSION = 26;
+    private static final int DATABASE_VERSION = 27;
 
     public static final String AUTHORITY = ProviderConfig.AUTHORITY;
 
@@ -537,6 +537,7 @@ public class LauncherProvider extends ContentProvider {
                     "modified INTEGER NOT NULL DEFAULT 0," +
                     "restored INTEGER NOT NULL DEFAULT 0," +
                     "profileId INTEGER DEFAULT " + userSerialNumber + "," +
+                    "hidden INTEGER DEFAULT 0" + "," +
                     "rank INTEGER NOT NULL DEFAULT 0," +
                     "options INTEGER NOT NULL DEFAULT 0" +
                     ");");
@@ -718,7 +719,10 @@ public class LauncherProvider extends ContentProvider {
                     ManagedProfileHeuristic.markExistingUsersForNoFolderCreation(mContext);
                 case 25:
                     convertShortcutsToLauncherActivities(db);
-                case 26: {
+                case 26:
+                    // add hidden column
+                    addIntegerColumn(db, "hidden", 0);
+                case 27: {
                     // DB Upgraded successfully
                     return;
                 }
