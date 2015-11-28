@@ -581,7 +581,7 @@ public class AutoInstallsLayout {
             // We can only have folders with >= 2 items, so we need to remove the
             // folder and clean up if less than 2 items were included, or some
             // failed to add, and less than 2 were actually added
-            if (folderItems.size() < 2) {
+            if (folderItems.size() < 2 && !isRemoteFolder()) {
                 // Delete the folder
                 Uri uri = Favorites.getContentUri(folderId, false);
                 SqlArguments args = new SqlArguments(uri, null, null);

@@ -63,6 +63,8 @@ import com.android.launcher3.compat.UserManagerCompat;
 import com.android.launcher3.settings.SettingsProvider;
 import com.android.launcher3.stats.internal.service.AggregationIntentService;
 
+import com.cyngn.RemoteFolder.RemoteFolderUpdater;
+
 import java.lang.ref.WeakReference;
 import java.net.URISyntaxException;
 import java.security.InvalidParameterException;
@@ -1014,6 +1016,7 @@ public class LauncherModel extends BroadcastReceiver
                 final int cellXIndex = c.getColumnIndexOrThrow(LauncherSettings.Favorites.CELLX);
                 final int cellYIndex = c.getColumnIndexOrThrow(LauncherSettings.Favorites.CELLY);
                 final int hiddenIndex = c.getColumnIndexOrThrow(LauncherSettings.Favorites.HIDDEN);
+                final int subType = c.getColumnIndexOrThrow(LauncherSettings.Favorites.SUBTYPE);
 
                 FolderInfo folderInfo = null;
                 switch (c.getInt(itemTypeIndex)) {
@@ -1029,6 +1032,7 @@ public class LauncherModel extends BroadcastReceiver
                 folderInfo.cellX = c.getInt(cellXIndex);
                 folderInfo.cellY = c.getInt(cellYIndex);
                 folderInfo.hidden = c.getInt(hiddenIndex) > 0;
+                folderInfo.subType = subType;
 
                 return folderInfo;
             }
@@ -2128,6 +2132,7 @@ public class LauncherModel extends BroadcastReceiver
                     //final int displayModeIndex = c.getColumnIndexOrThrow(
                     final int hiddenIndex = c.getColumnIndexOrThrow(
                             LauncherSettings.Favorites.HIDDEN);
+                    final int subTypeIndex = c.getColumnIndexOrThrow(LauncherSettings.Favorites.SUBTYPE);
                     //final int uriIndex = c.getColumnIndexOrThrow(LauncherSettings.Favorites.URI); //final int displayModeIndex = c.getColumnIndexOrThrow(
                     //        LauncherSettings.Favorites.DISPLAY_MODE);
 
@@ -2365,6 +2370,7 @@ public class LauncherModel extends BroadcastReceiver
                                 folderInfo.spanX = 1;
                                 folderInfo.spanY = 1;
                                 folderInfo.hidden = c.getInt(hiddenIndex) > 0;
+                                folderInfo.subType = c.getInt(subTypeIndex);
 
                                 // check & update map of what's occupied
                                 if (!checkItemPlacement(occupied, folderInfo, shouldResize)) {
@@ -2866,7 +2872,7 @@ public class LauncherModel extends BroadcastReceiver
                             }
                             workspaceItems.remove(i);
                             folders.remove(Long.valueOf(item.id));
-                        } else if (folder.contents.size() == 0 /*&& !(folder instanceof LiveFolderInfo)*/) {
+                        } else if (folder.contents.size() == 0 && folder.subType == 0) {
                             LauncherModel.deleteFolderContentsFromDatabase(mContext, folder);
                             workspaceItems.remove(i);
                             folders.remove(Long.valueOf(item.id));

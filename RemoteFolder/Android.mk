@@ -1,1 +1,1 @@
-LOCAL_SRC_FILES += (call all-java-files-under, RemoteFolder/src)
+LOCAL_SRC_FILES += $(call all-java-files-under, RemoteFolder/src)

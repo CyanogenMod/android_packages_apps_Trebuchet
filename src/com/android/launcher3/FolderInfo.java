@@ -34,6 +34,7 @@ public class FolderInfo extends ItemInfo {
      * Whether this folder has been opened
      */
     boolean opened;
+    int subType;
 
     /**
      * The apps and shortcuts and hidden status

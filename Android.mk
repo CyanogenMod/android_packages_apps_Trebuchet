@@ -27,15 +27,8 @@ LOCAL_STATIC_JAVA_LIBRARIES := android-support-v13 \
                                android-support-v7-recyclerview \
                                guava
 
-<<<<<<< HEAD
-REMOTE_FOLDER_UPDATER ?= $(LOCAL_PATH)/RemoteFolder
-
 
 LOCAL_SRC_FILES := $(call all-java-files-under, src) \
-    $(call all-java-files-under, $(REMOTE_FOLDER_UPDATER)/src) \
-=======
-LOCAL_SRC_FILES := $(call all-java-files-under, src) \
->>>>>>> 861f6e8... Trebuchet: Remote Folder hooks setup. Updater call still needs to be moved from Folder to LauncherModel
     $(call all-java-files-under, WallpaperPicker/src) \
     $(call all-renderscript-files-under, src) \
     $(call all-proto-files-under, protos)
@@ -105,9 +98,4 @@ $(LOCAL_BUILT_MODULE): $(LOCAL_PATH)/util/etc/launcher_protoutil | $(ACP)
 	$(copy-file-to-new-target)
 	$(hide) chmod 755 $@
 
-<<<<<<< HEAD
-include $(REMOTE_FOLDER_UPDATER)/Android.mk
-
-=======
->>>>>>> 861f6e8... Trebuchet: Remote Folder hooks setup. Updater call still needs to be moved from Folder to LauncherModel
 include $(call all-makefiles-under,$(LOCAL_PATH))

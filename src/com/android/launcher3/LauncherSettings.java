@@ -45,6 +45,10 @@ class LauncherSettings {
         static final String HIDDEN = "hidden";
 
         /**
+         * Folder subtype, used for Remote Folders
+         */
+        static final String SUBTYPE = "subType";
+        /**
          * The Intent URL of the gesture, describing what it points to. This
          * value is given to {@link android.content.Intent#parseUri(String, int)} to create
          * an Intent that can be launched.
@@ -257,6 +261,8 @@ class LauncherSettings {
          * The favorite is a photo frame
          */
         static final int ITEM_TYPE_WIDGET_PHOTO_FRAME = 1002;
+
+        static final int ITEM_TYPE_REMOTE_FOLDER = 2000;
 
         /**
          * The appWidgetId of the widget

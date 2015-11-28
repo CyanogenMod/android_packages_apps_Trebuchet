@@ -67,7 +67,7 @@ public class LauncherProvider extends ContentProvider {
     private static final String TAG = "Launcher.LauncherProvider";
     private static final boolean LOGD = false;
 
-    private static final int DATABASE_VERSION = 22;
+    private static final int DATABASE_VERSION = 23;
 
     static final String OLD_AUTHORITY = "com.android.launcher2.settings";
     static final String AUTHORITY = ProviderConfig.AUTHORITY;
@@ -505,7 +505,8 @@ public class LauncherProvider extends ContentProvider {
                     "modified INTEGER NOT NULL DEFAULT 0," +
                     "restored INTEGER NOT NULL DEFAULT 0," +
                     "profileId INTEGER DEFAULT " + userSerialNumber +
-                    ",hidden INTEGER DEFAULT 0" +
+                    ",hidden INTEGER DEFAULT 0," +
+                    "subType INTEGER DEFAULT 0" +
                     ");");
             addWorkspacesTable(db);
 
@@ -993,6 +994,21 @@ public class LauncherProvider extends ContentProvider {
             if (oldVersion < 22) {
                 updateDialtactsLauncher(db);
                 version = 22;
+            }
+
+            if (version < 23) {
+                db.beginTransaction();
+                try {
+                    db.execSQL("ALTER TABLE favorites " +
+                            "ADD COLUMN subType INTEGER DEFAULT 0;");
+                    db.setTransactionSuccessful();
+                    version = 23;
+                } catch (SQLException ex) {
+                    // Old version remains, which means we wipe old data
+                    Log.e(TAG, ex.getMessage(), ex);
+                } finally {
+                    db.endTransaction();
+                }
             }
 
             if (version != DATABASE_VERSION) {
