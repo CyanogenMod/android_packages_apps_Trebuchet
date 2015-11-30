@@ -52,8 +52,10 @@ import com.android.launcher3.util.Thunk;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
 
@@ -195,6 +197,20 @@ public class IconCache {
      */
     public synchronized void remove(ComponentName componentName, UserHandleCompat user) {
         mCache.remove(new ComponentKey(componentName, user));
+    }
+
+    /**
+     * Empty out the cache that aren't of the correct grid size
+     */
+    public synchronized void flushInvalidIcons(DeviceProfile deviceProfile) {
+        Iterator<Map.Entry<ComponentKey, CacheEntry>> it = mCache.entrySet().iterator();
+        while (it.hasNext()) {
+            final CacheEntry e = it.next().getValue();
+            if ((e.icon != null) && (e.icon.getWidth() < deviceProfile.iconSizePx
+                    || e.icon.getHeight() < deviceProfile.iconSizePx)) {
+                it.remove();
+            }
+        }
     }
 
     /**

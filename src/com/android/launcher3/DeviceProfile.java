@@ -32,6 +32,7 @@ import android.view.ViewGroup.LayoutParams;
 import android.view.ViewGroup.MarginLayoutParams;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import com.android.launcher3.settings.SettingsProvider;
 
 import com.android.launcher3.allapps.AllAppsContainerView;
 
@@ -96,6 +97,7 @@ public class DeviceProfile {
     public final int allAppsIconTextSizePx;
 
     // QSB
+    public boolean searchBarVisible;
     private int searchBarSpaceWidthPx;
     private int searchBarSpaceHeightPx;
 
@@ -160,6 +162,12 @@ public class DeviceProfile {
         // Calculate the remaining vars
         updateAvailableDimensions(dm, res);
         computeAllAppsButtonSize(context);
+
+        // Search Bar
+        searchBarVisible = isSearchBarEnabled(context);
+        searchBarSpaceWidthPx = Math.min(searchBarSpaceWidthPx, widthPx);
+        searchBarSpaceHeightPx = 2 * edgeMarginPx + (searchBarVisible ?
+                searchBarSpaceHeightPx - getSearchBarTopOffset() : 3 * edgeMarginPx);
     }
 
     /**
@@ -245,9 +253,9 @@ public class DeviceProfile {
     /** Returns the search bar top offset */
     private int getSearchBarTopOffset() {
         if (isTablet && !isVerticalBarLayout()) {
-            return 4 * edgeMarginPx;
+            return searchBarVisible ? 4 * edgeMarginPx : 0;
         } else {
-            return 2 * edgeMarginPx;
+            return searchBarVisible ? 2 * edgeMarginPx : 0;
         }
     }
 
@@ -273,12 +281,13 @@ public class DeviceProfile {
                         (inv.numColumns * cellWidthPx)) / (2 * (inv.numColumns + 1)));
                 bounds.set(edgeMarginPx + gap, getSearchBarTopOffset(),
                         availableWidthPx - (edgeMarginPx + gap),
-                        searchBarSpaceHeightPx);
+                        searchBarVisible ? searchBarSpaceHeightPx : edgeMarginPx);
             } else {
                 bounds.set(desiredWorkspaceLeftRightMarginPx - defaultWidgetPadding.left,
                         getSearchBarTopOffset(),
                         availableWidthPx - (desiredWorkspaceLeftRightMarginPx -
-                        defaultWidgetPadding.right), searchBarSpaceHeightPx);
+                        defaultWidgetPadding.right), searchBarVisible ? searchBarSpaceHeightPx :
+                                edgeMarginPx);
             }
         }
         return bounds;
@@ -382,15 +391,18 @@ public class DeviceProfile {
         return visibleChildren;
     }
 
-    public void layout(Launcher launcher) {
-        FrameLayout.LayoutParams lp;
-        boolean hasVerticalBarLayout = isVerticalBarLayout();
-        final boolean isLayoutRtl = Utilities.isRtl(launcher.getResources());
+    public void layoutSearchBar(Launcher launcher, boolean hasVerticalBarLayout) {
+        // Update search bar for live settings
+        searchBarVisible = isSearchBarEnabled(launcher);
 
         // Layout the search bar space
         View searchBar = launcher.getSearchDropTargetBar();
-        lp = (FrameLayout.LayoutParams) searchBar.getLayoutParams();
+        FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) searchBar.getLayoutParams();
         if (hasVerticalBarLayout) {
+            // If search bar is invisible add some extra padding for the drop targets
+            searchBarSpaceHeightPx = searchBarVisible ? searchBarSpaceHeightPx
+                    : searchBarSpaceHeightPx + 5 * edgeMarginPx;
+
             // Vertical search bar space -- The search bar is fixed in the layout to be on the left
             //                              of the screen regardless of RTL
             lp.gravity = Gravity.LEFT;
@@ -398,7 +410,8 @@ public class DeviceProfile {
 
             LinearLayout targets = (LinearLayout) searchBar.findViewById(R.id.drag_target_bar);
             targets.setOrientation(LinearLayout.VERTICAL);
-            FrameLayout.LayoutParams targetsLp = (FrameLayout.LayoutParams) targets.getLayoutParams();
+            FrameLayout.LayoutParams targetsLp =
+                    (FrameLayout.LayoutParams) targets.getLayoutParams();
             targetsLp.gravity = Gravity.TOP;
             targetsLp.height = LayoutParams.WRAP_CONTENT;
 
@@ -411,6 +424,23 @@ public class DeviceProfile {
             targets.getLayoutParams().width = searchBarSpaceWidthPx;
         }
         searchBar.setLayoutParams(lp);
+
+        View qsbBar = launcher.getOrCreateQsbBar();
+        if (qsbBar != null) {
+            qsbBar.setVisibility(searchBarVisible ? View.VISIBLE : View.GONE);
+            LayoutParams vglp = qsbBar.getLayoutParams();
+            vglp.width = LayoutParams.MATCH_PARENT;
+            vglp.height = LayoutParams.MATCH_PARENT;
+            qsbBar.setLayoutParams(vglp);
+        }
+    }
+
+    public void layout(Launcher launcher) {
+        FrameLayout.LayoutParams lp;
+        boolean hasVerticalBarLayout = isVerticalBarLayout();
+        final boolean isLayoutRtl = Utilities.isRtl(launcher.getResources());
+
+        layoutSearchBar(launcher, hasVerticalBarLayout);
 
         // Layout the workspace
         PagedView workspace = (PagedView) launcher.findViewById(R.id.workspace);
@@ -518,5 +548,25 @@ public class DeviceProfile {
         return isLandscape
                 ? Math.min(widthPx, heightPx)
                 : Math.max(widthPx, heightPx);
+    }
+
+    private boolean isSearchBarEnabled(Context context) {
+        boolean searchActivityExists = Utilities.searchActivityExists(context);
+
+        boolean isSearchEnabled = SettingsProvider.getBoolean(context,
+                SettingsProvider.SETTINGS_UI_HOMESCREEN_SEARCH,
+                R.bool.preferences_interface_homescreen_search_default);
+
+        if (searchActivityExists) {
+            return isSearchEnabled;
+        } else {
+            if (isSearchEnabled) {
+                // Disable search bar
+                SettingsProvider.putBoolean(context,
+                        SettingsProvider.SETTINGS_UI_HOMESCREEN_SEARCH, false);
+            }
+
+            return false;
+        }
     }
 }

@@ -15,9 +15,11 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 import com.android.launcher3.Launcher;
 import com.android.launcher3.OverviewSettingsPanel;
 import com.android.launcher3.R;
+import com.android.launcher3.Utilities;
 import com.android.launcher3.settings.SettingsProvider;
 
 public class SettingsPinnedHeaderAdapter extends PinnedHeaderListAdapter {
@@ -87,18 +89,20 @@ public class SettingsPinnedHeaderAdapter extends PinnedHeaderListAdapter {
         Resources res = mLauncher.getResources();
 
 
-        boolean current = false;
-        String state = "";
+        boolean current;
+        String state;
 
         switch (partition) {
             case OverviewSettingsPanel.HOME_SETTINGS_POSITION:
                 switch (position) {
-                    /*case 0:
-                        current = mLauncher.isSearchBarEnabled();
+                    case 0:
+                        current = SettingsProvider.getBoolean(mContext,
+                                SettingsProvider.SETTINGS_UI_HOMESCREEN_SEARCH,
+                                R.bool.preferences_interface_homescreen_search_default);
                         state = current ? res.getString(R.string.setting_state_on)
                                 : res.getString(R.string.setting_state_off);
                         ((TextView) v.findViewById(R.id.item_state)).setText(state);
-                        break;*/
+                        break;
                     case 1:
                         current = SettingsProvider.getBoolean(mContext,
                                 SettingsProvider.SETTINGS_UI_HOMESCREEN_HIDE_ICON_LABELS,
@@ -206,21 +210,21 @@ public class SettingsPinnedHeaderAdapter extends PinnedHeaderListAdapter {
             switch (partition) {
                 case OverviewSettingsPanel.HOME_SETTINGS_POSITION:
                     switch (position) {
-                        /*case 0:
+                        case 0:
                             updateSearchBarVisibility(v);
-                            mLauncher.setUpdateDynamicGrid(false);
-                            break;*/
+                            mLauncher.setReloadLauncher();
+                            break;
                         case 1:
                             onIconLabelsBooleanChanged(v,
                                     SettingsProvider.SETTINGS_UI_HOMESCREEN_HIDE_ICON_LABELS,
                                     R.bool.preferences_interface_homescreen_hide_icon_labels_default);
-                            mLauncher.reloadLauncher();
+                            mLauncher.setReloadLauncher();
                             break;
                         case 2:
                             onSettingsBooleanChanged(v,
                                     SettingsProvider.SETTINGS_UI_HOMESCREEN_SCROLLING_WALLPAPER_SCROLL,
                                     R.bool.preferences_interface_homescreen_scrolling_wallpaper_scroll_default);
-                            mLauncher.reloadLauncher();
+                            mLauncher.setReloadLauncher();
                             break;
                         /*case 3:
                             mLauncher.onClickDynamicGridSizeButton();
@@ -233,7 +237,7 @@ public class SettingsPinnedHeaderAdapter extends PinnedHeaderListAdapter {
                             onIconLabelsBooleanChanged(v,
                                     SettingsProvider.SETTINGS_UI_DRAWER_HIDE_ICON_LABELS,
                                     R.bool.preferences_interface_drawer_hide_icon_labels_default);
-                            mLauncher.reloadLauncher();
+                            mLauncher.setReloadLauncher();
                             break;
                     }
                     break;
@@ -243,7 +247,7 @@ public class SettingsPinnedHeaderAdapter extends PinnedHeaderListAdapter {
                             onSettingsBooleanChanged(v,
                                     SettingsProvider.SETTINGS_UI_GENERAL_ICONS_LARGE,
                                     R.bool.preferences_interface_general_icons_large_default);
-                            mLauncher.reloadLauncher();
+                            mLauncher.setReloadLauncher();
                             break;
                         /*case 1:
                             Intent intent = new Intent();
@@ -259,7 +263,7 @@ public class SettingsPinnedHeaderAdapter extends PinnedHeaderListAdapter {
         }
     };
 
-    /*private void updateSearchBarVisibility(View v) {
+    private void updateSearchBarVisibility(View v) {
         boolean isSearchEnabled = SettingsProvider.getBoolean(mContext,
                 SettingsProvider.SETTINGS_UI_HOMESCREEN_SEARCH,
                 R.bool.preferences_interface_homescreen_search_default);
@@ -275,7 +279,7 @@ public class SettingsPinnedHeaderAdapter extends PinnedHeaderListAdapter {
         onSettingsBooleanChanged(v,
                 SettingsProvider.SETTINGS_UI_HOMESCREEN_SEARCH,
                 R.bool.preferences_interface_homescreen_search_default);
-    }*/
+    }
 
     private void onSettingsBooleanChanged(View v, String key, int res) {
         boolean current = SettingsProvider.getBoolean(

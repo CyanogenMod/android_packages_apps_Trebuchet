@@ -42,8 +42,9 @@ public class OverviewSettingsPanel {
                 res.getString(R.string.icon_labels)};
 
         String[] valuesApp = new String[] {
-                res.getString(R.string.larger_icons_text),
-                res.getString(R.string.protected_app_settings)};
+                res.getString(R.string.larger_icons_text)/*,
+                TODO: Uncomment
+                res.getString(R.string.protected_app_settings)*/};
 
         mSettingsAdapter = new SettingsPinnedHeaderAdapter(mLauncher);
         mSettingsAdapter.setHeaders(headers);

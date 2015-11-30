@@ -358,6 +358,8 @@ public class Launcher extends Activity
     // the press state and keep this reference to reset the press state when we return to launcher.
     private BubbleTextView mWaitingForResume;
 
+    private boolean mReloadLauncher;
+
     // Preferences
     private boolean mHideIconLabels;
 
@@ -1090,6 +1092,8 @@ public class Launcher extends Activity
         if (mLauncherCallbacks != null) {
             mLauncherCallbacks.onResume();
         }
+
+        reloadLauncherIfNeeded();
     }
 
     @Override
@@ -1695,6 +1699,10 @@ public class Launcher extends Activity
         }
     };
 
+    /**
+     * Initializes the device profile based off of the launcher app state and screen orientation
+     * @param app The launcher app state
+     */
     public void initializeDeviceProfile(LauncherAppState app) {
         // Load configuration-specific DeviceProfile
         mDeviceProfile = getResources().getConfiguration().orientation
@@ -1702,16 +1710,45 @@ public class Launcher extends Activity
                 app.getInvariantDeviceProfile().landscapeProfile
                 : app.getInvariantDeviceProfile().portraitProfile;
 
-        mModel = app.setLauncher(this);
-        mIconCache = app.getIconCache();
-
         mHideIconLabels = SettingsProvider.getBoolean(this,
                 SettingsProvider.SETTINGS_UI_HOMESCREEN_HIDE_ICON_LABELS,
                 R.bool.preferences_interface_homescreen_hide_icon_labels_default);
+
+        mModel = app.setLauncher(this);
+        mIconCache = app.getIconCache();
+        mIconCache.flushInvalidIcons(mDeviceProfile);
     }
 
-    public void reloadLauncher()
+    /**
+     * Sets the reload launcher flag to true, which will reload the launcher at the next appropriate
+     * time.
+     */
+    public void setReloadLauncher() {
+        mReloadLauncher = true;
+    }
+
+    /**
+     * If the reload launcher flag is set to true, the launcher will be reloaded.
+     * @return Whether the launcher was actually reloaded.
+     */
+    public boolean reloadLauncherIfNeeded() {
+        if (mReloadLauncher) {
+            reloadLauncher(mWorkspace.getCurrentPage());
+            mReloadLauncher = false;
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Reloads the launcher by re-initializing the device profile and layout
+     * @param page
+     */
+    public void reloadLauncher(int page)
     {
+        mSearchDropTargetBar.setupQsb(this);
+
         // Re-initialize device profile
         LauncherAppState app = LauncherAppState.getInstance();
         app.initInvariantDeviceProfile();
@@ -1721,7 +1758,7 @@ public class Launcher extends Activity
 
         // Reload
         mModel.resetLoadedState(true, true);
-        mModel.startLoader(mWorkspace.getRestorePage(), LauncherModel.LOADER_FLAG_NONE);
+        mModel.startLoader(page, LauncherModel.LOADER_FLAG_NONE);
         mWorkspace.updateCustomContentVisibility();
 
         mAppsView.reset();
@@ -1958,6 +1995,8 @@ public class Launcher extends Activity
             startTime = System.currentTimeMillis();
         }
         super.onNewIntent(intent);
+
+        reloadLauncherIfNeeded();
 
         // Close the menu
         Folder openFolder = mWorkspace.getOpenFolder();

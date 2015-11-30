@@ -64,6 +64,7 @@ public class SearchDropTargetBar extends FrameLayout implements DragController.D
     private static final AccelerateInterpolator sAccelerateInterpolator =
             new AccelerateInterpolator();
 
+    private Launcher mLauncher;
     private State mState = State.SEARCH_BAR;
     @Thunk View mQSB;
     @Thunk View mDropTargetBar;
@@ -84,6 +85,8 @@ public class SearchDropTargetBar extends FrameLayout implements DragController.D
     }
 
     public void setup(Launcher launcher, DragController dragController) {
+        mLauncher = launcher;
+
         dragController.addDragListener(this);
         dragController.setFlingToDeleteDropTarget(mDeleteDropTarget);
 
@@ -134,24 +137,39 @@ public class SearchDropTargetBar extends FrameLayout implements DragController.D
         });
     }
 
+    public void setupQsb(Launcher launcher) {
+        mLauncher = launcher;
+        mQSB = launcher.getOrCreateQsbBar();
+    }
+
     public void setQsbSearchBar(View qsb) {
+        float alpha = 1f;
+        int visibility = View.VISIBLE;
+        if (mQSB != null) {
+            alpha = mQSB.getAlpha();
+            visibility = mQSB.getVisibility();
+        }
+
         mQSB = qsb;
         if (mQSB != null) {
-            // Update the search ber animation
+            mQSB.setAlpha(alpha);
+            mQSB.setVisibility(visibility);
+
+            // Update the search bar animation
             mQSBSearchBarAnimator = new LauncherViewPropertyAnimator(mQSB);
             mQSBSearchBarAnimator.setInterpolator(sAccelerateInterpolator);
             mQSBSearchBarAnimator.addListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationStart(Animator animation) {
                     // Ensure that the view is visible for the animation
-                    if (mQSB != null) {
+                    if (mQSB != null && isSearchBarVisible()) {
                         mQSB.setVisibility(View.VISIBLE);
                     }
                 }
 
                 @Override
                 public void onAnimationEnd(Animator animation) {
-                    if (mQSB != null) {
+                    if (mQSB != null && isSearchBarVisible()) {
                         AlphaUpdateListener.updateVisibility(mQSB, mAccessibilityEnabled);
                     }
                 }
@@ -173,9 +191,10 @@ public class SearchDropTargetBar extends FrameLayout implements DragController.D
             AccessibilityManager am = (AccessibilityManager)
                     getContext().getSystemService(Context.ACCESSIBILITY_SERVICE);
             mAccessibilityEnabled = am.isEnabled();
-
-            animateViewAlpha(mQSBSearchBarAnimator, mQSB, newState.getSearchBarAlpha(),
-                    duration);
+            if (mLauncher.getDeviceProfile().searchBarVisible) {
+                animateViewAlpha(mQSBSearchBarAnimator, mQSB, newState.getSearchBarAlpha(),
+                        duration);
+            }
             animateViewAlpha(mDropTargetBarAnimator, mDropTargetBar, newState.getDropTargetBarAlpha(),
                     duration);
         }
@@ -245,8 +264,15 @@ public class SearchDropTargetBar extends FrameLayout implements DragController.D
         }
     }
 
+    public boolean isSearchBarVisible() {
+        if (mLauncher != null) {
+            return mLauncher.getDeviceProfile().searchBarVisible;
+        }
+        return true;
+    }
+
     public void enableAccessibleDrag(boolean enable) {
-        if (mQSB != null) {
+        if (mQSB != null && isSearchBarVisible()) {
             mQSB.setVisibility(enable ? View.GONE : View.VISIBLE);
         }
         mInfoDropTarget.enableAccessibleDrag(enable);
