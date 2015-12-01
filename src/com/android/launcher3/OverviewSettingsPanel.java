@@ -39,7 +39,10 @@ public class OverviewSettingsPanel {
                 res.getString(R.string.grid_size_text)};
 
         String[] valuesDrawer = new String[] {
-                res.getString(R.string.icon_labels)};
+                res.getString(R.string.icon_labels),
+                res.getString(R.string.app_drawer_style),
+                res.getString(R.string.app_drawer_color),
+                res.getString(R.string.fast_scroller_type)};
 
         String[] valuesApp = new String[] {
                 res.getString(R.string.larger_icons_text)/*,

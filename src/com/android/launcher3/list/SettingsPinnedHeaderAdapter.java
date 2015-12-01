@@ -1,13 +1,10 @@
 package com.android.launcher3.list;
 
 import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Typeface;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -137,6 +134,30 @@ public class SettingsPinnedHeaderAdapter extends PinnedHeaderListAdapter {
                                 : res.getString(R.string.icon_labels_show);
                         ((TextView) v.findViewById(R.id.item_state)).setText(state);
                         break;
+                    case 1:
+                        current = SettingsProvider.getBoolean(mContext,
+                                SettingsProvider.SETTINGS_UI_DRAWER_STYLE_USE_COMPACT,
+                                R.bool.preferences_interface_drawer_compact_default);
+                        state = current ? res.getString(R.string.app_drawer_style_compact)
+                                : res.getString(R.string.app_drawer_style_sections);
+                        ((TextView) v.findViewById(R.id.item_state)).setText(state);
+                        break;
+                    case 2:
+                        current = SettingsProvider.getBoolean(mContext,
+                                SettingsProvider.SETTINGS_UI_DRAWER_DARK,
+                                R.bool.preferences_interface_drawer_dark_default);
+                        state = current ? res.getString(R.string.app_drawer_color_dark)
+                                : res.getString(R.string.app_drawer_color_light);
+                        ((TextView) v.findViewById(R.id.item_state)).setText(state);
+                        break;
+                    case 3:
+                        current = SettingsProvider.getBoolean(mContext,
+                                SettingsProvider.SETTINGS_UI_USE_HORIZONTAL_SCRUBBER,
+                                R.bool.preferences_interface_use_horizontal_scrubber_default);
+                        state = current ? res.getString(R.string.fast_scroller_type_horizontal)
+                                : res.getString(R.string.fast_scroller_type_vertical);
+                        ((TextView) v.findViewById(R.id.item_state)).setText(state);
+                        break;
                     default:
                         ((TextView) v.findViewById(R.id.item_state)).setText("");
                 }
@@ -240,6 +261,24 @@ public class SettingsPinnedHeaderAdapter extends PinnedHeaderListAdapter {
                                     R.bool.preferences_interface_drawer_hide_icon_labels_default);
                             mLauncher.setReloadLauncher(false);
                             break;
+                        case 1:
+                            onDrawerStyleBooleanChanged(v,
+                                    SettingsProvider.SETTINGS_UI_DRAWER_STYLE_USE_COMPACT,
+                                    R.bool.preferences_interface_drawer_compact_default);
+                            mLauncher.reloadAppDrawer();
+                            break;
+                        case 2:
+                            onDrawerColorBooleanChanged(v,
+                                    SettingsProvider.SETTINGS_UI_DRAWER_DARK,
+                                    R.bool.preferences_interface_drawer_dark_default);
+                            mLauncher.reloadAppDrawer();
+                            break;
+                        case 3:
+                            onScrollerTypeBooleanChanged(v,
+                                    SettingsProvider.SETTINGS_UI_USE_HORIZONTAL_SCRUBBER,
+                                    R.bool.preferences_interface_use_horizontal_scrubber_default);
+                            mLauncher.reloadAppDrawer();
+                            break;
                     }
                     break;
                 default:
@@ -307,6 +346,48 @@ public class SettingsPinnedHeaderAdapter extends PinnedHeaderListAdapter {
         String state = current ? mLauncher.getResources().getString(
                 R.string.icon_labels_show) : mLauncher.getResources().getString(
                 R.string.icon_labels_hide);
+        ((TextView) v.findViewById(R.id.item_state)).setText(state);
+    }
+
+    private void onDrawerStyleBooleanChanged(View v, String key, int res) {
+        boolean current = SettingsProvider.getBoolean(
+                mContext, key, res);
+
+        // Set new state
+        SettingsProvider.putBoolean(mContext, key, !current);
+        SettingsProvider.putBoolean(mContext, SettingsProvider.SETTINGS_CHANGED, true);
+
+        String state = current ? mLauncher.getResources().getString(
+                R.string.app_drawer_style_sections) : mLauncher.getResources().getString(
+                R.string.app_drawer_style_compact);
+        ((TextView) v.findViewById(R.id.item_state)).setText(state);
+    }
+
+    private void onDrawerColorBooleanChanged(View v, String key, int res) {
+        boolean current = SettingsProvider.getBoolean(
+                mContext, key, res);
+
+        // Set new state
+        SettingsProvider.putBoolean(mContext, key, !current);
+        SettingsProvider.putBoolean(mContext, SettingsProvider.SETTINGS_CHANGED, true);
+
+        String state = current ? mLauncher.getResources().getString(
+                R.string.app_drawer_color_light) : mLauncher.getResources().getString(
+                R.string.app_drawer_color_dark);
+        ((TextView) v.findViewById(R.id.item_state)).setText(state);
+    }
+
+    private void onScrollerTypeBooleanChanged(View v, String key, int res) {
+        boolean current = SettingsProvider.getBoolean(
+                mContext, key, res);
+
+        // Set new state
+        SettingsProvider.putBoolean(mContext, key, !current);
+        SettingsProvider.putBoolean(mContext, SettingsProvider.SETTINGS_CHANGED, true);
+
+        String state = current ? mLauncher.getResources().getString(
+                R.string.fast_scroller_type_vertical) : mLauncher.getResources().getString(
+                R.string.fast_scroller_type_horizontal);
         ((TextView) v.findViewById(R.id.item_state)).setText(state);
     }
 }

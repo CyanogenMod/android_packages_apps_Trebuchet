@@ -133,9 +133,12 @@ public class BubbleTextView extends TextView
             defaultIconSize = grid.allAppsIconSizePx;
         }
         boolean useCompactDrawer = SettingsProvider.getBoolean(context,
-                SettingsProvider.SETTINGS_UI_DRAWER_COMPACT,
+                SettingsProvider.SETTINGS_UI_DRAWER_STYLE_USE_COMPACT,
                 R.bool.preferences_interface_drawer_compact_default);
-        if (!useCompactDrawer) {
+        boolean useLargeIcons = SettingsProvider.getBoolean(context,
+                SettingsProvider.SETTINGS_UI_GENERAL_ICONS_LARGE,
+                R.bool.preferences_interface_general_icons_large_default);
+        if (!useLargeIcons && !useCompactDrawer) {
             defaultIconSize = getResources()
                     .getDimensionPixelSize(R.dimen.all_apps_icon_size_ragged);
         }

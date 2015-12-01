@@ -48,6 +48,7 @@ import com.android.launcher3.LauncherTransitionable;
 import com.android.launcher3.R;
 import com.android.launcher3.Utilities;
 import com.android.launcher3.Workspace;
+import com.android.launcher3.settings.SettingsProvider;
 import com.android.launcher3.util.ComponentKey;
 import com.android.launcher3.util.Thunk;
 
@@ -189,12 +190,9 @@ public class AllAppsContainerView extends BaseContainerView implements DragSourc
         Resources res = context.getResources();
 
         mLauncher = (Launcher) context;
-        mSectionNamesMargin = mSectionStrategy == SECTION_STRATEGY_GRID ?
-                res.getDimensionPixelSize(R.dimen.all_apps_grid_view_start_margin) :
-                res.getDimensionPixelSize(R.dimen.all_apps_grid_view_start_margin_with_sections);
         mApps = new AlphabeticalAppsList(context);
         mAdapter = new AllAppsGridAdapter(mLauncher, mApps, this, mLauncher,
-                this, mSectionStrategy, mGridTheme);
+                this);
         mApps.setAdapter(mAdapter);
         mLayoutManager = mAdapter.getLayoutManager();
         mItemDecoration = mAdapter.getItemDecoration();
@@ -254,23 +252,35 @@ public class AllAppsContainerView extends BaseContainerView implements DragSourc
     }
 
     private void updateScrubber() {
-        if (userScrubber()) {
+        if (useScrubber()) {
             mScrubber.updateSections();
         }
     }
 
-    public void setSectionStrategy(int sectionStrategy) {
-        Resources res = getResources();
-        mSectionStrategy = sectionStrategy;
-        mSectionNamesMargin = mSectionStrategy == SECTION_STRATEGY_GRID ?
+    public List<AppInfo> getApps() {
+        return mApps.getApps();
+    }
+
+    private void updateSectionStrategy() {
+        Context context = getContext();
+        Resources res = context.getResources();
+        boolean useCompactGrid = SettingsProvider.getBoolean(context,
+                SettingsProvider.SETTINGS_UI_DRAWER_STYLE_USE_COMPACT,
+                R.bool.preferences_interface_drawer_compact_default);
+        mSectionStrategy = useCompactGrid ? SECTION_STRATEGY_GRID : SECTION_STRATEGY_RAGGED;
+        mSectionNamesMargin = useCompactGrid ?
                 res.getDimensionPixelSize(R.dimen.all_apps_grid_view_start_margin) :
                 res.getDimensionPixelSize(R.dimen.all_apps_grid_view_start_margin_with_sections);
         mAdapter.setSectionStrategy(mSectionStrategy);
         mAppsRecyclerView.setSectionStrategy(mSectionStrategy);
     }
 
-    public void setGridTheme(int gridTheme) {
-        mGridTheme = gridTheme;
+    private void updateGridTheme() {
+        Context context = getContext();
+        boolean useDarkColor= SettingsProvider.getBoolean(context,
+                SettingsProvider.SETTINGS_UI_DRAWER_DARK,
+                R.bool.preferences_interface_drawer_dark_default);
+        mGridTheme = useDarkColor ? GRID_THEME_DARK : GRID_THEME_LIGHT;
         mAdapter.setGridTheme(mGridTheme);
         updateBackgroundAndPaddings(true);
     }
@@ -365,14 +375,15 @@ public class AllAppsContainerView extends BaseContainerView implements DragSourc
         // Load the all apps recycler view
         mAppsRecyclerView = (AllAppsRecyclerView) findViewById(R.id.apps_list_view);
         mAppsRecyclerView.setApps(mApps);
-        mAppsRecyclerView.setSectionStrategy(mSectionStrategy);
         mAppsRecyclerView.setLayoutManager(mLayoutManager);
         mAppsRecyclerView.setAdapter(mAdapter);
         mAppsRecyclerView.setHasFixedSize(true);
         if (mItemDecoration != null) {
             mAppsRecyclerView.addItemDecoration(mItemDecoration);
         }
-
+        setScroller();
+        updateGridTheme();
+        updateSectionStrategy();
         updateBackgroundAndPaddings();
     }
 
@@ -442,7 +453,7 @@ public class AllAppsContainerView extends BaseContainerView implements DragSourc
         // names)
         int startInset = Math.max(mSectionNamesMargin, mAppsRecyclerView.getMaxScrollbarWidth());
         int topBottomPadding = mRecyclerViewTopBottomPadding;
-        final boolean useScubber = userScrubber();
+        final boolean useScubber = useScrubber();
         if (isRtl) {
             mAppsRecyclerView.setPadding(padding.left + mAppsRecyclerView.getMaxScrollbarWidth(),
                     topBottomPadding, padding.right + startInset, useScubber ?

@@ -17,6 +17,7 @@
 package com.android.launcher3;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -24,6 +25,8 @@ import android.view.View;
 import android.view.ViewStub;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.android.launcher3.settings.SettingsProvider;
 
 /**
  * A base container view, which supports resizing.
@@ -100,9 +103,13 @@ public abstract class BaseContainerView extends LinearLayout implements Insettab
         });
     }
 
-    public final void setUseScrubber(boolean use) {
-        mUseScrubber = use;
-        if (use) {
+    public final void setScroller() {
+        Context context = getContext();
+        boolean useHorizontalScroller= SettingsProvider.getBoolean(context,
+                SettingsProvider.SETTINGS_UI_USE_HORIZONTAL_SCRUBBER,
+                R.bool.preferences_interface_use_horizontal_scrubber_default);
+        mUseScrubber = useHorizontalScroller;
+        if (mUseScrubber) {
             ViewStub stub = (ViewStub) findViewById(R.id.scrubber_container_stub);
             mScrubberContainerView = stub.inflate();
             if (mScrubberContainerView == null) {
@@ -128,7 +135,7 @@ public abstract class BaseContainerView extends LinearLayout implements Insettab
         }
     }
 
-    public final boolean userScrubber() {
+    public final boolean useScrubber() {
         return mUseScrubber;
     }
 

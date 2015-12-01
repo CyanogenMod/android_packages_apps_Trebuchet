@@ -361,7 +361,7 @@ public class AllAppsGridAdapter extends RecyclerView.Adapter<AllAppsGridAdapter.
 
     public AllAppsGridAdapter(Launcher launcher, AlphabeticalAppsList apps,
             View.OnTouchListener touchListener, View.OnClickListener iconClickListener,
-            View.OnLongClickListener iconLongClickListener, int sectionStrategy, int gridTheme) {
+            View.OnLongClickListener iconLongClickListener) {
         Resources res = launcher.getResources();
         mLauncher = launcher;
         mApps = apps;
@@ -374,8 +374,6 @@ public class AllAppsGridAdapter extends RecyclerView.Adapter<AllAppsGridAdapter.
         mTouchListener = touchListener;
         mIconClickListener = iconClickListener;
         mIconLongClickListener = iconLongClickListener;
-        mSectionStrategy = sectionStrategy;
-        mGridTheme = gridTheme;
         mSectionNamesMargin = mSectionStrategy ==
                 AllAppsContainerView.SECTION_STRATEGY_GRID ?
                 res.getDimensionPixelSize(R.dimen.all_apps_grid_view_start_margin) :
@@ -607,8 +605,8 @@ public class AllAppsGridAdapter extends RecyclerView.Adapter<AllAppsGridAdapter.
         mSectionTextPaint.setColor(mLauncher.getResources().getColor(sectionTextColorId));
         Resources res = mLauncher.getResources();
         mAllAppsTextColor = mGridTheme == AllAppsContainerView.GRID_THEME_DARK ?
-                res.getColor(R.color.all_apps_grid_section_text_color_dark) :
-                res.getColor(R.color.all_apps_grid_section_text_color);
+                res.getColor(R.color.quantum_panel_text_color_dark) :
+                res.getColor(R.color.quantum_panel_text_color);
     }
 
     /**

@@ -1551,11 +1551,6 @@ public class Launcher extends Activity
             mAppsView.setSearchBarController(mAppsView.newDefaultAppSearchController());
         }
 
-        mAppsView.setUseScrubber(mUseScrubber);
-        mAppsView.setSectionStrategy(AllAppsContainerView.SECTION_STRATEGY_RAGGED);
-        mAppsView.setGridTheme(AllAppsContainerView.GRID_THEME_DARK);
-        mWidgetsView.setUseScrubber(false);
-
         // Setup the drag controller (drop targets have to be added in reverse order in priority)
         dragController.setDragScoller(mWorkspace);
         dragController.setScrollView(mDragLayer);
@@ -1829,6 +1824,23 @@ public class Launcher extends Activity
         mModel.startLoader(page, flag);
         mWorkspace.updateCustomContentVisibility();
 
+        mAppsView.reset();
+    }
+
+    public void reloadAppDrawer() {
+        List<AppInfo> addedApps = mAppsView.getApps();
+        mDragLayer.removeView(mAppsView);
+        mAppsView = (AllAppsContainerView)LayoutInflater
+                .from(this).inflate(R.layout.all_apps, mDragLayer, false);
+        mDragLayer.addView(mAppsView, mDragLayer.getChildCount() - 1);
+        mAppsView.setVisibility(View.INVISIBLE);
+        if (mLauncherCallbacks != null && mLauncherCallbacks.getAllAppsSearchBarController() != null) {
+            mAppsView.setSearchBarController(mLauncherCallbacks.getAllAppsSearchBarController());
+        } else {
+            mAppsView.setSearchBarController(mAppsView.newDefaultAppSearchController());
+        }
+        mAppsView.addApps(addedApps);
+        tryAndUpdatePredictedApps();
         mAppsView.reset();
     }
 

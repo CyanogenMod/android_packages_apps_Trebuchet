@@ -60,6 +60,17 @@
     <!-- Protected apps -->
     <string name="protected_app_settings">Protected apps</string>
 
+    <!-- Drawer settings -->
+    <string name="app_drawer_style">Drawer style</string>
+    <string name="app_drawer_style_compact">Compact</string>
+    <string name="app_drawer_style_sections">Sections</string>
+    <string name="app_drawer_color">Drawer color</string>
+    <string name="app_drawer_color_dark">Dark</string>
+    <string name="app_drawer_color_light">Light</string>
+    <string name="fast_scroller_type">Fast scroller</string>
+    <string name="fast_scroller_type_horizontal">Horizontal</string>
+    <string name="fast_scroller_type_vertical">Vertical</string>
+
     <!-- Search Manager doesn't exist -->
     <string name="search_activity_not_found">A search activity could not be found!</string>
 </resources>
