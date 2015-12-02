@@ -28,6 +28,9 @@
     <dimen name="dynamic_grid_overview_max_icon_zone_height">120dp</dimen>
     <dimen name="dynamic_grid_overview_bar_item_width">80dp</dimen>
     <dimen name="dynamic_grid_overview_bar_spacer_width">20dp</dimen>
+    <dimen name="dialog_padding">10dp</dimen>
+    <dimen name="grid_padding">15dp</dimen>
+    <dimen name="grid_custom_text">50dp</dimen>
 
 <!-- App Widget resize frame -->
     <dimen name="default_widget_padding">8dp</dimen>

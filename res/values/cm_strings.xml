@@ -43,6 +43,9 @@
     <string name="grid_size_custom">Custom (<xliff:g id="rows">%1$d</xliff:g> \u00d7 <xliff:g id="columns">%2$d</xliff:g>)</string>
     <string name="preferences_interface_homescreen_custom">Select custom size</string>
 
+    <!-- Dialog -->
+    <string name="dialog_confirm">Confirm</string>
+
     <!-- Home screen search bar -->
     <string name="home_screen_search_text">Search bar</string>
 

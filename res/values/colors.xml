@@ -36,7 +36,6 @@
     <color name="quantum_panel_text_color_dark">#FFF</color>
     <color name="quantum_panel_bg_color">#FFF5F5F5</color>
     <color name="quantum_panel_bg_color_dark">#76000000</color>
-    <color name="slideup_panel_bg_color">#FF374248</color>
 
     <color name="outline_color">#FFFFFFFF</color>
 
@@ -61,7 +60,11 @@
     <color name="widgets_cell_color">#263238</color>
 
     <!-- CM Settings -->
-    <color name="settings_header_text">#FF6cd2ea</color>
+    <color name="settings_bg_color">#424242</color>
+    <color name="settings_header_text">#00B1E5</color>
+
+    <color name="dynamic_grid_preview_background">#FFFFFFFF</color>
+    <color name="dynamic_grid_preview_foreground">#FF000000</color>
 
     <color name="app_scrubber_highlight_color">@android:color/white</color>
     <color name="app_scrubber_gray_color">@android:color/darker_gray</color>

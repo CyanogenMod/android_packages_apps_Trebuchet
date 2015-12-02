@@ -28,7 +28,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:background="@color/slideup_panel_bg_color"
+        android:background="@color/settings_bg_color"
         android:paddingTop="@dimen/overview_panel_top_padding" >
 
         <ImageView
@@ -45,7 +45,7 @@
 
     <FrameLayout android:orientation="vertical"
          android:layout_width="match_parent"
-         android:background="@color/slideup_panel_bg_color"
+         android:background="@color/settings_bg_color"
          android:layout_height="match_parent" >
 
         <LinearLayout

@@ -1112,7 +1112,7 @@ public class LauncherModel extends BroadcastReceiver
     /**
      * Removes the specified items from the database
      * @param context
-     * @param item
+     * @param items
      */
     static void deleteItemsFromDatabase(Context context, final ArrayList<? extends ItemInfo> items) {
         final ContentResolver cr = context.getContentResolver();
@@ -1644,7 +1644,7 @@ public class LauncherModel extends BroadcastReceiver
 
         // check & update map of what's occupied; used to discard overlapping/invalid items
         private boolean checkItemPlacement(LongArrayMap<ItemInfo[][]> occupied, ItemInfo item,
-                   ArrayList<Long> workspaceScreens) {
+                   ArrayList<Long> workspaceScreens, boolean shouldResizeAndUpdateDB) {
             LauncherAppState app = LauncherAppState.getInstance();
             InvariantDeviceProfile profile = app.getInvariantDeviceProfile();
             final int countX = profile.numColumns;
@@ -1700,26 +1700,67 @@ public class LauncherModel extends BroadcastReceiver
                 return true;
             }
 
-            if (!occupied.containsKey(item.screenId)) {
-                ItemInfo[][] items = new ItemInfo[countX + 1][countY + 1];
-                occupied.put(item.screenId, items);
+            // If the current item's position lies outside of the bounds
+            // of the current grid size, attempt to place it in the next
+            // available position.
+            if (item.cellX < 0 || item.cellY < 0 || item.cellX + item.spanX > countX
+                    || item.cellY + item.spanY > countY) {
+                // If we won't be resizing the grid, then just return, this item does not fit.
+                if (!shouldResizeAndUpdateDB) {
+                    Log.e(TAG, "Error loading shortcut " + item
+                            + " into cell (" + containerIndex + "-" + item.screenId + ":"
+                            + item.cellX + "," + item.cellY
+                            + ") out of screen bounds ( " + countX + "x" + countY + ")");
+                    return false;
+                }
+
+                if (item.itemType != LauncherSettings.Favorites.ITEM_TYPE_APPWIDGET) {
+                    // Place the item at 0 0 of screen 1
+                    // if items overlap here, they will be moved later on
+                    item.cellX = 0;
+                    item.cellY = 0;
+                    item.screenId = 1;
+                    item.wasMovedDueToReducedSpace = true;
+                    item.requiresDbUpdate = true;
+                } else {
+                    // see if widget can be shrunk to fit a screen, if not, just remove it
+                    if (item.minSpanX > countX || item.minSpanY > countY) {
+                        return false;
+                    }
+                    // if the widget is larger than the grid, shrink it down
+                    if (item.cellX + item.spanX > countX) {
+                        item.cellX = 0;
+                        item.spanY = (item.spanY / 2) > 0 ? item.spanY / 2 : 1;
+                        item.spanX = item.minSpanX;
+                        item.requiresDbUpdate = true;
+                        item.wasMovedDueToReducedSpace = true;
+                    }
+                    if (item.cellY + item.spanY > countY) {
+                        item.cellY = 0;
+                        item.spanY = countY;
+                        item.requiresDbUpdate = true;
+                        item.wasMovedDueToReducedSpace = true;
+                    }
+                    if (item.cellY + item.spanY == countY && item.cellX + item.spanX == countX) {
+                        // if the widget is the size of the grid, make a screen all it's own.
+                        item.screenId = sBgWorkspaceScreens.size() + 1;
+                    }
+                }
+            } else {
+                item.wasMovedDueToReducedSpace = false;
+                item.requiresDbUpdate = true;
             }
 
-            final ItemInfo[][] screens = occupied.get(item.screenId);
-            if (item.container == LauncherSettings.Favorites.CONTAINER_DESKTOP &&
-                    item.cellX < 0 || item.cellY < 0 ||
-                    item.cellX + item.spanX > countX || item.cellY + item.spanY > countY) {
-                Log.e(TAG, "Error loading shortcut " + item
-                        + " into cell (" + containerIndex + "-" + item.screenId + ":"
-                        + item.cellX + "," + item.cellY
-                        + ") out of screen bounds ( " + countX + "x" + countY + ")");
-                return false;
+            if (!occupied.containsKey(item.screenId)) {
+                ItemInfo[][] items = new ItemInfo[countX][countY];
+                occupied.put(item.screenId, items);
             }
+            ItemInfo[][] screens = occupied.get(item.screenId);
 
             // Check if any workspace icons overlap with each other
             for (int x = item.cellX; x < (item.cellX+item.spanX); x++) {
                 for (int y = item.cellY; y < (item.cellY+item.spanY); y++) {
-                    if (screens[x][y] != null) {
+                    if (!shouldResizeAndUpdateDB && screens[x][y] != null) {
                         Log.e(TAG, "Error loading shortcut " + item
                             + " into cell (" + containerIndex + "-" + item.screenId + ":"
                             + x + "," + y
@@ -1732,6 +1773,16 @@ public class LauncherModel extends BroadcastReceiver
             for (int x = item.cellX; x < (item.cellX+item.spanX); x++) {
                 for (int y = item.cellY; y < (item.cellY+item.spanY); y++) {
                     screens[x][y] = item;
+                    if (item.itemType == LauncherSettings.Favorites.ITEM_TYPE_APPWIDGET
+                            && shouldResizeAndUpdateDB) {
+                        // fill up the entire grid where the widget technically is
+                        for (int spanX = x; spanX < item.spanX; spanX++) {
+                            screens[spanX][y] = item;
+                            for (int spanY = y; spanY < item.spanX; spanY++) {
+                                screens[spanX][spanY] = item;
+                            }
+                        }
+                    }
                 }
             }
 
@@ -1764,6 +1815,8 @@ public class LauncherModel extends BroadcastReceiver
             InvariantDeviceProfile profile = app.getInvariantDeviceProfile();
             int countX = profile.numColumns;
             int countY = profile.numRows;
+
+            boolean shouldResize = ((mFlags & LOADER_FLAG_RESIZE_GRID) != 0);
 
             if (MigrateFromRestoreTask.ENABLED && MigrateFromRestoreTask.shouldRunTask(mContext)) {
                 long migrationStartTime = System.currentTimeMillis();
@@ -2076,7 +2129,8 @@ public class LauncherModel extends BroadcastReceiver
                                     }
 
                                     // check & update map of what's occupied
-                                    if (!checkItemPlacement(occupied, info, sBgWorkspaceScreens)) {
+                                    if (!checkItemPlacement(occupied, info, sBgWorkspaceScreens,
+                                            shouldResize)) {
                                         itemsToRemove.add(id);
                                         break;
                                     }
@@ -2127,7 +2181,8 @@ public class LauncherModel extends BroadcastReceiver
                                 folderInfo.options = c.getInt(optionsIndex);
 
                                 // check & update map of what's occupied
-                                if (!checkItemPlacement(occupied, folderInfo, sBgWorkspaceScreens)) {
+                                if (!checkItemPlacement(occupied, folderInfo, sBgWorkspaceScreens,
+                                        shouldResize)) {
                                     itemsToRemove.add(id);
                                     break;
                                 }
@@ -2254,7 +2309,8 @@ public class LauncherModel extends BroadcastReceiver
 
                                     appWidgetInfo.container = container;
                                     // check & update map of what's occupied
-                                    if (!checkItemPlacement(occupied, appWidgetInfo, sBgWorkspaceScreens)) {
+                                    if (!checkItemPlacement(occupied, appWidgetInfo,
+                                            sBgWorkspaceScreens, shouldResize)) {
                                         itemsToRemove.add(id);
                                         break;
                                     }
@@ -2357,6 +2413,17 @@ public class LauncherModel extends BroadcastReceiver
                 if (unusedScreens.size() != 0) {
                     sBgWorkspaceScreens.removeAll(unusedScreens);
                     updateWorkspaceScreenOrder(context, sBgWorkspaceScreens);
+                }
+
+                // If any items have been shifted and require a DB update, update them in the DB.
+                if (shouldResize) {
+                    for (ItemInfo info : sBgWorkspaceItems) {
+                        if (info != null && info.requiresDbUpdate) {
+                            info.requiresDbUpdate = false;
+                            LauncherModel.modifyItemInDatabase(mContext, info, info.container,
+                                    info.screenId, info.cellX, info.cellY, info.spanX, info.spanY);
+                        }
+                    }
                 }
 
                 if (DEBUG_LOADERS) {

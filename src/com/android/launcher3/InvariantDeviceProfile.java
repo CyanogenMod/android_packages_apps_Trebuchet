@@ -33,6 +33,38 @@ import java.util.Comparator;
 
 public class InvariantDeviceProfile {
 
+    public enum GridSize {
+        Comfortable(0),
+        Cozy(1),
+        Condensed(2),
+        Custom(3);
+
+        private final int mValue;
+        GridSize(int value) {
+            mValue = value;
+        }
+
+        public int getValue() {
+            return mValue;
+        }
+
+        public static GridSize getModeForValue(int value) {
+            switch (value) {
+                case 1:
+                    return Cozy;
+                case 2:
+                    return Condensed;
+                case 3:
+                    return Custom;
+                default :
+                    return Comfortable;
+            }
+        }
+    }
+
+    public final static int GRID_SIZE_MAX = 3;
+    public final static int GRID_SIZE_MIN = 2;
+
     // This is a static that we use for the default icon size on a 4/5-inch phone
     private static float DEFAULT_ICON_SIZE_DP = 60;
 
@@ -56,6 +88,8 @@ public class InvariantDeviceProfile {
      */
     public int numRows;
     public int numColumns;
+    public int numRowsBase;
+    public int numColumnsBase;
 
     /**
      * The minimum number of predicted apps in all apps.
@@ -147,6 +181,29 @@ public class InvariantDeviceProfile {
         numFolderRows = closestProfile.numFolderRows;
         numFolderColumns = closestProfile.numFolderColumns;
         minAllAppsPredictionColumns = closestProfile.minAllAppsPredictionColumns;
+
+        numRowsBase = numRows;
+        int gridResize = SettingsProvider.getIntCustomDefault(context,
+                SettingsProvider.SETTINGS_UI_DYNAMIC_GRID_SIZE, 0);
+        if (GridSize.getModeForValue(gridResize) != GridSize.Custom) {
+            numRows += gridResize;
+        } else {
+            int iTempNumberOfRows = SettingsProvider.getIntCustomDefault(context,
+                    SettingsProvider.SETTINGS_UI_HOMESCREEN_ROWS, numRows);
+            if (iTempNumberOfRows > 0) {
+                numRows = iTempNumberOfRows;
+            }
+        }
+        numColumnsBase = numColumns;
+        if (GridSize.getModeForValue(gridResize) != GridSize.Custom) {
+            numColumns += gridResize;
+        } else {
+            int iTempNumberOfColumns = SettingsProvider.getIntCustomDefault(context,
+                    SettingsProvider.SETTINGS_UI_HOMESCREEN_COLUMNS, numColumns);
+            if (iTempNumberOfColumns > 0) {
+                numColumns = iTempNumberOfColumns;
+            }
+        }
 
         iconSize = interpolatedDeviceProfileOut.iconSize;
         iconBitmapSize = Utilities.pxFromDp(iconSize, dm);

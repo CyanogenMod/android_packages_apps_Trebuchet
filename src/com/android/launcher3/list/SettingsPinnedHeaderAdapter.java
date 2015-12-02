@@ -16,6 +16,8 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.android.launcher3.DeviceProfile;
+import com.android.launcher3.InvariantDeviceProfile;
 import com.android.launcher3.Launcher;
 import com.android.launcher3.OverviewSettingsPanel;
 import com.android.launcher3.R;
@@ -88,7 +90,6 @@ public class SettingsPinnedHeaderAdapter extends PinnedHeaderListAdapter {
 
         Resources res = mLauncher.getResources();
 
-
         boolean current;
         String state;
 
@@ -119,9 +120,9 @@ public class SettingsPinnedHeaderAdapter extends PinnedHeaderListAdapter {
                                 : res.getString(R.string.setting_state_off);
                         ((TextView) v.findViewById(R.id.item_state)).setText(state);
                         break;
-                    /*case 3:
+                    case 3:
                         updateDynamicGridSizeSettingsItem(v);
-                        break;*/
+                        break;
                     default:
                         ((TextView) v.findViewById(R.id.item_state)).setText("");
                 }
@@ -173,8 +174,8 @@ public class SettingsPinnedHeaderAdapter extends PinnedHeaderListAdapter {
         return mPinnedHeaderCount;
     }
 
-    /*public void updateDynamicGridSizeSettingsItem(View v) {
-        DeviceProfile.GridSize gridSize = DeviceProfile.GridSize.getModeForValue(
+    public void updateDynamicGridSizeSettingsItem(View v) {
+        InvariantDeviceProfile.GridSize gridSize = InvariantDeviceProfile.GridSize.getModeForValue(
                 SettingsProvider.getIntCustomDefault(mLauncher,
                         SettingsProvider.SETTINGS_UI_DYNAMIC_GRID_SIZE, 0));
         String state = "";
@@ -198,7 +199,7 @@ public class SettingsPinnedHeaderAdapter extends PinnedHeaderListAdapter {
                 break;
         }
         ((TextView) v.findViewById(R.id.item_state)).setText(state);
-    }*/
+    }
 
     OnClickListener mSettingsItemListener = new OnClickListener() {
 
@@ -212,23 +213,23 @@ public class SettingsPinnedHeaderAdapter extends PinnedHeaderListAdapter {
                     switch (position) {
                         case 0:
                             updateSearchBarVisibility(v);
-                            mLauncher.setReloadLauncher();
+                            mLauncher.setReloadLauncher(false);
                             break;
                         case 1:
                             onIconLabelsBooleanChanged(v,
                                     SettingsProvider.SETTINGS_UI_HOMESCREEN_HIDE_ICON_LABELS,
                                     R.bool.preferences_interface_homescreen_hide_icon_labels_default);
-                            mLauncher.setReloadLauncher();
+                            mLauncher.setReloadLauncher(false);
                             break;
                         case 2:
                             onSettingsBooleanChanged(v,
                                     SettingsProvider.SETTINGS_UI_HOMESCREEN_SCROLLING_WALLPAPER_SCROLL,
                                     R.bool.preferences_interface_homescreen_scrolling_wallpaper_scroll_default);
-                            mLauncher.setReloadLauncher();
+                            mLauncher.setReloadLauncher(false);
                             break;
-                        /*case 3:
+                        case 3:
                             mLauncher.onClickDynamicGridSizeButton();
-                            break;*/
+                            break;
                     }
                     break;
                 case OverviewSettingsPanel.DRAWER_SETTINGS_POSITION:
@@ -237,7 +238,7 @@ public class SettingsPinnedHeaderAdapter extends PinnedHeaderListAdapter {
                             onIconLabelsBooleanChanged(v,
                                     SettingsProvider.SETTINGS_UI_DRAWER_HIDE_ICON_LABELS,
                                     R.bool.preferences_interface_drawer_hide_icon_labels_default);
-                            mLauncher.setReloadLauncher();
+                            mLauncher.setReloadLauncher(false);
                             break;
                     }
                     break;
@@ -247,7 +248,7 @@ public class SettingsPinnedHeaderAdapter extends PinnedHeaderListAdapter {
                             onSettingsBooleanChanged(v,
                                     SettingsProvider.SETTINGS_UI_GENERAL_ICONS_LARGE,
                                     R.bool.preferences_interface_general_icons_large_default);
-                            mLauncher.setReloadLauncher();
+                            mLauncher.setReloadLauncher(false);
                             break;
                         /*case 1:
                             Intent intent = new Intent();

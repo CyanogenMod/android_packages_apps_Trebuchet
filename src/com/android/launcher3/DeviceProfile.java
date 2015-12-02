@@ -37,7 +37,6 @@ import com.android.launcher3.settings.SettingsProvider;
 import com.android.launcher3.allapps.AllAppsContainerView;
 
 public class DeviceProfile {
-
     public final InvariantDeviceProfile inv;
 
     // Device properties
