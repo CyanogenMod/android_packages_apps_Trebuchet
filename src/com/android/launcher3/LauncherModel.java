@@ -115,8 +115,6 @@ public class LauncherModel extends BroadcastReceiver
     private boolean mIsLoaderTaskRunning;
     private volatile boolean mFlushingWorkerThread;
 
-    private static RemoteFolderUpdater remoteFolderUpdater;
-
     /**
      * Maintain a set of packages per user, for which we added a shortcut on the workspace.
      */

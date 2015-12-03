@@ -33,6 +33,7 @@ public class AppDrawerIconView extends LinearLayout {
 
     TextView mLabel;
     ImageView mIcon;
+    boolean mDraggable = true;
 
     public AppDrawerIconView(Context context) {
         super(context);

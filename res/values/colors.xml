@@ -48,13 +48,17 @@
     <color name="dynamic_grid_preview_background">#FFFFFFFF</color>
     <color name="dynamic_grid_preview_foreground">#FF000000</color>
 
+    <!-- App drawer -->
     <color name="app_drawer_background">#76000000</color>
     <color name="app_drawer_drag_background">#bf14191e</color>
     <color name="app_scrubber_highlight_color">@android:color/white</color>
     <color name="app_scrubber_gray_color">@android:color/darker_gray</color>
 
     <color name="scrubber_background">#CC14191E</color>
-    <color name="aftv_shadowColor">#b0000000</color>
+    <color name="drawer_header_text_shadow">#b0000000</color>
+
+    <color name="drawer_container_background_default">#00000000</color>
+    <color name="drawer_container_background_custom">#66000000</color>
 
     <color name="folder_background">#141a1e</color>
 </resources>

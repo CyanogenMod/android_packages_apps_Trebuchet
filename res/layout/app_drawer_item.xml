@@ -15,57 +15,81 @@
      limitations under the License.
 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:autofit="http://schemas.android.com/apk/res-auto"
-              android:splitMotionEvents="false"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content">
+                xmlns:autofit="http://schemas.android.com/apk/res-auto"
+                android:splitMotionEvents="false"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+    <!-- Layout in back to front render order -->
     <View
         android:id="@+id/fading_background_back"
         android:alpha="0"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_alignTop="@+id/drawer_item_flow"
+        android:layout_alignParentTop="true"
         android:layout_alignBottom="@+id/drawer_item_flow"
         android:background="@color/app_drawer_drag_background" />
 
-    <!-- Layout in back to front render order -->
+    <TextView
+        android:id="@+id/custom_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/drawer_custom_title_text_size"
+        android:layout_marginStart="@dimen/drawer_custom_title_margin_start"
+        android:layout_marginTop="@dimen/drawer_custom_title_margin_top"
+        android:includeFontPadding="false"
+        android:fontFamily="roboto-light"
+        android:text="@string/recommendations_title"
+        android:visibility="gone" />
+
+    <ImageView
+        android:id="@+id/custom_title_icon"
+        android:layout_width="@dimen/drawer_custom_icon_size"
+        android:layout_height="@dimen/drawer_custom_icon_size"
+        android:layout_marginEnd="@dimen/drawer_custom_icon_margin_end"
+        android:layout_marginTop="@dimen/drawer_custom_icon_margin_top"
+        android:layout_alignParentEnd="true"
+        android:src="@drawable/triangle_icon"
+        android:visibility="gone" />
+
     <LinearLayout
-            android:id="@+id/drawer_item_flow"
-            android:layout_alignParentEnd="true"
-            android:layout_toEndOf="@+id/drawer_item_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal" />
+        android:id="@+id/drawer_item_flow"
+        android:layout_alignParentEnd="true"
+        android:layout_toEndOf="@+id/drawer_item_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/custom_title"
+        android:orientation="horizontal" />
 
     <View
         android:id="@+id/fading_background_front"
         android:alpha="0"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_alignTop="@id/drawer_item_flow"
+        android:layout_alignParentTop="true"
         android:layout_alignBottom="@id/drawer_item_flow"
         android:background="@color/app_drawer_drag_background" />
 
     <com.android.launcher3.AutoFitTextView
-        android:id="@+id/drawer_item_title"
-        android:layout_width="@dimen/app_drawer_char_width"
-        android:layout_height="fill_parent"
-        android:layout_marginTop="6dp"
-        android:layout_marginBottom="24dp"
-        android:layout_marginStart="6dp"
-        android:layout_alignTop="@id/drawer_item_flow"
+        android:id="@id/drawer_item_title"
+        android:layout_width="@dimen/drawer_header_text_char_width"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/drawer_header_text_margin_top_default"
+        android:layout_marginBottom="@dimen/drawer_header_text_margin_bottom"
+        android:layout_marginStart="@dimen/drawer_header_text_margin_start"
+        android:layout_alignTop="@id/custom_title"
+        android:layout_alignWithParentIfMissing="true"
         android:layout_alignBottom="@id/drawer_item_flow"
-        android:layout_centerVertical="true"
         android:includeFontPadding="false"
         android:gravity="center"
         android:singleLine="true"
-        autofit:minTextSize="8sp"
-        android:textSize="24sp"
-        android:layout_gravity="center"
+        autofit:minTextSize="@dimen/drawer_header_text_min_text_size"
+        android:textSize="@dimen/drawer_header_text_size_default"
         android:fontFamily="sans-serif-light"
         android:textColor="@android:color/white"
-        android:shadowRadius="4.0"
-        android:shadowDy="2"
-        android:shadowColor="#b0000000"/>
+        android:shadowRadius="@dimen/drawer_header_text_shadow_radius"
+        android:shadowDy="@dimen/drawer_header_text_shadow_dy"
+        android:shadowColor="@color/drawer_header_text_shadow"/>
 
 </RelativeLayout>

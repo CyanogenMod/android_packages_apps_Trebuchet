@@ -62,6 +62,7 @@ public class AppInfo extends ItemInfo {
 
     static final int DOWNLOADED_FLAG = 1;
     static final int UPDATED_SYSTEM_APP_FLAG = 2;
+    static final int REMOTE_APP_FLAG = 4;
 
     int flags = 0;
 
@@ -90,6 +91,18 @@ public class AppInfo extends ItemInfo {
         iconCache.getTitleAndIcon(this, info, labelCache);
         intent = makeLaunchIntent(context, info, user);
         this.user = user;
+    }
+
+    public AppInfo(Intent intent, String title, Bitmap icon, UserHandleCompat user,
+                   boolean remote) {
+        this.componentName = intent.getComponent();
+        this.container = ItemInfo.NO_ID;
+
+        this.intent = intent;
+        this.title = title;
+        iconBitmap = icon;
+        this.user = user;
+        flags = remote ? REMOTE_APP_FLAG : 0;
     }
 
     public static int initFlags(LauncherActivityInfoCompat info) {
@@ -128,6 +141,13 @@ public class AppInfo extends ItemInfo {
         iconBitmap = info.iconBitmap;
     }
 
+    /**
+     * @return true if this info represents a remote app, false otherwise
+     */
+    public boolean isRemote() {
+        return (flags & REMOTE_APP_FLAG) != 0;
+    }
+
     @Override
     public String toString() {
         return "ApplicationInfo(title=" + title.toString() + " id=" + this.id
@@ -158,5 +178,19 @@ public class AppInfo extends ItemInfo {
             .setComponent(info.getComponentName())
             .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED)
             .putExtra(EXTRA_PROFILE, serialNumber);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o != null && o instanceof AppInfo) {
+            return componentName.equals(((AppInfo) o).componentName);
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public int hashCode() {
+        return componentName.hashCode();
     }
 }

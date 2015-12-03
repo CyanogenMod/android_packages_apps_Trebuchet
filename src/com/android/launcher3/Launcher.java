@@ -2252,6 +2252,10 @@ public class Launcher extends Activity
         return mRemoteFolderManager;
     }
 
+    public AppDrawerListAdapter getAppDrawerListAdapter() {
+        return mAppDrawerAdapter;
+    }
+
     public Hotseat getHotseat() {
         return mHotseat;
     }
@@ -2979,10 +2983,19 @@ public class Launcher extends Activity
         } else if (v == mAllAppsButton) {
             onClickAllAppsButton(v);
         } else if (tag instanceof AppInfo) {
+            AppInfo info = (AppInfo) tag;
+
+            // Remote apps do not exist in package manager, so they should be launched
+            // directly by intent.
+            if (info.isRemote()) {
+                startActivity(info.intent);
+                return;
+            }
+
             startAppShortcutOrInfoActivity(v);
             LauncherApplication.getLauncherStats().sendAppLaunchEvent(
-                    LauncherStats.ORIGIN_APPDRAWER, ((AppInfo)tag).componentName.getPackageName());
-            String packageName = ((AppInfo)tag).getIntent().getComponent().getPackageName();
+                    LauncherStats.ORIGIN_APPDRAWER, info.componentName.getPackageName());
+            String packageName = info.getIntent().getComponent().getPackageName();
             if (LauncherStats.SETTINGS_PACKAGE_NAME.equals(packageName)) {
                 LauncherApplication.getLauncherStats()
                         .sendSettingsOpenedEvent(LauncherStats.ORIGIN_APPDRAWER);
@@ -3841,6 +3854,7 @@ public class Launcher extends Activity
 
         if (drawer && contentType == AppsCustomizePagedView.ContentType.Applications) {
             toView = findViewById(R.id.app_drawer_container);
+            mRemoteFolderManager.onAppDrawerOpened();
         } else {
             toView = mAppsCustomizeTabHost;
         }
@@ -5435,7 +5449,7 @@ public class Launcher extends Activity
             for (AppInfo info : appInfos) {
                 removedComponents.add(info.componentName);
             }
-            if (!packageNames.isEmpty()) {
+            if (packageNames != null && !packageNames.isEmpty()) {
                 mWorkspace.removeItemsByPackageName(packageNames, user);
             }
             if (!removedComponents.isEmpty()) {

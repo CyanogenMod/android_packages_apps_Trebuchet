@@ -131,14 +131,32 @@
 
     <dimen name="app_drawer_scrubber_padding">20dp</dimen>
 
-    <!-- App Drawer Item -->
-    <dimen name="app_drawer_char_width">27dp</dimen>
-    <dimen name="container_paddingStart">6dp</dimen>
-    <dimen name="container_paddingEnd">6dp</dimen>
-    <dimen name="aftv_width">32dp</dimen>
-    <dimen name="aftv_marginTop">10dp</dimen>
-    <dimen name="aftv_minTextSize">8sp</dimen>
-    <dimen name="aftv_textSize">24sp</dimen>
+<!-- App Drawer Item -->
+    <dimen name="drawer_header_text_char_width">27dp</dimen>
+    <dimen name="drawer_header_text_min_text_size">8sp</dimen>
+    <dimen name="drawer_header_text_margin_bottom">24dp</dimen>
+    <dimen name="drawer_header_text_margin_start">6dp</dimen>
+    <item name="drawer_header_text_shadow_radius" format="float" type="dimen">4</item>
+    <item name="drawer_header_text_shadow_dy" format="float" type="dimen">2</item>
+
+    <!-- Custom/default variances -->
+    <dimen name="drawer_header_text_size_default">20sp</dimen>
+    <dimen name="drawer_header_text_margin_top_default">6dp</dimen>
+    <dimen name="drawer_item_flow_padding_bottom_default">0dp</dimen>
+    <dimen name="drawer_container_bottom_margin_default">0dp</dimen>
+
+    <dimen name="drawer_header_text_size_custom">16sp</dimen>
+    <dimen name="drawer_header_text_margin_top_custom">-2dp</dimen>
+    <dimen name="drawer_item_flow_padding_bottom_custom">15dp</dimen>
+    <dimen name="drawer_container_bottom_margin_custom">20dp</dimen>
+
+    <!-- Custom header -->
+    <dimen name="drawer_custom_title_text_size">16sp</dimen>
+    <dimen name="drawer_custom_title_margin_start">50dp</dimen>
+    <dimen name="drawer_custom_title_margin_top">15dp</dimen>
+    <dimen name="drawer_custom_icon_margin_top">20dp</dimen>
+    <dimen name="drawer_custom_icon_margin_end">14dp</dimen>
+    <dimen name="drawer_custom_icon_size">12dp</dimen>
 
     <!-- Folder open animation -->
     <integer name="folder_translate_y_dist">300</integer>
