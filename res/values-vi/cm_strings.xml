@@ -19,4 +19,34 @@
   <string name="home_screen_settings">CÀI ĐẶT MÀN HÌNH CHÍNH</string>
   <string name="drawer_settings">CÀI ĐẶT NGĂN CHỨA</string>
   <string name="app_settings">CÀI ĐẶT ỨNG DỤNG</string>
+  <string name="setting_state_on">BẬT</string>
+  <string name="setting_state_off">TẮT</string>
+  <string name="themes_button_text">Chủ đề</string>
+  <string name="scrolling_page_outlines">Trang phác thảo</string>
+  <string name="scrolling_fade_adjacent">Làm mờ các trang phụ</string>
+  <string name="scrolling_wallpaper">Cuộn hình nền</string>
+  <string name="grid_size_text">Kích thước lưới</string>
+  <string name="grid_size_comfortable">Thoải mái</string>
+  <string name="grid_size_cozy">Ấm cúng</string>
+  <string name="grid_size_condensed">Đã rút gọn</string>
+  <string name="grid_size_custom">Tùy chỉnh (<xliff:g id="rows">%1$d</xliff:g> \u00d7 <xliff:g id="columns">%2$d</xliff:g>)</string>
+  <string name="preferences_interface_homescreen_custom">Chọn kích thước tùy chỉnh</string>
+  <string name="play_folder_title">Phát</string>
+  <string name="scroll_effect_text">Hiệu ứng trượt</string>
+  <string name="drawer_sorting_text">Chế độ phân loại</string>
+  <string name="sort_mode_title">Tên</string>
+  <string name="sort_mode_launch_count">Khởi động bộ đếm</string>
+  <string name="sort_mode_install_time">Thời gian cài đặt</string>
+  <string name="home_screen_search_text">Thanh tìm kiếm</string>
+  <string name="larger_icons_text">Biểu tượng lớn hơn</string>
+  <string name="icon_labels">Nhãn biểu tượng</string>
+  <string name="icon_labels_show">Hiện</string>
+  <string name="icon_labels_hide">Ẩn</string>
+  <string name="protected_app_settings">Các ứng dụng ẩn</string>
+  <string name="dialog_confirm">Xác nhận</string>
+  <string name="drawer_type">Bố trí</string>
+  <string name="drawer_type_drawer">Theo chiều dọc</string>
+  <string name="drawer_type_pager">Đã đánh số trang</string>
+  <string name="setting_state_disabled">ĐÃ TẮT</string>
+  <string name="search_activity_not_found">Không tìm thấy hoạt động tìm kiếm!</string>
 </resources>

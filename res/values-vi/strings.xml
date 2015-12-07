@@ -25,11 +25,11 @@
     <string name="folder_name" msgid="7371454440695724752"></string>
     <string name="activity_not_found" msgid="8071924732094499514">"Ứng dụng chưa được cài đặt."</string>
     <string name="safemode_shortcut_error" msgid="9160126848219158407">"Ứng dụng đã tải xuống bị tắt ở chế độ An toàn"</string>
+    <string name="safemode_widget_error" msgid="4863470563535682004">"Tiện ích con bị vô hiệu hóa ở chế độ an toàn"</string>
     <string name="widgets_tab_label" msgid="2921133187116603919">"Tiện ích con"</string>
     <string name="widget_adder" msgid="3201040140710381657">"Tiện ích con"</string>
     <string name="toggle_weight_watcher" msgid="5645299835184636119">"Hiển thị bộ nhớ"</string>
     <string name="long_press_widget_to_add" msgid="7699152356777458215">"Chạm và giữ để chọn tiện ích con."</string>
-    <string name="market" msgid="2619650989819296998">"Mua"</string>
     <string name="widget_dims_format" msgid="2370757736025621599">"%1$d × %2$d"</string>
     <string name="external_drop_widget_error" msgid="3165821058322217155">"Không thể thả mục vào Màn hình chính này."</string>
     <string name="external_drop_widget_pick_title" msgid="3486317258037690630">"Chọn tiện ích con để tạo"</string>
@@ -57,8 +57,6 @@
     <string name="delete_target_label" msgid="1822697352535677073">"Xóa"</string>
     <string name="delete_target_uninstall_label" msgid="5100785476250872595">"Gỡ cài đặt"</string>
     <string name="info_target_label" msgid="8053346143994679532">"Thông tin ứng dụng"</string>
-    <string name="accessibility_search_button" msgid="1628520399424565142">"Tìm kiếm"</string>
-    <string name="accessibility_voice_search_button" msgid="4637324840434406584">"Tìm kiếm bằng giọng nói"</string>
     <string name="accessibility_all_apps_button" msgid="2603132375383800483">"Ứng dụng"</string>
     <string name="accessibility_delete_button" msgid="6466114477993744621">"Xóa"</string>
     <string name="delete_zone_label_all_apps_system_app" msgid="449755632749610895">"Gỡ cài đặt cập nhật"</string>
