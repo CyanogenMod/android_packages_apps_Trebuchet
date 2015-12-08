@@ -15,16 +15,19 @@
  */
 package com.android.launcher3.allapps;
 
+import android.content.ComponentName;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import com.android.launcher3.AppInfo;
 import com.android.launcher3.Launcher;
 import com.android.launcher3.LauncherAppState;
+import com.android.launcher3.ProtectedComponentsHelper;
 import com.android.launcher3.compat.AlphabeticIndexCompat;
 import com.android.launcher3.compat.UserHandleCompat;
 import com.android.launcher3.model.AppNameComparator;
 import com.android.launcher3.util.ComponentKey;
+import cyanogenmod.providers.CMSettings;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -452,9 +455,15 @@ public class AlphabeticalAppsList {
             }
         }
 
+        ProtectedComponentsHelper.updateProtectedComponentsLists(mLauncher);
+
         // Recreate the filtered and sectioned apps (for convenience for the grid layout) from the
         // ordered set of sections
         for (AppInfo info : getFiltersAppInfos()) {
+            if (ProtectedComponentsHelper.isProtectedApp(info.flags, info.componentName)) {
+                continue;
+            }
+
             String sectionName = getAndUpdateCachedSectionName(info.title);
 
             // Create a new section if the section names do not match

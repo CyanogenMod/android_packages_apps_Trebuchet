@@ -1,6 +1,7 @@
 package com.android.launcher3.list;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.database.Cursor;
@@ -13,7 +14,6 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.android.launcher3.DeviceProfile;
 import com.android.launcher3.InvariantDeviceProfile;
 import com.android.launcher3.Launcher;
 import com.android.launcher3.OverviewSettingsPanel;
@@ -234,19 +234,20 @@ public class SettingsPinnedHeaderAdapter extends PinnedHeaderListAdapter {
                     switch (position) {
                         case 0:
                             updateSearchBarVisibility(v);
-                            mLauncher.setReloadLauncher(false);
+                            mLauncher.reloadLauncher(false, false);
                             break;
                         case 1:
                             onIconLabelsBooleanChanged(v,
                                     SettingsProvider.SETTINGS_UI_HOMESCREEN_HIDE_ICON_LABELS,
                                     R.bool.preferences_interface_homescreen_hide_icon_labels_default);
-                            mLauncher.setReloadLauncher(false);
+                            mLauncher.reloadLauncher(false, false);
                             break;
                         case 2:
                             onSettingsBooleanChanged(v,
-                                    SettingsProvider.SETTINGS_UI_HOMESCREEN_SCROLLING_WALLPAPER_SCROLL,
+                                    SettingsProvider
+                                            .SETTINGS_UI_HOMESCREEN_SCROLLING_WALLPAPER_SCROLL,
                                     R.bool.preferences_interface_homescreen_scrolling_wallpaper_scroll_default);
-                            mLauncher.setReloadLauncher(false);
+                            mLauncher.reloadLauncher(false, false);
                             break;
                         case 3:
                             mLauncher.onClickDynamicGridSizeButton();
@@ -259,7 +260,7 @@ public class SettingsPinnedHeaderAdapter extends PinnedHeaderListAdapter {
                             onIconLabelsBooleanChanged(v,
                                     SettingsProvider.SETTINGS_UI_DRAWER_HIDE_ICON_LABELS,
                                     R.bool.preferences_interface_drawer_hide_icon_labels_default);
-                            mLauncher.setReloadLauncher(false);
+                            mLauncher.reloadAppDrawer();
                             break;
                         case 1:
                             onDrawerStyleBooleanChanged(v,
@@ -287,14 +288,14 @@ public class SettingsPinnedHeaderAdapter extends PinnedHeaderListAdapter {
                             onSettingsBooleanChanged(v,
                                     SettingsProvider.SETTINGS_UI_GENERAL_ICONS_LARGE,
                                     R.bool.preferences_interface_general_icons_large_default);
-                            mLauncher.setReloadLauncher(false);
+                            mLauncher.reloadLauncher(true, false);
                             break;
-                        /*case 1:
+                        case 1:
                             Intent intent = new Intent();
                             intent.setClassName(OverviewSettingsPanel.ANDROID_SETTINGS,
                                     OverviewSettingsPanel.ANDROID_PROTECTED_APPS);
                             mLauncher.startActivity(intent);
-                            break;*/
+                            break;
                     }
             }
 

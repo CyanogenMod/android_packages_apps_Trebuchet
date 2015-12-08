@@ -369,9 +369,6 @@ public class Launcher extends Activity
     // the press state and keep this reference to reset the press state when we return to launcher.
     private BubbleTextView mWaitingForResume;
 
-    private boolean mReloadLauncher;
-    private boolean mResizeGridRequired;
-
     public Animator.AnimatorListener mAnimatorListener = new Animator.AnimatorListener() {
         @Override
         public void onAnimationStart(Animator arg0) {}
@@ -383,6 +380,25 @@ public class Launcher extends Activity
         }
         @Override
         public void onAnimationCancel(Animator arg0) {}
+    };
+
+    Runnable mUpdateDynamicGridRunnable = new Runnable() {
+        @Override
+        public void run() {
+            reloadLauncher(mWorkspace.getRestorePage(), true, false);
+        }
+    };
+
+    private BroadcastReceiver protectedAppsChangedReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // Update the workspace
+            if (waitUntilResume(mUpdateDynamicGridRunnable, true)) {
+                return;
+            }
+
+            reloadLauncher(mWorkspace.getRestorePage(), true, false);
+        }
     };
 
     // Preferences
@@ -551,6 +567,11 @@ public class Launcher extends Activity
             showFirstRunActivity();
             showFirstRunClings();
         }
+
+        IntentFilter protectedAppsFilter = new IntentFilter(
+                cyanogenmod.content.Intent.ACTION_PROTECTED_CHANGED);
+        registerReceiver(protectedAppsChangedReceiver, protectedAppsFilter,
+                cyanogenmod.platform.Manifest.permission.PROTECTED_APP, null);
     }
 
     @Override
@@ -1142,16 +1163,12 @@ public class Launcher extends Activity
             mDynamicGridSizeFragment.setSize();
         }
 
-        reloadLauncherIfNeeded();
-
-        //Close out Fragments
-        Fragment f1 = getFragmentManager().findFragmentByTag(
+        Fragment hiddenFolderFragment = getFragmentManager().findFragmentByTag(
                 HiddenFolderFragment.HIDDEN_FOLDER_FRAGMENT);
-        if (f1 != null && !mHiddenFolderAuth) {
+        if (hiddenFolderFragment != null && !mHiddenFolderAuth) {
             mHiddenFolderFragment.saveHiddenFolderStatus(-1);
             FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-            fragmentTransaction
-                    .remove(mHiddenFolderFragment).commit();
+            fragmentTransaction.remove(mHiddenFolderFragment).commit();
         } else {
             mHiddenFolderAuth = false;
         }
@@ -1778,38 +1795,24 @@ public class Launcher extends Activity
     }
 
     /**
-     * Sets the reload launcher flag to true and the resize grid flag to the parameter value,
-     * which will reload the launcher/grid size at the next appropriate time.
-     * @param shouldResizeGrid Indicates whether the grid needs to be resized.
+     * Re-initializes the device profile and layout and reloads the workspace and app drawer as
+     * appropriate
+     * @param resizeGrid Indicates whether the grid should be resized
+     * @param reloadAppDrawer Indicates whether the app drawer should be reloaded
      */
-    public void setReloadLauncher(boolean shouldResizeGrid) {
-        mReloadLauncher = true;
-        mResizeGridRequired = shouldResizeGrid;
+    public void reloadLauncher(boolean resizeGrid, boolean reloadAppDrawer) {
+        reloadLauncher(mWorkspace.getCurrentPage(), resizeGrid, reloadAppDrawer);
     }
 
     /**
-     * If the reload launcher flag is set to true, the launcher will be reloaded.
-     * @return Whether the launcher was actually reloaded.
+     * Re-initializes the device profile and layout and reloads the workspace and app drawer as
+     * appropriate
+     * @param page The page to bind to
+     * @param resizeGrid Indicates whether the grid should be resized
+     * @param reloadAppDrawer Indicates whether the app drawer should be reloaded
      */
-    public boolean reloadLauncherIfNeeded() {
-        if (mReloadLauncher) {
-            reloadLauncher(mWorkspace.getCurrentPage());
-            mReloadLauncher = false;
-            mResizeGridRequired = false;
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * Reloads the launcher by re-initializing the device profile and layout
-     * @param page
-     */
-    public void reloadLauncher(int page)
+    private void reloadLauncher(int page, boolean resizeGrid, boolean reloadAppDrawer)
     {
-        mSearchDropTargetBar.setupQsb(this);
-
         // Re-initialize device profile
         LauncherAppState app = LauncherAppState.getInstance();
         app.initInvariantDeviceProfile();
@@ -1819,12 +1822,18 @@ public class Launcher extends Activity
 
         // Reload
         mModel.resetLoadedState(true, true);
-        int flag = mResizeGridRequired ? LauncherModel.LOADER_FLAG_RESIZE_GRID :
+        int flag = resizeGrid ? LauncherModel.LOADER_FLAG_RESIZE_GRID :
                 LauncherModel.LOADER_FLAG_NONE;
         mModel.startLoader(page, flag);
+
         mWorkspace.updateCustomContentVisibility();
 
-        mAppsView.reset();
+        mSearchDropTargetBar.setupQsb(this);
+        mSearchDropTargetBar.setVisibility(View.INVISIBLE);
+
+        if (reloadAppDrawer) {
+            reloadAppDrawer();
+        }
     }
 
     public void reloadAppDrawer() {
@@ -1881,8 +1890,7 @@ public class Launcher extends Activity
         if (gridSize != size.getValue() || customValuesChanged) {
             SettingsProvider.putInt(this,
                     SettingsProvider.SETTINGS_UI_DYNAMIC_GRID_SIZE, size.getValue());
-
-            setReloadLauncher(true);
+            reloadLauncher(false, true);
         }
 
         mOverviewSettingsPanel.notifyDataSetInvalidated();
@@ -2142,8 +2150,6 @@ public class Launcher extends Activity
         }
         super.onNewIntent(intent);
 
-        reloadLauncherIfNeeded();
-
         // Close the menu
         Folder openFolder = mWorkspace.getOpenFolder();
         boolean alreadyOnHome = mHasFocus && ((intent.getFlags() &
@@ -2305,6 +2311,8 @@ public class Launcher extends Activity
         if (mLauncherCallbacks != null) {
             mLauncherCallbacks.onDestroy();
         }
+
+        unregisterReceiver(protectedAppsChangedReceiver);
     }
 
     public DragController getDragController() {
@@ -3630,8 +3638,6 @@ public class Launcher extends Activity
     }
 
     void showWorkspace(int snapToPage, boolean animated, Runnable onCompleteRunnable) {
-        reloadLauncherIfNeeded();
-
         boolean changed = mState != State.WORKSPACE ||
                 mWorkspace.getState() != Workspace.State.NORMAL;
         if (changed) {
@@ -3660,8 +3666,6 @@ public class Launcher extends Activity
     }
 
     void showOverviewMode(boolean animated) {
-        reloadLauncherIfNeeded();
-
         mWorkspace.setVisibility(View.VISIBLE);
         mStateTransitionAnimation.startAnimationToWorkspace(mState, mWorkspace.getState(),
                 Workspace.State.OVERVIEW,
@@ -4412,9 +4416,7 @@ public class Launcher extends Activity
             mLauncherCallbacks.finishBindingItems(false);
         }
 
-        if (mWorkspace.isInOverviewMode()) {
-            reloadLauncherIfNeeded();
-        }
+        mWorkspace.stripEmptyScreens();
     }
 
     private void sendLoadingCompleteBroadcastIfNecessary() {

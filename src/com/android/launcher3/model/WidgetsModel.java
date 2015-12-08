@@ -7,15 +7,18 @@ import android.content.pm.ResolveInfo;
 import android.util.Log;
 
 import com.android.launcher3.AppFilter;
+import com.android.launcher3.AppInfo;
 import com.android.launcher3.IconCache;
 import com.android.launcher3.InvariantDeviceProfile;
 import com.android.launcher3.ItemInfo;
 import com.android.launcher3.LauncherAppState;
 import com.android.launcher3.LauncherAppWidgetProviderInfo;
+import com.android.launcher3.ProtectedComponentsHelper;
 import com.android.launcher3.Utilities;
 import com.android.launcher3.compat.AlphabeticIndexCompat;
 import com.android.launcher3.compat.AppWidgetManagerCompat;
 import com.android.launcher3.compat.UserHandleCompat;
+import cyanogenmod.providers.CMSettings;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -41,6 +44,7 @@ public class WidgetsModel {
 
     private ArrayList<Object> mRawList;
 
+    private Context mContext;
     private final AppWidgetManagerCompat mAppWidgetMgr;
     private final WidgetsAndShortcutNameComparator mWidgetAndShortcutNameComparator;
     private final Comparator<ItemInfo> mAppNameComparator;
@@ -49,6 +53,7 @@ public class WidgetsModel {
     private AlphabeticIndexCompat mIndexer;
 
     public WidgetsModel(Context context,  IconCache iconCache, AppFilter appFilter) {
+        mContext = context;
         mAppWidgetMgr = AppWidgetManagerCompat.getInstance(context);
         mWidgetAndShortcutNameComparator = new WidgetsAndShortcutNameComparator(context);
         mAppNameComparator = (new AppNameComparator(context)).getAppInfoComparator();
@@ -110,6 +115,7 @@ public class WidgetsModel {
         mWidgetAndShortcutNameComparator.reset();
 
         InvariantDeviceProfile idp = LauncherAppState.getInstance().getInvariantDeviceProfile();
+        ProtectedComponentsHelper.updateProtectedComponentsLists(mContext);
 
         // add and update.
         for (Object o: rawWidgetsShortcuts) {
@@ -158,11 +164,18 @@ public class WidgetsModel {
             PackageItemInfo pInfo = tmpPackageItemInfos.get(packageName);
             ArrayList<Object> widgetsShortcutsList = mWidgetsList.get(pInfo);
             if (widgetsShortcutsList != null) {
+                if (pInfo != null && ProtectedComponentsHelper.isProtectedPackage(pInfo.flags,
+                        packageName)) {
+                    continue;
+                }
                 widgetsShortcutsList.add(o);
             } else {
+                pInfo = new PackageItemInfo(packageName);
+                if (ProtectedComponentsHelper.isProtectedPackage(pInfo.flags, packageName)) {
+                    continue;
+                }
                 widgetsShortcutsList = new ArrayList<>();
                 widgetsShortcutsList.add(o);
-                pInfo = new PackageItemInfo(packageName);
                 mIconCache.getTitleAndIconForApp(packageName, userHandle,
                         true /* userLowResIcon */, pInfo);
                 pInfo.titleSectionName = mIndexer.computeSectionName(pInfo.title);
