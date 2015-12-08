@@ -63,6 +63,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class LauncherProvider extends ContentProvider {
     private static final String TAG = "LauncherProvider";
@@ -569,7 +570,8 @@ public class LauncherProvider extends ContentProvider {
             setFlagEmptyDbCreated();
 
             // When a new DB is created, remove all previously stored managed profile information.
-            ManagedProfileHeuristic.processAllUsers(Collections.<UserHandleCompat>emptyList(), mContext);
+            ManagedProfileHeuristic.processAllUsers(Collections.<UserHandleCompat>emptyList(),
+                    mContext);
         }
 
         private void addWorkspacesTable(SQLiteDatabase db) {
@@ -674,6 +676,42 @@ public class LauncherProvider extends ContentProvider {
                     }
                 }
                 case 16: {
+
+                    Log.w(TAG, "Found pre-11 Trebuchet, preparing update");
+
+                    // With the new shrink-wrapped and re-orderable workspaces, it makes sense
+                    // to persist workspace screens and their relative order.
+                    mMaxScreenId = 0;
+
+                    addWorkspacesTable(db);
+
+                    Cursor c = null;
+                    long screenId = getMaxId(db, TABLE_FAVORITES);
+
+
+                    db.beginTransaction();
+                    try {
+                        // Insert new column for holding widget provider name
+                        db.execSQL("ALTER TABLE favorites " +
+                                "ADD COLUMN appWidgetProvider TEXT;");
+                        addIntegerColumn(db, "modified", 0);
+                        // Create workspaces for the migrated things
+                        if (screenId > 0) {
+                            for (int sId = 0; sId <= screenId; sId++) {
+                                db.execSQL("INSERT INTO workspaceScreens (_id, screenRank) " +
+                                        "VALUES (" + (sId+1) + ", " + sId + ")");
+                            }
+                        }
+                        // Adjust hotseat format
+                        db.execSQL("UPDATE favorites SET screen=cellX WHERE container=-101;");
+                        db.setTransactionSuccessful();
+                    } catch (SQLException ex) {
+                        // Old version remains, which means we wipe old data
+                        Log.e(TAG, ex.getMessage(), ex);
+                    } finally {
+                        db.endTransaction();
+                    }
+
                     // We use the db version upgrade here to identify users who may not have seen
                     // clings yet (because they weren't available), but for whom the clings are now
                     // available (tablet users). Because one of the possible cling flows (migration)
@@ -712,6 +750,10 @@ public class LauncherProvider extends ContentProvider {
                         // Old version remains, which means we wipe old data
                         break;
                     }
+                    if (!ensureRankColumn(db) || !updateFolderItemsRank(db, false)) {
+                        // Old version remains, which means we wipe old data
+                        break;
+                    }
                 }
                 case 23:
                     // No-op
@@ -720,10 +762,13 @@ public class LauncherProvider extends ContentProvider {
                 case 25:
                     convertShortcutsToLauncherActivities(db);
                 case 26:
-                    // add hidden column
-                    addIntegerColumn(db, "hidden", 0);
+                    if (!ensureHiddenColumn(db)) {
+                        // Old version remains, which means we wipe old data
+                        break;
+                    }
                 case 27: {
                     // DB Upgraded successfully
+                    updateDialtactsLauncher(db);
                     return;
                 }
             }
@@ -731,6 +776,7 @@ public class LauncherProvider extends ContentProvider {
             // DB was not upgraded
             Log.w(TAG, "Destroying all old data.");
             createEmptyDB(db);
+            updateDialtactsLauncher(db);
         }
 
         @Override
@@ -867,12 +913,12 @@ public class LauncherProvider extends ContentProvider {
                 Cursor c = db.rawQuery("SELECT container, MAX(cellX) FROM favorites"
                         + " WHERE container IN (SELECT _id FROM favorites WHERE itemType = ?)"
                         + " GROUP BY container;",
-                        new String[] {Integer.toString(LauncherSettings.Favorites.ITEM_TYPE_FOLDER)});
+                        new String[]{Integer.toString(LauncherSettings.Favorites.ITEM_TYPE_FOLDER)});
 
                 while (c.moveToNext()) {
                     db.execSQL("UPDATE favorites SET rank=cellX+(cellY*?) WHERE "
-                            + "container=? AND cellX IS NOT NULL AND cellY IS NOT NULL;",
-                            new Object[] {c.getLong(1) + 1, c.getLong(0)});
+                                    + "container=? AND cellX IS NOT NULL AND cellY IS NOT NULL;",
+                            new Object[]{c.getLong(1) + 1, c.getLong(0)});
                 }
 
                 c.close();
@@ -887,6 +933,36 @@ public class LauncherProvider extends ContentProvider {
             return true;
         }
 
+        @Thunk boolean ensureRankColumn(SQLiteDatabase db) {
+            try {
+                // Make sure rank exists
+                Cursor c = db.rawQuery("SELECT rank FROM favorites;", null);
+                if (c != null) {
+                    c.close();
+                }
+            } catch (SQLException ex) {
+                // Old version remains, which means we wipe old data
+                Log.e(TAG, ex.getMessage(), ex);
+                return addIntegerColumn(db, Favorites.RANK, 0);
+            }
+            return true;
+        }
+
+        @Thunk boolean ensureHiddenColumn(SQLiteDatabase db) {
+            try {
+                // Make sure hidden exists
+                Cursor c = db.rawQuery("SELECT hidden FROM favorites;", null);
+                if (c != null) {
+                    c.close();
+                }
+            } catch (SQLException ex) {
+                // Old version remains, which means we wipe old data
+                Log.e(TAG, ex.getMessage(), ex);
+                return addIntegerColumn(db, Favorites.HIDDEN, 0);
+            }
+            return true;
+        }
+
         private boolean addProfileColumn(SQLiteDatabase db) {
             UserManagerCompat userManager = UserManagerCompat.getInstance(mContext);
             // Default to the serial number of this user, for older
@@ -894,6 +970,74 @@ public class LauncherProvider extends ContentProvider {
             long userSerialNumber = userManager.getSerialNumberForUser(
                     UserHandleCompat.myUserHandle());
             return addIntegerColumn(db, Favorites.PROFILE_ID, userSerialNumber);
+        }
+
+        private void updateDialtactsLauncher(SQLiteDatabase db) {
+            if (!Utilities.isPackageInstalled(mContext, "com.cyngn.dialer")) {
+                return;
+            }
+
+            final String cyngnDialer = "com.cyngn.dialer";
+            final String aospDialer = "com.android.dialer";
+            final String dialtactsClass = "com.android.dialer.DialtactsActivity";
+
+            final String selectWhere = buildOrWhereString(Favorites.ITEM_TYPE,
+                    new int[]{Favorites.ITEM_TYPE_SHORTCUT, Favorites.ITEM_TYPE_APPLICATION});
+            Cursor c = null;
+            db.beginTransaction();
+
+            try {
+                // Select and iterate through each matching widget
+                c = db.query(TABLE_FAVORITES,
+                        new String[] { Favorites._ID, Favorites.INTENT },
+                        selectWhere, null, null, null, null);
+                if (c == null) return;
+
+                while (c.moveToNext()) {
+                    long favoriteId = c.getLong(0);
+                    final String intentUri = c.getString(1);
+                    if (intentUri != null) {
+                        try {
+                            final Intent intent = Intent.parseUri(intentUri, 0);
+                            final ComponentName componentName = intent.getComponent();
+                            final Set<String> categories = intent.getCategories();
+
+                            if (Intent.ACTION_MAIN.equals(intent.getAction()) &&
+                                    componentName != null &&
+                                    aospDialer.equals(componentName.getPackageName()) &&
+                                    dialtactsClass.equals(componentName.getClassName()) &&
+                                    categories != null &&
+                                    categories.contains(Intent.CATEGORY_LAUNCHER)) {
+
+                                final ComponentName newName = new ComponentName(cyngnDialer,
+                                        componentName.getClassName());
+                                intent.setComponent(newName);
+                                final ContentValues values = new ContentValues();
+                                values.put(Favorites.INTENT, intent.toUri(0));
+
+                                String updateWhere = Favorites._ID + "=" + favoriteId;
+                                db.update(TABLE_FAVORITES, values, updateWhere, null);
+                                if (LOGD) {
+                                    Log.i(TAG, "Updated " + componentName + " to " + newName);
+                                }
+                            }
+                        } catch (RuntimeException ex) {
+                            Log.e(TAG, "Problem moving Dialtacts activity", ex);
+                        } catch (URISyntaxException e) {
+                            Log.e(TAG, "Problem moving Dialtacts activity", e);
+                        }
+                    }
+                }
+
+                db.setTransactionSuccessful();
+            } catch (SQLException ex) {
+                Log.w(TAG, "Problem while upgrading dialtacts icon", ex);
+            } finally {
+                db.endTransaction();
+                if (c != null) {
+                    c.close();
+                }
+            }
         }
 
         private boolean addIntegerColumn(SQLiteDatabase db, String columnName, long defaultValue) {
@@ -1393,6 +1537,21 @@ public class LauncherProvider extends ContentProvider {
         }
 
         return id;
+    }
+
+    /**
+     * Build a query string that will match any row where the column matches
+     * anything in the values list.
+     */
+    private static String buildOrWhereString(String column, int[] values) {
+        StringBuilder selectWhere = new StringBuilder();
+        for (int i = values.length - 1; i >= 0; i--) {
+            selectWhere.append(column).append("=").append(values[i]);
+            if (i > 0) {
+                selectWhere.append(" OR ");
+            }
+        }
+        return selectWhere.toString();
     }
 
     static class SqlArguments {

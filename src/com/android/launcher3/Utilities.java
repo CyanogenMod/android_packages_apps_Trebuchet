@@ -718,4 +718,14 @@ public final class Utilities {
 
         return globalSearchActivity != null;
     }
+
+    public static boolean isPackageInstalled(Context context, String pkg) {
+        PackageManager packageManager = context.getPackageManager();
+        try {
+            PackageInfo pi = packageManager.getPackageInfo(pkg, 0);
+            return pi.applicationInfo.enabled;
+        } catch (PackageManager.NameNotFoundException e) {
+            return false;
+        }
+    }
 }

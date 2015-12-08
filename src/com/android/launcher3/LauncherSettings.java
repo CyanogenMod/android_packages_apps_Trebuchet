@@ -314,6 +314,12 @@ public class LauncherSettings {
          * <p>Type: INTEGER</p>
          */
         public static final String OPTIONS = "options";
+
+        /**
+         * Stores whether the item is hidden.
+         * <p>Type: INTEGER</p>
+         */
+        public static final String HIDDEN = "hidden";
     }
 
     /**
