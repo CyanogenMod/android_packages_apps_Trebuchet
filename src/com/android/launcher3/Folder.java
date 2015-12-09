@@ -77,12 +77,6 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
         View.OnFocusChangeListener {
     private static final String TAG = "Launcher.Folder";
 
-    private static final String PROTECTED_ACTION = "cyanogenmod.intent.action.PACKAGE_PROTECTED";
-    private static final String PROTECTED_STATE =
-            "cyanogenmod.intent.action.PACKAGE_PROTECTED_STATE";
-    private static final String PROTECTED_COMPONENTS =
-            "cyanogenmod.intent.action.PACKAGE_PROTECTED_COMPONENTS";
-
     protected DragController mDragController;
     protected Launcher mLauncher;
     protected FolderInfo mInfo;
@@ -326,9 +320,9 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
         }
 
         Intent intent = new Intent();
-        intent.setAction(PROTECTED_ACTION);
-        intent.putExtra(PROTECTED_STATE, protect);
-        intent.putExtra(PROTECTED_COMPONENTS, components);
+        intent.setAction(cyanogenmod.content.Intent.ACTION_PROTECTED);
+        intent.putExtra(cyanogenmod.content.Intent.EXTRA_PROTECTED_STATE, protect);
+        intent.putExtra(cyanogenmod.content.Intent.EXTRA_PROTECTED_COMPONENTS, components);
 
         mLauncher.sendBroadcast(intent);
     }
