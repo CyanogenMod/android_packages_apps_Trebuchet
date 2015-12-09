@@ -1,6 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="@dimen/overview_panel_list_item_height"
     android:layout_gravity="center_horizontal|bottom"
     android:background="@drawable/listitem_bg"
     android:paddingStart="@dimen/overview_panel_list_padding"
@@ -9,13 +9,21 @@
     android:paddingTop="@dimen/overview_panel_list_padding"
     android:orientation="horizontal" >
 
+    <Switch
+        android:id="@+id/setting_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_alignParentEnd="true"
+        android:visibility="invisible"/>
+
     <TextView
         android:id="@+id/item_state"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:drawablePadding="4dp"
-        android:fontFamily="sans-serif-condensed"
-        android:textSize="20sp"
+        android:fontFamily="sans-serif"
+        android:textSize="16sp"
         android:textAllCaps="true"
         android:textColor="@drawable/listitem_text"
         android:layout_alignParentEnd="true"
@@ -28,8 +36,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:drawablePadding="4dp"
-        android:fontFamily="sans-serif-condensed"
-        android:textSize="20sp"
+        android:fontFamily="sans-serif"
+        android:textSize="16sp"
         android:textColor="@drawable/listitem_text"
         android:layout_toStartOf="@id/item_state"
         android:layout_alignParentStart="true"

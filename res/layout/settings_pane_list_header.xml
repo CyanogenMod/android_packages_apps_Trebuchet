@@ -15,7 +15,7 @@
 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="@dimen/overview_panel_list_header_height"
     android:layout_gravity="center_horizontal|bottom"
     android:background="@color/settings_bg_color"
     android:paddingLeft="@dimen/overview_panel_list_padding"
@@ -27,8 +27,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:drawablePadding="4dp"
-        android:fontFamily="sans-serif-condensed"
+        android:fontFamily="sans-serif-medium"
         android:gravity="left"
-        android:textSize="16sp"
+        android:textSize="14sp"
         android:textColor="@color/settings_header_text"/>
 </RelativeLayout>

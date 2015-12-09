@@ -108,6 +108,7 @@ import com.android.launcher3.compat.LauncherActivityInfoCompat;
 import com.android.launcher3.compat.LauncherAppsCompat;
 import com.android.launcher3.compat.UserHandleCompat;
 import com.android.launcher3.compat.UserManagerCompat;
+import com.android.launcher3.list.SettingsPinnedHeaderAdapter;
 import com.android.launcher3.model.WidgetsModel;
 import com.android.launcher3.settings.SettingsProvider;
 import com.android.launcher3.util.ComponentKey;
@@ -369,6 +370,8 @@ public class Launcher extends Activity
     // the press state and keep this reference to reset the press state when we return to launcher.
     private BubbleTextView mWaitingForResume;
 
+    private long mDefaultScreenId;
+
     public Animator.AnimatorListener mAnimatorListener = new Animator.AnimatorListener() {
         @Override
         public void onAnimationStart(Animator arg0) {}
@@ -382,7 +385,7 @@ public class Launcher extends Activity
         public void onAnimationCancel(Animator arg0) {}
     };
 
-    Runnable mUpdateDynamicGridRunnable = new Runnable() {
+    Runnable mReloadLauncherRunnable = new Runnable() {
         @Override
         public void run() {
             reloadLauncher(mWorkspace.getRestorePage(), true, false);
@@ -393,7 +396,19 @@ public class Launcher extends Activity
         @Override
         public void onReceive(Context context, Intent intent) {
             // Update the workspace
-            if (waitUntilResume(mUpdateDynamicGridRunnable, true)) {
+            if (waitUntilResume(mReloadLauncherRunnable, true)) {
+                return;
+            }
+
+            reloadLauncher(mWorkspace.getRestorePage(), true, false);
+        }
+    };
+
+    private BroadcastReceiver searchBarVisibilityChangedReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // Update the workspace
+            if (waitUntilResume(mReloadLauncherRunnable, true)) {
                 return;
             }
 
@@ -572,6 +587,10 @@ public class Launcher extends Activity
                 cyanogenmod.content.Intent.ACTION_PROTECTED_CHANGED);
         registerReceiver(protectedAppsChangedReceiver, protectedAppsFilter,
                 cyanogenmod.platform.Manifest.permission.PROTECTED_APP, null);
+
+        IntentFilter searchBarVisibilityFilter = new IntentFilter(
+                SettingsPinnedHeaderAdapter.ACTION_SEARCH_BAR_VISIBILITY_CHANGED);
+        registerReceiver(searchBarVisibilityChangedReceiver, searchBarVisibilityFilter);
     }
 
     @Override
@@ -1788,6 +1807,8 @@ public class Launcher extends Activity
         mHideIconLabels = SettingsProvider.getBoolean(this,
                 SettingsProvider.SETTINGS_UI_HOMESCREEN_HIDE_ICON_LABELS,
                 R.bool.preferences_interface_homescreen_hide_icon_labels_default);
+        mDefaultScreenId = SettingsProvider.getLongCustomDefault(this,
+                SettingsProvider.SETTINGS_UI_HOMESCREEN_DEFAULT_SCREEN_ID, 1);
 
         mModel = app.setLauncher(this);
         mIconCache = app.getIconCache();
@@ -1829,7 +1850,6 @@ public class Launcher extends Activity
         mWorkspace.updateCustomContentVisibility();
 
         mSearchDropTargetBar.setupQsb(this);
-        mSearchDropTargetBar.setVisibility(View.INVISIBLE);
 
         if (reloadAppDrawer) {
             reloadAppDrawer();
@@ -2313,6 +2333,7 @@ public class Launcher extends Activity
         }
 
         unregisterReceiver(protectedAppsChangedReceiver);
+        unregisterReceiver(searchBarVisibilityChangedReceiver);
     }
 
     public DragController getDragController() {
@@ -3097,7 +3118,24 @@ public class Launcher extends Activity
 
     protected void onClickDefaultScreenButton(View v) {
         if (LOGD) Log.d(TAG, "onClickDefaultScreenButton");
-        // TODO
+
+        if (!mWorkspace.isInOverviewMode()) return;
+
+        mDefaultScreenId = mWorkspace.getScreenIdForPageIndex(mWorkspace.getPageNearestToCenterOfScreen());
+        updateDefaultScreenButton();
+        SettingsProvider.get(this).edit()
+                .putLong(SettingsProvider.SETTINGS_UI_HOMESCREEN_DEFAULT_SCREEN_ID,
+                        mDefaultScreenId)
+                .commit();
+    }
+
+    protected void updateDefaultScreenButton() {
+        if (mOverviewPanel != null) {
+            View defaultPageButton = mOverviewPanel.findViewById(R.id.default_screen_button);
+            defaultPageButton.setActivated(
+                    mWorkspace.getScreenIdForPageIndex(mWorkspace.getPageNearestToCenterOfScreen())
+                            == mDefaultScreenId);
+        }
     }
 
     public View.OnTouchListener getHapticFeedbackTouchListener() {

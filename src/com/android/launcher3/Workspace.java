@@ -574,6 +574,11 @@ public class Workspace extends PagedView
         mScreenOrder.add(insertIndex, screenId);
         addView(newScreen, insertIndex);
 
+        if (getDefaultScreenId() == screenId) {
+            int defaultPage = getPageIndexForScreenId(screenId);
+            moveToScreen(defaultPage, false);
+        }
+
         LauncherAccessibilityDelegate delegate =
                 LauncherAppState.getInstance().getAccessibilityDelegate();
         if (delegate != null && delegate.isInAccessibleDrag()) {
@@ -1546,6 +1551,10 @@ public class Workspace extends PagedView
         super.computeScroll();
 
         if (mScrollWallpaper) mWallpaperOffset.syncWithScroll();
+
+        if (isInOverviewMode() && !isReordering(true)) {
+            mLauncher.updateDefaultScreenButton();
+        }
     }
 
     @Override
@@ -1985,6 +1994,9 @@ public class Workspace extends PagedView
 
         // Re-enable auto layout transitions for page deletion.
         enableLayoutTransitions();
+
+        // Show the default screen button
+        mLauncher.updateDefaultScreenButton();
     }
 
     public boolean isInOverviewMode() {
@@ -4436,7 +4448,7 @@ public class Workspace extends PagedView
     }
 
     void moveToDefaultScreen(boolean animate) {
-        moveToScreen(mDefaultPage, animate);
+        moveToScreen(getPageIndexForScreenId(getDefaultScreenId()), animate);
     }
 
     void moveToCustomContentScreen(boolean animate) {
@@ -4519,6 +4531,11 @@ public class Workspace extends PagedView
         } else {
             mWallpaperOffset.syncWithScroll();
         }
+    }
+
+    private long getDefaultScreenId() {
+        return SettingsProvider.getLongCustomDefault(mLauncher,
+                SettingsProvider.SETTINGS_UI_HOMESCREEN_DEFAULT_SCREEN_ID, 1);
     }
 
     /**
