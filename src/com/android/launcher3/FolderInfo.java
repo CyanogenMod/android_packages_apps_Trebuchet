@@ -75,6 +75,25 @@ public class FolderInfo extends ItemInfo {
         itemsChanged();
     }
 
+    /**
+     * @return true if this info represents a remote folder, false otherwise
+     */
+    public boolean isRemote() {
+        return (subType & REMOTE_SUBTYPE) != 0;
+    }
+
+    /**
+     * Set flag indicating whether this folder is remote
+     * @param remote true if folder is remote, false otherwise
+     */
+    public void setRemote(final boolean remote) {
+        if (remote) {
+            subType |= REMOTE_SUBTYPE;
+        } else {
+            subType &= ~REMOTE_SUBTYPE;
+        }
+    }
+
     public void setTitle(CharSequence title) {
         this.title = title;
         for (int i = 0; i < listeners.size(); i++) {
@@ -87,6 +106,7 @@ public class FolderInfo extends ItemInfo {
         super.onAddToDatabase(context, values);
         values.put(LauncherSettings.Favorites.TITLE, title.toString());
         values.put(LauncherSettings.Favorites.HIDDEN, hidden ? 1 : 0);
+        values.put(LauncherSettings.BaseLauncherColumns.SUBTYPE, subType);
     }
 
     void addListener(FolderListener listener) {

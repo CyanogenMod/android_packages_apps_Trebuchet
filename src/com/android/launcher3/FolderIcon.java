@@ -170,7 +170,7 @@ public class FolderIcon extends FrameLayout implements FolderListener {
         icon.mLauncher = launcher;
         icon.setContentDescription(String.format(launcher.getString(R.string.folder_name_format),
                 folderInfo.title));
-        if (folderInfo.subType == FolderInfo.REMOTE_SUBTYPE) {
+        if (folderInfo.isRemote()) {
             RemoteFolder folder = RemoteFolder.fromXml(launcher);
             folder.setDragController(launcher.getDragController());
             folder.setFolderIcon(icon);

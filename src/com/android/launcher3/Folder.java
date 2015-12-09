@@ -486,9 +486,9 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
         mInfo = info;
         final ArrayList<ShortcutInfo> children = info.contents;
 
-        if (info.subType == FolderInfo.REMOTE_SUBTYPE && children.isEmpty()) {
+        if (info.isRemote() && children.isEmpty()) {
             final int count = 6;
-            RemoteFolderUpdater updater = mLauncher.getRemoteFolderUpdaterInstance();
+            RemoteFolderUpdater updater = RemoteFolderUpdater.getInstance();
             updater.requestSync(getContext(), count, new RemoteFolderUpdater.RemoteFolderUpdateListener() {
                 @Override
                 public void onSuccess(List<RemoteFolderUpdater.RemoteFolderInfo> remoteFolderInfoList) {
@@ -699,7 +699,7 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
                     circX, circY, 0, mScreenWidth);
 
             final View[] alphaViewSet;
-            if (mInfo.subType == FolderInfo.REMOTE_SUBTYPE) {
+            if (mInfo.isRemote()) {
                 alphaViewSet = new View[] { mContent, mFolderName };
             } else {
                 alphaViewSet = new View[] { mFolderNameLockContainer,
@@ -1517,7 +1517,7 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
     }
 
     private void replaceFolderWithFinalItem() {
-        if (mInfo.subType == FolderInfo.REMOTE_SUBTYPE) {
+        if (mInfo.isRemote()) {
             return;
         }
 
@@ -1681,8 +1681,8 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
                 mLauncher, item, mInfo.id, 0, item.cellX, item.cellY);
 
         // If this is a Remote Folder, we need to register each view with our updater for click handling.
-        if (mInfo.subType == FolderInfo.REMOTE_SUBTYPE) {
-            RemoteFolderUpdater updater = mLauncher.getModel().getRemoteFolderUpdaterInstance();
+        if (mInfo.isRemote()) {
+            RemoteFolderUpdater updater = RemoteFolderUpdater.getInstance();
             updater.registerViewForInteraction(getViewForInfo(item), item.getIntent());
         }
 

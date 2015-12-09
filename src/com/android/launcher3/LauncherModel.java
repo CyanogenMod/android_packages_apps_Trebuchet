@@ -2393,7 +2393,7 @@ public class LauncherModel extends BroadcastReceiver
                                 sBgItemsIdMap.put(folderInfo.id, folderInfo);
                                 sBgFolders.put(folderInfo.id, folderInfo);
 
-                                if (folderInfo.subType == FolderInfo.REMOTE_SUBTYPE) {
+                                if (folderInfo.isRemote()) {
                                     syncRemoteFolder(folderInfo, mContext);
                                 }
 
@@ -2872,7 +2872,7 @@ public class LauncherModel extends BroadcastReceiver
                             }
                             workspaceItems.remove(i);
                             folders.remove(Long.valueOf(item.id));
-                        } else if (folder.contents.size() == 0 && folder.subType == 0) {
+                        } else if (folder.contents.size() == 0 && !folder.isRemote()) {
                             LauncherModel.deleteFolderContentsFromDatabase(mContext, folder);
                             workspaceItems.remove(i);
                             folders.remove(Long.valueOf(item.id));
@@ -4259,25 +4259,8 @@ public class LauncherModel extends BroadcastReceiver
         return mCallbacks != null ? mCallbacks.get() : null;
     }
 
-    public static RemoteFolderUpdater getRemoteFolderUpdaterInstance() {
-        if (remoteFolderUpdater == null) {
-            remoteFolderUpdater = new RemoteFolderUpdater();
-        }
-        return remoteFolderUpdater;
-    }
-
     protected synchronized void syncRemoteFolder(final FolderInfo folderInfo, final Context context) {
-
-        String spKey = LauncherAppState.getSharedPreferencesKey();
-        SharedPreferences sp = context.getSharedPreferences(spKey, Context.MODE_PRIVATE);
-        boolean isEnabled = sp.getBoolean(RemoteFolder.REMOTE_FOLDER_ENABLED, true);
-
-        if (!isEnabled) {
-            Log.e(TAG, "Prevented remote folder sync, since it has been explicitly disabled.");
-            return;
-        }
-
-        RemoteFolderUpdater updater = getRemoteFolderUpdaterInstance();
+        RemoteFolderUpdater updater = RemoteFolderUpdater.getInstance();
         final int count = 6;
 
         updater.requestSync(context, count, new RemoteFolderUpdater.RemoteFolderUpdateListener() {

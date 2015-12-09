@@ -400,6 +400,13 @@ public class Workspace extends SmoothPagedView
         }
     }
 
+    /**
+     * @return A {@link Set} of {@link Long}s representing ids of the workspace screens
+     */
+    public Set<Long> getWorkspaceScreenIds() {
+        return mWorkspaceScreens.keySet();
+    }
+
     // estimate the size of a widget with spans hSpan, vSpan. return MAX_VALUE for each
     // dimension if unsuccessful
     public int[] estimateItemSize(int hSpan, int vSpan,
@@ -4462,6 +4469,7 @@ public class Workspace extends SmoothPagedView
             }
             if (cellLayout != null) {
                 cellLayout.onDropChild(mDragInfo.cell);
+                cellLayout.setUseTempCoords(false);
             }
         }
         if ((d.cancelled || (beingCalledAfterUninstall && !mUninstallSuccessful))

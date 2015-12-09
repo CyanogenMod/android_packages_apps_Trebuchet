@@ -11,10 +11,25 @@ public class RemoteFolderUpdater {
 
     private static final String TAG = "RemoteFolderUpdater";
 
+    private static final Object sLock = new Object();
+    private static RemoteFolderUpdater sInstance;
+
     public interface RemoteFolderUpdateListener {
         void onSuccess(List<RemoteFolderInfo> remoteFolderInfoList);
         void onFailure(String error);
     }
+
+    public static RemoteFolderUpdater getInstance() {
+        synchronized (sLock) {
+            if (sInstance == null) {
+                sInstance = new RemoteFolderUpdater();
+            }
+
+            return sInstance;
+        }
+    }
+
+    private RemoteFolderUpdater() { }
 
     /**
      * Requests data needed by remote folders.

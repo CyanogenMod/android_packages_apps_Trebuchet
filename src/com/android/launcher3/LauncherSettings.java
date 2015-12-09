@@ -262,8 +262,6 @@ class LauncherSettings {
          */
         static final int ITEM_TYPE_WIDGET_PHOTO_FRAME = 1002;
 
-        static final int ITEM_TYPE_REMOTE_FOLDER = 2000;
-
         /**
          * The appWidgetId of the widget
          *

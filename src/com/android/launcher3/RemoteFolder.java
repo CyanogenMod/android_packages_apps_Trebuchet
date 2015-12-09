@@ -24,7 +24,6 @@ public class RemoteFolder extends Folder {
     private ImageView mFolderInfo;
     private TextView mFolderHelpText;
     private Button mCloseInfoButton;
-    private Button mDisableFolderButton;
     private View mFolderInfoContainer;
 
     private int mFolderInfoContainerHeight;
@@ -82,11 +81,6 @@ public class RemoteFolder extends Folder {
         mCloseInfoButton.measure(measureSpec, measureSpec);
         mButtonHeight = mCloseInfoButton.getMeasuredHeight();
         mCloseInfoButton.setOnClickListener(this);
-
-        mDisableFolderButton = (Button) findViewById(R.id.disable_remote_folder_button);
-        mDisableFolderButton.setText(getResources().getString(R.string.disable));
-        mDisableFolderButton.measure(measureSpec, measureSpec);
-        mDisableFolderButton.setOnClickListener(this);
     }
 
     protected int getFolderHeight() {
@@ -146,8 +140,6 @@ public class RemoteFolder extends Folder {
                             mFolderInfoIconHeight + mHelpTextHeight + mButtonHeight, MeasureSpec.EXACTLY));
             mCloseInfoButton.measure(contentAreaWidthSpec,
                     MeasureSpec.makeMeasureSpec(mButtonHeight, MeasureSpec.EXACTLY));
-            mDisableFolderButton.measure(contentAreaWidthSpec,
-                    MeasureSpec.makeMeasureSpec(mButtonHeight, MeasureSpec.EXACTLY));
         } else {
             mHelpTextHeight = 0;
             mFolderHelpText.measure(contentAreaWidthSpec, MeasureSpec.makeMeasureSpec(
@@ -155,8 +147,6 @@ public class RemoteFolder extends Folder {
             mFolderInfoContainer.measure(contentAreaWidthSpec,
                     MeasureSpec.makeMeasureSpec(mFolderInfoIconHeight, MeasureSpec.EXACTLY));
             mCloseInfoButton.measure(contentAreaWidthSpec,
-                    MeasureSpec.makeMeasureSpec(0, MeasureSpec.EXACTLY));
-            mDisableFolderButton.measure(contentAreaWidthSpec,
                     MeasureSpec.makeMeasureSpec(0, MeasureSpec.EXACTLY));
         }
 
@@ -178,9 +168,6 @@ public class RemoteFolder extends Folder {
             case R.id.close_info_button:
                 mLauncher.closeFolder();
                 break;
-            case R.id.disable_remote_folder_button:
-                disableRemoteFolder();
-                break;
             default:
                 break;
         }
@@ -195,7 +182,6 @@ public class RemoteFolder extends Folder {
             mFolderHelpText.setVisibility(GONE);
 
             mCloseInfoButton.setVisibility(GONE);
-            mDisableFolderButton.setVisibility(GONE);
 
             mFolderInfo.setImageDrawable(getResources().getDrawable(R.drawable.ic_launcher_info_normal_holo));
 
@@ -207,31 +193,10 @@ public class RemoteFolder extends Folder {
             mFolderHelpText.setVisibility(VISIBLE);
 
             mCloseInfoButton.setVisibility(VISIBLE);
-            mDisableFolderButton.setVisibility(VISIBLE);
 
             mFolderInfo.setImageDrawable(getResources().getDrawable(R.drawable.ic_launcher_clear_normal_holo));
         }
         this.invalidate();
-
-    }
-
-    private void disableRemoteFolder() {
-        // close the folder UX & disable remote folders.
-        mLauncher.closeFolder();
-
-        if (mContext != null) {
-            String spKey = LauncherAppState.getSharedPreferencesKey();
-            SharedPreferences sp = mContext.getSharedPreferences(spKey, Context.MODE_PRIVATE);
-            sp.edit().putBoolean(REMOTE_FOLDER_ENABLED, false).commit();
-            Log.e(TAG, "Set preference to disable remote folder. Requesting sync to remove existing folder");
-
-            LauncherModel.deleteFolderContentsFromDatabase(mContext, mInfo);
-            LauncherModel.deleteItemFromDatabase(mContext, mInfo);
-            mLauncher.getWorkspace().removeView(this);
-            mLauncher.removeFolder(mInfo);
-
-            mLauncher.getWorkspace().refreshDrawableState();
-        }
     }
 
     @Override
@@ -239,7 +204,6 @@ public class RemoteFolder extends Folder {
         super.animateClosed(animate);
         mFolderHelpText.setVisibility(GONE);
         mCloseInfoButton.setVisibility(GONE);
-        mDisableFolderButton.setVisibility(GONE);
         mContentScrollView.setVisibility(VISIBLE);
         mFolderInfo.setImageDrawable(getResources().getDrawable(R.drawable.ic_launcher_info_normal_holo));
     }
@@ -251,7 +215,6 @@ public class RemoteFolder extends Folder {
         mFolderHelpText.setText(getResources().getString(R.string.recommendations_help_text));
         mFolderHelpText.setVisibility(GONE);
         mCloseInfoButton.setVisibility(GONE);
-        mDisableFolderButton.setVisibility(GONE);
         mContentScrollView.setVisibility(VISIBLE);
         mContent.setVisibility(VISIBLE);
         mFolderInfo.setImageDrawable(getResources().getDrawable(R.drawable.ic_launcher_info_normal_holo));

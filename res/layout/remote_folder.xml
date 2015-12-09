@@ -92,17 +92,6 @@ android:background="@drawable/folder_bg">
             android:layout_alignParentRight="true"
             />
 
-        <Button
-            android:id="@+id/disable_remote_folder_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:minHeight="@dimen/folder_lock_icon"
-            android:text="@string/disable"
-            android:layout_below="@id/help_text_view"
-            android:layout_toLeftOf="@id/close_info_button"
-            android:layout_alignParentBottom="true"
-            />
-
     </RelativeLayout>
 
     <ScrollView

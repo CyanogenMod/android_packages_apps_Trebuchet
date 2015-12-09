@@ -330,10 +330,16 @@ public class DeleteDropTarget extends ButtonDropTarget {
         } else if (isWorkspaceOrFolderApplication(d)) {
             LauncherModel.deleteItemFromDatabase(mLauncher, item);
         } else if (isWorkspaceFolder(d)) {
-            // Remove the folder from the workspace and delete the contents from launcher model
             FolderInfo folderInfo = (FolderInfo) item;
-            mLauncher.removeFolder(folderInfo);
-            LauncherModel.deleteFolderContentsFromDatabase(mLauncher, folderInfo);
+
+            // Remote folder should not really be deleted. Let the manager handle it.
+            if (folderInfo.isRemote()) {
+                mLauncher.getRemoteFolderManager().onFolderDeleted();
+            } else {
+                // Remove the folder from the workspace and delete the contents from launcher model
+                mLauncher.removeFolder(folderInfo);
+                LauncherModel.deleteFolderContentsFromDatabase(mLauncher, folderInfo);
+            }
         } else if (isWorkspaceOrFolderWidget(d)) {
             // Remove the widget from the workspace
             mLauncher.removeAppWidget((LauncherAppWidgetInfo) item);
