@@ -4592,12 +4592,16 @@ public class Launcher extends Activity
     public AppWidgetProviderInfo resolveSearchAppWidget() {
         if (mAppWidgetManager == null) return null;
 
-        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        final Intent assistIntent = searchManager.getAssistIntent(this, false);
-        if (assistIntent == null) {
+        ComponentName searchComponent = null;
+        try {
+            Intent assistIntent = new Intent(Intent.ACTION_ASSIST);
+            searchComponent = assistIntent.resolveActivity(getPackageManager());
+        } catch (Exception e) {
+            Log.e(TAG, "Exception in resolveSearchAppWidget: " + e);
+        }
+        if (searchComponent == null) {
             return null;
         }
-        ComponentName searchComponent = assistIntent.getComponent();
 
         // Find the first widget from the same package as the global assist activity
         List<AppWidgetProviderInfo> widgets = AppWidgetManager.getInstance(this)
