@@ -20,12 +20,16 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.support.v7.widget.LinearLayoutManager;
+import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import com.android.launcher3.BaseRecyclerView;
 import com.android.launcher3.R;
 import com.android.launcher3.model.PackageItemInfo;
 import com.android.launcher3.model.WidgetsModel;
+
+import java.util.ArrayList;
 
 /**
  * The widgets recycler view.
@@ -70,7 +74,11 @@ public class WidgetsRecyclerView extends BaseRecyclerView {
     public void setWidgets(WidgetsModel widgets) {
         mWidgets = widgets;
     }
-    
+
+    public WidgetsModel getWidgets() {
+        return mWidgets;
+    }
+
     /**
      * We need to override the draw to ensure that we don't draw the overscroll effect beyond the
      * background bounds.
@@ -146,12 +154,44 @@ public class WidgetsRecyclerView extends BaseRecyclerView {
 
     @Override
     public String scrollToSection(String sectionName) {
+        // Skip early if widgets are not bound.
+        if (mWidgets == null) {
+            return "";
+        }
+
+        // Skip early if there are no widgets.
+        int rowCount = mWidgets.getPackageSize();
+        if (rowCount == 0) {
+            return "";
+        }
+        for (int i = 0; i < rowCount; i++) {
+            PackageItemInfo packageItemInfo = mWidgets.getPackageItemInfo(i);
+            if (packageItemInfo != null && !TextUtils.isEmpty(packageItemInfo.titleSectionName) &&
+                    packageItemInfo.titleSectionName.equals(sectionName)) {
+                LinearLayoutManager layoutManager = ((LinearLayoutManager) getLayoutManager());
+                layoutManager.smoothScrollToPosition(this, null, i);
+                return packageItemInfo.titleSectionName;
+            }
+        }
         return null;
     }
 
     @Override
     public String[] getSectionNames() {
-        return new String[0];
+        if (mWidgets == null) {
+            return new String[0];
+        }
+        final int N = mWidgets.getPackageSize();
+        ArrayList<String> sections = new ArrayList<>();
+        String lastLetter = null;
+        for (int i = 0; i < N; i++) {
+            final String titleSectionName = mWidgets.getPackageItemInfo(i).titleSectionName;
+            if (!TextUtils.isEmpty(titleSectionName) && !titleSectionName.equals(lastLetter)) {
+                lastLetter = titleSectionName;
+                sections.add(titleSectionName);
+            }
+        }
+        return sections.toArray(new String[sections.size()]);
     }
 
     /**

@@ -1873,6 +1873,19 @@ public class Launcher extends Activity
         mAppsView.reset();
     }
 
+    public void reloadWidgetView() {
+        WidgetsModel model = mWidgetsView.getWidgets();
+        mDragLayer.removeView(mWidgetsView);
+        mWidgetsView = (WidgetsContainerView)LayoutInflater
+                .from(this).inflate(R.layout.widgets_view, mDragLayer, false);
+        mDragLayer.addView(mWidgetsView, mDragLayer.getChildCount() - 2);
+        mWidgetsView.setVisibility(View.INVISIBLE);
+        if (model != null) {
+            mWidgetsView.addWidgets(model);
+        }
+        mWidgetsView.reset();
+    }
+
     /**
      * Replaces currently added fragments in the launcher layout with a
      * {@link DynamicGridSizeFragment}.

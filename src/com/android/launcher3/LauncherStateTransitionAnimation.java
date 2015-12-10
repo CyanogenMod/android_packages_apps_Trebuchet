@@ -168,6 +168,11 @@ public class LauncherStateTransitionAnimation {
             public float getMaterialRevealViewFinalAlpha(View revealView) {
                 return 0.3f;
             }
+
+            @Override
+            void onTransitionComplete() {
+                toView.setScrubberVisibility(View.VISIBLE);
+            }
         };
         mCurrentAnimation = startAnimationToOverlay(fromWorkspaceState,
                 Workspace.State.OVERVIEW_HIDDEN, buttonView, toView, toView.getContentView(),
@@ -453,6 +458,7 @@ public class LauncherStateTransitionAnimation {
             final Workspace.State toWorkspaceState, final int toWorkspacePage,
             final boolean animated, final Runnable onCompleteRunnable) {
         final WidgetsContainerView widgetsView = mLauncher.getWidgetsView();
+        widgetsView.setScrubberVisibility(View.INVISIBLE);
         PrivateTransitionCallbacks cb = new PrivateTransitionCallbacks() {
             @Override
             float getMaterialRevealViewFinalAlpha(View revealView) {

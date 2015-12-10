@@ -277,6 +277,7 @@ public class SettingsPinnedHeaderAdapter extends PinnedHeaderListAdapter {
                                     SettingsProvider.SETTINGS_UI_USE_HORIZONTAL_SCRUBBER,
                                     R.bool.preferences_interface_use_horizontal_scrubber_default);
                             mLauncher.reloadAppDrawer();
+                            mLauncher.reloadWidgetView();
                             break;
                     }
                     break;

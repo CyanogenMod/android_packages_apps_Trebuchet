@@ -21,8 +21,7 @@
     android:id="@+id/widgets_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:descendantFocusability="afterDescendants">
+    android:orientation="vertical">
 
     <FrameLayout
         android:id="@+id/content"
@@ -37,24 +36,33 @@
             android:elevation="2dp"
             android:visibility="invisible" />
 
-        <!-- DO NOT CHANGE THE ID -->
-        <com.android.launcher3.widget.WidgetsRecyclerView
-            android:id="@+id/widgets_list_view"
-            android:theme="@style/Theme.Dark.CustomOverscroll"
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="center"
             android:elevation="15dp"
-            android:visibility="gone" />
+            android:focusable="true"
+            android:focusableInTouchMode="true">
 
-        <ViewStub
-            android:id="@+id/scrubber_container_stub"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inflatedId="@+id/scrubber_container"
-            android:layout="@layout/scrubber_container"
-            android:layout_gravity="bottom"
-            android:clipToPadding="false"/>
+            <!-- DO NOT CHANGE THE ID -->
+            <com.android.launcher3.widget.WidgetsRecyclerView
+                android:id="@+id/widgets_list_view"
+                android:theme="@style/Theme.Dark.CustomOverscroll"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:visibility="gone"
+                android:descendantFocusability="afterDescendants"/>
+
+            <ViewStub
+                android:id="@+id/scrubber_container_stub"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inflatedId="@+id/scrubber_container"
+                android:layout="@layout/scrubber_container"
+                android:layout_gravity="bottom"
+                android:clipToPadding="false"/>
+
+        </FrameLayout>
     </FrameLayout>
 
 </com.android.launcher3.widget.WidgetsContainerView>

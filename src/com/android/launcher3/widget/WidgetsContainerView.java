@@ -115,6 +115,19 @@ public class WidgetsContainerView extends BaseContainerView
         });
         mPadding.set(getPaddingLeft(), getPaddingTop(), getPaddingRight(),
                 getPaddingBottom());
+        setScroller();
+        updateBackgroundAndPaddings();
+    }
+
+    public void reset() {
+        updateScrubber();
+        updateBackgroundAndPaddings();
+    }
+
+    private void updateScrubber() {
+        if (useScrubber()) {
+            mScrubber.updateSections();
+        }
     }
 
     //
@@ -123,6 +136,12 @@ public class WidgetsContainerView extends BaseContainerView
 
     public View getContentView() {
         return mView;
+    }
+
+    public void setScrubberVisibility(int visibility) {
+        if (mScrubberContainerView != null) {
+            mScrubberContainerView.setVisibility(visibility);
+        }
     }
 
     public View getRevealView() {
@@ -337,6 +356,7 @@ public class WidgetsContainerView extends BaseContainerView
 
     @Override
     protected void onUpdateBackgroundAndPaddings(Rect searchBarBounds, Rect padding) {
+        boolean isRtl = Utilities.isRtl(getResources());
         // Apply the top-bottom padding to the content itself so that the launcher transition is
         // clipped correctly
         mContent.setPadding(0, padding.top, 0, padding.bottom);
@@ -350,6 +370,30 @@ public class WidgetsContainerView extends BaseContainerView
         mView.setBackground(background);
         getRevealView().setBackground(background.getConstantState().newDrawable());
         mView.updateBackgroundPadding(bgPadding);
+
+        int startInset = mView.getMaxScrollbarWidth();
+        int topBottomPadding =  getPaddingTop();
+        final boolean useScubber = useScrubber();
+        if (isRtl) {
+            mView.setPadding(padding.left + mView.getMaxScrollbarWidth(),
+                    topBottomPadding, padding.right + startInset, useScubber ?
+                            mScrubberHeight + topBottomPadding : topBottomPadding);
+            if (useScubber) {
+                mScrubberContainerView
+                        .setPadding(padding.left,
+                                0, padding.right, 0);
+            }
+        } else {
+            mView.setPadding(padding.left + startInset, topBottomPadding,
+                    padding.right + mView.getMaxScrollbarWidth(),
+                    useScubber ?  mScrubberHeight + topBottomPadding : topBottomPadding);
+            if (useScubber) {
+                mScrubberContainerView.setPadding(padding.left, 0,
+                        padding.right, 0);
+                mScrubberContainerView.setEnabled(true);
+                mScrubberContainerView.bringToFront();
+            }
+        }
     }
 
     /**
@@ -359,6 +403,14 @@ public class WidgetsContainerView extends BaseContainerView
         mView.setWidgets(model);
         mAdapter.setWidgetsModel(model);
         mAdapter.notifyDataSetChanged();
+        updateScrubber();
+    }
+
+    public WidgetsModel getWidgets() {
+        if (mView != null) {
+            return mView.getWidgets();
+        }
+        return null;
     }
 
     private WidgetPreviewLoader getWidgetPreviewLoader() {
