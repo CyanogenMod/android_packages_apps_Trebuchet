@@ -173,6 +173,12 @@ public class RemoteFolder extends Folder {
         }
     }
 
+    @Override
+    public boolean onLongClick(View v) {
+        // Eat the event without doing anything. We do not allow users to remove items.
+        return true;
+    }
+
     private void toggleInfoPane() {
         if (mFolderHelpText.getVisibility() == VISIBLE) {
             // info ImageView becomes a close "X" when the help text is showing, handle accordingly
