@@ -30,7 +30,6 @@ import android.content.Intent;
 import android.content.Intent.ShortcutIconResource;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.content.pm.LauncherApps.Callback;
 import android.content.pm.PackageManager;
 import android.content.pm.ProviderInfo;
 import android.content.pm.ResolveInfo;
@@ -62,8 +61,6 @@ import com.android.launcher3.compat.UserHandleCompat;
 import com.android.launcher3.compat.UserManagerCompat;
 import com.android.launcher3.settings.SettingsProvider;
 import com.android.launcher3.stats.internal.service.AggregationIntentService;
-
-import com.cyngn.RemoteFolder.RemoteFolderUpdater;
 
 import java.lang.ref.WeakReference;
 import java.net.URISyntaxException;

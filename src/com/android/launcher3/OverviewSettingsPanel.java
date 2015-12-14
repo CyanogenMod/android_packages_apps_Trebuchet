@@ -10,6 +10,10 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import com.android.launcher3.list.PinnedHeaderListView;
 import com.android.launcher3.list.SettingsPinnedHeaderAdapter;
+import com.android.launcher3.settings.SettingsProvider;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class OverviewSettingsPanel {
     public static final String ANDROID_SETTINGS = "com.android.settings";
@@ -41,14 +45,6 @@ public class OverviewSettingsPanel {
                 res.getString(R.string.drawer_settings),
                 res.getString(R.string.app_settings)};
 
-        String[] values = new String[]{
-                res.getString(R.string.home_screen_search_text),
-                res.getString(R.string.scroll_effect_text),
-                res.getString(R.string.icon_labels),
-                res.getString(R.string.scrolling_wallpaper),
-                res.getString(R.string.grid_size_text),
-                res.getString(R.string.recommendations_title)};
-
         String[] valuesDrawer = new String[] {
                 res.getString(R.string.drawer_type),
                 res.getString(R.string.scroll_effect_text),
@@ -59,7 +55,6 @@ public class OverviewSettingsPanel {
                 res.getString(R.string.larger_icons_text),
                 res.getString(R.string.protected_app_settings)};
 
-
         mSettingsAdapter = new SettingsPinnedHeaderAdapter(mLauncher);
         mSettingsAdapter.setHeaders(headers);
         mSettingsAdapter.addPartition(false, true);
@@ -67,7 +62,8 @@ public class OverviewSettingsPanel {
         mSettingsAdapter.addPartition(false, true);
         mSettingsAdapter.mPinnedHeaderCount = headers.length;
 
-        mSettingsAdapter.changeCursor(HOME_SETTINGS_POSITION, createCursor(headers[0], values));
+        mSettingsAdapter.changeCursor(HOME_SETTINGS_POSITION,
+                createCursor(headers[0], getValues()));
         mSettingsAdapter.changeCursor(DRAWER_SETTINGS_POSITION, createCursor(headers[1],
                 valuesDrawer));
         mSettingsAdapter.changeCursor(APP_SETTINGS_POSITION, createCursor(headers[2], valuesApp));
@@ -81,6 +77,27 @@ public class OverviewSettingsPanel {
             cursor.addRow(new Object[]{i, values[i]});
         }
         return cursor;
+    }
+
+    private String[] getValues() {
+        Resources res = mLauncher.getResources();
+        ArrayList<String> values = new ArrayList<String>(Arrays.asList(new String[]{
+                res.getString(R.string.home_screen_search_text),
+                res.getString(R.string.scroll_effect_text),
+                res.getString(R.string.icon_labels),
+                res.getString(R.string.scrolling_wallpaper),
+                res.getString(R.string.grid_size_text)}));
+
+        // Optionally add additional value based on setting
+        boolean remoteAppsEnabled = SettingsProvider.getBoolean(mLauncher, null,
+                R.bool.preferences_interface_homescreen_remote_folder_default);
+        if (remoteAppsEnabled) {
+            values.add(res.getString(R.string.recommendations_title));
+        }
+
+        String[] valuesArr = new String[values.size()];
+        values.toArray(valuesArr);
+        return valuesArr;
     }
 
     // One time View setup
@@ -170,15 +187,8 @@ public class OverviewSettingsPanel {
             mSettingsAdapter.changeCursor(0, createCursor(res
                     .getString(R.string.home_screen_settings), new String[]{}));
         } else {
-            String[] values = new String[] {
-                    res.getString(R.string.home_screen_search_text),
-                    res.getString(R.string.scroll_effect_text),
-                    res.getString(R.string.icon_labels),
-                    res.getString(R.string.scrolling_wallpaper),
-                    res.getString(R.string.grid_size_text),
-                    res.getString(R.string.recommendations_title)};
             mSettingsAdapter.changeCursor(0, createCursor(res
-                    .getString(R.string.home_screen_settings), values));
+                    .getString(R.string.home_screen_settings), getValues()));
         }
 
         // Make sure overview panel is drawn above apps customize and collapsed

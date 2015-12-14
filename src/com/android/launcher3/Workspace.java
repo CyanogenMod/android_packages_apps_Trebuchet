@@ -31,10 +31,7 @@ import android.appwidget.AppWidgetHostView;
 import android.appwidget.AppWidgetProviderInfo;
 import android.content.ComponentName;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
@@ -76,14 +73,11 @@ import com.android.launcher3.compat.PackageInstallerCompat;
 import com.android.launcher3.compat.PackageInstallerCompat.PackageInstallInfo;
 import com.android.launcher3.compat.UserHandleCompat;
 import com.android.launcher3.settings.SettingsProvider;
-import com.cyngn.RemoteFolder.RemoteFolderUpdater;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 

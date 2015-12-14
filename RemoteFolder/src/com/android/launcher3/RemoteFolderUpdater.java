@@ -1,4 +1,4 @@
-package com.cyngn.RemoteFolder;
+package com.android.launcher3;
 
 import android.content.Context;
 import android.content.Intent;
