@@ -159,6 +159,12 @@ public class SettingsPinnedHeaderAdapter extends PinnedHeaderListAdapter {
                                 : res.getString(R.string.fast_scroller_type_vertical);
                         setStateText(stateView, settingSwitch, state);
                         break;
+                    case 4:
+                        current = SettingsProvider.getBoolean(mContext,
+                                SettingsProvider.SETTINGS_UI_DRAWER_SEARCH,
+                                R.bool.preferences_interface_drawer_search_default);
+                        setSettingSwitch(stateView, settingSwitch, current);
+                        break;
                     default:
                         hideStates(stateView, settingSwitch);
                 }
@@ -278,6 +284,13 @@ public class SettingsPinnedHeaderAdapter extends PinnedHeaderListAdapter {
                                     R.bool.preferences_interface_use_horizontal_scrubber_default);
                             mLauncher.reloadAppDrawer();
                             mLauncher.reloadWidgetView();
+                            break;
+                        case 4:
+
+                            onSettingsBooleanChanged(v,
+                                    SettingsProvider.SETTINGS_UI_DRAWER_SEARCH,
+                                    R.bool.preferences_interface_drawer_search_default);
+                            mLauncher.reloadAppDrawer();
                             break;
                     }
                     break;

@@ -8,4 +8,5 @@
     <bool name="preferences_interface_drawer_dark_default">true</bool>
     <bool name="preferences_interface_general_icons_large_default">false</bool>
     <bool name="preferences_interface_use_horizontal_scrubber_default">true</bool>
+    <bool name="preferences_interface_drawer_search_default">true</bool>
 </resources>

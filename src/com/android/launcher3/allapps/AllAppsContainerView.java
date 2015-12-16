@@ -300,8 +300,13 @@ public class AllAppsContainerView extends BaseContainerView implements DragSourc
         mSearchBarContainerView.addView(searchBarView);
         mSearchBarContainerView.setVisibility(View.VISIBLE);
         mSearchBarView = searchBarView;
-        setHasSearchBar();
+        setHasSearchBar(true);
 
+        updateBackgroundAndPaddings();
+    }
+
+    public void setSearchBarContainerViewVisibility(int visibility) {
+        mSearchBarContainerView.setVisibility(visibility);
         updateBackgroundAndPaddings();
     }
 

@@ -1581,11 +1581,7 @@ public class Launcher extends Activity
         // Setup Apps and Widgets
         mAppsView = (AllAppsContainerView) findViewById(R.id.apps_view);
         mWidgetsView = (WidgetsContainerView) findViewById(R.id.widgets_view);
-        if (mLauncherCallbacks != null && mLauncherCallbacks.getAllAppsSearchBarController() != null) {
-            mAppsView.setSearchBarController(mLauncherCallbacks.getAllAppsSearchBarController());
-        } else {
-            mAppsView.setSearchBarController(mAppsView.newDefaultAppSearchController());
-        }
+        setupSearchBar(this);
 
         // Setup the drag controller (drop targets have to be added in reverse order in priority)
         dragController.setDragScoller(mWorkspace);
@@ -1863,11 +1859,7 @@ public class Launcher extends Activity
                 .from(this).inflate(R.layout.all_apps, mDragLayer, false);
         mDragLayer.addView(mAppsView, mDragLayer.getChildCount() - 1);
         mAppsView.setVisibility(View.INVISIBLE);
-        if (mLauncherCallbacks != null && mLauncherCallbacks.getAllAppsSearchBarController() != null) {
-            mAppsView.setSearchBarController(mLauncherCallbacks.getAllAppsSearchBarController());
-        } else {
-            mAppsView.setSearchBarController(mAppsView.newDefaultAppSearchController());
-        }
+        setupSearchBar(this);
         mAppsView.addApps(addedApps);
         tryAndUpdatePredictedApps();
         mAppsView.reset();
@@ -5142,6 +5134,21 @@ public class Launcher extends Activity
                 }
             }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void) null);
         }
+    }
+
+    private void setupSearchBar(Context context) {
+        boolean isDrawerSearchBarEnabled = SettingsProvider.getBoolean(context,
+                SettingsProvider.SETTINGS_UI_DRAWER_SEARCH,
+                R.bool.preferences_interface_homescreen_search_default);
+
+        if (mLauncherCallbacks != null && mLauncherCallbacks.getAllAppsSearchBarController() != null) {
+            mAppsView.setSearchBarController(mLauncherCallbacks.getAllAppsSearchBarController());
+        } else {
+            mAppsView.setSearchBarController(mAppsView.newDefaultAppSearchController());
+        }
+        mAppsView.setHasSearchBar(isDrawerSearchBarEnabled);
+        mAppsView.setSearchBarContainerViewVisibility(
+                isDrawerSearchBarEnabled ? View.VISIBLE : View.GONE);
     }
 
     class SettingsPanelSlideListener extends VerticalSlidingPanel.SimplePanelSlideListener {
