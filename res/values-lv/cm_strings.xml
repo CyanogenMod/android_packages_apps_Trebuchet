@@ -31,6 +31,7 @@
   <string name="grid_size_condensed">Saīspiests</string>
   <string name="grid_size_custom">Pielāgots (<xliff:g id="rows">%1$d </xliff:g> \u00d7 <xliff:g id="columns">%2$d </xliff:g>)</string>
   <string name="preferences_interface_homescreen_custom">Izvēlieties pielāgotu izmēru</string>
+  <string name="play_folder_title">Atskaņot</string>
   <string name="scroll_effect_text">Ritināšanas efekts</string>
   <string name="drawer_sorting_text">Kārtošanas režīms</string>
   <string name="sort_mode_title">Nosaukums</string>
@@ -43,4 +44,9 @@
   <string name="icon_labels_hide">Slēpt</string>
   <string name="protected_app_settings">Aizsargātās lietotnes</string>
   <string name="dialog_confirm">Apstiprināt</string>
+  <string name="drawer_type">Izklājums</string>
+  <string name="drawer_type_drawer">Vertikāli</string>
+  <string name="drawer_type_pager">Lappusēs</string>
+  <string name="setting_state_disabled">IZSLĒGTS</string>
+  <string name="search_activity_not_found">Meklētājs nav atrasts!</string>
 </resources>
