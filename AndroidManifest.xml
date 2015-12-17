@@ -89,6 +89,7 @@
             android:resumeWhilePausing="true"
             android:taskAffinity=""
             android:excludeFromRecents="true"
+            android:configChanges="mcc|mnc"
             android:enabled="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
