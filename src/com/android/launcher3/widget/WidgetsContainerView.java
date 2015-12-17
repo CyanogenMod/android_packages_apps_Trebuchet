@@ -125,7 +125,7 @@ public class WidgetsContainerView extends BaseContainerView
     }
 
     private void updateScrubber() {
-        if (useScrubber()) {
+        if (useScroller() && useScrubber()) {
             mScrubber.updateSections();
         }
     }
@@ -373,23 +373,20 @@ public class WidgetsContainerView extends BaseContainerView
 
         int startInset = mView.getMaxScrollbarWidth();
         int topBottomPadding =  getPaddingTop();
-        final boolean useScubber = useScrubber();
+        final boolean useScrollerScrubber = useScroller() && useScrubber();
         if (isRtl) {
             mView.setPadding(padding.left + mView.getMaxScrollbarWidth(),
-                    topBottomPadding, padding.right + startInset, useScubber ?
-                            mScrubberHeight + topBottomPadding : topBottomPadding);
-            if (useScubber) {
-                mScrubberContainerView
-                        .setPadding(padding.left,
-                                0, padding.right, 0);
+                    topBottomPadding, padding.right + startInset, useScrollerScrubber ?
+                    mScrubberHeight + topBottomPadding : topBottomPadding);
+            if (useScrollerScrubber) {
+                mScrubberContainerView.setPadding(padding.left, 0, padding.right, 0);
             }
         } else {
             mView.setPadding(padding.left + startInset, topBottomPadding,
-                    padding.right + mView.getMaxScrollbarWidth(),
-                    useScubber ?  mScrubberHeight + topBottomPadding : topBottomPadding);
-            if (useScubber) {
-                mScrubberContainerView.setPadding(padding.left, 0,
-                        padding.right, 0);
+                    padding.right + mView.getMaxScrollbarWidth(), useScrollerScrubber ?
+                    mScrubberHeight + topBottomPadding : topBottomPadding);
+            if (useScrollerScrubber) {
+                mScrubberContainerView.setPadding(padding.left, 0, padding.right, 0);
                 mScrubberContainerView.setEnabled(true);
                 mScrubberContainerView.bringToFront();
             }

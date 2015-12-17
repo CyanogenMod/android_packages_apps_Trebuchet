@@ -67,7 +67,8 @@
     <string name="app_drawer_color">Drawer color</string>
     <string name="app_drawer_color_dark">Dark</string>
     <string name="app_drawer_color_light">Light</string>
-    <string name="fast_scroller_type">Fast scroller</string>
+    <string name="fast_scroller">Fast scroller</string>
+    <string name="fast_scroller_type">Fast scroller type</string>
     <string name="fast_scroller_type_horizontal">Horizontal</string>
     <string name="fast_scroller_type_vertical">Vertical</string>
 

@@ -153,13 +153,19 @@ public class SettingsPinnedHeaderAdapter extends PinnedHeaderListAdapter {
                         break;
                     case 3:
                         current = SettingsProvider.getBoolean(mContext,
+                                SettingsProvider.SETTINGS_UI_USE_SCROLLER,
+                                R.bool.preferences_interface_use_scroller_default);
+                        setSettingSwitch(stateView, settingSwitch, current);
+                        break;
+                    case 4:
+                        current = SettingsProvider.getBoolean(mContext,
                                 SettingsProvider.SETTINGS_UI_USE_HORIZONTAL_SCRUBBER,
                                 R.bool.preferences_interface_use_horizontal_scrubber_default);
                         state = current ? res.getString(R.string.fast_scroller_type_horizontal)
                                 : res.getString(R.string.fast_scroller_type_vertical);
                         setStateText(stateView, settingSwitch, state);
                         break;
-                    case 4:
+                    case 5:
                         current = SettingsProvider.getBoolean(mContext,
                                 SettingsProvider.SETTINGS_UI_DRAWER_SEARCH,
                                 R.bool.preferences_interface_drawer_search_default);
@@ -279,14 +285,20 @@ public class SettingsPinnedHeaderAdapter extends PinnedHeaderListAdapter {
                             mLauncher.reloadAppDrawer();
                             break;
                         case 3:
+                            onSettingsBooleanChanged(v,
+                                    SettingsProvider.SETTINGS_UI_USE_SCROLLER,
+                                    R.bool.preferences_interface_use_scroller_default);
+                            mLauncher.reloadAppDrawer();
+                            mLauncher.reloadWidgetView();
+                            break;
+                        case 4:
                             onScrollerTypeBooleanChanged(v,
                                     SettingsProvider.SETTINGS_UI_USE_HORIZONTAL_SCRUBBER,
                                     R.bool.preferences_interface_use_horizontal_scrubber_default);
                             mLauncher.reloadAppDrawer();
                             mLauncher.reloadWidgetView();
                             break;
-                        case 4:
-
+                        case 5:
                             onSettingsBooleanChanged(v,
                                     SettingsProvider.SETTINGS_UI_DRAWER_SEARCH,
                                     R.bool.preferences_interface_drawer_search_default);

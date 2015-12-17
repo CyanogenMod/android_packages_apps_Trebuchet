@@ -33,8 +33,9 @@ public final class SettingsProvider {
     public static final String SETTINGS_UI_DRAWER_HIDE_ICON_LABELS = "ui_drawer_hide_icon_labels";
     public static final String SETTINGS_UI_DRAWER_STYLE_USE_COMPACT = "ui_drawer_style_compact";
     public static final String SETTINGS_UI_DRAWER_DARK = "ui_drawer_dark";
-    public static final String SETTINGS_UI_DRAWER_SEARCH = "ui_drawer_search";
+    public static final String SETTINGS_UI_USE_SCROLLER = "ui_scroller";
     public static final String SETTINGS_UI_USE_HORIZONTAL_SCRUBBER = "ui_horizontal_scrubber";
+    public static final String SETTINGS_UI_DRAWER_SEARCH = "ui_drawer_search";
     public static final String SETTINGS_UI_GENERAL_ICONS_LARGE = "ui_general_icons_large";
 
     public static SharedPreferences get(Context context) {

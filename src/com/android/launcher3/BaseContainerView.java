@@ -49,6 +49,7 @@ public abstract class BaseContainerView extends LinearLayout implements Insettab
     // The inset to apply to the edges and between the search bar and the container
     private int mContainerBoundsInset;
     private boolean mHasSearchBar;
+    private boolean mUseScroller;
     private boolean mUseScrubber;
 
     protected View mScrubberContainerView;
@@ -65,7 +66,8 @@ public abstract class BaseContainerView extends LinearLayout implements Insettab
 
     public BaseContainerView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        mContainerBoundsInset = getResources().getDimensionPixelSize(R.dimen.container_bounds_inset);
+        mContainerBoundsInset = getResources().getDimensionPixelSize(
+                R.dimen.container_bounds_inset);
         mScrubberHeight = getResources().getDimensionPixelSize(R.dimen.scrubber_height);
     }
 
@@ -105,11 +107,14 @@ public abstract class BaseContainerView extends LinearLayout implements Insettab
 
     public final void setScroller() {
         Context context = getContext();
-        boolean useHorizontalScroller= SettingsProvider.getBoolean(context,
+        mUseScroller = SettingsProvider.getBoolean(context,
+                SettingsProvider.SETTINGS_UI_USE_SCROLLER,
+                R.bool.preferences_interface_use_scroller_default);
+        mUseScrubber = SettingsProvider.getBoolean(context,
                 SettingsProvider.SETTINGS_UI_USE_HORIZONTAL_SCRUBBER,
                 R.bool.preferences_interface_use_horizontal_scrubber_default);
-        mUseScrubber = useHorizontalScroller;
-        if (mUseScrubber) {
+
+        if (mUseScroller && mUseScrubber) {
             ViewStub stub = (ViewStub) findViewById(R.id.scrubber_container_stub);
             mScrubberContainerView = stub.inflate();
             if (mScrubberContainerView == null) {
@@ -130,9 +135,13 @@ public abstract class BaseContainerView extends LinearLayout implements Insettab
             removeView(mScrubberContainerView);
             BaseRecyclerView recyclerView = getRecyclerView();
             if (recyclerView != null) {
-                recyclerView.setUseScrollbar(true);
+                recyclerView.setUseScrollbar(mUseScroller);
             }
         }
+    }
+
+    public final boolean useScroller() {
+        return mUseScroller;
     }
 
     public final boolean useScrubber() {

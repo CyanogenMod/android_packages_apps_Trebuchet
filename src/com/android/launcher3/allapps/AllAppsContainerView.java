@@ -89,7 +89,8 @@ final class SimpleSectionMergeAlgorithm implements AlphabeticalAppsList.MergeAlg
     private int mMaxAllowableMerges;
     private CharsetEncoder mAsciiEncoder;
 
-    public SimpleSectionMergeAlgorithm(int minAppsPerRow, int minRowsInMergedSection, int maxNumMerges) {
+    public SimpleSectionMergeAlgorithm(int minAppsPerRow, int minRowsInMergedSection,
+            int maxNumMerges) {
         mMinAppsPerRow = minAppsPerRow;
         mMinRowsInMergedSection = minRowsInMergedSection;
         mMaxAllowableMerges = maxNumMerges;
@@ -252,7 +253,7 @@ public class AllAppsContainerView extends BaseContainerView implements DragSourc
     }
 
     private void updateScrubber() {
-        if (useScrubber()) {
+        if (useScroller() && useScrubber()) {
             mScrubber.updateSections();
         }
     }
@@ -458,21 +459,20 @@ public class AllAppsContainerView extends BaseContainerView implements DragSourc
         // names)
         int startInset = Math.max(mSectionNamesMargin, mAppsRecyclerView.getMaxScrollbarWidth());
         int topBottomPadding = mRecyclerViewTopBottomPadding;
-        final boolean useScubber = useScrubber();
+        final boolean useScrollerScrubber = useScroller() && useScrubber();
         if (isRtl) {
             mAppsRecyclerView.setPadding(padding.left + mAppsRecyclerView.getMaxScrollbarWidth(),
-                    topBottomPadding, padding.right + startInset, useScubber ?
-                            mScrubberHeight + topBottomPadding : topBottomPadding);
-            if (useScubber) {
-                mScrubberContainerView
-                        .setPadding(padding.left + mAppsRecyclerView.getMaxScrollbarWidth(),
-                                0, padding.right, 0);
+                    topBottomPadding, padding.right + startInset, useScrollerScrubber ?
+                    mScrubberHeight + topBottomPadding : topBottomPadding);
+            if (useScrollerScrubber) {
+                mScrubberContainerView.setPadding(padding.left +
+                        mAppsRecyclerView.getMaxScrollbarWidth(), 0, padding.right, 0);
             }
         } else {
             mAppsRecyclerView.setPadding(padding.left + startInset, topBottomPadding,
-                    padding.right + mAppsRecyclerView.getMaxScrollbarWidth(),
-                    useScubber ?  mScrubberHeight + topBottomPadding : topBottomPadding);
-            if (useScubber) {
+                    padding.right + mAppsRecyclerView.getMaxScrollbarWidth(), useScrollerScrubber ?
+                    mScrubberHeight + topBottomPadding : topBottomPadding);
+            if (useScrollerScrubber) {
                 mScrubberContainerView.setPadding(padding.left, 0,
                         padding.right + mAppsRecyclerView.getMaxScrollbarWidth(), 0);
             }
@@ -488,7 +488,8 @@ public class AllAppsContainerView extends BaseContainerView implements DragSourc
                     mSearchBarContainerView.getLayoutParams();
             lp.leftMargin = searchBarBounds.left - backgroundPadding.left;
             lp.topMargin = searchBarBounds.top - backgroundPadding.top;
-            lp.rightMargin = (getMeasuredWidth() - searchBarBounds.right) - backgroundPadding.right;
+            lp.rightMargin = (getMeasuredWidth() - searchBarBounds.right)
+                    - backgroundPadding.right;
             mSearchBarContainerView.requestLayout();
         }
     }
