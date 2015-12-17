@@ -96,6 +96,7 @@
             android:theme="@style/Theme"
             android:windowSoftInputMode="adjustPan"
             android:screenOrientation="nosensor"
+            android:configChanges="mcc|mnc"
             android:enabled="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
