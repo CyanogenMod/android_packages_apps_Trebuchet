@@ -312,7 +312,7 @@ public class SettingsPinnedHeaderAdapter extends PinnedHeaderListAdapter {
                             onSettingsBooleanChanged(v,
                                     SettingsProvider.SETTINGS_UI_GENERAL_ICONS_LARGE,
                                     R.bool.preferences_interface_general_icons_large_default);
-                            mLauncher.reloadLauncher(true, false);
+                            mLauncher.reloadLauncher(true, true);
                             break;
                         case 1:
                             Intent intent = new Intent();

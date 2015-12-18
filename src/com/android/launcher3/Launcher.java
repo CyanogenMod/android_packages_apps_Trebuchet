@@ -1808,7 +1808,7 @@ public class Launcher extends Activity
 
         mModel = app.setLauncher(this);
         mIconCache = app.getIconCache();
-        mIconCache.flushInvalidIcons(mDeviceProfile);
+        mIconCache.flush();
     }
 
     /**
