@@ -2357,9 +2357,21 @@ public class Launcher extends Activity
 
     @Override
     public void onRestoreInstanceState(Bundle state) {
-        super.onRestoreInstanceState(state);
-        for (int page: mSynchronouslyBoundPages) {
-            mWorkspace.restoreInstanceStateForChild(page);
+        /*
+         *  Prevent crashes on view id mess up
+         *  See: https://github.com/CyanogenMod/android_packages_apps_Trebuchet/commit/33a152fa
+         */
+        try {
+            super.onRestoreInstanceState(state);
+            for (int page: mSynchronouslyBoundPages) {
+                mWorkspace.restoreInstanceStateForChild(page);
+            }
+        } catch (IllegalArgumentException ex) {
+            if (LauncherAppState.isDogfoodBuild()) {
+                throw ex;
+            }
+            // Mismatched viewId / viewType preventing restore. Skip restore on production builds.
+            Log.e(TAG, "Ignoring an error while restoring a view instance state", ex);
         }
     }
 
