@@ -768,7 +768,12 @@ public class LauncherProvider extends ContentProvider {
                     }
                 case 27: {
                     // DB Upgraded successfully
-                    updateDialtactsLauncher(db);
+                    migrateLauncherFavorite(db, "com.android.dialer", "com.cyngn.dialer",
+                            "com.android.dialer.DialtactsActivity",
+                            "com.android.dialer.DialtactsActivity");
+                    migrateLauncherFavorite(db, "com.android.mms", "com.android.messaging",
+                            "com.android.mms.ui.ConversationList",
+                            "com.android.messaging.ui.conversationlist.ConversationListActivity");
                     return;
                 }
             }
@@ -776,7 +781,6 @@ public class LauncherProvider extends ContentProvider {
             // DB was not upgraded
             Log.w(TAG, "Destroying all old data.");
             createEmptyDB(db);
-            updateDialtactsLauncher(db);
         }
 
         @Override
@@ -972,14 +976,11 @@ public class LauncherProvider extends ContentProvider {
             return addIntegerColumn(db, Favorites.PROFILE_ID, userSerialNumber);
         }
 
-        private void updateDialtactsLauncher(SQLiteDatabase db) {
-            if (!Utilities.isPackageInstalled(mContext, "com.cyngn.dialer")) {
+        private void migrateLauncherFavorite(SQLiteDatabase db, String originalPackageName,
+                String newPackageName, String originalClassName, String newClassName) {
+            if (!Utilities.isPackageInstalled(mContext, newPackageName)) {
                 return;
             }
-
-            final String cyngnDialer = "com.cyngn.dialer";
-            final String aospDialer = "com.android.dialer";
-            final String dialtactsClass = "com.android.dialer.DialtactsActivity";
 
             final String selectWhere = buildOrWhereString(Favorites.ITEM_TYPE,
                     new int[]{Favorites.ITEM_TYPE_SHORTCUT, Favorites.ITEM_TYPE_APPLICATION});
@@ -1004,13 +1005,13 @@ public class LauncherProvider extends ContentProvider {
 
                             if (Intent.ACTION_MAIN.equals(intent.getAction()) &&
                                     componentName != null &&
-                                    aospDialer.equals(componentName.getPackageName()) &&
-                                    dialtactsClass.equals(componentName.getClassName()) &&
+                                    originalPackageName.equals(componentName.getPackageName()) &&
+                                    originalClassName.equals(componentName.getClassName()) &&
                                     categories != null &&
                                     categories.contains(Intent.CATEGORY_LAUNCHER)) {
 
-                                final ComponentName newName = new ComponentName(cyngnDialer,
-                                        componentName.getClassName());
+                                final ComponentName newName = new ComponentName(newPackageName,
+                                        newClassName);
                                 intent.setComponent(newName);
                                 final ContentValues values = new ContentValues();
                                 values.put(Favorites.INTENT, intent.toUri(0));
@@ -1022,16 +1023,16 @@ public class LauncherProvider extends ContentProvider {
                                 }
                             }
                         } catch (RuntimeException ex) {
-                            Log.e(TAG, "Problem moving Dialtacts activity", ex);
+                            Log.e(TAG, "Problem moving " + originalClassName + " activity", ex);
                         } catch (URISyntaxException e) {
-                            Log.e(TAG, "Problem moving Dialtacts activity", e);
+                            Log.e(TAG, "Problem moving " + originalClassName + " activity", e);
                         }
                     }
                 }
 
                 db.setTransactionSuccessful();
             } catch (SQLException ex) {
-                Log.w(TAG, "Problem while upgrading dialtacts icon", ex);
+                Log.w(TAG, "Problem while upgrading " + originalClassName + " icon", ex);
             } finally {
                 db.endTransaction();
                 if (c != null) {
