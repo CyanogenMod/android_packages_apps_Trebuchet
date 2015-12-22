@@ -132,16 +132,6 @@ public class BubbleTextView extends TextView
             setTextSize(TypedValue.COMPLEX_UNIT_PX, grid.allAppsIconTextSizePx);
             defaultIconSize = grid.allAppsIconSizePx;
         }
-        boolean useCompactDrawer = SettingsProvider.getBoolean(context,
-                SettingsProvider.SETTINGS_UI_DRAWER_STYLE_USE_COMPACT,
-                R.bool.preferences_interface_drawer_compact_default);
-        boolean useLargeIcons = SettingsProvider.getBoolean(context,
-                SettingsProvider.SETTINGS_UI_GENERAL_ICONS_LARGE,
-                R.bool.preferences_interface_general_icons_large_default);
-        if (!useLargeIcons && !useCompactDrawer) {
-            defaultIconSize = getResources()
-                    .getDimensionPixelSize(R.dimen.all_apps_icon_size_ragged);
-        }
 
         mIconSize = a.getDimensionPixelSize(R.styleable.BubbleTextView_iconSizeOverride,
                 defaultIconSize);
