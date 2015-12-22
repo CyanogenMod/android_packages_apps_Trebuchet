@@ -2003,6 +2003,24 @@ public class Workspace extends PagedView
         return mState == State.OVERVIEW;
     }
 
+    public boolean enterOverviewMode() {
+        if (mTouchState != TOUCH_STATE_REST) {
+            return false;
+        }
+        enableOverviewMode();
+        return true;
+    }
+
+    public void exitOverviewMode() {
+        ((OverviewPanel) mLauncher.getOverviewPanel()).collapsePane();
+        reloadSettings();
+    }
+
+    private void enableOverviewMode() {
+        reloadSettings();
+    }
+
+
     int getOverviewModeTranslationY() {
         DeviceProfile grid = mLauncher.getDeviceProfile();
         Rect workspacePadding = grid.getWorkspacePadding(Utilities.isRtl(getResources()));

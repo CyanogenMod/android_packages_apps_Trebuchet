@@ -816,6 +816,7 @@ public class Launcher extends Activity
                 // When the user has granted permission to bind widgets, we should check to see if
                 // we can inflate the default search bar widget.
                 getOrCreateQsbBar();
+                showWorkspace(false);
             }
             return;
         } else if (requestCode == REQUEST_PICK_WALLPAPER) {
@@ -3687,6 +3688,10 @@ public class Launcher extends Activity
         boolean changed = mState != State.WORKSPACE ||
                 mWorkspace.getState() != Workspace.State.NORMAL;
         if (changed) {
+            // Close overview mode if open
+            if (mWorkspace.isInOverviewMode()) {
+                mWorkspace.exitOverviewMode();
+            }
             mWorkspace.setVisibility(View.VISIBLE);
             mStateTransitionAnimation.startAnimationToWorkspace(mState, mWorkspace.getState(),
                     Workspace.State.NORMAL, snapToPage, animated, onCompleteRunnable);
