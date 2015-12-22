@@ -251,11 +251,14 @@ public class InvariantDeviceProfile {
                 296, 491.33f, 4, 4, 4, 4, 4, (useLargeIcons? 58 : 46), 13, 5,
                 (useLargeIcons? 58 : 46), R.xml.default_workspace_4x4));
         predefinedDeviceProfiles.add(new InvariantDeviceProfile("Nexus 4",
-                335, 567,     4, 4, 4, 4, 4, (useLargeIcons ? DEFAULT_ICON_SIZE_DP : 56), 13, 5,
-                (useLargeIcons? 68 : 56), R.xml.default_workspace_4x4));
+                335, 567,     4, 4, 4, 4, 4, (useLargeIcons ? DEFAULT_ICON_SIZE_DP : 52), 13, 5,
+                (useLargeIcons? 60 : 50), R.xml.default_workspace_4x4));
         predefinedDeviceProfiles.add(new InvariantDeviceProfile("Nexus 5",
-                359, 567,     4, 4, 4, 4, 4, (useLargeIcons ? DEFAULT_ICON_SIZE_DP : 56), 13, 5,
-                (useLargeIcons? 68 : 56), R.xml.default_workspace_4x4));
+                359, 567,     4, 4, 4, 4, 4, (useLargeIcons ? DEFAULT_ICON_SIZE_DP : 52), 13, 5,
+                (useLargeIcons? 60 : 50), R.xml.default_workspace_4x4));
+        predefinedDeviceProfiles.add(new InvariantDeviceProfile("Bacon",
+                336, 592,     4, 4, 4, 4, 4, (useLargeIcons ? DEFAULT_ICON_SIZE_DP : 52), 13, 5,
+                (useLargeIcons? 60 : 48), R.xml.default_workspace_4x4));
         predefinedDeviceProfiles.add(new InvariantDeviceProfile("Large Phone",
                 406, 694,     5, 5, 4, 4, 4, (useLargeIcons ? 68 : 56), 14.4f,  5,
                 (useLargeIcons ? 60 : 48), R.xml.default_workspace_5x5));
