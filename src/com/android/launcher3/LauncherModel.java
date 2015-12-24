@@ -2387,11 +2387,6 @@ public class LauncherModel extends BroadcastReceiver
 
                                 sBgItemsIdMap.put(folderInfo.id, folderInfo);
                                 sBgFolders.put(folderInfo.id, folderInfo);
-
-                                if (folderInfo.isRemote()) {
-                                    syncRemoteFolder(folderInfo, mContext);
-                                }
-
                                 break;
 
                             case LauncherSettings.Favorites.ITEM_TYPE_APPWIDGET:
@@ -4252,43 +4247,5 @@ public class LauncherModel extends BroadcastReceiver
 
     public Callbacks getCallback() {
         return mCallbacks != null ? mCallbacks.get() : null;
-    }
-
-    protected synchronized void syncRemoteFolder(final FolderInfo folderInfo, final Context context) {
-        RemoteFolderUpdater updater = RemoteFolderUpdater.getInstance();
-        final int count = 6;
-
-        updater.requestSync(context, count, new RemoteFolderUpdater.RemoteFolderUpdateListener() {
-            @Override
-            public void onSuccess(List<RemoteFolderUpdater.RemoteFolderInfo> remoteFolderInfoList) {
-
-                synchronized (mLock) {
-
-                    // Clear contents to prevent any duplicates
-                    if (folderInfo.contents != null && !folderInfo.contents.isEmpty()) {
-                        deleteItemsFromDatabase(context, folderInfo.contents);
-                        folderInfo.contents.clear();
-                    }
-
-                    // Add each remote folder item, update the DB, and notify listeners
-                    for (RemoteFolderUpdater.RemoteFolderInfo remoteFolderInfo : remoteFolderInfoList) {
-                        ShortcutInfo shortcutInfo = new ShortcutInfo(remoteFolderInfo.getIntent(),
-                                remoteFolderInfo.getTitle(),
-                                remoteFolderInfo.getTitle(),
-                                remoteFolderInfo.getIcon(),
-                                UserHandleCompat.myUserHandle());
-                        folderInfo.add(shortcutInfo);
-                    }
-
-                    updateItemInDatabase(context, folderInfo);
-                    folderInfo.itemsChanged();
-                }
-            }
-
-            @Override
-            public void onFailure(String error) {
-                Log.e(TAG, "Failed to sync data for the remote folder's shortcuts. Reason: " + error);
-            }
-        });
     }
 }

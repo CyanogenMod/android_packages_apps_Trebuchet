@@ -1,5 +1,7 @@
 package com.android.launcher3;
 
+import java.util.ArrayList;
+
 /**
  * Manages adding and removing the remote folder from the workspace.
  */
@@ -7,7 +9,12 @@ public class RemoteFolderManager {
 
     public RemoteFolderManager(final Launcher launcher) { }
 
-    public void setRemoteFolder(final FolderIcon remoteFolder) { }
+    /**
+     * Create a remote folder view.
+     * @param icon folder icon view on the workspace.
+     * @return a view for the remote folder.
+     */
+    public Folder createRemoteFolder(final FolderIcon icon) { return null; }
 
     /**
      * Called when Launcher finishes binding items from the model.
@@ -31,7 +38,26 @@ public class RemoteFolderManager {
     public void onAppDrawerOpened() { }
 
     /**
+     * Called when new apps are added to launcher.
+     * @param apps list of added apps.
+     */
+    public void onBindAddApps(ArrayList<AppInfo> apps) { }
+
+    /**
      * Called when the info icon is clicked
      */
     public void onInfoIconClicked() { }
+
+    /**
+     * Called when the view holder is created for the remote header.
+     * @param holder remote view holder.
+     */
+    public void onCreateViewHolder(final AppDrawerListAdapter.ViewHolder holder) { }
+    /**
+     * Called when the view holder is bound for the remote header.
+     * @param holder remote view holder.
+     * @param indexedInfo header info.
+     */
+    public void onBindViewHolder(final AppDrawerListAdapter.ViewHolder holder,
+                                 final AppDrawerListAdapter.AppItemIndexedInfo indexedInfo) { }
 }

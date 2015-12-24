@@ -2984,14 +2984,6 @@ public class Launcher extends Activity
             onClickAllAppsButton(v);
         } else if (tag instanceof AppInfo) {
             AppInfo info = (AppInfo) tag;
-
-            // Remote apps do not exist in package manager, so they should be launched
-            // directly by intent.
-            if (info.isRemote()) {
-                startActivity(info.intent);
-                return;
-            }
-
             startAppShortcutOrInfoActivity(v);
             LauncherApplication.getLauncherStats().sendAppLaunchEvent(
                     LauncherStats.ORIGIN_APPDRAWER, info.componentName.getPackageName());
@@ -3242,10 +3234,6 @@ public class Launcher extends Activity
             closeFolder();
             // Open the requested folder
             openFolder(folderIcon, folderTouchXYOffset);
-
-            if (info.isRemote()) {
-                mModel.syncRemoteFolder(info, this);
-            }
         } else {
             // Find the open folder...
             int folderScreen;
@@ -4882,6 +4870,7 @@ public class Launcher extends Activity
                 addedApps != null && mAppsCustomizeContent != null) {
             mAppsCustomizeContent.addApps(addedApps);
             mAppDrawerAdapter.addApps(addedApps);
+            mRemoteFolderManager.onBindAddApps(addedApps);
         }
     }
 
@@ -4962,10 +4951,6 @@ public class Launcher extends Activity
                     newFolder.setTextVisible(!mHideIconLabels);
                     workspace.addInScreenFromBind(newFolder, item.container, item.screenId, item.cellX,
                             item.cellY, 1, 1);
-
-                    if (((FolderInfo) item).isRemote()) {
-                        mRemoteFolderManager.setRemoteFolder(newFolder);
-                    }
                     break;
                 default:
                     throw new RuntimeException("Invalid Item Type");

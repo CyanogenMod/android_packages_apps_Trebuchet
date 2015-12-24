@@ -142,10 +142,12 @@ public class AppInfo extends ItemInfo {
     }
 
     /**
-     * @return true if this info represents a remote app, false otherwise
+     * Check if this app has a specific flag.
+     * @param flag flag to check.
+     * @return true if the flag is present, false otherwise.
      */
-    public boolean isRemote() {
-        return (flags & REMOTE_APP_FLAG) != 0;
+    public boolean hasFlag(int flag) {
+        return (flags & flag) != 0;
     }
 
     @Override

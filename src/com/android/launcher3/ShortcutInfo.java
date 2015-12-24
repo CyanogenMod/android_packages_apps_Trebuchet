@@ -59,6 +59,9 @@ public class ShortcutInfo extends ItemInfo {
      */
     public static final int FLAG_RESTORE_STARTED = 8;
 
+    /** Indicates that this shortcut is part of the remote folder **/
+    public static final int FLAG_REMOTE = 16;
+
     /**
      * The intent used to start the application.
      */
@@ -243,6 +246,14 @@ public class ShortcutInfo extends ItemInfo {
         return (status & flag) != 0;
     }
 
+    /**
+     * Check if this shortcut has a specific flag.
+     * @param flag flag to check.
+     * @return true if the flag is present, false otherwise.
+     */
+    public boolean hasFlag(int flag) {
+        return (flags & flag) != 0;
+    }
 
     public final boolean isPromise() {
         return hasStatusFlag(FLAG_RESTORED_ICON | FLAG_AUTOINTALL_ICON);

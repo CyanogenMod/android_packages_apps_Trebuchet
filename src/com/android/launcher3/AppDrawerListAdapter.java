@@ -53,7 +53,7 @@ import java.util.LinkedHashMap;
  * AppDrawerListAdapter - list adapter for the vertical app drawer
  */
 public class AppDrawerListAdapter extends RecyclerView.Adapter<AppDrawerListAdapter.ViewHolder>
-        implements View.OnLongClickListener, View.OnClickListener, DragSource, SectionIndexer {
+        implements View.OnLongClickListener, DragSource, SectionIndexer {
 
     public static final String REMOTE_HEADER = "☆";
     public static final String REMOTE_SCRUBBER = "★";
@@ -87,7 +87,7 @@ public class AppDrawerListAdapter extends RecyclerView.Adapter<AppDrawerListAdap
     }
 
     private static Bucket getBucketForApp(AppInfo app) {
-        if (app.isRemote()) {
+        if (app.hasFlag(AppInfo.REMOTE_APP_FLAG)) {
             return new Bucket(Integer.MIN_VALUE, REMOTE_HEADER);
         } else {
             LocaleUtils localeUtils = LocaleUtils.getInstance();
@@ -100,6 +100,8 @@ public class AppDrawerListAdapter extends RecyclerView.Adapter<AppDrawerListAdap
             return new Bucket(index, start);
         }
     }
+
+    private final RemoteFolderManager mRemoteFolderManager;
 
     private HashSet<AppInfo> mAllApps;
     private ArrayList<AppItemIndexedInfo> mHeaderList;
@@ -147,8 +149,6 @@ public class AppDrawerListAdapter extends RecyclerView.Adapter<AppDrawerListAdap
         public static int TYPE_NORMAL = 0;
         public static int TYPE_CUSTOM = 1;
 
-        public TextView mCustomTitleTextView;
-        public ImageView mCustomImageView;
         public AutoFitTextView mHeaderTextView;
         public ViewGroup mIconLayout;
         public View mContainerView;
@@ -161,8 +161,6 @@ public class AppDrawerListAdapter extends RecyclerView.Adapter<AppDrawerListAdap
             mFadingBackgroundFrontView = itemView.findViewById(R.id.fading_background_front);
             mHeaderTextView = (AutoFitTextView) itemView.findViewById(R.id.drawer_item_title);
             mHeaderTextView.bringToFront();
-            mCustomTitleTextView = (TextView) itemView.findViewById(R.id.custom_title);
-            mCustomImageView = (ImageView) itemView.findViewById(R.id.custom_title_icon);
             mIconLayout = (ViewGroup) itemView.findViewById(R.id.drawer_item_flow);
         }
     }
@@ -411,6 +409,8 @@ public class AppDrawerListAdapter extends RecyclerView.Adapter<AppDrawerListAdap
         mAllApps = new HashSet<AppInfo>();
         mLayoutInflater = LayoutInflater.from(launcher);
 
+        mRemoteFolderManager = mLauncher.getRemoteFolderManager();
+
         mLocaleSetManager = new LocaleSetManager(mLauncher);
         mLocaleSetManager.updateLocaleSet(mLocaleSetManager.getSystemLocaleSet());
         mItemAnimatorSet = new ItemAnimatorSet(launcher);
@@ -600,8 +600,7 @@ public class AppDrawerListAdapter extends RecyclerView.Adapter<AppDrawerListAdap
         }
 
         if (viewType == ViewHolder.TYPE_CUSTOM) {
-            applyCustomStyle(holder);
-            holder.mCustomImageView.setOnClickListener(this);
+            mRemoteFolderManager.onCreateViewHolder(holder);
         }
 
         return holder;
@@ -686,31 +685,22 @@ public class AppDrawerListAdapter extends RecyclerView.Adapter<AppDrawerListAdap
                         mDeviceProfile.iconDrawablePaddingPx);
                 icon.mLabel.setText(info.title);
                 icon.mLabel.setVisibility(mHideIconLabels ? View.INVISIBLE : View.VISIBLE);
-
-                if (info.isRemote()) {
-                    RemoteFolderUpdater.getInstance()
-                            .registerViewForInteraction(icon, info.getIntent());
-                    icon.mDraggable = false;
-                }
             }
         }
         holder.itemView.setTag(indexedInfo);
+
+        if (indexedInfo.isRemote()) {
+            mRemoteFolderManager.onBindViewHolder(holder, indexedInfo);
+        }
     }
 
     @Override
     public boolean onLongClick(View v) {
-        if (v instanceof AppDrawerIconView && ((AppDrawerIconView) v).mDraggable) {
+        if (v instanceof AppDrawerIconView) {
             beginDraggingApplication(v);
             mLauncher.enterSpringLoadedDragMode();
         }
         return false;
-    }
-
-    @Override
-    public void onClick(View v) {
-        if (v.getId() == R.id.custom_title_icon) {
-            mLauncher.getRemoteFolderManager().onInfoIconClicked();
-        }
     }
 
     @Override
@@ -829,6 +819,10 @@ public class AppDrawerListAdapter extends RecyclerView.Adapter<AppDrawerListAdap
         public boolean isRemote() {
             return mStartString == REMOTE_HEADER;
         }
+
+        public ArrayList<AppInfo> getInfo() {
+            return mInfo;
+        }
     }
 
     @Override
@@ -892,31 +886,5 @@ public class AppDrawerListAdapter extends RecyclerView.Adapter<AppDrawerListAdap
                 mProtectedApps.add(cmp);
             }
         }
-    }
-
-    /**
-     * Remote header uses a custom styled view. Apply it here.
-     * @param holder view which needs a custom style.
-     */
-    private void applyCustomStyle(final ViewHolder holder) {
-        Resources res = mLauncher.getResources();
-        RelativeLayout.LayoutParams lp =
-                (RelativeLayout.LayoutParams) holder.mHeaderTextView.getLayoutParams();
-        lp.removeRule(RelativeLayout.ALIGN_BOTTOM);
-        lp.topMargin = res.getDimensionPixelOffset(R.dimen.drawer_header_text_margin_top_custom);
-
-        holder.mContainerView.setBackgroundColor(
-                res.getColor(R.color.drawer_container_background_custom));
-        holder.mCustomTitleTextView.setVisibility(View.VISIBLE);
-        holder.mCustomImageView.setVisibility(View.VISIBLE);
-        holder.mHeaderTextView.setTextSize(
-                res.getDimension(R.dimen.drawer_header_text_size_custom));
-        holder.mIconLayout.setPadding(0, 0, 0,
-                res.getDimensionPixelOffset(R.dimen.drawer_item_flow_padding_bottom_custom));
-
-        RecyclerView.LayoutParams containerLP =
-                (RecyclerView.LayoutParams) holder.mContainerView.getLayoutParams();
-        containerLP.bottomMargin =
-                res.getDimensionPixelOffset(R.dimen.drawer_container_bottom_margin_custom);
     }
 }
