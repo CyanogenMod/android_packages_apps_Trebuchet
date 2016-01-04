@@ -17,19 +17,19 @@
 -->
 <resources>
   <string-array name="transition_effect_entries">
-    <item>Ninguno</item>
-    <item>Acercamiento</item>
-    <item>Alejamiento</item>
-    <item>Girar hacia arriba</item>
-    <item>Girar hacia abajo</item>
-    <item>Cúbico entrante</item>
-    <item>Cúbico saliente</item>
-    <item>Apilar</item>
-    <item>Acordeón</item>
-    <item>Voltear</item>
-    <item>Cilíndrico entrante</item>
-    <item>Cilíndrico saliente</item>
-    <item>Carrusel</item>
-    <item>Perspectiva</item>
+    <item>بلا</item>
+    <item>تكبير</item>
+    <item>تصغير</item>
+    <item>تدوير للأعلى</item>
+    <item>تدوير للأسفل</item>
+    <item>مكعب لداخل</item>
+    <item>مكعب للخارج</item>
+    <item>مكدس</item>
+    <item>Accordion</item>
+    <item>قلب</item>
+    <item>في الأسطوانة</item>
+    <item>اسطوانة للخارج</item>
+    <item>دائري</item>
+    <item>نظرة عامّة</item>
   </string-array>
 </resources>
