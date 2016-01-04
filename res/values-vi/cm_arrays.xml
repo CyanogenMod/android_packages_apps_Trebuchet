@@ -17,19 +17,19 @@
 -->
 <resources>
   <string-array name="transition_effect_entries">
-    <item>Ninguno</item>
-    <item>Acercamiento</item>
-    <item>Alejamiento</item>
-    <item>Girar hacia arriba</item>
-    <item>Girar hacia abajo</item>
-    <item>Cúbico entrante</item>
-    <item>Cúbico saliente</item>
-    <item>Apilar</item>
-    <item>Acordeón</item>
-    <item>Voltear</item>
-    <item>Cilíndrico entrante</item>
-    <item>Cilíndrico saliente</item>
-    <item>Carrusel</item>
-    <item>Perspectiva</item>
+    <item>Không có</item>
+    <item>Phóng to</item>
+    <item>Thu nhỏ</item>
+    <item>Xoay lên</item>
+    <item>Xoay xuống</item>
+    <item>Lập phương vào trong</item>
+    <item>Lập phương ra ngoài</item>
+    <item>Xếp chồng</item>
+    <item>Accordion</item>
+    <item>Lật</item>
+    <item>Hình trụ vào trong</item>
+    <item>Hình trụ ra ngoài</item>
+    <item>Xoay tròn</item>
+    <item>Toàn cảnh</item>
   </string-array>
 </resources>

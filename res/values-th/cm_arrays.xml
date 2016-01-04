@@ -17,19 +17,19 @@
 -->
 <resources>
   <string-array name="transition_effect_entries">
-    <item>None</item>
+    <item>ไม่มี</item>
     <item>ซูมเข้า</item>
-    <item>Zoom out</item>
-    <item>Rotate up</item>
-    <item>Rotate down</item>
-    <item>Cube in</item>
-    <item>Cube out</item>
-    <item>Stack</item>
-    <item>Accordion</item>
-    <item>Flip</item>
-    <item>Cylinder in</item>
-    <item>Cylinder out</item>
-    <item>Carousel</item>
-    <item>Overview</item>
+    <item>ซูมออก</item>
+    <item>หมุนขึ้น</item>
+    <item>หมุนลง</item>
+    <item>เคลื่อนเข้าแบบลูกบาศก์</item>
+    <item>เคลื่อนออกจากลูกบาศก์</item>
+    <item>กองที่ซ้อนกัน</item>
+    <item>หีบเพลง</item>
+    <item>พลิก</item>
+    <item>เข้าทรงกระบอก</item>
+    <item>ทรงกระบอกออก</item>
+    <item>เคลื่อนแบบม้าหมุน</item>
+    <item>ภาพรวม</item>
   </string-array>
 </resources>
