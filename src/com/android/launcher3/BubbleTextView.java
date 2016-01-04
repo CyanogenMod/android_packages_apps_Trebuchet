@@ -172,6 +172,12 @@ public class BubbleTextView extends TextView
             boolean promiseStateChanged) {
         Bitmap b = info.getIcon(iconCache);
 
+        if (b.getWidth() > mIconSize || b.getHeight() > mIconSize) {
+            b = Bitmap.createScaledBitmap(b, mIconSize, mIconSize, false);
+            info.setIcon(b);
+            info.updateIcon(iconCache);
+        }
+
         FastBitmapDrawable iconDrawable = mLauncher.createIconDrawable(b);
         iconDrawable.setGhostModeEnabled(info.isDisabled != 0);
 
