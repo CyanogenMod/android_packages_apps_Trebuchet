@@ -51,7 +51,8 @@ public class OverviewSettingsPanel {
 
         String[] valuesApp = new String[] {
                 res.getString(R.string.larger_icons_text),
-                res.getString(R.string.protected_app_settings)};
+                res.getString(R.string.protected_app_settings),
+                res.getString(R.string.allow_rotation_title)};
 
         mSettingsAdapter = new SettingsPinnedHeaderAdapter(mLauncher);
         mSettingsAdapter.setHeaders(headers);

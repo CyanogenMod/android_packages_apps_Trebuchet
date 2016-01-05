@@ -6,6 +6,7 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Typeface;
+import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.android.launcher3.InvariantDeviceProfile;
 import com.android.launcher3.Launcher;
+import com.android.launcher3.LauncherSettings;
 import com.android.launcher3.OverviewSettingsPanel;
 import com.android.launcher3.R;
 import com.android.launcher3.Utilities;
@@ -183,6 +185,12 @@ public class SettingsPinnedHeaderAdapter extends PinnedHeaderListAdapter {
                                 R.bool.preferences_interface_general_icons_large_default);
                         setSettingSwitch(stateView, settingSwitch, current);
                         break;
+                    case 2:
+                        current = SettingsProvider.getBoolean(mContext,
+                                SettingsProvider.SETTINGS_UI_ALLOW_ROTATION,
+                                R.bool.preferences_interface_allow_rotation);
+                        setSettingSwitch(stateView, settingSwitch, current);
+                        break;
                     default:
                         hideStates(stateView, settingSwitch);
                 }
@@ -320,6 +328,11 @@ public class SettingsPinnedHeaderAdapter extends PinnedHeaderListAdapter {
                                     OverviewSettingsPanel.ANDROID_PROTECTED_APPS);
                             mLauncher.startActivity(intent);
                             break;
+                        case 2:
+                            onSettingsBooleanChanged(v,
+                                    SettingsProvider.SETTINGS_UI_ALLOW_ROTATION,
+                                    R.bool.preferences_interface_allow_rotation);
+                            break;
                     }
             }
 
@@ -358,6 +371,14 @@ public class SettingsPinnedHeaderAdapter extends PinnedHeaderListAdapter {
         SettingsProvider.putBoolean(mContext, SettingsProvider.SETTINGS_CHANGED, true);
 
         ((Switch)v.findViewById(R.id.setting_switch)).setChecked(!current);
+
+        Bundle extras = new Bundle();
+        extras.putBoolean(LauncherSettings.Settings.EXTRA_VALUE, !current);
+
+        mContext.getContentResolver().call(
+                LauncherSettings.Settings.CONTENT_URI,
+                LauncherSettings.Settings.METHOD_SET_BOOLEAN,
+                key, extras);
     }
 
     private void onIconLabelsBooleanChanged(View v, String key, int res) {

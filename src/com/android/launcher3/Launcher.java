@@ -601,7 +601,7 @@ public class Launcher extends Activity
 
     @Override
     public void onSettingsChanged(String settings, boolean value) {
-        if (Utilities.ALLOW_ROTATION_PREFERENCE_KEY.equals(settings)) {
+        if (SettingsProvider.SETTINGS_UI_ALLOW_ROTATION.equals(settings)) {
             mRotationEnabled = value;
             if (!waitUntilResume(mUpdateOrientationRunnable, true)) {
                 mUpdateOrientationRunnable.run();
@@ -3157,7 +3157,7 @@ public class Launcher extends Activity
         if (mLauncherCallbacks != null) {
             mLauncherCallbacks.onClickSettingsButton(v);
         } else {
-            startActivity(new Intent(this, SettingsActivity.class));
+            startSettings();
         }
     }
 

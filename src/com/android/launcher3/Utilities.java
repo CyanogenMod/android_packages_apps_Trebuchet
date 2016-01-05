@@ -25,7 +25,6 @@ import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -55,6 +54,8 @@ import android.util.SparseArray;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.Toast;
+
+import com.android.launcher3.settings.SettingsProvider;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -110,22 +111,19 @@ public final class Utilities {
     private static final String FORCE_ENABLE_ROTATION_PROPERTY = "launcher_force_rotate";
     private static boolean sForceEnableRotation = isPropertyEnabled(FORCE_ENABLE_ROTATION_PROPERTY);
 
-    public static final String ALLOW_ROTATION_PREFERENCE_KEY = "pref_allowRotation";
-
     public static boolean isPropertyEnabled(String propertyName) {
         return Log.isLoggable(propertyName, Log.VERBOSE);
     }
 
     public static boolean isAllowRotationPrefEnabled(Context context, boolean multiProcess) {
-        SharedPreferences sharedPrefs = context.getSharedPreferences(
-                LauncherAppState.getSharedPreferencesKey(), Context.MODE_PRIVATE | (multiProcess ?
-                        Context.MODE_MULTI_PROCESS : 0));
-        boolean allowRotationPref = sharedPrefs.getBoolean(ALLOW_ROTATION_PREFERENCE_KEY, false);
+        boolean allowRotationPref = SettingsProvider.getBoolean(context,
+                SettingsProvider.SETTINGS_UI_ALLOW_ROTATION,
+                R.bool.preferences_interface_allow_rotation);
         return sForceEnableRotation || allowRotationPref;
     }
 
     public static boolean isRotationAllowedForDevice(Context context) {
-        return sForceEnableRotation || context.getResources().getBoolean(R.bool.allow_rotation);
+        return sForceEnableRotation || context.getResources().getBoolean(R.bool.preferences_interface_allow_rotation);
     }
 
     public static Bitmap createIconBitmap(Cursor c, int iconIndex, Context context) {
