@@ -223,6 +223,8 @@ public class VerticalSlidingPanel extends ViewGroup {
         public void onPanelExpanded(View panel);
 
         public void onPanelAnchored(View panel);
+
+        public void onPanelShown(View panel);
     }
 
     /**
@@ -241,6 +243,9 @@ public class VerticalSlidingPanel extends ViewGroup {
         }
         @Override
         public void onPanelAnchored(View panel) {
+        }
+        @Override
+        public void onPanelShown(View panel) {
         }
     }
 
@@ -329,6 +334,14 @@ public class VerticalSlidingPanel extends ViewGroup {
         super.onFinishInflate();
         if (mDragViewResId != -1) {
             mDragView = findViewById(mDragViewResId);
+        }
+    }
+
+    @Override
+    protected void onVisibilityChanged(View changedView, int visibility) {
+        super.onVisibilityChanged(changedView, visibility);
+        if (mPanelSlideListener != null && visibility == VISIBLE) {
+            mPanelSlideListener.onPanelShown(changedView);
         }
     }
 
