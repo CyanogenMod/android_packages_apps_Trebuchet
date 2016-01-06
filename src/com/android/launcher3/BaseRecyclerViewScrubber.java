@@ -195,7 +195,7 @@ public class BaseRecyclerViewScrubber extends LinearLayout {
             mIsRtl = isRtl;
             mSections = BaseRecyclerViewScrubberSection.createSections(sections, isRtl);
             mSectionNames = sections;
-            if (isRtl) {
+            if (isRtl && mSections != null) {
                 final int N = mSectionNames.length;
                 for(int i = 0; i < N / 2; i++) {
                     String temp = mSectionNames[i];
