@@ -1,5 +1,9 @@
 package com.android.launcher3;
 
+import android.graphics.drawable.Drawable;
+import android.view.View;
+import android.view.ViewGroup;
+
 import java.util.ArrayList;
 
 /**
@@ -14,7 +18,7 @@ public class RemoteFolderManager {
      * @param icon folder icon view on the workspace.
      * @return a view for the remote folder.
      */
-    public Folder createRemoteFolder(final FolderIcon icon) { return null; }
+    public Folder createRemoteFolder(final FolderIcon icon, ViewGroup root) { return null; }
 
     /**
      * Called when Launcher finishes binding items from the model.
@@ -47,6 +51,15 @@ public class RemoteFolderManager {
      * Called when the info icon is clicked
      */
     public void onInfoIconClicked() { }
+
+    /**
+     * Change the appearance of FolderIcon for our RemoteFolder by adding a badge
+     * @param icon the FolderIcon to update
+     * @return a FolderIcon with an added ImageView
+     */
+    public static FolderIcon addBadgeToFolderIcon(FolderIcon icon) {
+        return icon;
+    }
 
     /**
      * Called when the view holder is created for the remote header.

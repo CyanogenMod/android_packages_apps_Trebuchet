@@ -37,7 +37,6 @@ import android.support.v4.widget.AutoScrollHelper;
 import android.text.InputType;
 import android.text.Selection;
 import android.text.Spannable;
-import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -49,6 +48,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityManager;
 import android.view.animation.AccelerateInterpolator;
@@ -102,7 +102,7 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
     private int mMaterialExpandDuration;
     private int mMaterialExpandStagger;
     protected CellLayout mContent;
-    private ScrollView mScrollView;
+    protected ScrollView mScrollView;
     private final LayoutInflater mInflater;
     private final IconCache mIconCache;
     private int mState = STATE_NONE;
@@ -132,7 +132,7 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
     private boolean mDeleteFolderOnDropCompleted = false;
     private boolean mSuppressFolderDeletion = false;
     private boolean mItemAddedBackToSelfViaIcon = false;
-    View mFolderNameLockContainer;
+    protected View mFolderNameLockContainer;
     FolderEditText mFolderName;
     ImageView mFolderLock;
     private int mScreenWidth;
@@ -218,7 +218,6 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
         super.onFinishInflate();
         mScrollView = (ScrollView) findViewById(R.id.scroll_view);
         mContent = (CellLayout) findViewById(R.id.folder_content);
-        int measureSpec = MeasureSpec.UNSPECIFIED;
 
         mFocusIndicatorHandler = new FocusIndicatorView(getContext());
         mContent.addView(mFocusIndicatorHandler, 0);
@@ -236,11 +235,6 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
         mFolderName = (FolderEditText) findViewById(R.id.folder_name);
         mFolderName.setFolder(this);
         mFolderName.setOnFocusChangeListener(this);
-
-        // We find out how tall the text view wants to be (it is set to wrap_content), so that
-        // we can allocate the appropriate amount of space for it.
-        mFolderName.measure(measureSpec, measureSpec);
-        mFolderNameHeight = mFolderName.getMeasuredHeight();
 
         // We disable action mode for now since it messes up the view on phones
         mFolderName.setCustomSelectionActionModeCallback(mActionModeCallback);
@@ -262,9 +256,7 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
 
         // Could be null if this Folder an instance of the RemoteFolder subclass
         if (mFolderLock != null) {
-            mFolderLock.measure(measureSpec, measureSpec);
             mFolderLock.setOnClickListener(this);
-            mFolderLockHeight = mFolderLock.getMeasuredHeight();
         }
         DisplayMetrics displayMetrics = this.getResources().getDisplayMetrics();
         mScreenWidth = displayMetrics.widthPixels;
@@ -482,8 +474,7 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
 
     void bind(final FolderInfo info) {
         mInfo = info;
-        final ArrayList<ShortcutInfo> children = info.contents;
-
+        ArrayList<ShortcutInfo> children = info.contents;
         ArrayList<ShortcutInfo> overflow = new ArrayList<ShortcutInfo>();
         setupContentForNumItems(children.size());
         placeInReadingOrder(children);
@@ -538,11 +529,12 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
      * Creates a new UserFolder, inflated from R.layout.user_folder.
      *
      * @param context The application's context.
+     * @param root The {@link View} parent of this folder.
      *
      * @return A new UserFolder.
      */
-    static Folder fromXml(Context context) {
-        return (Folder) LayoutInflater.from(context).inflate(R.layout.user_folder, null);
+    static Folder fromXml(Context context, ViewGroup root) {
+        return (Folder) LayoutInflater.from(context).inflate(R.layout.user_folder, root, false);
     }
 
     /**
@@ -663,18 +655,12 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
             Animator circReveal = LauncherAnimUtils.createCircularReveal(this,
                     circX, circY, 0, mScreenWidth);
 
-            final View[] alphaViewSet;
-            if (mInfo.isRemote()) {
-                alphaViewSet = new View[] { mContent, mFolderName };
-            } else {
-                alphaViewSet = new View[] { mFolderNameLockContainer,
+            final View[] alphaViewSet = new View[] { mFolderNameLockContainer,
                         mContent, mFolderName, mFolderLock };
-            }
 
             for (View view : alphaViewSet) {
                 view.setAlpha(0f);
             }
-
 
             circReveal.setDuration(150);
             circReveal.addListener(new AnimatorListenerAdapter() {
@@ -1285,7 +1271,7 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
         return true;
     }
 
-    private void setupContentDimensions(int count) {
+    protected void setupContentDimensions(int count) {
         ArrayList<View> list = getItemsInReadingOrder();
 
         int countX = mContent.getCountX();
@@ -1322,12 +1308,19 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
         return mMaxNumItems;
     }
 
-    private void centerAboutIcon() {
+    protected void centerAboutIcon() {
+        requestLayout();
+        int width = getMeasuredWidth();
+        int height = getMeasuredHeight();
+        if (width > 0 && height > 0) {
+            centerAboutIcon(width, height);
+        }
+    }
+
+    private void centerAboutIcon(int width, int height) {
         DragLayer.LayoutParams lp = (DragLayer.LayoutParams) getLayoutParams();
 
         DragLayer parent = (DragLayer) mLauncher.findViewById(R.id.drag_layer);
-        int width = getPaddingLeft() + getPaddingRight() + mContent.getDesiredWidth();
-        int height = getFolderHeight();
 
         float scale = parent.getDescendantRectRelativeToSelf(mFolderIcon, mTempRect);
 
@@ -1386,14 +1379,6 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
 
     private void setupContentForNumItems(int count) {
         setupContentDimensions(count);
-
-        DragLayer.LayoutParams lp = (DragLayer.LayoutParams) getLayoutParams();
-        if (lp == null) {
-            lp = new DragLayer.LayoutParams(0, 0);
-            lp.customPosition = true;
-            setLayoutParams(lp);
-        }
-        centerAboutIcon();
     }
 
     protected int getContentAreaHeight() {
@@ -1404,20 +1389,7 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
         return Math.max(mContent.getDesiredWidth(), MIN_CONTENT_DIMEN);
     }
 
-    protected int getFolderHeight() {
-        int height = getPaddingTop() + getPaddingBottom() + mFolderNameHeight
-                + getContentAreaHeight();
-        return height;
-    }
-
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        int width = getPaddingLeft() + getPaddingRight() + mContent.getDesiredWidth();
-        int height = getFolderHeight();
-        int contentAreaWidthSpec = MeasureSpec.makeMeasureSpec(getContentAreaWidth(),
-                MeasureSpec.EXACTLY);
-        int contentAreaHeightSpec = MeasureSpec.makeMeasureSpec(getContentAreaHeight(),
-                MeasureSpec.EXACTLY);
-
         if (LauncherAppState.isDisableAllApps()) {
             // Don't cap the height of the content to allow scrolling.
             mContent.setFixedSize(getContentAreaWidth(), mContent.getDesiredHeight());
@@ -1425,16 +1397,7 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
             mContent.setFixedSize(getContentAreaWidth(), getContentAreaHeight());
         }
 
-        mScrollView.measure(contentAreaWidthSpec, contentAreaHeightSpec);
-        if (TextUtils.isEmpty(mInfo.title)) {
-            mFolderName.measure(contentAreaWidthSpec, MeasureSpec.makeMeasureSpec(
-                    mFolderNameHeight, MeasureSpec.EXACTLY));
-        }
-
-        mFolderNameLockContainer.measure(contentAreaWidthSpec,
-                MeasureSpec.makeMeasureSpec(mFolderNameHeight, MeasureSpec.EXACTLY));
-
-        setMeasuredDimension(width, height);
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 
     private void arrangeChildren(ArrayList<View> list) {
@@ -1680,7 +1643,15 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
         }
     }
 
-    private View getViewForInfo(ShortcutInfo item) {
+    @Override
+    public void onRemoveAll() {
+        // Clear the UX after folder contents are removed from the DB
+        mContent.removeAllViews();
+        mLauncher.closeFolder(this);
+        replaceFolderWithFinalItem();
+    }
+
+    protected View getViewForInfo(ShortcutInfo item) {
         for (int j = 0; j < mContent.getCountY(); j++) {
             for (int i = 0; i < mContent.getCountX(); i++) {
                 View v = mContent.getChildAt(i, j);
