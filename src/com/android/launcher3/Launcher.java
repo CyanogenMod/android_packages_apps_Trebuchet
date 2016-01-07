@@ -1098,6 +1098,7 @@ public class Launcher extends Activity
             // switch to another app, otherwise, if it was
             showAppsView(false /* animated */, false /* resetListToTop */,
                     !launchedFromApp /* updatePredictedApps */, false /* focusSearchBar */);
+            mWorkspace.setVisibility(View.INVISIBLE);
         } else if (mOnResumeState == State.WIDGETS) {
             showWidgetsView(false, false);
         }
