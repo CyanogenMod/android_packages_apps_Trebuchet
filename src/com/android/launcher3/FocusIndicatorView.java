@@ -165,6 +165,9 @@ public class FocusIndicatorView extends View implements View.OnFocusChangeListen
 
     private static void computeLocationRelativeToParentHelper(View child,
             View commonParent, int[] shift) {
+        if (child == null) {
+            return;
+        }
         View parent = (View) child.getParent();
         shift[0] += child.getLeft();
         shift[1] += child.getTop();
