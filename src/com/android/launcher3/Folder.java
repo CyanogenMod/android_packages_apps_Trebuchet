@@ -1633,8 +1633,7 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
         // If this item is being dragged from this open folder, we have already handled
         // the work associated with removing the item, so we don't have to do anything here.
         if (item == mCurrentDragInfo) return;
-        View v = getViewForInfo(item);
-        mContent.removeView(v);
+        mContent.removeView(getViewForInfo(item));
         if (mState == STATE_ANIMATING) {
             mRearrangeOnClose = true;
         } else {
@@ -1648,21 +1647,49 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
     @Override
     public void onRemoveAll() {
         // Clear the UX after folder contents are removed from the DB
-        mContent.removeAllViews();
+        removeViewsForItems(null);
         mLauncher.closeFolder(this);
         replaceFolderWithFinalItem();
     }
 
-    protected View getViewForInfo(ShortcutInfo item) {
-        for (int j = 0; j < mContent.getCountY(); j++) {
-            for (int i = 0; i < mContent.getCountX(); i++) {
-                View v = mContent.getChildAt(i, j);
-                if (v.getTag() == item) {
-                    return v;
-                }
+    @Override
+    public void onRemoveAll(ArrayList<ShortcutInfo> items) {
+        removeViewsForItems(items);
+        if (mInfo.contents.isEmpty()) {
+            mLauncher.closeFolder(this);
+        }
+        replaceFolderWithFinalItem();
+    }
+
+    /**
+     * Remove all the supplied item views from this folder.
+     * @param items info of views to remove, or null if all views should be removed.
+     */
+    protected void removeViewsForItems(ArrayList<ShortcutInfo> items) {
+        if (items == null) {
+            mContent.removeAllViews();
+        } else {
+            for (ShortcutInfo item : items) {
+                mContent.removeView(getViewForInfo(item));
             }
         }
-        return null;
+    }
+
+    /**
+     * Update the view tied to this shortcut.
+     * @param info updated info to be applied to view.
+     */
+    public void updateViewForInfo(final ShortcutInfo info) {
+        View v = getViewForInfo(info);
+        if (v != null & v instanceof BubbleTextView) {
+            ((BubbleTextView) v).applyFromShortcutInfo(info, mIconCache, false);
+
+            mItemsInvalidated = true;
+        }
+    }
+
+    public View getViewForInfo(ShortcutInfo item) {
+        return mContent.getChildAt(item.cellX, item.cellY);
     }
 
     public void onItemsChanged() {

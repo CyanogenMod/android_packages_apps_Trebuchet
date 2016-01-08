@@ -30,7 +30,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Looper;
 import android.os.Parcelable;
 import android.util.AttributeSet;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -698,7 +697,7 @@ public class FolderIcon extends FrameLayout implements FolderListener {
         super.dispatchDraw(canvas);
 
         if (mFolder == null) return;
-        if (mFolder.getItemCount() == 0 && !mAnimating) return;
+        if (mFolder.getItemCount() == 0 && !mAnimating && !mInfo.isRemote()) return;
 
         ArrayList<View> items = mFolder.getItemsInReadingOrder();
         Drawable d;
@@ -707,13 +706,13 @@ public class FolderIcon extends FrameLayout implements FolderListener {
         // Update our drawing parameters if necessary
         if (mAnimating) {
             computePreviewDrawingParams(mAnimParams.drawable);
-        } else {
+        } else if (!items.isEmpty()) {
             v = (TextView) items.get(0);
             d = getTopDrawable(v);
-            computePreviewDrawingParams(d);
+            if (d != null) computePreviewDrawingParams(d);
         }
 
-        int nItemsInPreview = Math.min(items.size(), NUM_ITEMS_IN_PREVIEW);
+        int ntemsInPreview = Math.min(items.size(), NUM_ITEMS_IN_PREVIEW);
 
         // Hidden folder - don't display Preview
         View folderLock = findViewById(R.id.folder_lock_image);
@@ -734,13 +733,18 @@ public class FolderIcon extends FrameLayout implements FolderListener {
         if (!mAnimating) {
             for (int i = 0; i < NUM_ITEMS_IN_PREVIEW; i++) {
                 d = null;
-                if (i < items.size()) {
+                if (mInfo.isRemote()) {
+                    d = mLauncher.getRemoteFolderManager().getFolderIconDrawable(items, i);
+                } else if (i < items.size()) {
                     v = (TextView) items.get(i);
                     if (!mHiddenItems.contains(v.getTag())) {
                         d = getTopDrawable(v);
-                        mParams = computePreviewItemDrawingParams(i, mParams);
-                        mParams.drawable = d;
                     }
+                }
+
+                if (d != null) {
+                    mParams = computePreviewItemDrawingParams(i, mParams);
+                    mParams.drawable = d;
                 }
 
                 ImageView appIcon = null;
@@ -843,6 +847,12 @@ public class FolderIcon extends FrameLayout implements FolderListener {
 
     @Override
     public void onRemoveAll() {
+        invalidate();
+        requestLayout();
+    }
+
+    @Override
+    public void onRemoveAll(ArrayList<ShortcutInfo> items) {
         invalidate();
         requestLayout();
     }

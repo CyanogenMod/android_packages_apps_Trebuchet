@@ -93,16 +93,13 @@ public class AppInfo extends ItemInfo {
         this.user = user;
     }
 
-    public AppInfo(Intent intent, String title, Bitmap icon, UserHandleCompat user,
-                   boolean remote) {
+    public AppInfo(Intent intent, String title, UserHandleCompat user) {
         this.componentName = intent.getComponent();
         this.container = ItemInfo.NO_ID;
 
         this.intent = intent;
         this.title = title;
-        iconBitmap = icon;
         this.user = user;
-        flags = remote ? REMOTE_APP_FLAG : 0;
     }
 
     public static int initFlags(LauncherActivityInfoCompat info) {
@@ -148,6 +145,14 @@ public class AppInfo extends ItemInfo {
      */
     public boolean hasFlag(int flag) {
         return (flags & flag) != 0;
+    }
+
+    /**
+     * Set a flag for this app
+     * @param flag flag to apply.
+     */
+    public void setFlag(int flag) {
+        flags |= flag;
     }
 
     @Override

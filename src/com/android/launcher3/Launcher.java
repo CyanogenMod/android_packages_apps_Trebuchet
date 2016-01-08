@@ -5290,6 +5290,7 @@ public class Launcher extends Activity
         } else {
             if (mAppDrawerAdapter != null) {
                 mAppDrawerAdapter.setApps(apps);
+                mRemoteFolderManager.onSetApps();
             }
             if (mAppsCustomizeContent != null) {
                 mAppsCustomizeContent.setApps(apps);

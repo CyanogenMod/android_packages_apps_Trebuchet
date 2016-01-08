@@ -22,6 +22,15 @@ public class RemoteFolderManager {
     public Folder createRemoteFolder(final FolderIcon icon, ViewGroup root) { return null; }
 
     /**
+     * Get a drawable for the supplied item in the folder icon preview.
+     * @param items list of views in the folder.
+     * @param position index of icon to retreive.
+     * @return an icon to draw in the folder preview.
+     */
+    public Drawable getFolderIconDrawable(final ArrayList<View> items,
+                                          final int position) { return null; }
+
+    /**
      * Called when Launcher finishes binding items from the model.
      */
     public void bindFinished() { }
@@ -47,6 +56,11 @@ public class RemoteFolderManager {
      * @param apps list of added apps.
      */
     public void onBindAddApps(ArrayList<AppInfo> apps) { }
+
+    /**
+     * Called when launcher loads apps and applies them to the drawer.
+     */
+    public void onSetApps() { }
 
     /**
      * Called when the info icon is clicked

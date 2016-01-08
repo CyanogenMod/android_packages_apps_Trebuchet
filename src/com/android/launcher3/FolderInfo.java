@@ -88,6 +88,19 @@ public class FolderInfo extends ItemInfo {
     }
 
     /**
+     * Remove all supplied shortcuts. Does not change the DB unless
+     * LauncherModel.deleteFolderContentsFromDatabase(Context, FolderInfo) is called first.
+     * @param items the shortcuts to remove.
+     */
+    public void removeAll(ArrayList<ShortcutInfo> items) {
+        contents.removeAll(items);
+        for (int i = 0; i < listeners.size(); i++) {
+            listeners.get(i).onRemoveAll(items);
+        }
+        itemsChanged();
+    }
+
+    /**
      * @return true if this info represents a remote folder, false otherwise
      */
     public boolean isRemote() {
@@ -144,11 +157,12 @@ public class FolderInfo extends ItemInfo {
     }
 
     interface FolderListener {
-        public void onAdd(ShortcutInfo item);
-        public void onRemove(ShortcutInfo item);
-        public void onRemoveAll();
-        public void onTitleChanged(CharSequence title);
-        public void onItemsChanged();
+        void onAdd(ShortcutInfo item);
+        void onRemove(ShortcutInfo item);
+        void onRemoveAll();
+        void onRemoveAll(ArrayList<ShortcutInfo> items);
+        void onTitleChanged(CharSequence title);
+        void onItemsChanged();
     }
 
     @Override

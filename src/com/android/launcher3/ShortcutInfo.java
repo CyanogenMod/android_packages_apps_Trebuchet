@@ -59,9 +59,6 @@ public class ShortcutInfo extends ItemInfo {
      */
     public static final int FLAG_RESTORE_STARTED = 8;
 
-    /** Indicates that this shortcut is part of the remote folder **/
-    public static final int FLAG_REMOTE = 16;
-
     /**
      * The intent used to start the application.
      */
@@ -88,7 +85,7 @@ public class ShortcutInfo extends ItemInfo {
     /**
      * The application icon.
      */
-    private Bitmap mIcon;
+    Bitmap mIcon;
 
     /**
      * Indicates that the icon is disabled due to safe mode restrictions.
