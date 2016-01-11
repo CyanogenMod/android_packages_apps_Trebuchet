@@ -47,5 +47,5 @@
   <string name="fast_scroller_type">Tipo de deslocamento rápido</string>
   <string name="fast_scroller_type_horizontal">Horizontal</string>
   <string name="fast_scroller_type_vertical">Vertical</string>
-  <string name="search_activity_not_found">Não foi encontrada nenhuma atividade de pesquisa!</string>
+  <string name="search_activity_not_found">Não foi encontrado nenhum gestor de pesquisas!</string>
 </resources>

@@ -37,6 +37,8 @@
   <string name="icon_labels_show">Visa</string>
   <string name="icon_labels_hide">Dölj</string>
   <string name="protected_app_settings">Skyddade appar</string>
+  <string name="app_drawer_color_dark">Mörk</string>
+  <string name="app_drawer_color_light">Ljus</string>
   <string name="fast_scroller_type_vertical">Vertikal</string>
   <string name="search_activity_not_found">Kunde inte hitta en sökaktivitet!</string>
 </resources>

@@ -22,6 +22,7 @@
   <string name="setting_state_on">ON</string>
   <string name="setting_state_off">OFF</string>
   <string name="setting_state_disabled">DISABLED</string>
+  <string name="play_folder_title">Play</string>
   <string name="scrolling_wallpaper">Scroll wallpaper</string>
   <string name="grid_size_text">Grid size</string>
   <string name="grid_size_comfortable">Comfortable</string>
@@ -36,6 +37,15 @@
   <string name="icon_labels_show">Show</string>
   <string name="icon_labels_hide">Hide</string>
   <string name="protected_app_settings">Protected apps</string>
+  <string name="app_drawer_style">Drawer style</string>
+  <string name="app_drawer_style_compact">Compact</string>
+  <string name="app_drawer_style_sections">Sections</string>
+  <string name="app_drawer_color">Drawer color</string>
+  <string name="app_drawer_color_dark">Dark</string>
+  <string name="app_drawer_color_light">Light</string>
+  <string name="fast_scroller">Fast scroller</string>
+  <string name="fast_scroller_type">Fast scroller type</string>
+  <string name="fast_scroller_type_horizontal">Horizontal</string>
   <string name="fast_scroller_type_vertical">Vertical</string>
   <string name="search_activity_not_found">A search activity could not be found!</string>
 </resources>

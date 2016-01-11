@@ -37,6 +37,15 @@
   <string name="icon_labels_show">Näytä</string>
   <string name="icon_labels_hide">Piilota</string>
   <string name="protected_app_settings">Suojatut sovellukset</string>
+  <string name="app_drawer_style">Sovellusvalikon tyyli</string>
+  <string name="app_drawer_style_compact">Kompakti</string>
+  <string name="app_drawer_style_sections">Osat</string>
+  <string name="app_drawer_color">Sovellusvalikon väri</string>
+  <string name="app_drawer_color_dark">Tumma</string>
+  <string name="app_drawer_color_light">Vaalea</string>
+  <string name="fast_scroller">Nopea selaus</string>
+  <string name="fast_scroller_type">Nopean selauksen tyyppi</string>
+  <string name="fast_scroller_type_horizontal">Vaaka</string>
   <string name="fast_scroller_type_vertical">Pysty</string>
   <string name="search_activity_not_found">Hakuhistoriaa ei löytynyt!</string>
 </resources>

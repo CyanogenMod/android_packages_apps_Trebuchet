@@ -39,10 +39,10 @@
   <string name="protected_app_settings">受保护的应用</string>
   <string name="app_drawer_style">抽屉样式</string>
   <string name="app_drawer_style_compact">紧凑</string>
-  <string name="app_drawer_style_sections">部分</string>
+  <string name="app_drawer_style_sections">分组</string>
   <string name="app_drawer_color">抽屉颜色</string>
-  <string name="app_drawer_color_dark">暗</string>
-  <string name="app_drawer_color_light">亮</string>
+  <string name="app_drawer_color_dark">暗色</string>
+  <string name="app_drawer_color_light">亮色</string>
   <string name="fast_scroller">快速滚动</string>
   <string name="fast_scroller_type">快速滚动类型</string>
   <string name="fast_scroller_type_horizontal">横向</string>

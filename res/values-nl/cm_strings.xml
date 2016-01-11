@@ -17,7 +17,7 @@
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
   <string name="home_screen_settings">INSTELLINGEN THUISSCHERM</string>
-  <string name="drawer_settings">INSTELLINGEN OVERZICHT</string>
+  <string name="drawer_settings">INSTELLINGEN APP-OVERZICHT</string>
   <string name="app_settings">INSTELLINGEN APPS</string>
   <string name="setting_state_on">AAN</string>
   <string name="setting_state_off">UIT</string>
@@ -37,6 +37,10 @@
   <string name="icon_labels_show">Aan</string>
   <string name="icon_labels_hide">Uit</string>
   <string name="protected_app_settings">Beschermde apps</string>
+  <string name="app_drawer_style_compact">Compact</string>
+  <string name="app_drawer_color_dark">Donker</string>
+  <string name="app_drawer_color_light">Licht</string>
+  <string name="fast_scroller_type_horizontal">Horizontaal</string>
   <string name="fast_scroller_type_vertical">Verticaal</string>
   <string name="search_activity_not_found">Geen zoekactiviteit gevonden</string>
 </resources>

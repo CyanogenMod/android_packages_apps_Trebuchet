@@ -37,6 +37,15 @@
   <string name="icon_labels_show">Göster</string>
   <string name="icon_labels_hide">Gizle</string>
   <string name="protected_app_settings">Korunan uygulamalar</string>
+  <string name="app_drawer_style">Çekmece stili</string>
+  <string name="app_drawer_style_compact">Kompakt</string>
+  <string name="app_drawer_style_sections">Bölümler</string>
+  <string name="app_drawer_color">Çekmece rengi</string>
+  <string name="app_drawer_color_dark">Karanlık</string>
+  <string name="app_drawer_color_light">Aydınlık</string>
+  <string name="fast_scroller">Hızlı kaydırıcı</string>
+  <string name="fast_scroller_type">Hızlı kaydırıcı türü</string>
+  <string name="fast_scroller_type_horizontal">Yatay</string>
   <string name="fast_scroller_type_vertical">Dikey</string>
   <string name="search_activity_not_found">Arama etkinliği bulunamadı!</string>
 </resources>

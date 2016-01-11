@@ -37,6 +37,15 @@
   <string name="icon_labels_show">Mostrar</string>
   <string name="icon_labels_hide">Ocultar</string>
   <string name="protected_app_settings">Aplicativos protegidos</string>
+  <string name="app_drawer_style">Estilo da gaveta</string>
+  <string name="app_drawer_style_compact">Compacto</string>
+  <string name="app_drawer_style_sections">Seções</string>
+  <string name="app_drawer_color">Cor da gaveta</string>
+  <string name="app_drawer_color_dark">Escuro</string>
+  <string name="app_drawer_color_light">Clara</string>
+  <string name="fast_scroller">Rolagem rápida</string>
+  <string name="fast_scroller_type">Tipo de rolagem rápida</string>
+  <string name="fast_scroller_type_horizontal">Horizontal</string>
   <string name="fast_scroller_type_vertical">Vertical</string>
   <string name="search_activity_not_found">Uma atividade de pesquisa não pôde ser encontrada!</string>
 </resources>

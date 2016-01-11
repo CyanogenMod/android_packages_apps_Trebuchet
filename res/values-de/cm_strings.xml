@@ -37,9 +37,14 @@
   <string name="icon_labels_show">Anzeigen</string>
   <string name="icon_labels_hide">Verbergen</string>
   <string name="protected_app_settings">Geschützte Apps</string>
+  <string name="app_drawer_style">Stil der App-Übersicht</string>
   <string name="app_drawer_style_compact">Kompakt</string>
+  <string name="app_drawer_style_sections">Abschnitte</string>
+  <string name="app_drawer_color">Farbe der App-Übersicht</string>
   <string name="app_drawer_color_dark">Dunkel</string>
   <string name="app_drawer_color_light">Hell</string>
+  <string name="fast_scroller">Schnelles Scrollen</string>
+  <string name="fast_scroller_type">Typ für schnelles Scrollen</string>
   <string name="fast_scroller_type_horizontal">Horizontal</string>
   <string name="fast_scroller_type_vertical">Vertikal</string>
   <string name="search_activity_not_found">Es konnte keine Suche-Aktivität gefunden werden!</string>

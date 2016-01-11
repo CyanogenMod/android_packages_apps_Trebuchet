@@ -17,6 +17,8 @@
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
   <string name="home_screen_settings">AJUSTES DE INICIO</string>
+  <string name="drawer_settings">AJUSTES DEL PANEL</string>
+  <string name="app_settings">AJUSTES DE LAS APLICACIONES</string>
   <string name="setting_state_on">SÍ</string>
   <string name="setting_state_off">NO</string>
   <string name="setting_state_disabled">DESACTIVADO</string>
@@ -35,11 +37,15 @@
   <string name="icon_labels_show">Mostrar</string>
   <string name="icon_labels_hide">Ocultar</string>
   <string name="protected_app_settings">Aplicaciones protegidas</string>
+  <string name="app_drawer_style">Estilo del panel</string>
   <string name="app_drawer_style_compact">Compacto</string>
   <string name="app_drawer_style_sections">Secciones</string>
+  <string name="app_drawer_color">Color del panel</string>
   <string name="app_drawer_color_dark">Oscuro</string>
   <string name="app_drawer_color_light">Claro</string>
+  <string name="fast_scroller">Desplazamiento rápido</string>
   <string name="fast_scroller_type">Tipo de desplazamiento rápido</string>
   <string name="fast_scroller_type_horizontal">Horizontal</string>
   <string name="fast_scroller_type_vertical">Vertical</string>
+  <string name="search_activity_not_found">¡No se pudo encontrar un asistente de búsqueda!</string>
 </resources>

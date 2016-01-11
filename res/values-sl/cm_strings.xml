@@ -37,6 +37,15 @@
   <string name="icon_labels_show">Prikaži</string>
   <string name="icon_labels_hide">Skrij</string>
   <string name="protected_app_settings">Zaščiteni programi</string>
+  <string name="app_drawer_style">Slog predala</string>
+  <string name="app_drawer_style_compact">Strnjen</string>
+  <string name="app_drawer_style_sections">Odseki</string>
+  <string name="app_drawer_color">Barva predala</string>
+  <string name="app_drawer_color_dark">Temna</string>
+  <string name="app_drawer_color_light">Svetla</string>
+  <string name="fast_scroller">Hiter drsnik</string>
+  <string name="fast_scroller_type">Vrsta hitrega drsnika</string>
+  <string name="fast_scroller_type_horizontal">Vodoravno</string>
   <string name="fast_scroller_type_vertical">Navpična</string>
   <string name="search_activity_not_found">Dejavnosti iskanja ni bilo mogoče najti!</string>
 </resources>

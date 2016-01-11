@@ -37,6 +37,15 @@
   <string name="icon_labels_show">Megjelenítés</string>
   <string name="icon_labels_hide">Elrejtés</string>
   <string name="protected_app_settings">Védett alkalmazások</string>
+  <string name="app_drawer_style">Alkalmazásindító stílusa</string>
+  <string name="app_drawer_style_compact">Kompakt</string>
+  <string name="app_drawer_style_sections">Szakaszok</string>
+  <string name="app_drawer_color">Alkalmazásindító színe</string>
+  <string name="app_drawer_color_dark">Sötét</string>
+  <string name="app_drawer_color_light">Világos</string>
+  <string name="fast_scroller">Gyors görgető</string>
+  <string name="fast_scroller_type">Gyors görgető típusa</string>
+  <string name="fast_scroller_type_horizontal">Vízszintes</string>
   <string name="fast_scroller_type_vertical">Függőleges</string>
   <string name="search_activity_not_found">Keresési tevékenység nem található!</string>
 </resources>

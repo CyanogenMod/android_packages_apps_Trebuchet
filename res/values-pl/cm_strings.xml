@@ -37,8 +37,15 @@
   <string name="icon_labels_show">Pokaż</string>
   <string name="icon_labels_hide">Ukryj</string>
   <string name="protected_app_settings">Chronione aplikacje</string>
+  <string name="app_drawer_style">Styl szuflady</string>
+  <string name="app_drawer_style_compact">Kompaktowy</string>
+  <string name="app_drawer_style_sections">Sekcje</string>
+  <string name="app_drawer_color">Kolor szuflady</string>
   <string name="app_drawer_color_dark">Ciemny</string>
   <string name="app_drawer_color_light">Jasny</string>
+  <string name="fast_scroller">Szybkie przesuwanie</string>
+  <string name="fast_scroller_type">Typ szybkiego przesuwania</string>
+  <string name="fast_scroller_type_horizontal">Poziomy</string>
   <string name="fast_scroller_type_vertical">Pionowo</string>
   <string name="search_activity_not_found">Nie można odnaleźć aktywności związanej z wyszukiwaniem!</string>
 </resources>

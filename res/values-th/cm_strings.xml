@@ -16,5 +16,36 @@
      limitations under the License.
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <string name="home_screen_settings">การตั้งค่าหน้าจอหลัก</string>
+  <string name="drawer_settings">การตั้งค่าแผงแสดงแอป</string>
+  <string name="app_settings">การตั้งค่าแอป</string>
+  <string name="setting_state_on">เปิด</string>
+  <string name="setting_state_off">ปิด</string>
+  <string name="setting_state_disabled">ปิดการใช้งาน</string>
   <string name="play_folder_title">เล่น</string>
+  <string name="scrolling_wallpaper">เลื่อนภาพพื้นหลัง</string>
+  <string name="grid_size_text">ขนาดกริด</string>
+  <string name="grid_size_comfortable">สะดวก</string>
+  <string name="grid_size_cozy">โคซี่</string>
+  <string name="grid_size_condensed">บีบ</string>
+  <string name="grid_size_custom">กำหนดเอง  (<xliff:g id="rows">%1$d</xliff:g> \u00d7 <xliff:g id="columns">%2$d</xliff:g>)</string>
+  <string name="preferences_interface_homescreen_custom">เลือกขนาดที่กำหนดเอง</string>
+  <string name="dialog_confirm">ยืนยัน</string>
+  <string name="home_screen_search_text">แถบค้นหา</string>
+  <string name="larger_icons_text">ไอคอนใหญ่ขึ้น</string>
+  <string name="icon_labels">ป้ายชื่อไอคอน</string>
+  <string name="icon_labels_show">แสดง</string>
+  <string name="icon_labels_hide">ซ่อน</string>
+  <string name="protected_app_settings">แอปที่ได้รับการปกป้อง</string>
+  <string name="app_drawer_style">รูปแบบหน้าแอป</string>
+  <string name="app_drawer_style_compact">กระชับ</string>
+  <string name="app_drawer_style_sections">หมวดหมู่</string>
+  <string name="app_drawer_color">สีหน้าแอป</string>
+  <string name="app_drawer_color_dark">มืด</string>
+  <string name="app_drawer_color_light">สว่าง</string>
+  <string name="fast_scroller">เลื่อนอย่างเร็ว</string>
+  <string name="fast_scroller_type">ชนิดการเลื่อนอย่างเร็ว</string>
+  <string name="fast_scroller_type_horizontal">แนวนอน</string>
+  <string name="fast_scroller_type_vertical">แนวตั้ง</string>
+  <string name="search_activity_not_found">ไม่พบกิจกรรมการค้นหา!</string>
 </resources>

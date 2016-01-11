@@ -37,6 +37,13 @@
   <string name="icon_labels_show">Vis</string>
   <string name="icon_labels_hide">Skjul</string>
   <string name="protected_app_settings">Beskyttede apps</string>
+  <string name="app_drawer_style">Skuff stil</string>
+  <string name="app_drawer_style_compact">Kompakt</string>
+  <string name="app_drawer_style_sections">Inndelinger</string>
+  <string name="app_drawer_color">Skuff farge</string>
+  <string name="app_drawer_color_dark">Mørk</string>
+  <string name="app_drawer_color_light">Lys</string>
+  <string name="fast_scroller_type_horizontal">Vannrett</string>
   <string name="fast_scroller_type_vertical">Loddrett</string>
   <string name="search_activity_not_found">Finner ikke en søkeaktivitet!</string>
 </resources>

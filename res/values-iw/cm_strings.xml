@@ -37,7 +37,10 @@
   <string name="icon_labels_show">הצג</string>
   <string name="icon_labels_hide">הסתר</string>
   <string name="protected_app_settings">יישומים מוגנים</string>
+  <string name="app_drawer_style">סגנון מגירת יישומים</string>
   <string name="app_drawer_style_compact">קומפקטי</string>
+  <string name="app_drawer_style_sections">חלקים</string>
+  <string name="app_drawer_color">צבע מגירת היישומים</string>
   <string name="app_drawer_color_dark">כהה</string>
   <string name="app_drawer_color_light">בהיר</string>
   <string name="fast_scroller">גלילה מהירה</string>
