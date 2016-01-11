@@ -23,7 +23,7 @@
     android:paddingStart="@dimen/folder_preview_padding"
     android:paddingEnd="@dimen/folder_preview_padding"
     android:paddingBottom="@dimen/folder_preview_padding"
-    android:layout_marginBottom="@dimen/folder_margin"
+    android:layout_margin="@dimen/folder_margin"
     android:layout_gravity="bottom|center_horizontal"
     android:background="@drawable/folder_bg">
 

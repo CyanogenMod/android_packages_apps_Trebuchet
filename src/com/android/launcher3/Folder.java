@@ -1347,6 +1347,8 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
         int left = (grid.availableWidthPx - width) / 2;
         // Drop the top down a little so it isn't bounded by the page indicators
         int top = (int) (bounds.top + (bounds.height() * 1.15) - height);
+        // Make sure the top margin stays consistent
+        lp.topMargin = getResources().getDimensionPixelSize(R.dimen.folder_margin);
 
         if (width >= bounds.width()) {
             // If the folder doesn't fit within the bounds, center it about the desired bounds
