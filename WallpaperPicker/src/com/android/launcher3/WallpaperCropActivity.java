@@ -292,7 +292,7 @@ public class WallpaperCropActivity extends BaseActivity implements Handler.Callb
 
 
     public boolean enableRotation() {
-        return getResources().getBoolean(R.bool.allow_rotation);
+        return getResources().getBoolean(R.bool.preferences_interface_allow_rotation);
     }
 
     protected void setWallpaper(Uri uri, final boolean finishActivityWhenDone) {
