@@ -17,7 +17,7 @@
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
   <string name="home_screen_settings">INSTELLINGEN THUISSCHERM</string>
-  <string name="drawer_settings">INSTELLINGEN OVERZICHT</string>
+  <string name="drawer_settings">INSTELLINGEN APP-OVERZICHT</string>
   <string name="app_settings">INSTELLINGEN APPS</string>
   <string name="setting_state_on">AAN</string>
   <string name="setting_state_off">UIT</string>
@@ -46,7 +46,7 @@
   <string name="dialog_confirm">Bevestig</string>
   <string name="drawer_type">Indeling</string>
   <string name="drawer_type_drawer">Verticaal</string>
-  <string name="drawer_type_pager">Met pagina\'s</string>
+  <string name="drawer_type_pager">Pagina\'s</string>
   <string name="setting_state_disabled">UITGESCHAKELD</string>
   <string name="search_activity_not_found">Geen zoekactiviteit gevonden</string>
 </resources>
