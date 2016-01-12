@@ -92,7 +92,10 @@ public class OverviewSettingsPanel {
         boolean remoteAppsEnabled = SettingsProvider.getBoolean(mLauncher, null,
                 R.bool.preferences_interface_homescreen_remote_folder_default);
         if (remoteAppsEnabled) {
-            values.add(res.getString(R.string.recommendations_title));
+            String remoteAppsName = RemoteFolderManager.getFeatureTitle(res);
+            if (remoteAppsName != null) {
+                values.add(remoteAppsName);
+            }
         }
 
         String[] valuesArr = new String[values.size()];
