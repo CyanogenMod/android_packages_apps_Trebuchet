@@ -173,6 +173,10 @@ public class FolderIcon extends FrameLayout implements FolderListener {
         Folder folder;
         if (folderInfo.isRemote()) {
             folder = launcher.getRemoteFolderManager().createRemoteFolder(icon, launcher.getDragLayer());
+            if (folder == null) {
+                LauncherModel.deleteItemFromDatabase(launcher, folderInfo);
+                return null;
+            }
         } else {
             folder = Folder.fromXml(launcher, launcher.getDragLayer());
         }

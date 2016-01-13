@@ -4948,9 +4948,11 @@ public class Launcher extends Activity
                     final FolderIcon newFolder = FolderIcon.fromXml(R.layout.folder_icon, this,
                             (ViewGroup) workspace.getChildAt(workspace.getCurrentPage()),
                             (FolderInfo) item, mIconCache);
-                    newFolder.setTextVisible(!mHideIconLabels);
-                    workspace.addInScreenFromBind(newFolder, item.container, item.screenId, item.cellX,
-                            item.cellY, 1, 1);
+                    if (newFolder != null) {
+                        newFolder.setTextVisible(!mHideIconLabels);
+                        workspace.addInScreenFromBind(newFolder, item.container, item.screenId, item.cellX,
+                                item.cellY, 1, 1);
+                    }
                     break;
                 default:
                     throw new RuntimeException("Invalid Item Type");
