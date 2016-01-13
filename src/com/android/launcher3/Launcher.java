@@ -371,6 +371,8 @@ public class Launcher extends Activity
 
     private boolean mUseScrubber = true;
 
+    private boolean mIsDrawerSearchBarEnabled;
+
     // This is set to the view that launched the activity that navigated the user away from
     // launcher. Since there is no callback for when the activity has finished launching, enable
     // the press state and keep this reference to reset the press state when we return to launcher.
@@ -5187,18 +5189,25 @@ public class Launcher extends Activity
     }
 
     private void setupSearchBar(Context context) {
-        boolean isDrawerSearchBarEnabled = SettingsProvider.getBoolean(context,
+        mIsDrawerSearchBarEnabled = SettingsProvider.getBoolean(context,
                 SettingsProvider.SETTINGS_UI_DRAWER_SEARCH,
                 R.bool.preferences_interface_homescreen_search_default);
 
-        if (mLauncherCallbacks != null && mLauncherCallbacks.getAllAppsSearchBarController() != null) {
-            mAppsView.setSearchBarController(mLauncherCallbacks.getAllAppsSearchBarController());
+        if (mIsDrawerSearchBarEnabled) {
+            if (mLauncherCallbacks != null
+                    && mLauncherCallbacks.getAllAppsSearchBarController() != null) {
+                mAppsView
+                        .setSearchBarController(mLauncherCallbacks.getAllAppsSearchBarController());
+            } else {
+                mAppsView.setSearchBarController(mAppsView.newDefaultAppSearchController());
+            }
         } else {
-            mAppsView.setSearchBarController(mAppsView.newDefaultAppSearchController());
+            mAppsView.setSearchBarController(null);
+            mAppsView.setHasSearchBar(mIsDrawerSearchBarEnabled);
+            mAppsView.setSearchBarContainerViewVisibility(
+                    mIsDrawerSearchBarEnabled ? View.VISIBLE : View.GONE);
+            mAppsView.updateBackgroundAndPaddings();
         }
-        mAppsView.setHasSearchBar(isDrawerSearchBarEnabled);
-        mAppsView.setSearchBarContainerViewVisibility(
-                isDrawerSearchBarEnabled ? View.VISIBLE : View.GONE);
     }
 
     class SettingsPanelSlideListener extends VerticalSlidingPanel.SimplePanelSlideListener {
