@@ -1238,15 +1238,24 @@ public abstract class PagedView extends ViewGroup implements ViewGroup.OnHierarc
     public void addFocusables(ArrayList<View> views, int direction, int focusableMode) {
         // XXX-RTL: This will be fixed in a future CL
         if (mCurrentPage >= 0 && mCurrentPage < getPageCount()) {
-            getPageAt(mCurrentPage).addFocusables(views, direction, focusableMode);
+            View page =  getPageAt(mCurrentPage);
+            if (page != null) {
+                page.addFocusables(views, direction, focusableMode);
+            }
         }
         if (direction == View.FOCUS_LEFT) {
             if (mCurrentPage > 0) {
-                getPageAt(mCurrentPage - 1).addFocusables(views, direction, focusableMode);
+                View page =  getPageAt(mCurrentPage - 1);
+                if (page != null) {
+                    page.addFocusables(views, direction, focusableMode);
+                }
             }
         } else if (direction == View.FOCUS_RIGHT){
             if (mCurrentPage < getPageCount() - 1) {
-                getPageAt(mCurrentPage + 1).addFocusables(views, direction, focusableMode);
+                View page =  getPageAt(mCurrentPage + 1);
+                if (page != null) {
+                    page.addFocusables(views, direction, focusableMode);
+                }
             }
         }
     }
