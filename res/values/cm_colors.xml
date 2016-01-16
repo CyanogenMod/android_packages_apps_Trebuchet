@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="workspace_cling_longpress_title_color">#E1000000</color>
+    <color name="workspace_cling_longpress_description_color">#99000000</color>
+    <color name="workspace_cling_longpress_dismiss_text_color">#FFFFFFFF</color>
+    <color name="first_run_cling_title_color">#E1000000</color>
+    <color name="folder_name_highlight_text_color">#ffCCCCCC</color>
+    <color name="folder_name_hint_text_color">#ff808080</color>
+    <color name="folder_hint_text_color">@android:color/white</color>
+    <color name="all_apps_empty_search_text_color">#212121</color>
+    <color name="search_box_input_text_color">#4c4c4c</color>
+    <color name="search_box_input_hint_text_color">#9c9c9c</color>
+    <color name="migration_cling_background_color">#FF009688</color>
+    <color name="migration_cling_description_text_color">#99000000</color>
+    <color name="migration_cling_copy_apps_text_color">#FFFFFFFF</color>
+    <color name="migration_cling_use_default_text_color">#deFFFFFF</color>
+    <color name="wallpaper_button_text_color">@android:color/white</color>
+    <color name="widget_button_text_color">@android:color/white</color>
+    <color name="settings_button_text_color">@android:color/white</color>
+    <color name="overview_panel_background_color">@android:color/background_dark</color>
+    <color name="scrubber_container_text_color">@android:color/black</color>
+    <color name="scrubber_text_color">@android:color/white</color>
+</resources>

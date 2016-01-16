@@ -52,8 +52,8 @@
             android:paddingLeft="8dp"
             android:scrollHorizontally="true"
             android:singleLine="true"
-            android:textColor="#4c4c4c"
-            android:textColorHint="#9c9c9c"
+            android:textColor="@color/search_box_input_text_color"
+            android:textColorHint="@color/search_box_input_hint_text_color"
             android:textSize="16sp" />
     </LinearLayout>
 

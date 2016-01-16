@@ -12,7 +12,7 @@
         android:paddingLeft="36dp"
         android:paddingRight="36dp"
         android:text="@string/workspace_cling_longpress_title"
-        android:textColor="#E1000000"
+        android:textColor="@color/workspace_cling_longpress_title_color"
         android:textSize="24sp" />
 
     <TextView
@@ -22,7 +22,7 @@
         android:paddingLeft="36dp"
         android:paddingRight="36dp"
         android:text="@string/workspace_cling_longpress_description"
-        android:textColor="#99000000"
+        android:textColor="@color/workspace_cling_longpress_description_color"
         android:textSize="16sp" />
 
     <Button
@@ -37,7 +37,7 @@
         android:paddingLeft="24dp"
         android:paddingRight="24dp"
         android:text="@string/workspace_cling_longpress_dismiss"
-        android:textColor="#FFFFFFFF"
+        android:textColor="@color/workspace_cling_longpress_dismiss_text_color"
         android:textSize="14sp" />
 
 </LinearLayout>

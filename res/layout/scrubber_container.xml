@@ -45,7 +45,7 @@
         android:paddingTop="18dp"
         android:textSize="24sp"
         android:gravity="center_horizontal|top"
-        android:textColor="@android:color/black"
+        android:textColor="@color/scrubber_container_text_color"
         android:clickable="false"
         android:layout_marginBottom="-40dp"
         android:visibility="invisible"

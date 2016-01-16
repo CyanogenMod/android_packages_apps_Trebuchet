@@ -88,7 +88,7 @@
                         android:gravity="center_horizontal"
                         android:text="@string/wallpaper_button_text"
                         android:textAllCaps="true"
-                        android:textColor="@android:color/white"
+                        android:textColor="@color/wallpaper_button_text_color"
                         android:textSize="12sp" />
 
                     <TextView
@@ -102,7 +102,7 @@
                         android:gravity="center_horizontal"
                         android:text="@string/widget_button_text"
                         android:textAllCaps="true"
-                        android:textColor="@android:color/white"
+                        android:textColor="@color/widget_button_text_color"
                         android:textSize="12sp" />
 
                     <TextView
@@ -116,7 +116,7 @@
                         android:gravity="center_horizontal"
                         android:text="@string/settings_button_text"
                         android:textAllCaps="true"
-                        android:textColor="@android:color/white"
+                        android:textColor="@color/settings_button_text_color"
                         android:textSize="12sp" />
 
                 </LinearLayout>
@@ -137,7 +137,7 @@
                 android:id="@+id/dark_panel"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@android:color/background_dark"
+                android:background="@color/overview_panel_background_color"
                 android:visibility="gone" />
     </FrameLayout>
 </com.android.launcher3.OverviewPanel>
