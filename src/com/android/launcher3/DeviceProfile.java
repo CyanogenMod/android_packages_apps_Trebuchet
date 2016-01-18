@@ -99,6 +99,7 @@ public class DeviceProfile {
     public boolean searchBarVisible;
     private int searchBarSpaceWidthPx;
     private int searchBarSpaceHeightPx;
+    private int defaultSearchBarSpaceHeightPx;
 
     public DeviceProfile(Context context, InvariantDeviceProfile inv,
             Point minSize, Point maxSize,
@@ -165,8 +166,10 @@ public class DeviceProfile {
         // Search Bar
         searchBarVisible = isSearchBarEnabled(context);
         searchBarSpaceWidthPx = Math.min(searchBarSpaceWidthPx, widthPx);
+        defaultSearchBarSpaceHeightPx = getSearchBarTopOffset()
+                + res.getDimensionPixelSize(R.dimen.dynamic_grid_search_bar_height);
         searchBarSpaceHeightPx = 2 * edgeMarginPx + (searchBarVisible ?
-                searchBarSpaceHeightPx - getSearchBarTopOffset() : 3 * edgeMarginPx);
+                defaultSearchBarSpaceHeightPx - getSearchBarTopOffset() : 3 * edgeMarginPx);
     }
 
     /**
@@ -207,8 +210,9 @@ public class DeviceProfile {
         // Search Bar
         searchBarSpaceWidthPx = Math.min(widthPx,
                 res.getDimensionPixelSize(R.dimen.dynamic_grid_search_bar_max_width));
-        searchBarSpaceHeightPx = getSearchBarTopOffset()
+        defaultSearchBarSpaceHeightPx = getSearchBarTopOffset()
                 + res.getDimensionPixelSize(R.dimen.dynamic_grid_search_bar_height);
+        searchBarSpaceHeightPx = defaultSearchBarSpaceHeightPx;
 
         // Calculate the actual text height
         Paint textPaint = new Paint();
@@ -400,7 +404,7 @@ public class DeviceProfile {
         if (hasVerticalBarLayout) {
             // If search bar is invisible add some extra padding for the drop targets
             searchBarSpaceHeightPx = searchBarVisible ? searchBarSpaceHeightPx
-                    : searchBarSpaceHeightPx + 5 * edgeMarginPx;
+                    : defaultSearchBarSpaceHeightPx + 5 * edgeMarginPx;
 
             // Vertical search bar space -- The search bar is fixed in the layout to be on the left
             //                              of the screen regardless of RTL
