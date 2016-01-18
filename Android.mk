@@ -58,6 +58,10 @@ include $(REMOTE_FOLDER_UPDATER)/Android.mk
 include $(BUILD_PACKAGE)
 
 include $(CLEAR_VARS)
+
+REMOTE_FOLDER_UPDATER ?= $(LOCAL_PATH)/RemoteFolder
+include $(REMOTE_FOLDER_UPDATER)/Android-prebuilt-libs.mk
+
 include $(BUILD_MULTI_PREBUILT)
 
 #
