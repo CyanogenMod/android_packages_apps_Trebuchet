@@ -101,6 +101,7 @@ public class InsettableFrameLayout extends FrameLayout implements
 
     @Override
     public void onChildViewRemoved(View parent, View child) {
+        setFrameLayoutChildInsets(child, new Rect(), mInsets);
     }
 
 }
