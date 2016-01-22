@@ -4464,6 +4464,7 @@ public class Workspace extends SmoothPagedView
             if (cellLayout != null) {
                 cellLayout.onDropChild(mDragInfo.cell);
                 cellLayout.setUseTempCoords(false);
+                ((CellLayout.LayoutParams) target.getLayoutParams()).useTmpCoords = false;
             }
         }
         if ((d.cancelled || (beingCalledAfterUninstall && !mUninstallSuccessful))

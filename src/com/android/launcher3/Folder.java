@@ -562,6 +562,7 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
     }
 
     private void prepareFakeFolderIcon() {
+        mFolderIcon.destroyDrawingCache();
         mFolderIcon.buildDrawingCache(true);
 
         Bitmap fakeFolderIcon = Bitmap.createBitmap(mFolderIcon.getDrawingCache());

@@ -395,7 +395,7 @@ public class Launcher extends Activity
     private Canvas mFolderIconCanvas;
     private Rect mRectForFolderAnimation = new Rect();
 
-    private BubbleTextView mWaitingForResume;
+    BubbleTextView mWaitingForResume;
 
     // Search widget
     int mSearchWidgetId;
