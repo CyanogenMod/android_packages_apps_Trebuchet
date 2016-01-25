@@ -17,7 +17,7 @@
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
   <string name="home_screen_settings">POSTAVKE POČETNOG ZASLONA</string>
-  <string name="drawer_settings">POSTAVKE DRAWERA</string>
+  <string name="drawer_settings">POSTAVKE LADICE</string>
   <string name="app_settings">POSTAVKE APLIKACIJA</string>
   <string name="setting_state_on">UKLJUČENO</string>
   <string name="setting_state_off">ISKLJUČENO</string>
@@ -26,6 +26,8 @@
   <string name="scrolling_wallpaper">Klizanje pozadine</string>
   <string name="grid_size_text">Veličina rešetke</string>
   <string name="grid_size_comfortable">Udoban</string>
+  <string name="grid_size_cozy">Udobno</string>
+  <string name="grid_size_condensed">Kondenzirano</string>
   <string name="grid_size_custom">Prilagođeno (<xliff:g id="rows">%1$d </xliff:g> \u00d7 <xliff:g id="columns">%2$d </xliff:g>)</string>
   <string name="preferences_interface_homescreen_custom">Odabir prilagođene veličine</string>
   <string name="dialog_confirm">Potvrdi</string>
