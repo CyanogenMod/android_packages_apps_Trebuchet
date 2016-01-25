@@ -37,6 +37,9 @@
   <string name="icon_labels_show">Arată</string>
   <string name="icon_labels_hide">Ascunde</string>
   <string name="protected_app_settings">Aplicații protejate</string>
+  <string name="app_drawer_style_compact">Compact</string>
+  <string name="app_drawer_style_sections">Secțiuni</string>
+  <string name="fast_scroller_type_horizontal">Orizontal</string>
   <string name="fast_scroller_type_vertical">Vertical</string>
   <string name="search_activity_not_found">Imposibil de găsit o activitate de căutare!</string>
 </resources>
