@@ -6,7 +6,6 @@
     <color name="first_run_cling_title_color">#E1000000</color>
     <color name="folder_name_highlight_text_color">#ffCCCCCC</color>
     <color name="folder_name_hint_text_color">#ff808080</color>
-    <color name="folder_hint_text_color">@android:color/white</color>
     <color name="all_apps_empty_search_text_color">#212121</color>
     <color name="search_box_input_text_color">#4c4c4c</color>
     <color name="search_box_input_hint_text_color">#9c9c9c</color>

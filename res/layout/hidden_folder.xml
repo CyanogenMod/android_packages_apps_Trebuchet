@@ -51,9 +51,10 @@
             android:paddingBottom="@dimen/folder_name_padding"
             android:paddingTop="@dimen/folder_name_padding"
             android:hint="@string/folder_hint_text"
-            android:textColor="@color/folder_hint_text_color"
+            android:textColor="@color/workspace_icon_text_color"
             android:textSize="20sp"
             android:textColorHighlight="@color/folder_name_highlight_text_color"
+            android:textColorHint="@color/folder_name_hint_text_color"
             android:textCursorDrawable="@null"
             android:singleLine="true"
             android:background="#00000000" />
