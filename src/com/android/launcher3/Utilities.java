@@ -532,14 +532,9 @@ public final class Utilities {
      */
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     public static AppWidgetProviderInfo getSearchWidgetProvider(Context context) {
-        ComponentName searchComponent = null;
-        try {
-            Intent assistIntent = new Intent(Intent.ACTION_ASSIST);
-            searchComponent = assistIntent.resolveActivity(context.getPackageManager());
-        } catch (Exception e) {
-            Log.e(TAG, "Exception in resolveSearchAppWidget: " + e);
-        }
-
+        SearchManager searchManager =
+                (SearchManager) context.getSystemService(Context.SEARCH_SERVICE);
+        ComponentName searchComponent = searchManager.getGlobalSearchActivity();
         if (searchComponent == null) return null;
         String providerPkg = searchComponent.getPackageName();
 
