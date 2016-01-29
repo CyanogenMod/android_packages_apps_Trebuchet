@@ -47,10 +47,9 @@ public class RemoteFolderManager {
     public void bindFinished() { }
 
     /**
-     * Called when the setting for remote folder is updated.
-     * @param newValue the new setting for remote folder
+     * Called when a setting for remote folder is updated.
      */
-    public void onSettingChanged(final boolean newValue) { }
+    public void onSettingChanged() { }
 
     /**
      * Called when the remote folder is dropped into the delete area on the workspace.
@@ -121,8 +120,10 @@ public class RemoteFolderManager {
     public void onBindViewHolder(final AllAppsGridAdapter.ViewHolder holder, final AppInfo item) { }
 
     /**
-     * Get the String to be used for the RemoteFolder name and its corresponding Settings option
-     * @return the name RemoteFolder and its Setting option should use
+     * Populate settings list with additional values as needed.
+     * @param values list of settings strings.
+     * @param res resources used to load string values.
      */
-    public static String getFeatureTitle(Resources res) { return null; }
+    public static void onInitializeSettingsAdapter(final ArrayList<String> values,
+                                                   final Resources res) { }
 }

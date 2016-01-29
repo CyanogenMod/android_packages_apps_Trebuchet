@@ -54,6 +54,7 @@ public class TrackingEvent {
 
         // Remote folder specific
         REMOTE_FOLDER_DISABLED,
+        REMOTE_DRAWER_DISABLED,
         REMOTE_FOLDER_OPENED,
         REMOTE_FOLDER_INFO_OPENED,
         REMOTE_APP_OPENED,
