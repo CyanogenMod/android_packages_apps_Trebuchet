@@ -84,15 +84,8 @@ public class OverviewSettingsPanel {
                 res.getString(R.string.scrolling_wallpaper),
                 res.getString(R.string.grid_size_text)}));
 
-        // Optionally add additional value based on setting
-        boolean remoteAppsEnabled = SettingsProvider.getBoolean(mLauncher, null,
-                R.bool.preferences_interface_homescreen_remote_folder_default);
-        if (remoteAppsEnabled) {
-            String remoteAppsName = RemoteFolderManager.getFeatureTitle(res);
-            if (remoteAppsName != null) {
-                values.add(remoteAppsName);
-            }
-        }
+        // Add additional external settings.
+        RemoteFolderManager.onInitializeSettingsAdapter(values, res);
 
         String[] valuesArr = new String[values.size()];
         values.toArray(valuesArr);

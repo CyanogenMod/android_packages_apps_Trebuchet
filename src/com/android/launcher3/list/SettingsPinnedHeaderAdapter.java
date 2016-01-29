@@ -129,6 +129,12 @@ public class SettingsPinnedHeaderAdapter extends PinnedHeaderListAdapter {
                                 R.bool.preferences_interface_homescreen_remote_folder_default);
                         setSettingSwitch(stateView, settingSwitch, current);
                         break;
+                    case 5:
+                        current = SettingsProvider.getBoolean(mContext,
+                                SettingsProvider.SETTINGS_UI_DRAWER_REMOTE_APPS,
+                                R.bool.preferences_interface_drawer_remote_apps_default);
+                        setSettingSwitch(stateView, settingSwitch, current);
+                        break;
                     default:
                         hideStates(stateView, settingSwitch);
                 }
@@ -277,10 +283,16 @@ public class SettingsPinnedHeaderAdapter extends PinnedHeaderListAdapter {
                             mLauncher.onClickDynamicGridSizeButton();
                             break;
                         case 4:
-                            boolean newValue = onSettingsBooleanChanged(v,
+                            onSettingsBooleanChanged(v,
                                     SettingsProvider.SETTINGS_UI_HOMESCREEN_REMOTE_FOLDER,
                                     R.bool.preferences_interface_homescreen_remote_folder_default);
-                            mLauncher.getRemoteFolderManager().onSettingChanged(newValue);
+                            mLauncher.getRemoteFolderManager().onSettingChanged();
+                            break;
+                        case 5:
+                            onSettingsBooleanChanged(v,
+                                    SettingsProvider.SETTINGS_UI_DRAWER_REMOTE_APPS,
+                                    R.bool.preferences_interface_drawer_remote_apps_default);
+                            mLauncher.getRemoteFolderManager().onSettingChanged();
                             break;
                     }
                     break;
