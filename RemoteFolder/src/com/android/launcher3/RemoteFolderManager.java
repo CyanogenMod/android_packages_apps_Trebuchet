@@ -1,6 +1,6 @@
 package com.android.launcher3;
 
-import android.content.res.Resources;
+import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
@@ -122,8 +122,8 @@ public class RemoteFolderManager {
     /**
      * Populate settings list with additional values as needed.
      * @param values list of settings strings.
-     * @param res resources used to load string values.
+     * @param context application context.
      */
     public static void onInitializeSettingsAdapter(final ArrayList<String> values,
-                                                   final Resources res) { }
+                                                   final Context context) { }
 }

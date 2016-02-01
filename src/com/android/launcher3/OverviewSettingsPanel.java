@@ -85,7 +85,7 @@ public class OverviewSettingsPanel {
                 res.getString(R.string.grid_size_text)}));
 
         // Add additional external settings.
-        RemoteFolderManager.onInitializeSettingsAdapter(values, res);
+        RemoteFolderManager.onInitializeSettingsAdapter(values, mLauncher);
 
         String[] valuesArr = new String[values.size()];
         values.toArray(valuesArr);
