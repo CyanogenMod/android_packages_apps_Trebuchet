@@ -34,6 +34,7 @@ import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.PowerManager;
 import android.provider.Settings;
 import android.text.InputType;
@@ -185,6 +186,8 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
 
     private boolean mHiddenFolder = false;
 
+    private Handler mHandler;
+
     @Thunk int mScrollHintDir = DragController.SCROLL_NONE;
     @Thunk int mCurrentScrollDir = DragController.SCROLL_NONE;
 
@@ -197,6 +200,7 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
     public Folder(Context context, AttributeSet attrs) {
         super(context, attrs);
         setAlwaysDrawnWithCacheEnabled(false);
+        mHandler = new Handler();
         mInputMethodManager = (InputMethodManager)
                 getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
 
@@ -1420,7 +1424,6 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
             if (d.dragSource != this) {
                 updateItemLocationsInDatabaseBatch();
             }
-            mIsExternalDrag = false;
         } else {
             currentDragView = mCurrentDragView;
             mContent.addViewForRank(currentDragView, si, mEmptyCellRank);
@@ -1455,6 +1458,17 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
         if (mContent.getPageCount() > 1) {
             // The animation has already been shown while opening the folder.
             mInfo.setOption(FolderInfo.FLAG_MULTI_PAGE_ANIMATION, true, mLauncher);
+        }
+
+        if (mIsExternalDrag) {
+            // Delay the close animation to reduce jank
+            mHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mLauncher.closeFolder(Folder.this);
+                }
+            }, 100);
+            mIsExternalDrag = false;
         }
     }
 
