@@ -17,21 +17,25 @@
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
   <string name="home_screen_settings">POSTAVKE POČETNOG ZASLONA</string>
-  <string name="drawer_settings">POSTAVKE DRAWERA</string>
+  <string name="drawer_settings">POSTAVKE LADICE</string>
   <string name="app_settings">POSTAVKE APLIKACIJA</string>
   <string name="setting_state_on">UKLJUČENO</string>
   <string name="setting_state_off">ISKLJUČENO</string>
   <string name="themes_button_text">Teme</string>
   <string name="scrolling_page_outlines">Obrisi stranica</string>
+  <string name="scrolling_fade_adjacent">Zamagli krajeve stranica</string>
   <string name="scrolling_wallpaper">Klizanje pozadine</string>
   <string name="grid_size_text">Veličina rešetke</string>
   <string name="grid_size_comfortable">Udoban</string>
+  <string name="grid_size_cozy">Udobno</string>
+  <string name="grid_size_condensed">Kondenzirano</string>
   <string name="grid_size_custom">Prilagođeno (<xliff:g id="rows">%1$d </xliff:g> \u00d7 <xliff:g id="columns">%2$d </xliff:g>)</string>
   <string name="preferences_interface_homescreen_custom">Odabir prilagođene veličine</string>
   <string name="play_folder_title">Sviraj</string>
   <string name="scroll_effect_text">Efekt pomicanja</string>
   <string name="drawer_sorting_text">Razvrstavanja</string>
   <string name="sort_mode_title">Naslov</string>
+  <string name="sort_mode_launch_count">Broj pokretanja</string>
   <string name="sort_mode_install_time">Datum instaliranja</string>
   <string name="home_screen_search_text">Traka za pretraživanje</string>
   <string name="larger_icons_text">Veće ikone</string>
@@ -42,6 +46,7 @@
   <string name="dialog_confirm">Potvrdi</string>
   <string name="drawer_type">Izgled</string>
   <string name="drawer_type_drawer">Okomito</string>
+  <string name="drawer_type_pager">Prema stranici</string>
   <string name="setting_state_disabled">ONEMOGUĆENO</string>
   <string name="search_activity_not_found">Aktivnosti pretraživanja nije moguće pronaći.</string>
 </resources>
