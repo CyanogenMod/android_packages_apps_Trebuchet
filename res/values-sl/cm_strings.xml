@@ -18,7 +18,7 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
   <string name="home_screen_settings">NASTAVITVE DOMAČEGA ZASLONA</string>
   <string name="drawer_settings">NASTAVITVE PREDALA</string>
-  <string name="app_settings">NASTAVITVE PROGRAMOV</string>
+  <string name="app_settings">NASTAVITVE APLIKACIJ</string>
   <string name="setting_state_on">VKL.</string>
   <string name="setting_state_off">IZK.</string>
   <string name="themes_button_text">Teme</string>
@@ -42,7 +42,7 @@
   <string name="icon_labels">Oznake ikon</string>
   <string name="icon_labels_show">Prikaži</string>
   <string name="icon_labels_hide">Skrij</string>
-  <string name="protected_app_settings">Zaščiteni programi</string>
+  <string name="protected_app_settings">Zaščitene aplikacije</string>
   <string name="dialog_confirm">Potrdi</string>
   <string name="drawer_type">Razporeditev</string>
   <string name="drawer_type_drawer">Navpična</string>
