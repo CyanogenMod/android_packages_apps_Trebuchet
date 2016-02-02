@@ -43,6 +43,8 @@
   <string name="app_drawer_color">Boja ladice</string>
   <string name="app_drawer_color_dark">Tamno</string>
   <string name="app_drawer_color_light">Svijetlo</string>
+  <string name="fast_scroller">Brzi skroler</string>
+  <string name="fast_scroller_type">Vrsta brzog skrolera</string>
   <string name="fast_scroller_type_horizontal">Vodoravno</string>
   <string name="fast_scroller_type_vertical">Okomito</string>
   <string name="search_activity_not_found">Aktivnosti pretraživanja nije moguće pronaći.</string>

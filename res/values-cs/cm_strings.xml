@@ -37,6 +37,15 @@
   <string name="icon_labels_show">Zobrazit</string>
   <string name="icon_labels_hide">Skrýt</string>
   <string name="protected_app_settings">Chráněné aplikace</string>
+  <string name="app_drawer_style">Styl složky</string>
+  <string name="app_drawer_style_compact">Kompaktní</string>
+  <string name="app_drawer_style_sections">Sekce</string>
+  <string name="app_drawer_color">Barva složky</string>
+  <string name="app_drawer_color_dark">Tmavý</string>
+  <string name="app_drawer_color_light">Světlý</string>
+  <string name="fast_scroller">Rychlý posuvník</string>
+  <string name="fast_scroller_type">Typ rychlého posuvníku</string>
+  <string name="fast_scroller_type_horizontal">Horizontální</string>
   <string name="fast_scroller_type_vertical">Vertikální</string>
   <string name="search_activity_not_found">Vyhledávací aktivita nenalezena!</string>
 </resources>
