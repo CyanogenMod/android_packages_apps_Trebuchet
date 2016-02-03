@@ -121,7 +121,7 @@ public class SettingsPinnedHeaderAdapter extends PinnedHeaderListAdapter {
                         setSettingSwitch(stateView, settingSwitch, current);
                         break;
                     case 3:
-                        updateDynamicGridSizeSettingsItem(v);
+                        updateDynamicGridSizeSettingsItem(stateView, settingSwitch);
                         break;
                     case 4:
                         current = SettingsProvider.getBoolean(mContext,
@@ -226,7 +226,7 @@ public class SettingsPinnedHeaderAdapter extends PinnedHeaderListAdapter {
         return mPinnedHeaderCount;
     }
 
-    public void updateDynamicGridSizeSettingsItem(View v) {
+    public void updateDynamicGridSizeSettingsItem(TextView stateView, Switch settingSwitch) {
         InvariantDeviceProfile.GridSize gridSize = InvariantDeviceProfile.GridSize.getModeForValue(
                 SettingsProvider.getIntCustomDefault(mLauncher,
                         SettingsProvider.SETTINGS_UI_DYNAMIC_GRID_SIZE, 0));
@@ -250,7 +250,7 @@ public class SettingsPinnedHeaderAdapter extends PinnedHeaderListAdapter {
                 state = rows + " " + "\u00d7" + " " + columns;
                 break;
         }
-        ((TextView) v.findViewById(R.id.item_state)).setText(state);
+        setStateText(stateView, settingSwitch, state);
     }
 
     OnClickListener mSettingsItemListener = new OnClickListener() {
