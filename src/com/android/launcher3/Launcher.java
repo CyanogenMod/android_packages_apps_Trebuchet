@@ -3313,8 +3313,9 @@ public class Launcher extends Activity
     }
 
     private boolean startActivity(View v, Intent intent, Object tag) {
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         try {
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
             // Only launch using the new animation if the shortcut has not opted out (this is a
             // private contract between launcher and may be ignored in the future).
             boolean useLaunchAnimation = (v != null) &&
@@ -3369,7 +3370,7 @@ public class Launcher extends Activity
                         intent.getSourceBounds(), optsBundle);
             }
             return true;
-        } catch (SecurityException e) {
+        } catch (SecurityException | NullPointerException e) {
             if (Utilities.ATLEAST_MARSHMALLOW && tag instanceof ItemInfo) {
                 // Due to legacy reasons, direct call shortcuts require Launchers to have the
                 // corresponding permission. Show the appropriate permission prompt if that
