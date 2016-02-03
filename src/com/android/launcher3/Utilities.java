@@ -695,8 +695,7 @@ public final class Utilities {
     }
 
     public static float dpiFromPx(int size, DisplayMetrics metrics){
-        float densityRatio = (float) metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT;
-        return (size / densityRatio);
+        return (size / metrics.density);
     }
     public static int pxFromDp(float size, DisplayMetrics metrics) {
         return (int) Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
