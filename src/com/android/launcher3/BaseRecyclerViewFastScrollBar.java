@@ -93,7 +93,7 @@ public class BaseRecyclerViewFastScrollBar {
 
         private FastScrollFocusApplicator(final View v, final int mode) {
             mView = v;
-            mFastScrollMode = mode;
+            mFastScrollMode = mode & ~FAST_SCROLL_FOCUS_SCALABLE; // Globally disable scaling.
         }
 
         public void setFastScrollFocused(boolean focused, boolean animated) {
