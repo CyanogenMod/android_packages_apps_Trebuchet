@@ -819,10 +819,18 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
         if (mPowerManager.isPowerSaveMode() || animatorDurationScale < 0.01f) {
             // power save mode is no fun - skip alpha animation and just set it to 0
             // otherwise the icons will stay around until the duration of the animation
-            oa = LauncherAnimUtils.ofPropertyValuesHolder(this, translationY);
+            if (animate) {
+                oa = LauncherAnimUtils.ofPropertyValuesHolder(this, translationY);
+            } else {
+                oa = LauncherAnimUtils.ofPropertyValuesHolder(this);
+            }
             setAlpha(0f);
         } else {
-            oa = LauncherAnimUtils.ofPropertyValuesHolder(this, alpha, translationY);
+            if (animate) {
+                oa = LauncherAnimUtils.ofPropertyValuesHolder(this, alpha, translationY);
+            } else {
+                oa = LauncherAnimUtils.ofPropertyValuesHolder(this, alpha);
+            }
         }
 
         oa.setDuration(mMaterialExpandDuration);
