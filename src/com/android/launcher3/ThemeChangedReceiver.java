@@ -33,7 +33,11 @@ public class ThemeChangedReceiver extends BroadcastReceiver {
         // components is a string array of the components that changed
         ArrayList<String> components = intent.getStringArrayListExtra(EXTRA_COMPONENTS);
         if (isInterestingThemeChange(components)) {
-            LauncherAppState app = LauncherAppState.getInstance();
+            LauncherAppState app = LauncherAppState.getInstanceNoCreate();
+            if (app == null) {
+                LauncherAppState.setApplicationContext(context);
+                app = LauncherAppState.getInstance();
+            }
             clearAppIconCache(context);
             clearWidgetPreviewCache(context);
             app.recreateWidgetPreviewDb();
