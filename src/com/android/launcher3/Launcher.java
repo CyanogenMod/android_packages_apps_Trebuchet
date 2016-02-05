@@ -254,6 +254,9 @@ public class Launcher extends Activity
     private final BroadcastReceiver mCloseSystemDialogsReceiver
             = new CloseSystemDialogsIntentReceiver();
 
+    @Thunk final NetworkConnectionReceiver mConnectionReceiver = new NetworkConnectionReceiver();
+    @Thunk final DeviceUnlockedReceiver mDeviceUnlockedReceiver = new DeviceUnlockedReceiver();
+
     private LayoutInflater mInflater;
 
     @Thunk Workspace mWorkspace;
@@ -568,6 +571,12 @@ public class Launcher extends Activity
 
         IntentFilter filter = new IntentFilter(Intent.ACTION_CLOSE_SYSTEM_DIALOGS);
         registerReceiver(mCloseSystemDialogsReceiver, filter);
+
+        filter = new IntentFilter(NetworkConnectionReceiver.INTENT_ACTION);
+        registerReceiver(mConnectionReceiver, filter);
+
+        filter = new IntentFilter(DeviceUnlockedReceiver.INTENT_ACTION);
+        registerReceiver(mDeviceUnlockedReceiver, filter);
 
         mRotationEnabled = Utilities.isRotationAllowedForDevice(getApplicationContext());
         // In case we are on a device with locked rotation, we should look at preferences to check
@@ -2361,6 +2370,8 @@ public class Launcher extends Activity
         TextKeyListener.getInstance().release();
 
         unregisterReceiver(mCloseSystemDialogsReceiver);
+        unregisterReceiver(mConnectionReceiver);
+        unregisterReceiver(mDeviceUnlockedReceiver);
 
         mDragLayer.clearAllResizeFrames();
         ((ViewGroup) mWorkspace.getParent()).removeAllViews();
