@@ -61,7 +61,8 @@ public class TrackingEvent {
         REMOTE_APP_INSTALLED,
         REMOTE_SYNC_TIME,
         REMOTE_SYNC_ERROR,
-        REMOTE_SYNC_UNFILLED
+        REMOTE_SYNC_UNFILLED,
+        REMOTE_FEATURE_DISABLED_FEEDBACK
     }
 
     public static final String KEY_ORIGIN = TrackingBundle.KEY_METADATA_ORIGIN;
