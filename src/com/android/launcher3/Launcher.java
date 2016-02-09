@@ -160,7 +160,9 @@ public class Launcher extends Activity
 
     private static final int REQUEST_PERMISSION_CALL_PHONE = 13;
 
-    private static final int REQUEST_LOCK_PATTERN = 14;
+    public static final int REQUEST_OPEN_PROTECTED_FOLDER = 14;
+    public static final int REQUEST_PROTECT_FOLDER = 15;
+    public static final int REQUEST_UNPROTECT_FOLDER = 16;
 
     private static final int WORKSPACE_BACKGROUND_GRADIENT = 0;
     private static final int WORKSPACE_BACKGROUND_TRANSPARENT = 1;
@@ -265,7 +267,6 @@ public class Launcher extends Activity
     @Thunk DragLayer mDragLayer;
     private DragController mDragController;
     private View mWeightWatcher;
-    protected HiddenFolderFragment mHiddenFolderFragment;
     private DynamicGridSizeFragment mDynamicGridSizeFragment;
 
     private static RemoteFolderManager sRemoteFolderManager;
@@ -848,23 +849,28 @@ public class Launcher extends Activity
                 showWorkspace(false);
             }
             return;
-        } else if (requestCode == REQUEST_LOCK_PATTERN) {
-            mHiddenFolderAuth = true;
-            switch (resultCode) {
-                case RESULT_OK:
-                    FragmentManager fragmentManager = getFragmentManager();
-                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
-                    fragmentTransaction.setCustomAnimations(0, 0);
-                    fragmentTransaction.replace(R.id.launcher, mHiddenFolderFragment,
-                            HiddenFolderFragment.HIDDEN_FOLDER_FRAGMENT);
-                    fragmentTransaction.commit();
-                    break;
-                case RESULT_CANCELED:
-                    // User failed to enter/confirm a lock pattern, back out
-                    break;
+        } else if (requestCode == REQUEST_OPEN_PROTECTED_FOLDER) {
+            mHiddenFolderAuth = resultCode == RESULT_OK;
+            if (mHiddenFolderIcon != null && mHiddenFolderAuth) {
+                openFolder(mHiddenFolderIcon, null);
+            } else {
+                mHiddenFolderAuth = false;
             }
             return;
+        } else if (requestCode == REQUEST_PROTECT_FOLDER) {
+            mHiddenFolderAuth = resultCode == RESULT_OK;
+            if (mHiddenFolderIcon != null && mHiddenFolderAuth) {
+                mHiddenFolderIcon.getFolder().saveHiddenFolderState(true);
+            } else {
+                mHiddenFolderAuth = false;
+            }
+        } else if (requestCode == REQUEST_UNPROTECT_FOLDER) {
+            mHiddenFolderAuth = resultCode == RESULT_OK;
+            if (mHiddenFolderIcon != null && mHiddenFolderAuth) {
+                mHiddenFolderIcon.getFolder().saveHiddenFolderState(false);
+            } else {
+                mHiddenFolderAuth = false;
+            }
         }
 
         boolean isWidgetDrop = (requestCode == REQUEST_PICK_APPWIDGET ||
@@ -1206,16 +1212,6 @@ public class Launcher extends Activity
                 DynamicGridSizeFragment.DYNAMIC_GRID_SIZE_FRAGMENT);
         if (gridFragment != null) {
             mDynamicGridSizeFragment.setSize();
-        }
-
-        Fragment hiddenFolderFragment = getFragmentManager().findFragmentByTag(
-                HiddenFolderFragment.HIDDEN_FOLDER_FRAGMENT);
-        if (hiddenFolderFragment != null && !mHiddenFolderAuth) {
-            mHiddenFolderFragment.saveHiddenFolderStatus(-1);
-            FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-            fragmentTransaction.remove(mHiddenFolderFragment).commit();
-        } else {
-            mHiddenFolderAuth = false;
         }
     }
 
@@ -2316,7 +2312,9 @@ public class Launcher extends Activity
         outState.putInt(RUNTIME_STATE, mState.ordinal());
         // We close any open folder since it will not be re-opened, and we need to make sure
         // this state is reflected.
-        closeFolder();
+        if (mHiddenFolderIcon == null) {
+            closeFolder();
+        }
 
         if (mPendingAddInfo.container != ItemInfo.NO_ID && mPendingAddInfo.screenId > -1 &&
                 mWaitingForResult) {
@@ -2393,18 +2391,21 @@ public class Launcher extends Activity
         return mDragController;
     }
 
-    public void validateLockForHiddenFolders(Bundle bundle, FolderIcon info) {
+    public void validateLockForHiddenFolders(FolderIcon info, int action) {
+        mHiddenFolderIcon = info;
         // Validate Lock Pattern
         Intent lockPatternActivity = new Intent();
         lockPatternActivity.setClassName(
                 "com.android.settings",
                 "com.android.settings.applications.LockPatternActivity");
-        startActivityForResult(lockPatternActivity, REQUEST_LOCK_PATTERN);
+        startActivityForResult(lockPatternActivity, action);
         mHiddenFolderAuth = false;
+    }
 
-        mHiddenFolderIcon = info;
-        mHiddenFolderFragment = new HiddenFolderFragment();
-        mHiddenFolderFragment.setArguments(bundle);
+    public void notifyFolderNameChanged() {
+        // Reload
+        mModel.resetLoadedState(true, true);
+        mModel.startLoader(mWorkspace.getCurrentPage(), LauncherModel.LOADER_FLAG_NONE);
     }
 
     @Override
@@ -2808,15 +2809,6 @@ public class Launcher extends Activity
             return;
         }
 
-        Fragment f1 = getFragmentManager().findFragmentByTag(
-                HiddenFolderFragment.HIDDEN_FOLDER_FRAGMENT);
-        if (f1 != null) {
-            mHiddenFolderFragment.saveHiddenFolderStatus(-1);
-            FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-            fragmentTransaction
-                    .remove(mHiddenFolderFragment).commit();
-        }
-
         if (isAppsViewVisible()) {
             showWorkspace(true);
         } else if (isWidgetsViewVisible())  {
@@ -2847,6 +2839,7 @@ public class Launcher extends Activity
             mWorkspace.showOutlinesTemporarily();
         }
     }
+
 
     /**
      * Re-listen when widget host is reset.
@@ -3531,7 +3524,7 @@ public class Launcher extends Activity
      * is animated relative to the specified View. If the View is null, no animation
      * is played.
      *
-     * @param folderInfo The FolderInfo describing the folder to open.
+     * @param folderIcon The FolderIcon describing the folder to open.
      */
     public void openFolder(FolderIcon folderIcon, int[] folderTouch) {
         Folder folder = folderIcon.getFolder();
@@ -3548,8 +3541,8 @@ public class Launcher extends Activity
 
         FolderInfo info = folder.mInfo;
 
-        if (info.hidden) {
-            folder.startHiddenFolderManager();
+        if (info.hidden && !mHiddenFolderAuth) {
+            folder.startHiddenFolderManager(REQUEST_OPEN_PROTECTED_FOLDER);
             return;
         }
 
@@ -3596,7 +3589,12 @@ public class Launcher extends Activity
     }
 
     public void closeFolder(Folder folder, boolean animate) {
-        folder.getInfo().opened = false;
+        final FolderInfo info = folder.getInfo();
+        info.opened = false;
+        if (info.hidden) {
+            mHiddenFolderAuth = false;
+            mHiddenFolderIcon = null;
+        }
 
         ViewGroup parent = (ViewGroup) folder.getParent().getParent();
         if (parent != null) {
