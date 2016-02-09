@@ -72,7 +72,6 @@ import com.android.launcher3.util.Thunk;
 import com.android.launcher3.util.UiThreadCircularReveal;
 
 import static cyanogenmod.content.Intent.ACTION_PROTECTED;
-import static cyanogenmod.content.Intent.ACTION_PROTECTED_CHANGED;
 import static cyanogenmod.content.Intent.EXTRA_PROTECTED_COMPONENTS;
 import static cyanogenmod.content.Intent.EXTRA_PROTECTED_STATE;
 
@@ -151,7 +150,6 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
     ExtendedEditText mFolderName;
 
     private View mFooter;
-    private int mFooterHeight;
 
     // Cell ranks used for drag and drop
     @Thunk int mTargetRank, mPrevTargetRank, mEmptyCellRank;
@@ -172,7 +170,6 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
     private boolean mIsEditingName = false;
 
     ImageView mFolderLock;
-    private int mFolderLockHeight;
 
     private boolean mDestroyed;
 
@@ -182,8 +179,6 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
 
     // Folder scrolling
     private int mScrollAreaOffset;
-
-    private boolean mHiddenFolder = false;
 
     @Thunk int mScrollHintDir = DragController.SCROLL_NONE;
     @Thunk int mCurrentScrollDir = DragController.SCROLL_NONE;
@@ -281,14 +276,14 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
         }
 
         if (v.getId() == R.id.folder_lock) {
-            startHiddenFolderManager();
+            startHiddenFolderManager(mInfo.hidden ?
+                    Launcher.REQUEST_UNPROTECT_FOLDER :
+                    Launcher.REQUEST_PROTECT_FOLDER);
         }
     }
 
-    public void startHiddenFolderManager() {
-        Bundle bundle = new Bundle();
-        bundle.putBoolean(HiddenFolderFragment.HIDDEN_FOLDER_STATUS, mInfo.hidden);
-        mLauncher.validateLockForHiddenFolders(bundle, mFolderIcon);
+    public void startHiddenFolderManager(int action) {
+        mLauncher.validateLockForHiddenFolders(mFolderIcon, action);
     }
 
     public List<Pair<ComponentName, CharSequence>> getComponents() {
@@ -309,7 +304,7 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
     }
 
     public void modifyProtectedApps(boolean protect) {
-        ArrayList<ComponentName> components = new ArrayList<ComponentName>();
+        ArrayList<ComponentName> components = new ArrayList<>();
         for (Pair<ComponentName, CharSequence> item : getComponents()) {
             if (item.first != null) {
                 components.add(item.first);
@@ -318,10 +313,33 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
 
         Intent intent = new Intent();
         intent.setAction(ACTION_PROTECTED);
-        intent.putExtra(EXTRA_PROTECTED_STATE, protect);
+        // flip the boolean value to accomodate framework
+        // in framework "false" is "protected" and "true" is "visible"
+        intent.putExtra(EXTRA_PROTECTED_STATE, !protect);
         intent.putExtra(EXTRA_PROTECTED_COMPONENTS, components);
 
         mLauncher.sendBroadcast(intent);
+    }
+
+    private void removeProtectedApp(ComponentName componentName) {
+        ArrayList<ComponentName> components = new ArrayList<>();
+        components.add(componentName);
+        Intent intent = new Intent();
+        intent.setAction(ACTION_PROTECTED);
+        // flip the boolean value to accomodate framework
+        // in framework "false" is "protected" and "true" is "visible"
+        intent.putExtra(EXTRA_PROTECTED_STATE, true);
+        intent.putExtra(EXTRA_PROTECTED_COMPONENTS, components);
+
+        mLauncher.sendBroadcast(intent);
+    }
+
+    public void saveHiddenFolderState(boolean protect) {
+            mInfo.hidden = protect;
+            modifyProtectedApps(protect);
+            LauncherModel.updateItemInDatabase(mLauncher, mInfo);
+            mLauncher.mModel.flushWorkerThread();
+            rebind(mInfo);
     }
 
     public boolean onLongClick(View v) {
@@ -405,6 +423,7 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
 
         Selection.setSelection((Spannable) mFolderName.getText(), 0, 0);
         mIsEditingName = false;
+        mLauncher.notifyFolderNameChanged();
     }
 
     public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -469,6 +488,11 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
         mInfo.addListener(this);
 
         setFolderName();
+        updateLock();
+    }
+
+    public void rebind(final FolderInfo info) {
+        bind(info);
     }
 
     public void setFolderName() {
@@ -486,6 +510,14 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
                 }
             }
         });
+    }
+
+    private void updateLock() {
+        if (mInfo != null) {
+            mFolderLock.setImageResource(mInfo.hidden ?
+                    R.drawable.folder_locked :
+                    R.drawable.folder_unlocked);
+        }
     }
 
     /**
@@ -1074,6 +1106,13 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
                 }
                 mScrollPauseAlarm.cancelAlarm();
                 completeDragExit();
+                if (successfulDrop) {
+                    ShortcutInfo info = (ShortcutInfo) d.dragInfo;
+                    Intent intent = info.getIntent();
+                    if (intent != null && mInfo.hidden) {
+                        removeProtectedApp(intent.getComponent());
+                    }
+                }
             }
         }
 
@@ -1323,7 +1362,7 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
 
                 View child = null;
                 // Move the item from the folder to the workspace, in the position of the folder
-                if (getItemCount() == 1) {
+                if (!mInfo.hidden && getItemCount() == 1) {
                     ShortcutInfo finalItem = mInfo.contents.get(0);
                     child = mLauncher.createShortcut(cellLayout, finalItem);
                     LauncherModel.addOrMoveItemInDatabase(mLauncher, finalItem, mInfo.container,
@@ -1585,32 +1624,6 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
             mItemsInvalidated = false;
         }
         return mItemsInReadingOrder;
-    }
-
-    public ShortcutInfo getShortcutForComponent(ComponentName componentName) {
-        for (View v : mItemsInReadingOrder) {
-            Object tag = v.getTag();
-            if (tag instanceof ShortcutInfo) {
-                ComponentName cName = ((ShortcutInfo) tag).getIntent().getComponent();
-                if (cName.equals(componentName)) {
-                    return (ShortcutInfo) tag;
-                }
-            }
-        }
-
-        return null;
-    }
-
-    public ShortcutInfo getShortcutForPosition(int position) {
-        if (position < 0 || position >= mItemsInReadingOrder.size()) {
-            return null;
-        }
-        View v = mItemsInReadingOrder.get(position);
-        Object tag = v.getTag();
-        if (tag instanceof ShortcutInfo) {
-            return (ShortcutInfo) tag;
-        }
-        return null;
     }
 
     public void getLocationInDragLayer(int[] loc) {
