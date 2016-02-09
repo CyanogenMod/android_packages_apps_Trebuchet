@@ -2734,7 +2734,9 @@ public class LauncherModel extends BroadcastReceiver
                         finalItem.container = folder.container;
                         LauncherModel.deleteItemFromDatabase(mContext, folder);
                         // only replace this item back on the workspace if it's not protected
-                        if (!mHiddenApps.contains(finalItem.intent.getComponent())) {
+                        // and not a remote folder.
+                        if (!mHiddenApps.contains(finalItem.intent.getComponent()) &&
+                                !folder.isRemote()) {
                             LauncherModel.addOrMoveItemInDatabase(mContext, finalItem,
                                     folder.container, folder.screenId, folder.cellX, folder.cellY);
                             workspaceItems.add(finalItem);
