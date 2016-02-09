@@ -1562,15 +1562,19 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
     /**
      * Update the view tied to this shortcut.
      * @param info updated info to be applied to view.
+     * @return true if view for info was found, false otherwise.
      */
     @SuppressWarnings("unused")
-    public void updateViewForInfo(final ShortcutInfo info) {
+    public boolean updateViewForInfo(final ShortcutInfo info) {
         View v = getViewForInfo(info);
         if (v != null & v instanceof BubbleTextView) {
             ((BubbleTextView) v).reapplyItemInfo(info);
 
             mItemsInvalidated = true;
+            return true;
         }
+
+        return false;
     }
 
     public View getViewForInfo(ShortcutInfo item) {
