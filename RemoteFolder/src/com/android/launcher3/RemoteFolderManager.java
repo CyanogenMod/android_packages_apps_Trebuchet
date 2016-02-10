@@ -120,10 +120,18 @@ public class RemoteFolderManager {
     public void onBindViewHolder(final AllAppsGridAdapter.ViewHolder holder, final AppInfo item) { }
 
     /**
-     * Populate settings list with additional values as needed.
+     * Populate home settings list with additional values as needed.
      * @param values list of settings strings.
      * @param context application context.
      */
-    public static void onInitializeSettingsAdapter(final ArrayList<String> values,
+    public static void onInitializeHomeSettings(final ArrayList<String> values,
+                                                   final Context context) { }
+
+    /**
+     * Populate drawer settings list with additional values as needed.
+     * @param values list of settings strings.
+     * @param context application context.
+     */
+    public static void onInitializeDrawerSettings(final ArrayList<String> values,
                                                    final Context context) { }
 }

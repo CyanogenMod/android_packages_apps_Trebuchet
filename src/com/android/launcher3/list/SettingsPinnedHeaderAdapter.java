@@ -129,12 +129,6 @@ public class SettingsPinnedHeaderAdapter extends PinnedHeaderListAdapter {
                                 R.bool.preferences_interface_homescreen_remote_folder_default);
                         setSettingSwitch(stateView, settingSwitch, current);
                         break;
-                    case 5:
-                        current = SettingsProvider.getBoolean(mContext,
-                                SettingsProvider.SETTINGS_UI_DRAWER_REMOTE_APPS,
-                                R.bool.preferences_interface_drawer_remote_apps_default);
-                        setSettingSwitch(stateView, settingSwitch, current);
-                        break;
                     default:
                         hideStates(stateView, settingSwitch);
                 }
@@ -183,6 +177,12 @@ public class SettingsPinnedHeaderAdapter extends PinnedHeaderListAdapter {
                         current = SettingsProvider.getBoolean(mContext,
                                 SettingsProvider.SETTINGS_UI_DRAWER_SEARCH,
                                 R.bool.preferences_interface_drawer_search_default);
+                        setSettingSwitch(stateView, settingSwitch, current);
+                        break;
+                    case 6:
+                        current = SettingsProvider.getBoolean(mContext,
+                                SettingsProvider.SETTINGS_UI_DRAWER_REMOTE_APPS,
+                                R.bool.preferences_interface_drawer_remote_apps_default);
                         setSettingSwitch(stateView, settingSwitch, current);
                         break;
                     default:
@@ -288,12 +288,6 @@ public class SettingsPinnedHeaderAdapter extends PinnedHeaderListAdapter {
                                     R.bool.preferences_interface_homescreen_remote_folder_default);
                             mLauncher.getRemoteFolderManager().onSettingChanged();
                             break;
-                        case 5:
-                            onSettingsBooleanChanged(v,
-                                    SettingsProvider.SETTINGS_UI_DRAWER_REMOTE_APPS,
-                                    R.bool.preferences_interface_drawer_remote_apps_default);
-                            mLauncher.getRemoteFolderManager().onSettingChanged();
-                            break;
                     }
                     break;
                 case OverviewSettingsPanel.DRAWER_SETTINGS_POSITION:
@@ -335,6 +329,12 @@ public class SettingsPinnedHeaderAdapter extends PinnedHeaderListAdapter {
                                     SettingsProvider.SETTINGS_UI_DRAWER_SEARCH,
                                     R.bool.preferences_interface_drawer_search_default);
                             mLauncher.reloadAppDrawer();
+                            break;
+                        case 6:
+                            onSettingsBooleanChanged(v,
+                                    SettingsProvider.SETTINGS_UI_DRAWER_REMOTE_APPS,
+                                    R.bool.preferences_interface_drawer_remote_apps_default);
+                            mLauncher.getRemoteFolderManager().onSettingChanged();
                             break;
                     }
                     break;
