@@ -6,7 +6,6 @@ import android.database.MatrixCursor;
 import android.widget.ListView;
 import com.android.launcher3.list.PinnedHeaderListView;
 import com.android.launcher3.list.SettingsPinnedHeaderAdapter;
-import com.android.launcher3.settings.SettingsProvider;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -39,14 +38,6 @@ public class OverviewSettingsPanel {
                 res.getString(R.string.drawer_settings),
                 res.getString(R.string.app_settings)};
 
-        String[] valuesDrawer = new String[] {
-                res.getString(R.string.icon_labels),
-                res.getString(R.string.app_drawer_style),
-                res.getString(R.string.app_drawer_color),
-                res.getString(R.string.fast_scroller),
-                res.getString(R.string.fast_scroller_type),
-                res.getString(R.string.home_screen_search_text)};
-
         String[] valuesApp = new String[] {
                 res.getString(R.string.larger_icons_text),
                 res.getString(R.string.protected_app_settings),
@@ -60,9 +51,9 @@ public class OverviewSettingsPanel {
         mSettingsAdapter.mPinnedHeaderCount = headers.length;
 
         mSettingsAdapter.changeCursor(HOME_SETTINGS_POSITION,
-                createCursor(headers[0], getValues()));
-        mSettingsAdapter.changeCursor(DRAWER_SETTINGS_POSITION, createCursor(headers[1],
-                valuesDrawer));
+                createCursor(headers[0], getValuesHome()));
+        mSettingsAdapter.changeCursor(DRAWER_SETTINGS_POSITION,
+                createCursor(headers[1], getValuesDrawer()));
         mSettingsAdapter.changeCursor(APP_SETTINGS_POSITION, createCursor(headers[2], valuesApp));
         mListView.setAdapter(mSettingsAdapter);
     }
@@ -76,7 +67,7 @@ public class OverviewSettingsPanel {
         return cursor;
     }
 
-    private String[] getValues() {
+    private String[] getValuesHome() {
         Resources res = mLauncher.getResources();
         ArrayList<String> values = new ArrayList<String>(Arrays.asList(new String[]{
                 res.getString(R.string.home_screen_search_text),
@@ -85,7 +76,25 @@ public class OverviewSettingsPanel {
                 res.getString(R.string.grid_size_text)}));
 
         // Add additional external settings.
-        RemoteFolderManager.onInitializeSettingsAdapter(values, mLauncher);
+        RemoteFolderManager.onInitializeHomeSettings(values, mLauncher);
+
+        String[] valuesArr = new String[values.size()];
+        values.toArray(valuesArr);
+        return valuesArr;
+    }
+
+    private String[] getValuesDrawer() {
+        Resources res = mLauncher.getResources();
+        ArrayList<String> values = new ArrayList<String>(Arrays.asList(new String[]{
+                res.getString(R.string.icon_labels),
+                res.getString(R.string.app_drawer_style),
+                res.getString(R.string.app_drawer_color),
+                res.getString(R.string.fast_scroller),
+                res.getString(R.string.fast_scroller_type),
+                res.getString(R.string.home_screen_search_text)}));
+
+        // Add additional external settings.
+        RemoteFolderManager.onInitializeDrawerSettings(values, mLauncher);
 
         String[] valuesArr = new String[values.size()];
         values.toArray(valuesArr);
