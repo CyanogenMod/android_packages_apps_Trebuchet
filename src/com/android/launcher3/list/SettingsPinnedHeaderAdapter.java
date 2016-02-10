@@ -110,9 +110,8 @@ public class SettingsPinnedHeaderAdapter extends PinnedHeaderListAdapter {
                         current = SettingsProvider.getBoolean(mContext,
                                 SettingsProvider.SETTINGS_UI_HOMESCREEN_HIDE_ICON_LABELS,
                                 R.bool.preferences_interface_homescreen_hide_icon_labels_default);
-                        state = current ? res.getString(R.string.icon_labels_hide)
-                                : res.getString(R.string.icon_labels_show);
-                        setStateText(stateView, settingSwitch, state);
+                        // Reversed logic here. Boolean is hideLabels, where setting is show labels
+                        setSettingSwitch(stateView, settingSwitch, !current);
                         break;
                     case 2:
                         current = SettingsProvider.getBoolean(mContext,
@@ -145,9 +144,8 @@ public class SettingsPinnedHeaderAdapter extends PinnedHeaderListAdapter {
                         current = SettingsProvider.getBoolean(mContext,
                                 SettingsProvider.SETTINGS_UI_DRAWER_HIDE_ICON_LABELS,
                                 R.bool.preferences_interface_drawer_hide_icon_labels_default);
-                        state = current ? res.getString(R.string.icon_labels_hide)
-                                : res.getString(R.string.icon_labels_show);
-                        setStateText(stateView, settingSwitch, state);
+                        // Reversed logic here. Boolean is hideLabels, where setting is show labels
+                        setSettingSwitch(stateView, settingSwitch, !current);
                         break;
                     case 1:
                         current = SettingsProvider.getBoolean(mContext,
@@ -407,7 +405,7 @@ public class SettingsPinnedHeaderAdapter extends PinnedHeaderListAdapter {
         return !current;
     }
 
-    private void onIconLabelsBooleanChanged(View v, String key, int res) {
+    private boolean onIconLabelsBooleanChanged(View v, String key, int res) {
         boolean current = SettingsProvider.getBoolean(
                 mContext, key, res);
 
@@ -415,10 +413,18 @@ public class SettingsPinnedHeaderAdapter extends PinnedHeaderListAdapter {
         SettingsProvider.putBoolean(mContext, key, !current);
         SettingsProvider.putBoolean(mContext, SettingsProvider.SETTINGS_CHANGED, true);
 
-        String state = current ? mLauncher.getResources().getString(
-                R.string.icon_labels_show) : mLauncher.getResources().getString(
-                R.string.icon_labels_hide);
-        ((TextView) v.findViewById(R.id.item_state)).setText(state);
+        // Reversed logic here. Boolean is hideLabels, where setting is show labels
+        ((Switch)v.findViewById(R.id.setting_switch)).setChecked(current);
+
+        Bundle extras = new Bundle();
+        extras.putBoolean(LauncherSettings.Settings.EXTRA_VALUE, !current);
+
+        mContext.getContentResolver().call(
+                LauncherSettings.Settings.CONTENT_URI,
+                LauncherSettings.Settings.METHOD_SET_BOOLEAN,
+                key, extras);
+
+        return !current;
     }
 
     private void onDrawerStyleBooleanChanged(View v, String key, int res) {
