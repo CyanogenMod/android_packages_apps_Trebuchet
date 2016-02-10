@@ -26,9 +26,9 @@
   <string name="scrolling_fade_adjacent">Замъглени крайща на страниците</string>
   <string name="scrolling_wallpaper">Превъртане на тапета</string>
   <string name="grid_size_text">Размер на мрежата</string>
-  <string name="grid_size_comfortable">Нормално</string>
-  <string name="grid_size_cozy">Удобно</string>
-  <string name="grid_size_condensed">Сгъстено</string>
+  <string name="grid_size_comfortable">Нормална</string>
+  <string name="grid_size_cozy">Удобна</string>
+  <string name="grid_size_condensed">Сгъстена</string>
   <string name="grid_size_custom">По свой избор (<xliff:g id="rows">%1$d </xliff:g> \u00d7 <xliff:g id="columns">%2$d </xliff:g>)</string>
   <string name="preferences_interface_homescreen_custom">Изберете размер по свой избор</string>
   <string name="play_folder_title">Изпълни</string>
