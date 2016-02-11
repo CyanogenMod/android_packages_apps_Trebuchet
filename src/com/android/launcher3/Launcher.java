@@ -1212,6 +1212,7 @@ public class Launcher extends Activity
                 DynamicGridSizeFragment.DYNAMIC_GRID_SIZE_FRAGMENT);
         if (gridFragment != null) {
             mDynamicGridSizeFragment.setSize();
+            unlockScreenOrientation(true);
         }
     }
 
@@ -1908,7 +1909,7 @@ public class Launcher extends Activity
     public void onClickDynamicGridSizeButton() {
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
+        lockScreenOrientation();
         mDynamicGridSizeFragment = new DynamicGridSizeFragment();
         fragmentTransaction.replace(R.id.launcher, mDynamicGridSizeFragment,
                 DynamicGridSizeFragment.DYNAMIC_GRID_SIZE_FRAGMENT);
@@ -1954,7 +1955,7 @@ public class Launcher extends Activity
         }
         fragmentTransaction
                 .remove(mDynamicGridSizeFragment).commit();
-
+        unlockScreenOrientation(true);
         mDarkPanel.setVisibility(View.VISIBLE);
         ObjectAnimator anim = ObjectAnimator.ofFloat(
                 mDarkPanel, "alpha", 0.3f, 0.0f);
@@ -2806,6 +2807,7 @@ public class Launcher extends Activity
                     DynamicGridSizeFragment.DYNAMIC_GRID_SIZE_FRAGMENT);
             if (gridFragment != null) {
                 mDynamicGridSizeFragment.setSize();
+                unlockScreenOrientation(true);
             }
             else {
                 showWorkspace(true);
