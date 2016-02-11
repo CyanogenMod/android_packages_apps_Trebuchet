@@ -84,6 +84,11 @@ public class RemoteFolderManager {
     public void onInfoIconClicked() { }
 
     /**
+     * Called when the grid size for launcher is updated.
+     */
+    public void onGridSizeChanged() { }
+
+    /**
      * Change the appearance of FolderIcon for our RemoteFolder by adding a badge
      * @param icon the FolderIcon to update
      * @return a FolderIcon with an added ImageView

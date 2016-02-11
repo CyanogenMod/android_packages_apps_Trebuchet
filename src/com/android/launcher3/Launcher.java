@@ -1942,6 +1942,9 @@ public class Launcher extends Activity
             reloadLauncher(false, true);
         }
 
+        // Must be called after reload and before settings invalidation.
+        sRemoteFolderManager.onGridSizeChanged();
+
         mOverviewSettingsPanel.notifyDataSetInvalidated();
 
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
