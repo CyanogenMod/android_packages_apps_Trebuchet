@@ -21,7 +21,6 @@ import android.content.SharedPreferences;
 
 public final class SettingsProvider {
     public static final String SETTINGS_KEY = "trebuchet_preferences";
-    public static final String SETTINGS_CHANGED = "settings_changed";
 
     public static final String SETTINGS_UI_HOMESCREEN_DEFAULT_SCREEN_ID = "ui_homescreen_default_screen_id";
     public static final String SETTINGS_UI_HOMESCREEN_SEARCH = "ui_homescreen_search";
@@ -83,6 +82,18 @@ public final class SettingsProvider {
 
     public static void putInt(Context context, String key, int value) {
         get(context).edit().putInt(key, value).commit();
+    }
+
+    public static boolean changeBoolean(Context context, String key, int defaultRes) {
+        boolean def = context.getResources().getBoolean(defaultRes);
+        boolean val = !SettingsProvider.getBooleanCustomDefault(context, key, def);
+        putBoolean(context, key, val);
+        return val;
+    }
+
+    public static void putBoolean(Context context, String key, int res) {
+        boolean val = context.getResources().getBoolean(res);
+        putBoolean(context, key, val);
     }
 
     public static void putBoolean(Context context, String key, boolean value) {
