@@ -39,8 +39,12 @@
   <string name="protected_app_settings">Skyddade appar</string>
   <string name="app_drawer_style">Stil på appmenyn</string>
   <string name="app_drawer_style_compact">Kompakt</string>
+  <string name="app_drawer_style_sections">Sektioner</string>
+  <string name="app_drawer_color">Färg på appmenyn</string>
   <string name="app_drawer_color_dark">Mörk</string>
   <string name="app_drawer_color_light">Ljus</string>
+  <string name="fast_scroller">Snabbrullare</string>
+  <string name="fast_scroller_type">Typ av snabbrullare</string>
   <string name="fast_scroller_type_horizontal">Horisontell</string>
   <string name="fast_scroller_type_vertical">Vertikal</string>
   <string name="search_activity_not_found">Kunde inte hitta en sökaktivitet!</string>

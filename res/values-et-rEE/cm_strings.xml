@@ -37,6 +37,15 @@
   <string name="icon_labels_show">Näita</string>
   <string name="icon_labels_hide">Peida</string>
   <string name="protected_app_settings">Kaitstud rakendused</string>
+  <string name="app_drawer_style">Sahtli stiil</string>
+  <string name="app_drawer_style_compact">Kompaktne</string>
+  <string name="app_drawer_style_sections">Jaotised</string>
+  <string name="app_drawer_color">Sahtli värv</string>
+  <string name="app_drawer_color_dark">Tume</string>
+  <string name="app_drawer_color_light">Hele</string>
+  <string name="fast_scroller">Kiire kerimine</string>
+  <string name="fast_scroller_type">Kiire kerimise tüüp</string>
+  <string name="fast_scroller_type_horizontal">Horisontaalne</string>
   <string name="fast_scroller_type_vertical">Vertikaalne</string>
   <string name="search_activity_not_found">Otsimise tegevusala ei leitud!</string>
 </resources>

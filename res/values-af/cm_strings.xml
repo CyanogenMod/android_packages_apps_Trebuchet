@@ -37,6 +37,15 @@
   <string name="icon_labels_show">Vertoon</string>
   <string name="icon_labels_hide">Wegsteek</string>
   <string name="protected_app_settings">Beskermde programme</string>
+  <string name="app_drawer_style">Laai styl</string>
+  <string name="app_drawer_style_compact">Kompak</string>
+  <string name="app_drawer_style_sections">Seksies</string>
+  <string name="app_drawer_color">Laai kleur</string>
+  <string name="app_drawer_color_dark">Donker</string>
+  <string name="app_drawer_color_light">Lig</string>
+  <string name="fast_scroller">Vinnige blaai</string>
+  <string name="fast_scroller_type">Vinnige blaai tipe</string>
+  <string name="fast_scroller_type_horizontal">Horisontaal</string>
   <string name="fast_scroller_type_vertical">Vertikaal</string>
   <string name="search_activity_not_found">\'n Soektog aktiwiteit kon nie gevind word nie!</string>
 </resources>

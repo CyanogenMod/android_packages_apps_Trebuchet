@@ -25,9 +25,9 @@
   <string name="play_folder_title">Изпълни</string>
   <string name="scrolling_wallpaper">Превъртане на тапета</string>
   <string name="grid_size_text">Размер на мрежата</string>
-  <string name="grid_size_comfortable">Нормално</string>
-  <string name="grid_size_cozy">Удобно</string>
-  <string name="grid_size_condensed">Сгъстено</string>
+  <string name="grid_size_comfortable">Нормална</string>
+  <string name="grid_size_cozy">Удобна</string>
+  <string name="grid_size_condensed">Сгъстена</string>
   <string name="grid_size_custom">По свой избор (<xliff:g id="rows">%1$d </xliff:g> \u00d7 <xliff:g id="columns">%2$d </xliff:g>)</string>
   <string name="preferences_interface_homescreen_custom">Изберете размер по свой избор</string>
   <string name="dialog_confirm">Потвърдете</string>
@@ -37,15 +37,15 @@
   <string name="icon_labels_show">Покажи</string>
   <string name="icon_labels_hide">Скрий</string>
   <string name="protected_app_settings">Защитени приложения</string>
-  <string name="app_drawer_style">Оформление на менюто за известия</string>
+  <string name="app_drawer_style">Стил на менюто</string>
   <string name="app_drawer_style_compact">Компактен</string>
-  <string name="app_drawer_style_sections">Раздели</string>
+  <string name="app_drawer_style_sections">Разделен</string>
   <string name="app_drawer_color">Цвят на менюто за известия</string>
-  <string name="app_drawer_color_dark">Тъмен</string>
-  <string name="app_drawer_color_light">Светъл</string>
+  <string name="app_drawer_color_dark">Тъмно</string>
+  <string name="app_drawer_color_light">Светъло</string>
   <string name="fast_scroller">Бързо прелистване</string>
   <string name="fast_scroller_type">Тип бързо прелистване</string>
-  <string name="fast_scroller_type_horizontal">Хоризонтален</string>
+  <string name="fast_scroller_type_horizontal">Хоризонтално</string>
   <string name="fast_scroller_type_vertical">Вертикално</string>
   <string name="search_activity_not_found">Не може да бъде намерено приложението за търсене!</string>
 </resources>
