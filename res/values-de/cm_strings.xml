@@ -17,7 +17,7 @@
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
   <string name="home_screen_settings">STARTBILDSCHIRM-EINSTELLUNGEN</string>
-  <string name="drawer_settings">APP-ÜBERSICHT-EINSTELLUNGEN</string>
+  <string name="drawer_settings">EINSTELLUNGEN FÜR APP-ÜBERSICHT</string>
   <string name="app_settings">APP-EINSTELLUNGEN</string>
   <string name="setting_state_on">AN</string>
   <string name="setting_state_off">AUS</string>
