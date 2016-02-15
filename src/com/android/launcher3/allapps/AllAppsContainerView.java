@@ -98,6 +98,8 @@ public class AllAppsContainerView extends BaseContainerView implements DragSourc
     // This coordinate is relative to its parent
     private final Point mIconLastTouchPos = new Point();
 
+    private boolean mReloadDrawer = false;
+
     private View.OnClickListener mSearchClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -178,11 +180,13 @@ public class AllAppsContainerView extends BaseContainerView implements DragSourc
     }
 
     /**
-     * Resets the existing apps in the list
+     * Reloads the existing apps in the list
      */
-    public void reset() {
+    public void onReloadAppDrawer() {
+        mReloadDrawer = true;
         List<AppInfo> apps = mApps.getApps();
         updateApps(apps);
+        requestLayout();
     }
 
     /**
@@ -378,6 +382,10 @@ public class AllAppsContainerView extends BaseContainerView implements DragSourc
         }
 
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        if (mReloadDrawer) {
+            updateBackgroundAndPaddings(true);
+            mReloadDrawer = false;
+        }
     }
 
     /**
