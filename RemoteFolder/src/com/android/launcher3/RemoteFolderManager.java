@@ -26,6 +26,11 @@ public class RemoteFolderManager {
     public void onRecreateLauncher(final Launcher launcher) { }
 
     /**
+     * Called when Launcher's views are loaded and ready.
+     */
+    public void onSetupViews() { }
+
+    /**
      * Create a remote folder view.
      * @param icon folder icon view on the workspace.
      * @return a view for the remote folder.
