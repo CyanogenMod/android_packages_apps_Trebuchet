@@ -1632,6 +1632,8 @@ public class Launcher extends Activity
             boolean show = shouldShowWeightWatcher();
             mWeightWatcher.setVisibility(show ? View.VISIBLE : View.GONE);
         }
+
+        sRemoteFolderManager.onSetupViews();
     }
 
     /**
