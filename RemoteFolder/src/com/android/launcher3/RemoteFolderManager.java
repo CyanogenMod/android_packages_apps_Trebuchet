@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import com.android.launcher3.allapps.AllAppsGridAdapter;
 import com.android.launcher3.allapps.AlphabeticalAppsList;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -144,4 +143,9 @@ public class RemoteFolderManager {
      */
     public static void onInitializeDrawerSettings(final ArrayList<String> values,
                                                    final Context context) { }
+
+    /**
+     * Apply icon pack when the theme changes.
+     */
+    public synchronized void onThemeChanged() { }
 }

@@ -269,7 +269,7 @@ public class Launcher extends Activity
     private View mWeightWatcher;
     private DynamicGridSizeFragment mDynamicGridSizeFragment;
 
-    private static RemoteFolderManager sRemoteFolderManager;
+    protected static RemoteFolderManager sRemoteFolderManager;
 
     private AppWidgetManagerCompat mAppWidgetManager;
     private LauncherAppWidgetHost mAppWidgetHost;
