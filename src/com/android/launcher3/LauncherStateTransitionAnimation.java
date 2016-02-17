@@ -502,6 +502,9 @@ public class LauncherStateTransitionAnimation {
         final AnimatorSet animation = LauncherAnimUtils.createAnimatorSet();
         final Resources res = mLauncher.getResources();
         final boolean material = Utilities.ATLEAST_LOLLIPOP;
+        final boolean doReveal = !((mLauncher.mState == Launcher.State.APPS ||
+                mLauncher.mState == Launcher.State.WIDGETS) &&
+                toWorkspaceState == Workspace.State.OVERVIEW);
         final int revealDuration = res.getInteger(R.integer.config_overlayRevealTime);
         final int itemsAlphaStagger =
                 res.getInteger(R.integer.config_overlayItemsAlphaStagger);
@@ -537,7 +540,7 @@ public class LauncherStateTransitionAnimation {
             // hideAppsCustomizeHelper is called in some cases when it is already hidden
             // don't perform all these no-op animations. In particularly, this was causing
             // the all-apps button to pop in and out.
-            if (fromView.getVisibility() == View.VISIBLE) {
+            if (doReveal && fromView.getVisibility() == View.VISIBLE) {
                 int width = revealView.getMeasuredWidth();
                 int height = revealView.getMeasuredHeight();
                 float revealRadius = (float) Math.hypot(width / 2, height / 2);
@@ -638,6 +641,8 @@ public class LauncherStateTransitionAnimation {
 
                 dispatchOnLauncherTransitionPrepare(fromView, animated, true);
                 dispatchOnLauncherTransitionPrepare(toView, animated, true);
+            } else {
+                fromView.setVisibility(View.GONE);
             }
 
             animation.addListener(new AnimatorListenerAdapter() {
