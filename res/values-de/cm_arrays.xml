@@ -17,11 +17,11 @@
 -->
 <resources>
   <string-array name="transition_effect_entries">
-    <item>Keine</item>
+    <item>Keiner</item>
     <item>Hineinzoomen</item>
     <item>Herauszoomen</item>
-    <item>Nach oben drehen</item>
-    <item>Nach unten drehen</item>
+    <item>Rotieren oben</item>
+    <item>Rotieren unten</item>
     <item>Würfel innen</item>
     <item>Würfel außen</item>
     <item>Stapel</item>
