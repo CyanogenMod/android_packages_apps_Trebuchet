@@ -23,7 +23,7 @@
   <string name="setting_state_off">AUS</string>
   <string name="themes_button_text">Designs</string>
   <string name="scrolling_page_outlines">Seitenumriss anzeigen</string>
-  <string name="scrolling_fade_adjacent">Seiten einblenden</string>
+  <string name="scrolling_fade_adjacent">Angrenzende Seiten ausblenden</string>
   <string name="scrolling_wallpaper">Hintergrundbild scrollen</string>
   <string name="grid_size_text">Rastergröße</string>
   <string name="grid_size_comfortable">Normal</string>
@@ -41,7 +41,7 @@
   <string name="larger_icons_text">Große Symbole</string>
   <string name="icon_labels">Symbol-Beschriftungen</string>
   <string name="icon_labels_show">Anzeigen</string>
-  <string name="icon_labels_hide">Verbergen</string>
+  <string name="icon_labels_hide">Ausblenden</string>
   <string name="protected_app_settings">Geschützte Apps</string>
   <string name="dialog_confirm">Bestätigen</string>
   <string name="drawer_type">Layout</string>

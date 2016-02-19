@@ -32,7 +32,7 @@
   <string name="grid_size_custom">Своя (<xliff:g id="rows">%1$d</xliff:g> \u00d7 <xliff:g id="columns">%2$d</xliff:g>)</string>
   <string name="preferences_interface_homescreen_custom">Выберите размер сетки</string>
   <string name="play_folder_title">Сервисы Play</string>
-  <string name="scroll_effect_text">Анимация</string>
+  <string name="scroll_effect_text">Эффект прокрутки</string>
   <string name="drawer_sorting_text">Режим сортировки</string>
   <string name="sort_mode_title">По названию</string>
   <string name="sort_mode_launch_count">По частоте исп.</string>

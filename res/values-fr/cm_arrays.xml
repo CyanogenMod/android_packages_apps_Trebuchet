@@ -18,8 +18,8 @@
 <resources>
   <string-array name="transition_effect_entries">
     <item>Aucun</item>
-    <item>Zoom</item>
-    <item>Dézoom</item>
+    <item>Zoom avant</item>
+    <item>Zoom arrière</item>
     <item>Rotation vers le haut</item>
     <item>Rotation vers le bas</item>
     <item>Cube intérieur</item>
@@ -30,6 +30,6 @@
     <item>Cylindre intérieur</item>
     <item>Cylindre extérieur</item>
     <item>Carrousel</item>
-    <item>Aperçu</item>
+    <item>Vue d\'ensemble</item>
   </string-array>
 </resources>

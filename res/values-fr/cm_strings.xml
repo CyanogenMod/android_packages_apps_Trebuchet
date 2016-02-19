@@ -27,7 +27,7 @@
   <string name="scrolling_wallpaper">Défilement du fond d\'écran</string>
   <string name="grid_size_text">Taille de la grille</string>
   <string name="grid_size_comfortable">Confortable</string>
-  <string name="grid_size_cozy">Cosy</string>
+  <string name="grid_size_cozy">Confortable</string>
   <string name="grid_size_condensed">Condensé</string>
   <string name="grid_size_custom">Personnalisé (<xliff:g id="rows">%1$d</xliff:g> \u00d7 <xliff:g id="columns">%2$d</xliff:g>)</string>
   <string name="preferences_interface_homescreen_custom">Sélectionner la taille personnalisée</string>
