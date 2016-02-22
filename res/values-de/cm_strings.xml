@@ -35,7 +35,7 @@
   <string name="larger_icons_text">Große Symbole</string>
   <string name="icon_labels">Symbol-Beschriftungen</string>
   <string name="icon_labels_show">Anzeigen</string>
-  <string name="icon_labels_hide">Verbergen</string>
+  <string name="icon_labels_hide">Ausblenden</string>
   <string name="protected_app_settings">Geschützte Apps</string>
   <string name="app_drawer_style">Stil der App-Übersicht</string>
   <string name="app_drawer_style_compact">Kompakt</string>

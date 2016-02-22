@@ -46,6 +46,6 @@
   <string name="fast_scroller">Défilement rapide</string>
   <string name="fast_scroller_type">Type de défilement</string>
   <string name="fast_scroller_type_horizontal">Horizontal</string>
-  <string name="fast_scroller_type_vertical">Verticale</string>
+  <string name="fast_scroller_type_vertical">Vertical</string>
   <string name="search_activity_not_found">Aucune recherche n\'a pu être trouvée !</string>
 </resources>
