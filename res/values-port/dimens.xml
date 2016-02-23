@@ -17,5 +17,5 @@
 <resources>
 <!-- AppsCustomize -->
     <integer name="apps_customize_widget_cell_count_x">2</integer>
-    <integer name="apps_customize_widget_cell_count_y">3</integer>
+    <integer name="apps_customize_widget_cell_count_y">2</integer>
 </resources>
