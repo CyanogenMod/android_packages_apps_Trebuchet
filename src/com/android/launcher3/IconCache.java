@@ -29,6 +29,7 @@ import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.database.sqlite.SQLiteReadOnlyDatabaseException;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -390,8 +391,12 @@ public class IconCache {
         values.put(IconDB.COLUMN_USER, userSerial);
         values.put(IconDB.COLUMN_LAST_UPDATED, info.lastUpdateTime);
         values.put(IconDB.COLUMN_VERSION, info.versionCode);
-        mIconDb.getWritableDatabase().insertWithOnConflict(IconDB.TABLE_NAME, null, values,
-                SQLiteDatabase.CONFLICT_REPLACE);
+        try {
+            mIconDb.getWritableDatabase().insertWithOnConflict(IconDB.TABLE_NAME, null, values,
+                    SQLiteDatabase.CONFLICT_REPLACE);
+        } catch (SQLiteReadOnlyDatabaseException e) {
+            Log.e(TAG, "Can't add icon to read only db", e);
+        }
     }
 
     @Thunk ContentValues updateCacheAndGetContentValues(LauncherActivityInfoCompat app,
