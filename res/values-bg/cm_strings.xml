@@ -16,27 +16,38 @@
      limitations under the License.
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <!-- Application name -->
   <string name="home_screen_settings">НАСТРОЙКИ НА НАЧАЛЕН ЕКРАН</string>
   <string name="drawer_settings">НАСТРОЙКИ НА МЕНЮ</string>
-  <string name="app_settings">НАСТРОЙКИ НА ПРИЛОЖЕНИЯТА</string>
+  <string name="app_settings">НАСТРОЙКИ НА ПРИЛОЖЕНИЯ</string>
+  <!-- Settings states -->
   <string name="setting_state_on">ВКЛЮЧЕНО</string>
   <string name="setting_state_off">ИЗКЛЮЧЕНО</string>
   <string name="setting_state_disabled">ДЕАКТИВИРАНО</string>
+  <!-- Folder titles -->
   <string name="play_folder_title">Изпълни</string>
+  <!-- Wallpaper scroll effect -->
   <string name="scrolling_wallpaper">Превъртане на тапета</string>
+  <!-- Dynamic Grid -->
   <string name="grid_size_text">Размер на мрежата</string>
-  <string name="grid_size_comfortable">Нормална</string>
-  <string name="grid_size_cozy">Удобна</string>
-  <string name="grid_size_condensed">Сгъстена</string>
+  <string name="grid_size_comfortable">Нормален</string>
+  <string name="grid_size_cozy">Удобен</string>
+  <string name="grid_size_condensed">Сгъстен</string>
   <string name="grid_size_custom">По свой избор (<xliff:g id="rows">%1$d </xliff:g> \u00d7 <xliff:g id="columns">%2$d </xliff:g>)</string>
   <string name="preferences_interface_homescreen_custom">Изберете размер по свой избор</string>
+  <!-- Dialog -->
   <string name="dialog_confirm">Потвърдете</string>
+  <!-- Home screen search bar -->
   <string name="home_screen_search_text">Лента за търсене</string>
+  <!-- Larger icons -->
   <string name="larger_icons_text">Големи икони</string>
+  <!-- Icon labels -->
   <string name="icon_labels">Етикети на иконите</string>
   <string name="icon_labels_show">Покажи</string>
   <string name="icon_labels_hide">Скрий</string>
+  <!-- Protected apps -->
   <string name="protected_app_settings">Защитени приложения</string>
+  <!-- Drawer settings -->
   <string name="app_drawer_style">Стил на менюто</string>
   <string name="app_drawer_style_compact">Компактно</string>
   <string name="app_drawer_style_sections">Разделено</string>
@@ -44,8 +55,9 @@
   <string name="app_drawer_color_dark">Тъмно</string>
   <string name="app_drawer_color_light">Светло</string>
   <string name="fast_scroller">Бързо прелистване</string>
-  <string name="fast_scroller_type">Тип бързо прелистване</string>
+  <string name="fast_scroller_type">Бързо прелистване</string>
   <string name="fast_scroller_type_horizontal">Хоризонтално</string>
   <string name="fast_scroller_type_vertical">Вертикално</string>
+  <!-- Search Manager doesn't exist -->
   <string name="search_activity_not_found">Не може да бъде намерено приложението за търсене!</string>
 </resources>

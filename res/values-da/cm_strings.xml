@@ -16,27 +16,39 @@
      limitations under the License.
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <!-- Application name -->
   <string name="home_screen_settings">INDSTILLINGER FOR STARTSKÆRM</string>
   <string name="drawer_settings">INDSTILLINGER FOR OVERSIGT</string>
   <string name="app_settings">APP-INDSTILLINGER</string>
+  <!-- Settings states -->
   <string name="setting_state_on">TIL</string>
   <string name="setting_state_off">FRA</string>
   <string name="setting_state_disabled">HANDICAPPET</string>
+  <!-- Folder titles -->
   <string name="play_folder_title">Play-apps</string>
+  <!-- Wallpaper scroll effect -->
   <string name="scrolling_wallpaper">Rul baggrund</string>
+  <!-- Dynamic Grid -->
   <string name="grid_size_text">Gitterstørrelse</string>
   <string name="grid_size_comfortable">Behageligt</string>
   <string name="grid_size_cozy">Hyggeligt</string>
   <string name="grid_size_condensed">Sammentrængt</string>
   <string name="grid_size_custom">Brugerdefineret (<xliff:g id="rows">%1$d</xliff:g> \u00d7 <xliff:g id="columns">%2$d</xliff:g>)</string>
   <string name="preferences_interface_homescreen_custom">Vælg brugerdefineret størrelse</string>
+  <!-- Dialog -->
   <string name="dialog_confirm">Bekræft</string>
+  <!-- Home screen search bar -->
   <string name="home_screen_search_text">Søgelinje</string>
+  <!-- Larger icons -->
   <string name="larger_icons_text">Større ikoner</string>
+  <!-- Icon labels -->
   <string name="icon_labels">Ikontekster</string>
   <string name="icon_labels_show">Vis</string>
   <string name="icon_labels_hide">Skjul</string>
+  <!-- Protected apps -->
   <string name="protected_app_settings">Beskyttede apps</string>
+  <!-- Drawer settings -->
   <string name="fast_scroller_type_vertical">Lodret</string>
+  <!-- Search Manager doesn't exist -->
   <string name="search_activity_not_found">En funktion til søgning findes ikke!</string>
 </resources>

@@ -16,27 +16,39 @@
      limitations under the License.
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <!-- Application name -->
   <string name="home_screen_settings">إعدادات الشاشة الرئيسية</string>
   <string name="drawer_settings">إعدادات أداة السحب</string>
   <string name="app_settings">إعدادات التطبيق</string>
+  <!-- Settings states -->
   <string name="setting_state_on">تشغيل</string>
   <string name="setting_state_off">إيقاف</string>
   <string name="setting_state_disabled">معطل</string>
+  <!-- Folder titles -->
   <string name="play_folder_title">تشغيل</string>
+  <!-- Wallpaper scroll effect -->
   <string name="scrolling_wallpaper">تمرير خلفية الشاشة</string>
+  <!-- Dynamic Grid -->
   <string name="grid_size_text">حجم الشبكة</string>
   <string name="grid_size_comfortable">مريح</string>
   <string name="grid_size_cozy">مريح</string>
   <string name="grid_size_condensed">مكثف</string>
   <string name="grid_size_custom">مخصص (<xliff:g id="rows">%1$d </xliff:g> \u00d7 <xliff:g id="columns">%2$d </xliff:g>)</string>
   <string name="preferences_interface_homescreen_custom">حدد حجم مخصص</string>
+  <!-- Dialog -->
   <string name="dialog_confirm">تأكيد</string>
+  <!-- Home screen search bar -->
   <string name="home_screen_search_text">شريط البحث</string>
+  <!-- Larger icons -->
   <string name="larger_icons_text">أيقونات أكبر</string>
+  <!-- Icon labels -->
   <string name="icon_labels">تسميات الأيقونة</string>
   <string name="icon_labels_show">إظهار</string>
   <string name="icon_labels_hide">إخفاء</string>
+  <!-- Protected apps -->
   <string name="protected_app_settings">التطبيقات المحمية</string>
+  <!-- Drawer settings -->
   <string name="fast_scroller_type_vertical">رأسي</string>
+  <!-- Search Manager doesn't exist -->
   <string name="search_activity_not_found">لا يمكن العثور على نشاط بحثي!</string>
 </resources>

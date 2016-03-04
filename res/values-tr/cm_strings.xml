@@ -16,27 +16,38 @@
      limitations under the License.
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <!-- Application name -->
   <string name="home_screen_settings">ANA EKRAN AYARLARI</string>
   <string name="drawer_settings">ÇEKMECE AYARLARI</string>
   <string name="app_settings">UYGULAMA AYARLARI</string>
+  <!-- Settings states -->
   <string name="setting_state_on">AÇIK</string>
   <string name="setting_state_off">KAPALI</string>
   <string name="setting_state_disabled">DEVRE DIŞI</string>
+  <!-- Folder titles -->
   <string name="play_folder_title">Play</string>
+  <!-- Wallpaper scroll effect -->
   <string name="scrolling_wallpaper">Duvarkağıdını kaydır</string>
+  <!-- Dynamic Grid -->
   <string name="grid_size_text">Izgara boyutu</string>
   <string name="grid_size_comfortable">Seyrek</string>
   <string name="grid_size_cozy">Rahat</string>
   <string name="grid_size_condensed">Yoğun</string>
   <string name="grid_size_custom">Özel (<xliff:g id="rows">%1$d</xliff:g> \u00d7 <xliff:g id="columns">%2$d</xliff:g>)</string>
   <string name="preferences_interface_homescreen_custom">Özel boyut seçin</string>
+  <!-- Dialog -->
   <string name="dialog_confirm">Onayla</string>
+  <!-- Home screen search bar -->
   <string name="home_screen_search_text">Arama çubuğu</string>
+  <!-- Larger icons -->
   <string name="larger_icons_text">Daha büyük simgeler</string>
+  <!-- Icon labels -->
   <string name="icon_labels">Simge etiketleri</string>
   <string name="icon_labels_show">Göster</string>
   <string name="icon_labels_hide">Gizle</string>
+  <!-- Protected apps -->
   <string name="protected_app_settings">Korunan uygulamalar</string>
+  <!-- Drawer settings -->
   <string name="app_drawer_style">Çekmece stili</string>
   <string name="app_drawer_style_compact">Kompakt</string>
   <string name="app_drawer_style_sections">Bölümler</string>
@@ -47,5 +58,6 @@
   <string name="fast_scroller_type">Hızlı kaydırıcı türü</string>
   <string name="fast_scroller_type_horizontal">Yatay</string>
   <string name="fast_scroller_type_vertical">Dikey</string>
+  <!-- Search Manager doesn't exist -->
   <string name="search_activity_not_found">Arama etkinliği bulunamadı!</string>
 </resources>

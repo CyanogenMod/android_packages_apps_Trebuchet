@@ -16,27 +16,38 @@
      limitations under the License.
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <!-- Application name -->
   <string name="home_screen_settings">הגדרות מסך הבית</string>
   <string name="drawer_settings">הגדרות מגירת יישומים</string>
   <string name="app_settings">הגדרות יישום</string>
+  <!-- Settings states -->
   <string name="setting_state_on">פעיל</string>
   <string name="setting_state_off">כבוי</string>
   <string name="setting_state_disabled">כבוי</string>
+  <!-- Folder titles -->
   <string name="play_folder_title">נגן</string>
+  <!-- Wallpaper scroll effect -->
   <string name="scrolling_wallpaper">גלילת טפט</string>
+  <!-- Dynamic Grid -->
   <string name="grid_size_text">גודל רשת</string>
   <string name="grid_size_comfortable">נוח</string>
   <string name="grid_size_cozy">נעים</string>
   <string name="grid_size_condensed">מרוכז</string>
   <string name="grid_size_custom">מותאם אישית (<xliff:g id="rows">%1$d </xliff:g> \u00d7 <xliff:g id="columns">%2$d </xliff:g>)</string>
   <string name="preferences_interface_homescreen_custom">בחר גודל מותאם אישית</string>
+  <!-- Dialog -->
   <string name="dialog_confirm">אשר</string>
+  <!-- Home screen search bar -->
   <string name="home_screen_search_text">סרגל החיפוש</string>
+  <!-- Larger icons -->
   <string name="larger_icons_text">סמלים גדולים יותר</string>
+  <!-- Icon labels -->
   <string name="icon_labels">תוויות סמלים</string>
   <string name="icon_labels_show">הצג</string>
   <string name="icon_labels_hide">הסתר</string>
+  <!-- Protected apps -->
   <string name="protected_app_settings">יישומים מוגנים</string>
+  <!-- Drawer settings -->
   <string name="app_drawer_style">סגנון מגירת יישומים</string>
   <string name="app_drawer_style_compact">קומפקטי</string>
   <string name="app_drawer_style_sections">חלקים</string>
@@ -47,5 +58,6 @@
   <string name="fast_scroller_type">סוג גלילה מהירה</string>
   <string name="fast_scroller_type_horizontal">אופקי</string>
   <string name="fast_scroller_type_vertical">לאורך</string>
+  <!-- Search Manager doesn't exist -->
   <string name="search_activity_not_found">לא ניתן היה למצוא פעולת חיפוש!</string>
 </resources>

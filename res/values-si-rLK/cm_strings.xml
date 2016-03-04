@@ -16,22 +16,34 @@
      limitations under the License.
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <!-- Application name -->
   <string name="home_screen_settings">මුල් තිරයේ සැකසීම්</string>
   <string name="drawer_settings">ලාච්චුවේ සැකසීම්</string>
   <string name="app_settings">යෙදුම් සැකසීම්</string>
+  <!-- Settings states -->
   <string name="setting_state_on">සක්‍රීයයි</string>
   <string name="setting_state_off">අක්‍රීයයි</string>
+  <!-- Folder titles -->
+  <!-- Wallpaper scroll effect -->
   <string name="scrolling_wallpaper">වෝල්පේපරය අනුචලනය කරන්න</string>
+  <!-- Dynamic Grid -->
   <string name="grid_size_text">කොටු සැලැස්මේ ප්‍රමාණය</string>
   <string name="grid_size_comfortable">සැපපහසු</string>
   <string name="grid_size_cozy">ප්‍රියජනක</string>
   <string name="grid_size_condensed">ඝනීභූත</string>
   <string name="preferences_interface_homescreen_custom">රිසිකළ ප්‍රමාණය තෝරන්න</string>
+  <!-- Dialog -->
   <string name="dialog_confirm">තහවුරු කරන්න</string>
+  <!-- Home screen search bar -->
   <string name="home_screen_search_text">සෙවුම් තීරුව</string>
+  <!-- Larger icons -->
   <string name="larger_icons_text">විශාල අයිකන</string>
+  <!-- Icon labels -->
   <string name="icon_labels">අයිකන ලේබල</string>
   <string name="icon_labels_show">පෙන්වන්න</string>
   <string name="icon_labels_hide">සඟවන්න</string>
+  <!-- Protected apps -->
   <string name="protected_app_settings">ආරක්ෂිත යෙදුම්</string>
+  <!-- Drawer settings -->
+  <!-- Search Manager doesn't exist -->
 </resources>

@@ -16,27 +16,38 @@
      limitations under the License.
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <!-- Application name -->
   <string name="home_screen_settings">NASTAVITVE DOMAČEGA ZASLONA</string>
   <string name="drawer_settings">NASTAVITVE PREDALA</string>
   <string name="app_settings">NASTAVITVE APLIKACIJ</string>
+  <!-- Settings states -->
   <string name="setting_state_on">VKL.</string>
   <string name="setting_state_off">IZK.</string>
   <string name="setting_state_disabled">ONEMOGOČENO</string>
+  <!-- Folder titles -->
   <string name="play_folder_title">Predvajaj</string>
+  <!-- Wallpaper scroll effect -->
   <string name="scrolling_wallpaper">Pomakni sliko ozadja</string>
+  <!-- Dynamic Grid -->
   <string name="grid_size_text">Velikost mreže</string>
   <string name="grid_size_comfortable">Udobna</string>
   <string name="grid_size_cozy">Prijetna</string>
   <string name="grid_size_condensed">Zgoščena</string>
   <string name="grid_size_custom">Po meri (<xliff:g id="rows">%1$d</xliff:g> \u00d7 <xliff:g id="columns">%2$d</xliff:g>)</string>
   <string name="preferences_interface_homescreen_custom">Izberite velikost po meri</string>
+  <!-- Dialog -->
   <string name="dialog_confirm">Potrdi</string>
+  <!-- Home screen search bar -->
   <string name="home_screen_search_text">Iskalna vrstica</string>
+  <!-- Larger icons -->
   <string name="larger_icons_text">Večje ikone</string>
+  <!-- Icon labels -->
   <string name="icon_labels">Oznake ikon</string>
   <string name="icon_labels_show">Prikaži</string>
   <string name="icon_labels_hide">Skrij</string>
+  <!-- Protected apps -->
   <string name="protected_app_settings">Zaščitene aplikacije</string>
+  <!-- Drawer settings -->
   <string name="app_drawer_style">Slog predala</string>
   <string name="app_drawer_style_compact">Strnjen</string>
   <string name="app_drawer_style_sections">Odseki</string>
@@ -47,5 +58,6 @@
   <string name="fast_scroller_type">Vrsta hitrega drsnika</string>
   <string name="fast_scroller_type_horizontal">Vodoravno</string>
   <string name="fast_scroller_type_vertical">Navpična</string>
+  <!-- Search Manager doesn't exist -->
   <string name="search_activity_not_found">Dejavnosti iskanja ni bilo mogoče najti!</string>
 </resources>

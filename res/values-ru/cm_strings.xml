@@ -16,27 +16,38 @@
      limitations under the License.
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <!-- Application name -->
   <string name="home_screen_settings">ДОМАШНИЙ ЭКРАН</string>
   <string name="drawer_settings">МЕНЮ ПРИЛОЖЕНИЙ</string>
   <string name="app_settings">ОБЩИЕ НАСТРОЙКИ</string>
+  <!-- Settings states -->
   <string name="setting_state_on">ВКЛ.</string>
   <string name="setting_state_off">ВЫКЛ.</string>
   <string name="setting_state_disabled">НЕДОСТУПНО</string>
+  <!-- Folder titles -->
   <string name="play_folder_title">Сервисы Play</string>
+  <!-- Wallpaper scroll effect -->
   <string name="scrolling_wallpaper">Прокрутка обоев</string>
+  <!-- Dynamic Grid -->
   <string name="grid_size_text">Размер сетки</string>
   <string name="grid_size_comfortable">Просторная</string>
   <string name="grid_size_cozy">Удобная</string>
   <string name="grid_size_condensed">Сжатая</string>
   <string name="grid_size_custom">Своя (<xliff:g id="rows">%1$d</xliff:g> \u00d7 <xliff:g id="columns">%2$d</xliff:g>)</string>
   <string name="preferences_interface_homescreen_custom">Выберите размер сетки</string>
+  <!-- Dialog -->
   <string name="dialog_confirm">Подтвердить</string>
+  <!-- Home screen search bar -->
   <string name="home_screen_search_text">Строка поиска</string>
+  <!-- Larger icons -->
   <string name="larger_icons_text">Крупные значки</string>
+  <!-- Icon labels -->
   <string name="icon_labels">Подписи значков</string>
   <string name="icon_labels_show">Показывать</string>
   <string name="icon_labels_hide">Скрывать</string>
+  <!-- Protected apps -->
   <string name="protected_app_settings">Заблокированные приложения</string>
+  <!-- Drawer settings -->
   <string name="app_drawer_style">Стиль меню</string>
   <string name="app_drawer_style_compact">Компактный</string>
   <string name="app_drawer_style_sections">Разделы</string>
@@ -45,7 +56,8 @@
   <string name="app_drawer_color_light">Светлый</string>
   <string name="fast_scroller">Быстрая прокрутка</string>
   <string name="fast_scroller_type">Тип быстрой прокрутки</string>
-  <string name="fast_scroller_type_horizontal">Горизонтальный</string>
+  <string name="fast_scroller_type_horizontal">Горизонтально</string>
   <string name="fast_scroller_type_vertical">Вертикальное</string>
+  <!-- Search Manager doesn't exist -->
   <string name="search_activity_not_found">Невозможно запустить приложение поиска!</string>
 </resources>

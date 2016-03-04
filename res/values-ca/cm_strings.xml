@@ -16,27 +16,38 @@
      limitations under the License.
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <!-- Application name -->
   <string name="home_screen_settings">CONFIGURACIÓ DE LA PANTALLA D\'INICI</string>
   <string name="drawer_settings">CONFIGURACIÓ DEL CALAIX</string>
   <string name="app_settings">CONFIGURACIÓ DE L\'APLICACIÓ</string>
+  <!-- Settings states -->
   <string name="setting_state_on">SÍ</string>
   <string name="setting_state_off">NO</string>
   <string name="setting_state_disabled">DESHABILITAT</string>
+  <!-- Folder titles -->
   <string name="play_folder_title">Play</string>
+  <!-- Wallpaper scroll effect -->
   <string name="scrolling_wallpaper">Desplaça el fons de pantalla</string>
+  <!-- Dynamic Grid -->
   <string name="grid_size_text">Mida de la graella</string>
   <string name="grid_size_comfortable">Còmoda</string>
   <string name="grid_size_cozy">Acollidora</string>
   <string name="grid_size_condensed">Condensada</string>
   <string name="grid_size_custom">Personalitzat (<xliff:g id="rows">%1$d</xliff:g> \u00d7 <xliff:g id="columns">%2$d</xliff:g>)</string>
   <string name="preferences_interface_homescreen_custom">Selecciona la mida personalitzada</string>
+  <!-- Dialog -->
   <string name="dialog_confirm">Confirma</string>
+  <!-- Home screen search bar -->
   <string name="home_screen_search_text">Barra de cerca</string>
+  <!-- Larger icons -->
   <string name="larger_icons_text">Icones grans</string>
+  <!-- Icon labels -->
   <string name="icon_labels">Etiquetes de les icones</string>
   <string name="icon_labels_show">Mostra</string>
   <string name="icon_labels_hide">Amaga</string>
+  <!-- Protected apps -->
   <string name="protected_app_settings">Aplicacions protegides</string>
+  <!-- Drawer settings -->
   <string name="app_drawer_style">Estil del calaix</string>
   <string name="app_drawer_style_compact">Compacte</string>
   <string name="app_drawer_style_sections">Seccions</string>
@@ -47,5 +58,6 @@
   <string name="fast_scroller_type">Tipus de desplaçament ràpid</string>
   <string name="fast_scroller_type_horizontal">Horitzontal</string>
   <string name="fast_scroller_type_vertical">Vertical</string>
+  <!-- Search Manager doesn't exist -->
   <string name="search_activity_not_found">No s\'ha pogut trobar una activitat de cerca!</string>
 </resources>

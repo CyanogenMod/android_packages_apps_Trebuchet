@@ -16,27 +16,38 @@
      limitations under the License.
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <!-- Application name -->
   <string name="home_screen_settings">KOTINÄYTÖN ASETUKSET</string>
   <string name="drawer_settings">SOVELLUSVALIKON ASETUKSET</string>
   <string name="app_settings">SOVELLUKSEN ASETUKSET</string>
+  <!-- Settings states -->
   <string name="setting_state_on">PÄÄLLÄ</string>
   <string name="setting_state_off">POIS</string>
   <string name="setting_state_disabled">POIS KÄYTÖSTÄ</string>
+  <!-- Folder titles -->
   <string name="play_folder_title">Play</string>
+  <!-- Wallpaper scroll effect -->
   <string name="scrolling_wallpaper">Vieritä taustakuvaa</string>
+  <!-- Dynamic Grid -->
   <string name="grid_size_text">Ruudukon koko</string>
   <string name="grid_size_comfortable">Mukava</string>
   <string name="grid_size_cozy">Kodikas</string>
   <string name="grid_size_condensed">Tiivistetty</string>
   <string name="grid_size_custom">Mukautettu (<xliff:g id="rows">%1$d</xliff:g> \u00d7 <xliff:g id="columns">%2$d</xliff:g>)</string>
   <string name="preferences_interface_homescreen_custom">Valitse mukautettu koko</string>
+  <!-- Dialog -->
   <string name="dialog_confirm">Vahvista</string>
+  <!-- Home screen search bar -->
   <string name="home_screen_search_text">Hakupalkki</string>
+  <!-- Larger icons -->
   <string name="larger_icons_text">Suuremmat kuvakkeet</string>
+  <!-- Icon labels -->
   <string name="icon_labels">Kuvakkeiden otsikot</string>
   <string name="icon_labels_show">Näytä</string>
   <string name="icon_labels_hide">Piilota</string>
+  <!-- Protected apps -->
   <string name="protected_app_settings">Suojatut sovellukset</string>
+  <!-- Drawer settings -->
   <string name="app_drawer_style">Sovellusvalikon tyyli</string>
   <string name="app_drawer_style_compact">Kompakti</string>
   <string name="app_drawer_style_sections">Osat</string>
@@ -47,5 +58,6 @@
   <string name="fast_scroller_type">Nopean selauksen tyyppi</string>
   <string name="fast_scroller_type_horizontal">Vaaka</string>
   <string name="fast_scroller_type_vertical">Pysty</string>
+  <!-- Search Manager doesn't exist -->
   <string name="search_activity_not_found">Hakuhistoriaa ei löytynyt!</string>
 </resources>

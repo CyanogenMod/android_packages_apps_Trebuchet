@@ -16,27 +16,39 @@
      limitations under the License.
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <!-- Application name -->
   <string name="home_screen_settings">होम स्क्रीन सेटिंग</string>
   <string name="drawer_settings">दराज़ सेटिंग</string>
   <string name="app_settings">एपीपी सेटिंग</string>
+  <!-- Settings states -->
   <string name="setting_state_on">बंद</string>
   <string name="setting_state_off">चालू</string>
   <string name="setting_state_disabled">अक्षम</string>
+  <!-- Folder titles -->
   <string name="play_folder_title">प्ले</string>
+  <!-- Wallpaper scroll effect -->
   <string name="scrolling_wallpaper">वॉलपेपर को स्क्रॉल करें</string>
+  <!-- Dynamic Grid -->
   <string name="grid_size_text">ग्रिड आमाप</string>
   <string name="grid_size_comfortable">सहज</string>
   <string name="grid_size_cozy">आरामदायक</string>
   <string name="grid_size_condensed">सघन</string>
   <string name="grid_size_custom">मनपसंद (<xliff:g id="rows">%1$d</xliff:g> \u00d7 <xliff:g id="columns">%2$d</xliff:g>)</string>
   <string name="preferences_interface_homescreen_custom">मनपसंद आमाप चुनें</string>
+  <!-- Dialog -->
   <string name="dialog_confirm">पुष्टि करें</string>
+  <!-- Home screen search bar -->
   <string name="home_screen_search_text">खोज पट्टी</string>
+  <!-- Larger icons -->
   <string name="larger_icons_text">बड़े आइकन</string>
+  <!-- Icon labels -->
   <string name="icon_labels">आइकन लेबल</string>
   <string name="icon_labels_show">दिखाएँ</string>
   <string name="icon_labels_hide">छिपाएँ</string>
+  <!-- Protected apps -->
   <string name="protected_app_settings">रक्षित ऐप</string>
+  <!-- Drawer settings -->
   <string name="fast_scroller_type_vertical">ऊर्ध्व</string>
+  <!-- Search Manager doesn't exist -->
   <string name="search_activity_not_found">एक खोज गतिविधि नहीं मिली।</string>
 </resources>

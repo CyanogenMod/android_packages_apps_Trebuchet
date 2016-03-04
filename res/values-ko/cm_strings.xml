@@ -16,27 +16,38 @@
      limitations under the License.
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <!-- Application name -->
   <string name="home_screen_settings">홈 화면 설정</string>
   <string name="drawer_settings">서랍 설정</string>
   <string name="app_settings">애플리케이션 설정</string>
+  <!-- Settings states -->
   <string name="setting_state_on">켜짐</string>
   <string name="setting_state_off">꺼짐</string>
   <string name="setting_state_disabled">사용 안함</string>
+  <!-- Folder titles -->
   <string name="play_folder_title">Play</string>
+  <!-- Wallpaper scroll effect -->
   <string name="scrolling_wallpaper">배경 스크롤</string>
+  <!-- Dynamic Grid -->
   <string name="grid_size_text">격자 크기</string>
   <string name="grid_size_comfortable">느슨하게</string>
   <string name="grid_size_cozy">적당히</string>
   <string name="grid_size_condensed">빽빽하게</string>
   <string name="grid_size_custom">사용자 지정 (<xliff:g id="rows">%1$d</xliff:g> \u00d7 <xliff:g id="columns">%2$d</xliff:g>)</string>
   <string name="preferences_interface_homescreen_custom">사용자 정의 크기 선택</string>
+  <!-- Dialog -->
   <string name="dialog_confirm">확인</string>
+  <!-- Home screen search bar -->
   <string name="home_screen_search_text">검색 바</string>
+  <!-- Larger icons -->
   <string name="larger_icons_text">큰 아이콘</string>
+  <!-- Icon labels -->
   <string name="icon_labels">아이콘 레이블</string>
   <string name="icon_labels_show">보이기</string>
   <string name="icon_labels_hide">숨기기</string>
+  <!-- Protected apps -->
   <string name="protected_app_settings">보호된 앱</string>
+  <!-- Drawer settings -->
   <string name="app_drawer_style">서랍 스타일</string>
   <string name="app_drawer_style_compact">촘촘함</string>
   <string name="app_drawer_style_sections">부분</string>
@@ -47,5 +58,6 @@
   <string name="fast_scroller_type">바른 스크롤러 유형</string>
   <string name="fast_scroller_type_horizontal">수평</string>
   <string name="fast_scroller_type_vertical">수직</string>
+  <!-- Search Manager doesn't exist -->
   <string name="search_activity_not_found">검색 작업을 찾아 낼 수 없습니다.</string>
 </resources>

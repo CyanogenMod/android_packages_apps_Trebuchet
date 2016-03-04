@@ -16,32 +16,44 @@
      limitations under the License.
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <!-- Application name -->
   <string name="home_screen_settings">SETĂRI ECRAN PRINCIPAL</string>
   <string name="drawer_settings">SETĂRI ECRAN APLICAȚII</string>
   <string name="app_settings">SETĂRI APLICAȚIE</string>
+  <!-- Settings states -->
   <string name="setting_state_on">ACTIV</string>
   <string name="setting_state_off">INACTIV</string>
   <string name="setting_state_disabled">DEZACTIVAT</string>
+  <!-- Folder titles -->
   <string name="play_folder_title">Play</string>
+  <!-- Wallpaper scroll effect -->
   <string name="scrolling_wallpaper">Scroll-ează fundal</string>
+  <!-- Dynamic Grid -->
   <string name="grid_size_text">Dimensiune grilă</string>
   <string name="grid_size_comfortable">Confortabil</string>
   <string name="grid_size_cozy">Comod</string>
   <string name="grid_size_condensed">Condensat</string>
   <string name="grid_size_custom">Particularizat (<xliff:g id="rows">%1$d</xliff:g> \u00d7 <xliff:g id="columns">%2$d</xliff:g>)</string>
   <string name="preferences_interface_homescreen_custom">Selectare dimensiune particularizată</string>
+  <!-- Dialog -->
   <string name="dialog_confirm">Confirmă</string>
+  <!-- Home screen search bar -->
   <string name="home_screen_search_text">Bară de căutare</string>
+  <!-- Larger icons -->
   <string name="larger_icons_text">Icon-uri mai mari</string>
+  <!-- Icon labels -->
   <string name="icon_labels">Etichete icon-uri</string>
   <string name="icon_labels_show">Arată</string>
   <string name="icon_labels_hide">Ascunde</string>
+  <!-- Protected apps -->
   <string name="protected_app_settings">Aplicații protejate</string>
+  <!-- Drawer settings -->
   <string name="app_drawer_style_compact">Compact</string>
   <string name="app_drawer_style_sections">Secțiuni</string>
   <string name="app_drawer_color_dark">Întunecat</string>
   <string name="fast_scroller">Derulare rapidă</string>
   <string name="fast_scroller_type_horizontal">Orizontal</string>
   <string name="fast_scroller_type_vertical">Vertical</string>
+  <!-- Search Manager doesn't exist -->
   <string name="search_activity_not_found">Imposibil de găsit o activitate de căutare!</string>
 </resources>

@@ -16,26 +16,38 @@
      limitations under the License.
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <!-- Application name -->
   <string name="home_screen_settings">HOME SCREEN SETTINGS</string>
   <string name="drawer_settings">DRAWER SETTINGS</string>
   <string name="app_settings">APP SETTINGS</string>
+  <!-- Settings states -->
   <string name="setting_state_on">ON</string>
   <string name="setting_state_off">OFF</string>
   <string name="setting_state_disabled">DISABLED</string>
+  <!-- Folder titles -->
+  <!-- Wallpaper scroll effect -->
   <string name="scrolling_wallpaper">Scroll wallpaper</string>
+  <!-- Dynamic Grid -->
   <string name="grid_size_text">Grid size</string>
   <string name="grid_size_comfortable">Comfortable</string>
   <string name="grid_size_cozy">Cozy</string>
   <string name="grid_size_condensed">Condensed</string>
   <string name="grid_size_custom">Custom (<xliff:g id="rows">%1$d</xliff:g> \u00d7 <xliff:g id="columns">%2$d</xliff:g>)</string>
   <string name="preferences_interface_homescreen_custom">Select custom size</string>
+  <!-- Dialog -->
   <string name="dialog_confirm">Confirm</string>
+  <!-- Home screen search bar -->
   <string name="home_screen_search_text">Search bar</string>
+  <!-- Larger icons -->
   <string name="larger_icons_text">Larger icons</string>
+  <!-- Icon labels -->
   <string name="icon_labels">Icon labels</string>
   <string name="icon_labels_show">Show</string>
   <string name="icon_labels_hide">Hide</string>
+  <!-- Protected apps -->
   <string name="protected_app_settings">Protected apps</string>
+  <!-- Drawer settings -->
   <string name="fast_scroller_type_vertical">Vertical</string>
+  <!-- Search Manager doesn't exist -->
   <string name="search_activity_not_found">A search activity could not be found!</string>
 </resources>

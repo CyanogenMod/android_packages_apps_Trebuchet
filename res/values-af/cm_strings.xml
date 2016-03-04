@@ -16,27 +16,38 @@
      limitations under the License.
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <!-- Application name -->
   <string name="home_screen_settings">TUIS SKERM INSTELLINGS</string>
   <string name="drawer_settings">LAAI INSTELLINGS</string>
   <string name="app_settings">PROGRAM INSTELLINGS</string>
+  <!-- Settings states -->
   <string name="setting_state_on">AAN</string>
   <string name="setting_state_off">AF</string>
   <string name="setting_state_disabled">Gedeaktiveer</string>
+  <!-- Folder titles -->
   <string name="play_folder_title">Play</string>
+  <!-- Wallpaper scroll effect -->
   <string name="scrolling_wallpaper">Rol agtergrond</string>
+  <!-- Dynamic Grid -->
   <string name="grid_size_text">Rooster grootte</string>
   <string name="grid_size_comfortable">Gemaklik</string>
   <string name="grid_size_cozy">Snoesig</string>
   <string name="grid_size_condensed">Verkorte</string>
   <string name="grid_size_custom">Persoonlik (<xliff:g id="rows">%1$d</xliff:g> \u00d7 <xliff:g id="columns">%2$d</xliff:g>)</string>
   <string name="preferences_interface_homescreen_custom">Kies persoonlike grootte</string>
+  <!-- Dialog -->
   <string name="dialog_confirm">Bevestig</string>
+  <!-- Home screen search bar -->
   <string name="home_screen_search_text">Soekbalk</string>
+  <!-- Larger icons -->
   <string name="larger_icons_text">Groter ikone</string>
+  <!-- Icon labels -->
   <string name="icon_labels">Ikoon etikette</string>
   <string name="icon_labels_show">Vertoon</string>
   <string name="icon_labels_hide">Wegsteek</string>
+  <!-- Protected apps -->
   <string name="protected_app_settings">Beskermde programme</string>
+  <!-- Drawer settings -->
   <string name="app_drawer_style">Laai styl</string>
   <string name="app_drawer_style_compact">Kompak</string>
   <string name="app_drawer_style_sections">Seksies</string>
@@ -47,5 +58,6 @@
   <string name="fast_scroller_type">Vinnige blaai tipe</string>
   <string name="fast_scroller_type_horizontal">Horisontaal</string>
   <string name="fast_scroller_type_vertical">Vertikaal</string>
+  <!-- Search Manager doesn't exist -->
   <string name="search_activity_not_found">\'n Soektog aktiwiteit kon nie gevind word nie!</string>
 </resources>

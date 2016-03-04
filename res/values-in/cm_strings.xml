@@ -16,27 +16,39 @@
      limitations under the License.
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <!-- Application name -->
   <string name="home_screen_settings">PENGATURAN LAYAR HOME</string>
   <string name="drawer_settings">PENGATURAN DRAWER</string>
   <string name="app_settings">PENGATURAN APL</string>
+  <!-- Settings states -->
   <string name="setting_state_on">ON</string>
   <string name="setting_state_off">OFF</string>
   <string name="setting_state_disabled">DINONAKTIFKAN</string>
+  <!-- Folder titles -->
   <string name="play_folder_title">Putar</string>
+  <!-- Wallpaper scroll effect -->
   <string name="scrolling_wallpaper">Gulir wallpaper</string>
+  <!-- Dynamic Grid -->
   <string name="grid_size_text">Ukuran grid</string>
   <string name="grid_size_comfortable">Comfortable</string>
   <string name="grid_size_cozy">Cozy</string>
   <string name="grid_size_condensed">Condensed</string>
   <string name="grid_size_custom">Kustom (<xliff:g id="rows">%1$d</xliff:g> \u00d7 <xliff:g id="columns">%2$d</xliff:g>)</string>
   <string name="preferences_interface_homescreen_custom">Pilih ukuran kustom</string>
+  <!-- Dialog -->
   <string name="dialog_confirm">Konfirmasi</string>
+  <!-- Home screen search bar -->
   <string name="home_screen_search_text">Bar pencarian</string>
+  <!-- Larger icons -->
   <string name="larger_icons_text">Ikon lebih besar</string>
+  <!-- Icon labels -->
   <string name="icon_labels">Label ikon</string>
   <string name="icon_labels_show">Tampilkan</string>
   <string name="icon_labels_hide">Sembunyikan</string>
+  <!-- Protected apps -->
   <string name="protected_app_settings">Aplikasi yang di lindungi</string>
+  <!-- Drawer settings -->
   <string name="fast_scroller_type_vertical">Vertikal</string>
+  <!-- Search Manager doesn't exist -->
   <string name="search_activity_not_found">Aktivitas pencarian tidak dapat ditemukan!</string>
 </resources>

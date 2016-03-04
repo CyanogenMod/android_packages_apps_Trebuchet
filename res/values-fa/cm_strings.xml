@@ -16,27 +16,39 @@
      limitations under the License.
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <!-- Application name -->
   <string name="home_screen_settings">تنظیمات صفحه اصلی</string>
   <string name="drawer_settings">تنظیمات منوی برنامه‌ها</string>
   <string name="app_settings">تنظیمات برنامه</string>
+  <!-- Settings states -->
   <string name="setting_state_on">روشن</string>
   <string name="setting_state_off">خاموش</string>
   <string name="setting_state_disabled">غیرفعال</string>
+  <!-- Folder titles -->
   <string name="play_folder_title">پلی</string>
+  <!-- Wallpaper scroll effect -->
   <string name="scrolling_wallpaper">حرکت کاغذدیواری</string>
+  <!-- Dynamic Grid -->
   <string name="grid_size_text">میزان شبکه‌بندی</string>
   <string name="grid_size_comfortable">راحت</string>
   <string name="grid_size_cozy">ساده</string>
   <string name="grid_size_condensed">متراکم</string>
   <string name="grid_size_custom">سفارشی (<xliff:g id="rows">%1$d </xliff:g> \u00d7 <xliff:g id="columns">%2$d </xliff:g>)</string>
   <string name="preferences_interface_homescreen_custom">انتخاب میزان مورد نظر</string>
+  <!-- Dialog -->
   <string name="dialog_confirm">تایید</string>
+  <!-- Home screen search bar -->
   <string name="home_screen_search_text">نوار جستجو</string>
+  <!-- Larger icons -->
   <string name="larger_icons_text">آیکون‌های بزرگتر</string>
+  <!-- Icon labels -->
   <string name="icon_labels">نوشته آیکون‌ها</string>
   <string name="icon_labels_show">قابل مشاهده</string>
   <string name="icon_labels_hide">پنهان</string>
+  <!-- Protected apps -->
   <string name="protected_app_settings">برنامه‌های محافظت شده</string>
+  <!-- Drawer settings -->
   <string name="fast_scroller_type_vertical">عمودی</string>
+  <!-- Search Manager doesn't exist -->
   <string name="search_activity_not_found">عملگری برای جستجو یافت نشد!</string>
 </resources>

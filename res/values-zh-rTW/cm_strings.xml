@@ -16,27 +16,38 @@
      limitations under the License.
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <!-- Application name -->
   <string name="home_screen_settings">主螢幕設定</string>
   <string name="drawer_settings">抽屜設定</string>
   <string name="app_settings">應用程式設定</string>
+  <!-- Settings states -->
   <string name="setting_state_on">開啟</string>
   <string name="setting_state_off">關閉</string>
   <string name="setting_state_disabled">已停用</string>
+  <!-- Folder titles -->
   <string name="play_folder_title">播放</string>
+  <!-- Wallpaper scroll effect -->
   <string name="scrolling_wallpaper">滾動桌面</string>
+  <!-- Dynamic Grid -->
   <string name="grid_size_text">網格大小</string>
   <string name="grid_size_comfortable">舒適</string>
   <string name="grid_size_cozy">自在</string>
   <string name="grid_size_condensed">密集</string>
   <string name="grid_size_custom">自訂 (<xliff:g id="rows">%1$d</xliff:g> \u00d7 <xliff:g id="columns">%2$d</xliff:g>)</string>
   <string name="preferences_interface_homescreen_custom">選擇自訂大小</string>
+  <!-- Dialog -->
   <string name="dialog_confirm">確認</string>
+  <!-- Home screen search bar -->
   <string name="home_screen_search_text">搜尋列</string>
+  <!-- Larger icons -->
   <string name="larger_icons_text">大圖示</string>
+  <!-- Icon labels -->
   <string name="icon_labels">程式名稱</string>
   <string name="icon_labels_show">顯示</string>
   <string name="icon_labels_hide">隱藏</string>
+  <!-- Protected apps -->
   <string name="protected_app_settings">受保護的應用程式</string>
+  <!-- Drawer settings -->
   <string name="app_drawer_style">程式集風格</string>
   <string name="app_drawer_style_compact">連續</string>
   <string name="app_drawer_style_sections">分頁</string>
@@ -47,5 +58,6 @@
   <string name="fast_scroller_type">快速捲動類型</string>
   <string name="fast_scroller_type_horizontal">橫向</string>
   <string name="fast_scroller_type_vertical">垂直</string>
+  <!-- Search Manager doesn't exist -->
   <string name="search_activity_not_found">找不到搜索活動 ！</string>
 </resources>

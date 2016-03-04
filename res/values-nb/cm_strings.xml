@@ -16,27 +16,38 @@
      limitations under the License.
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <!-- Application name -->
   <string name="home_screen_settings">HJEMMESKJERM INNSTILLINGER</string>
   <string name="drawer_settings">SKUFF INNSTILLINGER</string>
   <string name="app_settings">APP-INNSTILLINGER</string>
+  <!-- Settings states -->
   <string name="setting_state_on">PÅ</string>
   <string name="setting_state_off">AV</string>
   <string name="setting_state_disabled">DEAKTIVERT</string>
+  <!-- Folder titles -->
   <string name="play_folder_title">Play</string>
+  <!-- Wallpaper scroll effect -->
   <string name="scrolling_wallpaper">Scroll bakgrunn</string>
+  <!-- Dynamic Grid -->
   <string name="grid_size_text">Rutenettstørrelse</string>
   <string name="grid_size_comfortable">Komfortabel</string>
   <string name="grid_size_cozy">Koselig</string>
   <string name="grid_size_condensed">Kondensert</string>
   <string name="grid_size_custom">Egendefinert (<xliff:g id="rows">%1$d </xliff:g> \u00d7 <xliff:g id="columns">%2$d </xliff:g>)</string>
   <string name="preferences_interface_homescreen_custom">Velg egendefinert størrelse</string>
+  <!-- Dialog -->
   <string name="dialog_confirm">Bekreft</string>
+  <!-- Home screen search bar -->
   <string name="home_screen_search_text">Søkefelt</string>
+  <!-- Larger icons -->
   <string name="larger_icons_text">Større ikoner</string>
+  <!-- Icon labels -->
   <string name="icon_labels">Ikonetiketter</string>
   <string name="icon_labels_show">Vis</string>
   <string name="icon_labels_hide">Skjul</string>
+  <!-- Protected apps -->
   <string name="protected_app_settings">Beskyttede apps</string>
+  <!-- Drawer settings -->
   <string name="app_drawer_style">Skuff stil</string>
   <string name="app_drawer_style_compact">Kompakt</string>
   <string name="app_drawer_style_sections">Inndelinger</string>
@@ -45,5 +56,6 @@
   <string name="app_drawer_color_light">Lys</string>
   <string name="fast_scroller_type_horizontal">Vannrett</string>
   <string name="fast_scroller_type_vertical">Loddrett</string>
+  <!-- Search Manager doesn't exist -->
   <string name="search_activity_not_found">Finner ikke en søkeaktivitet!</string>
 </resources>

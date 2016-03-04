@@ -16,27 +16,39 @@
      limitations under the License.
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <!-- Application name -->
   <string name="home_screen_settings">AXUSTES DE PANTALLA D\'ANICIU</string>
   <string name="drawer_settings">AXUSTES DE LES APLICACIONES</string>
   <string name="app_settings">AXUSTES D\'APLICACIÓN</string>
+  <!-- Settings states -->
   <string name="setting_state_on">SÍ</string>
   <string name="setting_state_off">NON</string>
   <string name="setting_state_disabled">DESHABILITÁU</string>
+  <!-- Folder titles -->
   <string name="play_folder_title">Reproducir</string>
+  <!-- Wallpaper scroll effect -->
   <string name="scrolling_wallpaper">Desplazar fondu</string>
+  <!-- Dynamic Grid -->
   <string name="grid_size_text">Tamañu del rexáu</string>
   <string name="grid_size_comfortable">Confortable</string>
   <string name="grid_size_cozy">Acoyedor</string>
   <string name="grid_size_condensed">Condensáu</string>
   <string name="grid_size_custom">Personalizar (<xliff:g id="rows">%1$d</xliff:g> \u00d7 <xliff:g id="columns">%2$d</xliff:g>)</string>
   <string name="preferences_interface_homescreen_custom">Esbilla\'l tamañu personalizáu</string>
+  <!-- Dialog -->
   <string name="dialog_confirm">Confirmar</string>
+  <!-- Home screen search bar -->
   <string name="home_screen_search_text">Barra de gueta</string>
+  <!-- Larger icons -->
   <string name="larger_icons_text">Iconos grandes</string>
+  <!-- Icon labels -->
   <string name="icon_labels">Etiquetes de los iconos</string>
   <string name="icon_labels_show">Amosar</string>
   <string name="icon_labels_hide">Anubrir</string>
+  <!-- Protected apps -->
   <string name="protected_app_settings">Apps protexíes</string>
+  <!-- Drawer settings -->
   <string name="fast_scroller_type_vertical">Vertical</string>
+  <!-- Search Manager doesn't exist -->
   <string name="search_activity_not_found">¡Nun pudo atopase un encontu de gueta!</string>
 </resources>

@@ -16,27 +16,39 @@
      limitations under the License.
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <!-- Application name -->
   <string name="home_screen_settings">PAGRINDINIO EKRANO NUSTATYMAI</string>
   <string name="drawer_settings">STALČIAUS NUSTATYMAI</string>
   <string name="app_settings">PROGRAMOS NUSTATYMAI</string>
+  <!-- Settings states -->
   <string name="setting_state_on">ĮJUNGTA</string>
   <string name="setting_state_off">IŠJUNGTA</string>
   <string name="setting_state_disabled">NELEIDŽIAMA</string>
+  <!-- Folder titles -->
   <string name="play_folder_title">Play</string>
+  <!-- Wallpaper scroll effect -->
   <string name="scrolling_wallpaper">Slinkti darbalaukio foną</string>
+  <!-- Dynamic Grid -->
   <string name="grid_size_text">Tinklelio dydis</string>
   <string name="grid_size_comfortable">Patogus</string>
   <string name="grid_size_cozy">Jaukus</string>
   <string name="grid_size_condensed">Suglaustas</string>
   <string name="grid_size_custom">Priskirtas (<xliff:g id="rows">%1$d</xliff:g> \u00d7 <xliff:g id="columns">%2$d</xliff:g>)</string>
   <string name="preferences_interface_homescreen_custom">Pasirinkite tinkintą dydį</string>
+  <!-- Dialog -->
   <string name="dialog_confirm">Patvirtinti</string>
+  <!-- Home screen search bar -->
   <string name="home_screen_search_text">Paieškos juosta</string>
+  <!-- Larger icons -->
   <string name="larger_icons_text">Didesnės piktogramos</string>
+  <!-- Icon labels -->
   <string name="icon_labels">Piktogramų pavadinimai</string>
   <string name="icon_labels_show">Rodyti</string>
   <string name="icon_labels_hide">Paslėpti</string>
+  <!-- Protected apps -->
   <string name="protected_app_settings">Apsaugotos programos</string>
+  <!-- Drawer settings -->
   <string name="fast_scroller_type_vertical">Vertikalus</string>
+  <!-- Search Manager doesn't exist -->
   <string name="search_activity_not_found">Paieškos veikla negali būti rasta!</string>
 </resources>

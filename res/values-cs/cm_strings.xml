@@ -16,27 +16,38 @@
      limitations under the License.
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <!-- Application name -->
   <string name="home_screen_settings">NASTAVENÍ DOMOVSKÉ OBRAZOVKY</string>
   <string name="drawer_settings">NASTAVENÍ SLOŽKY</string>
   <string name="app_settings">NASTAVENÍ APL</string>
+  <!-- Settings states -->
   <string name="setting_state_on">Zap.</string>
   <string name="setting_state_off">Vyp.</string>
   <string name="setting_state_disabled">ZAKÁZÁNO</string>
+  <!-- Folder titles -->
   <string name="play_folder_title">Hry Play</string>
+  <!-- Wallpaper scroll effect -->
   <string name="scrolling_wallpaper">Posouvání tapety</string>
+  <!-- Dynamic Grid -->
   <string name="grid_size_text">Velikost mřížky</string>
   <string name="grid_size_comfortable">Komfortní</string>
   <string name="grid_size_cozy">Pohodlná</string>
   <string name="grid_size_condensed">Zůžená</string>
   <string name="grid_size_custom">Vlastní (<xliff:g id="rows">%1$d</xliff:g> \u00d7 <xliff:g id="columns">%2$d</xliff:g>)</string>
   <string name="preferences_interface_homescreen_custom">Zvolte vlastní velikost</string>
+  <!-- Dialog -->
   <string name="dialog_confirm">Potvrdit</string>
+  <!-- Home screen search bar -->
   <string name="home_screen_search_text">Vyhledávací lišta</string>
+  <!-- Larger icons -->
   <string name="larger_icons_text">Větší ikony</string>
+  <!-- Icon labels -->
   <string name="icon_labels">Popisky ikon</string>
   <string name="icon_labels_show">Zobrazit</string>
   <string name="icon_labels_hide">Skrýt</string>
+  <!-- Protected apps -->
   <string name="protected_app_settings">Chráněné aplikace</string>
+  <!-- Drawer settings -->
   <string name="app_drawer_style">Styl složky</string>
   <string name="app_drawer_style_compact">Kompaktní</string>
   <string name="app_drawer_style_sections">Sekce</string>
@@ -47,5 +58,6 @@
   <string name="fast_scroller_type">Typ rychlého posuvníku</string>
   <string name="fast_scroller_type_horizontal">Horizontální</string>
   <string name="fast_scroller_type_vertical">Vertikální</string>
+  <!-- Search Manager doesn't exist -->
   <string name="search_activity_not_found">Vyhledávací aktivita nenalezena!</string>
 </resources>

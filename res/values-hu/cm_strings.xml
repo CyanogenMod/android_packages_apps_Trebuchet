@@ -16,27 +16,38 @@
      limitations under the License.
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <!-- Application name -->
   <string name="home_screen_settings">KEZDŐKÉPERNYŐ BEÁLLÍTÁSOK</string>
   <string name="drawer_settings">ALKALMAZÁSKÉPERNYŐ BEÁLLÍTÁSOK</string>
   <string name="app_settings">ALKALMAZÁS BEÁLLÍTÁSAI</string>
+  <!-- Settings states -->
   <string name="setting_state_on">BE</string>
   <string name="setting_state_off">KI</string>
   <string name="setting_state_disabled">LETILTVA</string>
+  <!-- Folder titles -->
   <string name="play_folder_title">Play</string>
+  <!-- Wallpaper scroll effect -->
   <string name="scrolling_wallpaper">Háttérkép görgetése</string>
+  <!-- Dynamic Grid -->
   <string name="grid_size_text">Rácsméret</string>
   <string name="grid_size_comfortable">Kényelmes</string>
   <string name="grid_size_cozy">Hangulatos</string>
   <string name="grid_size_condensed">Tömörített</string>
   <string name="grid_size_custom">Egyéni (<xliff:g id="rows">%1$d</xliff:g> \u00d7 <xliff:g id="columns">%2$d</xliff:g>)</string>
   <string name="preferences_interface_homescreen_custom">Válassza ki az egyéni méretet</string>
+  <!-- Dialog -->
   <string name="dialog_confirm">Megerősítés</string>
+  <!-- Home screen search bar -->
   <string name="home_screen_search_text">Keresési sáv</string>
+  <!-- Larger icons -->
   <string name="larger_icons_text">Nagyobb ikonok</string>
+  <!-- Icon labels -->
   <string name="icon_labels">Ikon feliratok</string>
   <string name="icon_labels_show">Megjelenítés</string>
   <string name="icon_labels_hide">Elrejtés</string>
+  <!-- Protected apps -->
   <string name="protected_app_settings">Védett alkalmazások</string>
+  <!-- Drawer settings -->
   <string name="app_drawer_style">Alkalmazásindító stílusa</string>
   <string name="app_drawer_style_compact">Kompakt</string>
   <string name="app_drawer_style_sections">Szakaszok</string>
@@ -47,5 +58,6 @@
   <string name="fast_scroller_type">Gyors görgető típusa</string>
   <string name="fast_scroller_type_horizontal">Vízszintes</string>
   <string name="fast_scroller_type_vertical">Függőleges</string>
+  <!-- Search Manager doesn't exist -->
   <string name="search_activity_not_found">Keresési tevékenység nem található!</string>
 </resources>
