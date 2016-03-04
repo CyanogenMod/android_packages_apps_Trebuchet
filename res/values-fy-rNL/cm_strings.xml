@@ -16,5 +16,17 @@
      limitations under the License.
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <!-- Application name -->
+  <!-- Settings states -->
+  <!-- Folder titles -->
+  <!-- Wallpaper scroll effect -->
+  <!-- Dynamic Grid -->
   <string name="grid_size_comfortable">Komfortabel</string>
+  <!-- Dialog -->
+  <!-- Home screen search bar -->
+  <!-- Larger icons -->
+  <!-- Icon labels -->
+  <!-- Protected apps -->
+  <!-- Drawer settings -->
+  <!-- Search Manager doesn't exist -->
 </resources>

@@ -16,27 +16,38 @@
      limitations under the License.
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <!-- Application name -->
   <string name="home_screen_settings">ΡΥΘΜΙΣΕΙΣ ΑΡΧΙΚΗΣ ΟΘΟΝΗΣ</string>
   <string name="drawer_settings">ΡΥΘΜΙΣΕΙΣ ΣΥΡΤΑΡΙΟΥ</string>
   <string name="app_settings">ΡΥΘΜΙΣΕΙΣ ΕΦΑΡΜΟΓΩΝ</string>
+  <!-- Settings states -->
   <string name="setting_state_on">ΕΝΕΡΓΟ</string>
   <string name="setting_state_off">ΑΝΕΝΕΡΓΟ</string>
   <string name="setting_state_disabled">ΑΠΕΝΕΡΓΟΠΟΙΗΜΕΝΟ</string>
+  <!-- Folder titles -->
   <string name="play_folder_title">Play</string>
+  <!-- Wallpaper scroll effect -->
   <string name="scrolling_wallpaper">Κύλιση ταπετσαρίας</string>
+  <!-- Dynamic Grid -->
   <string name="grid_size_text">Μέγεθος πλέγματος</string>
   <string name="grid_size_comfortable">Άνετο</string>
   <string name="grid_size_cozy">Κανονικό</string>
   <string name="grid_size_condensed">Συμπυκνωμένο</string>
   <string name="grid_size_custom">Προσαρμοσμένο (<xliff:g id="rows">%1$d</xliff:g> \u00d7 <xliff:g id="columns">%2$d</xliff:g>)</string>
   <string name="preferences_interface_homescreen_custom">Επιλέξτε προσαρμοσμένο μέγεθος</string>
+  <!-- Dialog -->
   <string name="dialog_confirm">Επιβεβαίωση</string>
+  <!-- Home screen search bar -->
   <string name="home_screen_search_text">Μπάρα αναζήτησης</string>
+  <!-- Larger icons -->
   <string name="larger_icons_text">Μεγαλύτερα εικονίδια</string>
+  <!-- Icon labels -->
   <string name="icon_labels">Ετικέτες εικονιδίων</string>
   <string name="icon_labels_show">Εμφάνιση</string>
   <string name="icon_labels_hide">Απόκρυψη</string>
+  <!-- Protected apps -->
   <string name="protected_app_settings">Προστατευμένες εφαρμογές</string>
+  <!-- Drawer settings -->
   <string name="app_drawer_style">Στυλ συρταριού</string>
   <string name="app_drawer_style_compact">Συμπαγές</string>
   <string name="app_drawer_style_sections">Τμήματα</string>
@@ -47,5 +58,6 @@
   <string name="fast_scroller_type">Τύπος γρήγορης κύλισης</string>
   <string name="fast_scroller_type_horizontal">Οριζόντια</string>
   <string name="fast_scroller_type_vertical">Κάθετη</string>
+  <!-- Search Manager doesn't exist -->
   <string name="search_activity_not_found">Δεν βρέθηκε καμία δραστηριότητα αναζήτησης!</string>
 </resources>

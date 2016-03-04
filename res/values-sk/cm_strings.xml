@@ -16,27 +16,39 @@
      limitations under the License.
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <!-- Application name -->
   <string name="home_screen_settings">NASTAVENIA DOMOVSKEJ OBRAZOVKY</string>
   <string name="drawer_settings">NASTAVENIA PONUKY</string>
   <string name="app_settings">NASTAVENIA APLIKÁCIÍ</string>
+  <!-- Settings states -->
   <string name="setting_state_on">Zapnuté</string>
   <string name="setting_state_off">VYPNUTÉ</string>
   <string name="setting_state_disabled">ZAKÁZANÉ</string>
+  <!-- Folder titles -->
   <string name="play_folder_title">Play</string>
+  <!-- Wallpaper scroll effect -->
   <string name="scrolling_wallpaper">Posun tapety</string>
+  <!-- Dynamic Grid -->
   <string name="grid_size_text">Veľkosť mriežky</string>
   <string name="grid_size_comfortable">Pohodlná</string>
   <string name="grid_size_cozy">Útulná</string>
   <string name="grid_size_condensed">Zhustená</string>
   <string name="grid_size_custom">Vlastná (<xliff:g id="rows">%1$d</xliff:g> \u00d7 <xliff:g id="columns">%2$d</xliff:g>)</string>
   <string name="preferences_interface_homescreen_custom">Vyberte vlastnú veľkosť</string>
+  <!-- Dialog -->
   <string name="dialog_confirm">Potvrdiť</string>
+  <!-- Home screen search bar -->
   <string name="home_screen_search_text">Vyhľadávací panel</string>
+  <!-- Larger icons -->
   <string name="larger_icons_text">Väčšie ikony</string>
+  <!-- Icon labels -->
   <string name="icon_labels">Menovky ikon</string>
   <string name="icon_labels_show">Zobraziť</string>
   <string name="icon_labels_hide">Skryť</string>
+  <!-- Protected apps -->
   <string name="protected_app_settings">Chránené aplikácie</string>
+  <!-- Drawer settings -->
   <string name="fast_scroller_type_vertical">Zvislé</string>
+  <!-- Search Manager doesn't exist -->
   <string name="search_activity_not_found">Aktivita vyhľadávania sa nenašla!</string>
 </resources>

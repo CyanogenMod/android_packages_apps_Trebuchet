@@ -16,27 +16,38 @@
      limitations under the License.
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <!-- Application name -->
   <string name="home_screen_settings">IMPOSTAZIONI SCHERMATA HOME</string>
   <string name="drawer_settings">IMPOSTAZIONI DRAWER</string>
   <string name="app_settings">IMPOSTAZIONI APP</string>
+  <!-- Settings states -->
   <string name="setting_state_on">ON</string>
   <string name="setting_state_off">OFF</string>
   <string name="setting_state_disabled">DISATTIVATO</string>
+  <!-- Folder titles -->
   <string name="play_folder_title">Play</string>
+  <!-- Wallpaper scroll effect -->
   <string name="scrolling_wallpaper">Sfondo scorrevole</string>
+  <!-- Dynamic Grid -->
   <string name="grid_size_text">Dimensione griglia</string>
   <string name="grid_size_comfortable">Confortevole</string>
   <string name="grid_size_cozy">Accogliente</string>
   <string name="grid_size_condensed">Condensato</string>
   <string name="grid_size_custom">Personalizzato (<xliff:g id="rows">%1$d</xliff:g> \u00d7 <xliff:g id="columns">%2$d</xliff:g>)</string>
   <string name="preferences_interface_homescreen_custom">Personalizza dimensione</string>
+  <!-- Dialog -->
   <string name="dialog_confirm">Conferma</string>
+  <!-- Home screen search bar -->
   <string name="home_screen_search_text">Barra di ricerca</string>
+  <!-- Larger icons -->
   <string name="larger_icons_text">Icone grandi</string>
+  <!-- Icon labels -->
   <string name="icon_labels">Etichette icone</string>
   <string name="icon_labels_show">Mostra</string>
   <string name="icon_labels_hide">Nascondi</string>
+  <!-- Protected apps -->
   <string name="protected_app_settings">App protette</string>
+  <!-- Drawer settings -->
   <string name="app_drawer_style">Stile drawer</string>
   <string name="app_drawer_style_compact">Compatto</string>
   <string name="app_drawer_style_sections">Sezioni</string>
@@ -47,5 +58,6 @@
   <string name="fast_scroller_type">Tipo scorrimento veloce</string>
   <string name="fast_scroller_type_horizontal">Orizzontale</string>
   <string name="fast_scroller_type_vertical">Verticale</string>
+  <!-- Search Manager doesn't exist -->
   <string name="search_activity_not_found">Impossibile trovare un\'activity di ricerca!</string>
 </resources>

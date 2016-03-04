@@ -16,27 +16,38 @@
      limitations under the License.
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <!-- Application name -->
   <string name="home_screen_settings">STARTBILDSCHIRM-EINSTELLUNGEN</string>
   <string name="drawer_settings">EINSTELLUNGEN FÜR APP-ÜBERSICHT</string>
   <string name="app_settings">APP-EINSTELLUNGEN</string>
+  <!-- Settings states -->
   <string name="setting_state_on">AN</string>
   <string name="setting_state_off">AUS</string>
   <string name="setting_state_disabled">DEAKTIVIERT</string>
+  <!-- Folder titles -->
   <string name="play_folder_title">Play</string>
+  <!-- Wallpaper scroll effect -->
   <string name="scrolling_wallpaper">Hintergrundbild scrollen</string>
+  <!-- Dynamic Grid -->
   <string name="grid_size_text">Rastergröße</string>
   <string name="grid_size_comfortable">Normal</string>
   <string name="grid_size_cozy">Mittel</string>
   <string name="grid_size_condensed">Klein</string>
   <string name="grid_size_custom">Benutzerdefiniert (<xliff:g id="rows">%1$d</xliff:g> \u00d7 <xliff:g id="columns">%2$d</xliff:g>)</string>
   <string name="preferences_interface_homescreen_custom">Benutzerdefinierte Größe auswählen</string>
+  <!-- Dialog -->
   <string name="dialog_confirm">Bestätigen</string>
+  <!-- Home screen search bar -->
   <string name="home_screen_search_text">Suchleiste</string>
+  <!-- Larger icons -->
   <string name="larger_icons_text">Große Symbole</string>
+  <!-- Icon labels -->
   <string name="icon_labels">Symbol-Beschriftungen</string>
   <string name="icon_labels_show">Anzeigen</string>
   <string name="icon_labels_hide">Ausblenden</string>
+  <!-- Protected apps -->
   <string name="protected_app_settings">Geschützte Apps</string>
+  <!-- Drawer settings -->
   <string name="app_drawer_style">Stil der App-Übersicht</string>
   <string name="app_drawer_style_compact">Kompakt</string>
   <string name="app_drawer_style_sections">Abschnitte</string>
@@ -47,5 +58,6 @@
   <string name="fast_scroller_type">Typ für schnelles Scrollen</string>
   <string name="fast_scroller_type_horizontal">Horizontal</string>
   <string name="fast_scroller_type_vertical">Vertikal</string>
+  <!-- Search Manager doesn't exist -->
   <string name="search_activity_not_found">Es konnte keine Suche-Aktivität gefunden werden!</string>
 </resources>

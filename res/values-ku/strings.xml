@@ -18,45 +18,145 @@
 */
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <!-- General -->
+  <!-- URI used to import old favorites. [DO NOT TRANSLATE] -->
+  <!-- Permission to receive the com.android.launcher3.action.LAUNCH intent. [DO NOT TRANSLATE] -->
+  <!-- Permission to receive the com.android.launcher3.action.FIRST_LOAD_COMPLETE intent. [DO NOT TRANSLATE] -->
+  <!-- Application name -->
   <string name="app_name">کارخەری٣</string>
+  <!-- Default folder name -->
+  <!-- Work folder name -->
+  <!-- Displayed when user selects a shortcut for an app that was uninstalled [CHAR_LIMIT=none]-->
   <string name="activity_not_found">بەرنامە دانه‌به‌زیوه‌.</string>
+  <!-- Displayed when user selects a shortcut for an app that is current not available [CHAR_LIMIT=none]-->
+  <!-- SafeMode shortcut error string -->
+  <!-- SafeMode widget error string -->
   <string name="toggle_weight_watcher">پیشاندانی بیرگە</string>
+  <!-- Widgets -->
+  <!-- Message to tell the user to press and hold on a widget to add it [CHAR_LIMIT=50] -->
   <string name="long_press_widget_to_add">بیسوو &amp; دەست ڕاگرە بۆ هەڵگرتنی ویجێتێک.</string>
+  <!-- The format string for the dimensions of a widget in the drawer -->
+  <!-- There is a special version of this format string for Farsi -->
   <string name="widget_dims_format">%1$d \u00d7 %2$d</string>
+  <!-- All Apps -->
+  <!-- Search bar text in the apps view. [CHAR_LIMIT=50] -->
+  <!-- Loading apps text. [CHAR_LIMIT=50] -->
+  <!-- No-search-results text. [CHAR_LIMIT=50] -->
+  <!-- Search market text.  This is a format string where the first argument is the name of the activity
+         handling the search.  The format string does not need to handle both of these arguments. [CHAR_LIMIT=50] -->
+  <!-- Drag and drop -->
+  <!-- Error message when user has filled a home screen -->
   <string name="out_of_space">لەم ماڵی ڕوونمایەدا دیوی تر نییە.</string>
+  <!-- Error message when user has filled the hotseat -->
   <string name="hotseat_out_of_space">لە کەشەفەی دڵخوازەکانت دیوی تری لێ نییە</string>
+  <!-- All applications label -->
   <string name="all_apps_button_label">بەرنامەکان</string>
+  <!-- Label for button in all applications label to go back home (to the workspace / desktop)
+         for accessibilty (spoken when the button gets focus). -->
   <string name="all_apps_home_button_label">ماڵەوە</string>
+  <!-- Label for delete drop target. [CHAR_LIMIT=20] -->
   <string name="delete_target_label">لابردن</string>
+  <!-- Label for uninstall drop target. [CHAR_LIMIT=20]-->
   <string name="delete_target_uninstall_label">دامه‌زرانسڕینه‌وه‌</string>
+  <!-- Label for the info icon. [CHAR_LIMIT=20] -->
   <string name="info_target_label">زانیاریی بەرنامە</string>
+  <!-- Permissions: -->
+  <!-- Permission short label -->
   <string name="permlab_install_shortcut">دامەزراندنی کورتەڕێگەکان</string>
+  <!-- Permission description -->
   <string name="permdesc_install_shortcut">ڕێگە بە بەرنامەیەک بدە بۆ
         زیاکردنی کورتەڕێگەکان بەبێ دەستێوەردانی بەکارهێنەر.</string>
+  <!-- Permission short label -->
   <string name="permlab_read_settings">خوێندنەوەی ڕێکخستنەکانی ماڵەوە و کورتەڕێگەکان</string>
+  <!-- Permission description -->
   <string name="permdesc_read_settings">ڕێگە بە بەرنامەکە بدە بۆ خوێندنەوەی ڕێکخستنەکان و
         کورتەڕێگەکانی سەر ماڵ.</string>
+  <!-- Permission short label -->
   <string name="permlab_write_settings">نووسینی ڕێکخستنەکانی ماڵەوە و کورتەڕێگەکان</string>
+  <!-- Permission description -->
   <string name="permdesc_write_settings">ڕێگە بە بەرنامەکە بدە بۆ نووسینی ڕێکخستنەکان و
         کورتەڕێگەکانی سەر ماڵ.</string>
+  <!-- Toast shown on clicking a direct call shortcut. [CHAR_LIMIT=80] -->
+  <!-- Widgets: -->
+  <!-- Text to show user in place of a gadget when we can't display it properly -->
   <string name="gadget_error_text">کێشەی بارکردنی ویجێت</string>
+  <!-- Text to show user in place of a gadget when it is not yet initialized. -->
+  <!-- Text to inform the user that they can't uninstall a system application -->
   <string name="uninstall_system_app_text">ئەمە بەرنامەیەکی سیستەمییە و ناتوانرێت دامەزرانسڕینەوەی بۆ بکرێت.</string>
+  <!-- Default folder title -->
+  <!-- Accessibility -->
+  <!-- The format string for default page scroll text [CHAR_LIMIT=none] -->
   <string name="default_scroll_format">پەڕەی %1$d لە %2$d</string>
+  <!-- The format string for Workspace page scroll text [CHAR_LIMIT=none] -->
   <string name="workspace_scroll_format">ڕوونمای ماڵەوە %1$d of %2$d</string>
+  <!-- Clings -->
+  <!-- The title text for the workspace cling [CHAR_LIMIT=30] -->
   <string name="first_run_cling_title">بە خێربێيت</string>
+  <!-- The title text for the migration cling [CHAR_LIMIT=30] -->
   <string name="migration_cling_title">وێنۆچکه‌ی به‌رنامه‌که‌ت لەبەر بگرەوە</string>
+  <!-- The description of what migration does [CHAR_LIMIT=70] -->
   <string name="migration_cling_description">هاوردنی وێنۆچکە و بوخچەکان لە ماڵی ڕوونما کۆنەکانتەوە؟</string>
+  <!-- The description of the button to migrate apps from another launcher [CHAR_LIMIT=30] -->
   <string name="migration_cling_copy_apps">له‌به‌رگرتنه‌وه‌ی وێنۆچکه‌کان</string>
+  <!-- The description of the button to use the default launcher layout [CHAR_LIMIT=30] -->
   <string name="migration_cling_use_default">ده‌ستپێکردنی بووژاندنەوە</string>
+  <!-- The title text for workspace longpress action [CHAR_LIMIT=40] -->
+  <!-- The description of how to use the workspace [CHAR_LIMIT=70] -->
+  <!-- The description of the button to dismiss the cling [CHAR_LIMIT=30] -->
+  <!-- Folder accessibility -->
+  <!-- The format string for when a folder is opened, speaks the dimensions -->
   <string name="folder_opened">بوخچە کراوە, <xliff:g id="width" example="5">%1$d</xliff:g> لەلایەن <xliff:g id="height" example="3">%2$d</xliff:g></string>
+  <!-- Instruction that clicking outside will close folder -->
   <string name="folder_tap_to_close">بسوو بۆ داخستنی بوخچە</string>
+  <!-- Instruction that clicking outside will commit folder rename -->
   <string name="folder_tap_to_rename">بسوو بۆ پاشەکەوتکردنی ناولێنانەوە</string>
+  <!-- Indication that folder closed -->
   <string name="folder_closed">بوخچە داخرا</string>
+  <!-- Folder renamed format -->
   <string name="folder_renamed">بوخچە نالێنرایەوە بۆ <xliff:g id="name" example="Games">%1$s</xliff:g></string>
+  <!-- Folder name format -->
   <string name="folder_name_format">بوخچە: <xliff:g id="name" example="Games">%1$s</xliff:g></string>
+  <!-- Debug-only activity name. [DO NOT TRANSLATE] -->
   <string name="debug_memory_activity">* HPROF</string>
+  <!-- Strings for the customization mode -->
+  <!-- Text for widget add button -->
   <string name="widget_button_text">ویجێتەکان</string>
+  <!-- Text for wallpaper change button -->
   <string name="wallpaper_button_text">دیوارپۆشەکان</string>
+  <!-- Text for settings button -->
   <string name="settings_button_text">ڕێکخستنەکان</string>
+  <!-- Strings for settings -->
+  <!-- Title for Allow Rotation setting. [CHAR LIMIT=50] -->
+  <!-- Label on an icon that references an uninstalled package, for which we have no information about when it might be installed. [CHAR_LIMIT=15] -->
+  <!-- Button for abandoned promises dialog, to removes this abandoned promise icon. -->
+  <!-- Button for abandoned promise dialog, to search in the market for the missing package. -->
+  <!-- Title for abandoned promise dialog. -->
+  <!-- Explanation for abandoned promise dialog. "The first 'it' refers to the shortcut icon.
+    The second "it" refers to the app. -->
+  <!-- Strings for accessibility actions -->
+  <!-- Accessibility action to add an app to workspace. [CHAR_LIMIT=30] -->
   <string name="action_add_to_workspace">زیاکردن بۆ پاشبنەمای ڕوونما</string>
+  <!-- Accessibility action to move item to the current location. [CHAR_LIMIT=30] -->
+  <!-- Accessibility confirmation for item added to workspace. -->
+  <!-- Accessibility confirmation for item removed. -->
+  <!-- Accessibility action to move an item on the workspace. [CHAR_LIMIT=30] -->
+  <!-- Accessibility description to move item to empty cell. -->
+  <!-- Accessibility description to move item inside a folder. -->
+  <!-- Accessibility description to move item to the hotseat. -->
+  <!-- Accessibility confirmation for item move. -->
+  <!-- Accessibility description to move item into an existing folder. -->
+  <!-- Accessibility description to move item into an existing folder containing an app. -->
+  <!-- Accessibility confirmation for item added to folder. -->
+  <!-- Accessibility description to create folder with another item. -->
+  <!-- Accessibility confirmation for folder created. -->
+  <!-- Accessibility action to move an item from folder to workspace. [CHAR_LIMIT=30] -->
+  <!-- Accessibility action to move an homescreen to the left. [CHAR_LIMIT=30] -->
+  <!-- Accessibility action to move an homescreen to the right. [CHAR_LIMIT=30] -->
+  <!-- Accessibility confirmation when a screen was moved. -->
+  <!-- Accessibility action to resize a widget. [CHAR_LIMIT=30] -->
+  <!-- Accessibility action to increase width of a widget. [CHAR_LIMIT=30] -->
+  <!-- Accessibility action to increase height of a widget. [CHAR_LIMIT=30] -->
+  <!-- Accessibility action to decrease width of a widget. [CHAR_LIMIT=30] -->
+  <!-- Accessibility action to decrease height of a widget. [CHAR_LIMIT=30] -->
+  <!-- Accessibility confirmation for widget resize. -->
 </resources>

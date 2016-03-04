@@ -16,27 +16,39 @@
      limitations under the License.
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <!-- Application name -->
   <string name="home_screen_settings">MĀJAS EKRĀNA IESTATĪJUMI</string>
   <string name="drawer_settings">ATVILKTNES IESTATĪJUMI</string>
   <string name="app_settings">LIETOTŅU IESTATĪJUMI</string>
+  <!-- Settings states -->
   <string name="setting_state_on">IESLĒGTS</string>
   <string name="setting_state_off">IZSLĒGTS</string>
   <string name="setting_state_disabled">IZSLĒGTS</string>
+  <!-- Folder titles -->
   <string name="play_folder_title">Atskaņot</string>
+  <!-- Wallpaper scroll effect -->
   <string name="scrolling_wallpaper">Pārtīt tapeti</string>
+  <!-- Dynamic Grid -->
   <string name="grid_size_text">Režģa izmērs</string>
   <string name="grid_size_comfortable">Ērts</string>
   <string name="grid_size_cozy">Mājīgs</string>
   <string name="grid_size_condensed">Saīspiests</string>
   <string name="grid_size_custom">Pielāgots (<xliff:g id="rows">%1$d </xliff:g> \u00d7 <xliff:g id="columns">%2$d </xliff:g>)</string>
   <string name="preferences_interface_homescreen_custom">Izvēlieties pielāgotu izmēru</string>
+  <!-- Dialog -->
   <string name="dialog_confirm">Apstiprināt</string>
+  <!-- Home screen search bar -->
   <string name="home_screen_search_text">Meklēšanas josla</string>
+  <!-- Larger icons -->
   <string name="larger_icons_text">Lielākas ikonas</string>
+  <!-- Icon labels -->
   <string name="icon_labels">Ikonas etiķete</string>
   <string name="icon_labels_show">Rādīt</string>
   <string name="icon_labels_hide">Slēpt</string>
+  <!-- Protected apps -->
   <string name="protected_app_settings">Aizsargātās lietotnes</string>
+  <!-- Drawer settings -->
   <string name="fast_scroller_type_vertical">Vertikāli</string>
+  <!-- Search Manager doesn't exist -->
   <string name="search_activity_not_found">Meklētājs nav atrasts!</string>
 </resources>

@@ -16,31 +16,48 @@
      limitations under the License.
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <!-- Application name -->
   <string name="home_screen_settings">INSTELLINGEN THUISSCHERM</string>
   <string name="drawer_settings">INSTELLINGEN APP-OVERZICHT</string>
   <string name="app_settings">INSTELLINGEN APPS</string>
+  <!-- Settings states -->
   <string name="setting_state_on">AAN</string>
   <string name="setting_state_off">UIT</string>
   <string name="setting_state_disabled">UITGESCHAKELD</string>
+  <!-- Folder titles -->
   <string name="play_folder_title">Play</string>
+  <!-- Wallpaper scroll effect -->
   <string name="scrolling_wallpaper">Achtergrond schuiven</string>
+  <!-- Dynamic Grid -->
   <string name="grid_size_text">Rastergrootte</string>
   <string name="grid_size_comfortable">Comfortabel</string>
   <string name="grid_size_cozy">Knus</string>
   <string name="grid_size_condensed">Smal</string>
   <string name="grid_size_custom">Aangepast (<xliff:g id="rows">%1$d</xliff:g> \u00d7 <xliff:g id="columns">%2$d</xliff:g>)</string>
   <string name="preferences_interface_homescreen_custom">Aangepaste grootte</string>
+  <!-- Dialog -->
   <string name="dialog_confirm">Bevestig</string>
+  <!-- Home screen search bar -->
   <string name="home_screen_search_text">Zoekbalk</string>
+  <!-- Larger icons -->
   <string name="larger_icons_text">Grote pictogrammen</string>
+  <!-- Icon labels -->
   <string name="icon_labels">Pictogramlabels</string>
   <string name="icon_labels_show">Aan</string>
   <string name="icon_labels_hide">Uit</string>
+  <!-- Protected apps -->
   <string name="protected_app_settings">Beschermde apps</string>
+  <!-- Drawer settings -->
+  <string name="app_drawer_style">Stijl app-overzicht</string>
   <string name="app_drawer_style_compact">Compact</string>
+  <string name="app_drawer_style_sections">Secties</string>
+  <string name="app_drawer_color">Kleur app-overzicht</string>
   <string name="app_drawer_color_dark">Donker</string>
   <string name="app_drawer_color_light">Licht</string>
+  <string name="fast_scroller">Snel bladeren</string>
+  <string name="fast_scroller_type">Richting snel bladeren</string>
   <string name="fast_scroller_type_horizontal">Horizontaal</string>
   <string name="fast_scroller_type_vertical">Verticaal</string>
+  <!-- Search Manager doesn't exist -->
   <string name="search_activity_not_found">Geen zoekactiviteit gevonden</string>
 </resources>

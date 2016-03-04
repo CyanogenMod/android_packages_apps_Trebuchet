@@ -16,27 +16,38 @@
      limitations under the License.
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <!-- Application name -->
   <string name="home_screen_settings">ПОДЕШАВАЊА ПОЧЕТНОГ ЕКРАНА</string>
   <string name="drawer_settings">ПОДЕШАВАЊА ФИОКЕ</string>
   <string name="app_settings">ПОДЕШАВАЊА АПЛИКАЦИЈА</string>
+  <!-- Settings states -->
   <string name="setting_state_on">ДА</string>
   <string name="setting_state_off">НЕ</string>
   <string name="setting_state_disabled">ОНЕМОГУЋЕНО</string>
+  <!-- Folder titles -->
   <string name="play_folder_title">Пусти</string>
+  <!-- Wallpaper scroll effect -->
   <string name="scrolling_wallpaper">Скроловање позадине</string>
+  <!-- Dynamic Grid -->
   <string name="grid_size_text">Величина мреже</string>
   <string name="grid_size_comfortable">Комфорно</string>
   <string name="grid_size_cozy">Удобно</string>
   <string name="grid_size_condensed">Кондензовано</string>
   <string name="grid_size_custom">Прилагођено (<xliff:g id="rows">%1$d</xliff:g> \u00d7 <xliff:g id="columns">%2$d</xliff:g>)</string>
   <string name="preferences_interface_homescreen_custom">Изабери прилагођену величину</string>
+  <!-- Dialog -->
   <string name="dialog_confirm">Потврди</string>
+  <!-- Home screen search bar -->
   <string name="home_screen_search_text">Трака за претрагу</string>
+  <!-- Larger icons -->
   <string name="larger_icons_text">Веће иконе</string>
+  <!-- Icon labels -->
   <string name="icon_labels">Ознаке икона</string>
   <string name="icon_labels_show">Прикажи</string>
   <string name="icon_labels_hide">Сакриј</string>
+  <!-- Protected apps -->
   <string name="protected_app_settings">Заштићене апликације</string>
+  <!-- Drawer settings -->
   <string name="app_drawer_style">Стил фиоке</string>
   <string name="app_drawer_style_compact">Компактан</string>
   <string name="app_drawer_style_sections">Одељци</string>
@@ -47,5 +58,6 @@
   <string name="fast_scroller_type">Тип брзог скролера</string>
   <string name="fast_scroller_type_horizontal">Хоризонтални</string>
   <string name="fast_scroller_type_vertical">Вертикално</string>
+  <!-- Search Manager doesn't exist -->
   <string name="search_activity_not_found">Претрага активности не може бити пронађена!</string>
 </resources>

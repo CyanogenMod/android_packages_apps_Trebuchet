@@ -18,55 +18,155 @@
 */
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <!-- General -->
+  <!-- URI used to import old favorites. [DO NOT TRANSLATE] -->
+  <!-- Permission to receive the com.android.launcher3.action.LAUNCH intent. [DO NOT TRANSLATE] -->
+  <!-- Permission to receive the com.android.launcher3.action.FIRST_LOAD_COMPLETE intent. [DO NOT TRANSLATE] -->
+  <!-- Application name -->
   <string name="app_name">Launcher3</string>
+  <!-- Default folder name -->
+  <!-- Work folder name -->
+  <!-- Displayed when user selects a shortcut for an app that was uninstalled [CHAR_LIMIT=none]-->
   <string name="activity_not_found">L\'aplicación nun ta instalada.</string>
+  <!-- Displayed when user selects a shortcut for an app that is current not available [CHAR_LIMIT=none]-->
+  <!-- SafeMode shortcut error string -->
   <string name="safemode_shortcut_error">Descargar app deshabilitada en Mou Seguru</string>
+  <!-- SafeMode widget error string -->
   <string name="toggle_weight_watcher">Amosar memoria</string>
+  <!-- Widgets -->
+  <!-- Message to tell the user to press and hold on a widget to add it [CHAR_LIMIT=50] -->
   <string name="long_press_widget_to_add">Caltén primíu\'l widget que quieras esbillar.</string>
+  <!-- The format string for the dimensions of a widget in the drawer -->
+  <!-- There is a special version of this format string for Farsi -->
   <string name="widget_dims_format">%1$d \u00d7 %2$d</string>
+  <!-- All Apps -->
+  <!-- Search bar text in the apps view. [CHAR_LIMIT=50] -->
+  <!-- Loading apps text. [CHAR_LIMIT=50] -->
+  <!-- No-search-results text. [CHAR_LIMIT=50] -->
+  <!-- Search market text.  This is a format string where the first argument is the name of the activity
+         handling the search.  The format string does not need to handle both of these arguments. [CHAR_LIMIT=50] -->
+  <!-- Drag and drop -->
+  <!-- Error message when user has filled a home screen -->
   <string name="out_of_space">Nun queda espaciu na pantalla d\'aniciu.</string>
+  <!-- Error message when user has filled the hotseat -->
   <string name="hotseat_out_of_space">Nun queda espaciu na barra d\'accesos direutos</string>
+  <!-- All applications label -->
   <string name="all_apps_button_label">Aplicaciones</string>
+  <!-- Label for button in all applications label to go back home (to the workspace / desktop)
+         for accessibilty (spoken when the button gets focus). -->
   <string name="all_apps_home_button_label">Aniciu</string>
+  <!-- Label for delete drop target. [CHAR_LIMIT=20] -->
   <string name="delete_target_label">Desaniciar</string>
+  <!-- Label for uninstall drop target. [CHAR_LIMIT=20]-->
   <string name="delete_target_uninstall_label">Desinstalar</string>
+  <!-- Label for the info icon. [CHAR_LIMIT=20] -->
   <string name="info_target_label">Información de l\'aplicación</string>
+  <!-- Permissions: -->
+  <!-- Permission short label -->
   <string name="permlab_install_shortcut">instalar accesos direutos</string>
+  <!-- Permission description -->
   <string name="permdesc_install_shortcut">Permite qu\'una aplicación amieste accesos direutos ensin intervención del usuariu.</string>
+  <!-- Permission short label -->
   <string name="permlab_read_settings">lleer información d\'accesos direutos y d\'axustes</string>
+  <!-- Permission description -->
   <string name="permdesc_read_settings">Permite que l\'aplicación consulte los axustes y
         los accesos direutos de la pantalla d\'aniciu.</string>
+  <!-- Permission short label -->
   <string name="permlab_write_settings">escribir información d\'atayos y d\'axustes de la pantalla d\'aniciu</string>
+  <!-- Permission description -->
   <string name="permdesc_write_settings">Permite que les aplicaciones camuden los axustes y los accesos direutos de la pantalla d\'aniciu.</string>
+  <!-- Toast shown on clicking a direct call shortcut. [CHAR_LIMIT=80] -->
+  <!-- Widgets: -->
+  <!-- Text to show user in place of a gadget when we can't display it properly -->
   <string name="gadget_error_text">Fallu al cargar el widget</string>
+  <!-- Text to show user in place of a gadget when it is not yet initialized. -->
   <string name="gadget_setup_text">Configuración</string>
+  <!-- Text to inform the user that they can't uninstall a system application -->
   <string name="uninstall_system_app_text">Esta aplicación ye del sistema y nun pue desinstalase.</string>
+  <!-- Default folder title -->
+  <!-- Accessibility -->
+  <!-- The format string for default page scroll text [CHAR_LIMIT=none] -->
   <string name="default_scroll_format">Páxina %1$d de %2$d</string>
+  <!-- The format string for Workspace page scroll text [CHAR_LIMIT=none] -->
   <string name="workspace_scroll_format">Pantalla d\'aniciu %1$d de %2$d</string>
+  <!-- Clings -->
+  <!-- The title text for the workspace cling [CHAR_LIMIT=30] -->
   <string name="first_run_cling_title">Dámoste l\'acoyida</string>
+  <!-- The title text for the migration cling [CHAR_LIMIT=30] -->
   <string name="migration_cling_title">Copia los tos iconos d\'aplicación</string>
+  <!-- The description of what migration does [CHAR_LIMIT=70] -->
   <string name="migration_cling_description">¿Importar los iconos y carpetes de les tos pantalles d\'aniciu vieyes?</string>
+  <!-- The description of the button to migrate apps from another launcher [CHAR_LIMIT=30] -->
   <string name="migration_cling_copy_apps">COPIAR ICONOS</string>
+  <!-- The description of the button to use the default launcher layout [CHAR_LIMIT=30] -->
   <string name="migration_cling_use_default">ANICIAR REFRESCU</string>
+  <!-- The title text for workspace longpress action [CHAR_LIMIT=40] -->
   <string name="workspace_cling_longpress_title">Fondos pantalla, widgets, &amp; axustes</string>
+  <!-- The description of how to use the workspace [CHAR_LIMIT=70] -->
   <string name="workspace_cling_longpress_description">Toca y caltén fondu pa personalizar</string>
+  <!-- The description of the button to dismiss the cling [CHAR_LIMIT=30] -->
   <string name="workspace_cling_longpress_dismiss">FECHO</string>
+  <!-- Folder accessibility -->
+  <!-- The format string for when a folder is opened, speaks the dimensions -->
   <string name="folder_opened">Carpeta abierta, <xliff:g id="WIDTH">%1$d</xliff:g> por <xliff:g id="HEIGHT">%2$d</xliff:g></string>
+  <!-- Instruction that clicking outside will close folder -->
   <string name="folder_tap_to_close">Primi pa zarrar la carpeta</string>
+  <!-- Instruction that clicking outside will commit folder rename -->
   <string name="folder_tap_to_rename">Primi pa camudar el nome nuevu</string>
+  <!-- Indication that folder closed -->
   <string name="folder_closed">Carpeta zarrada</string>
+  <!-- Folder renamed format -->
   <string name="folder_renamed">Camudóse\'l nome la carpeta a <xliff:g id="NAME">%1$s</xliff:g></string>
+  <!-- Folder name format -->
   <string name="folder_name_format">Carpeta: <xliff:g id="NAME">%1$s</xliff:g></string>
+  <!-- Debug-only activity name. [DO NOT TRANSLATE] -->
   <string name="debug_memory_activity">* HPROF</string>
+  <!-- Strings for the customization mode -->
+  <!-- Text for widget add button -->
   <string name="widget_button_text">Widgets</string>
+  <!-- Text for wallpaper change button -->
   <string name="wallpaper_button_text">Fondos de pantalla</string>
+  <!-- Text for settings button -->
   <string name="settings_button_text">Axustes</string>
+  <!-- Strings for settings -->
+  <!-- Title for Allow Rotation setting. [CHAR LIMIT=50] -->
+  <!-- Label on an icon that references an uninstalled package, for which we have no information about when it might be installed. [CHAR_LIMIT=15] -->
   <string name="package_state_unknown">Desconocíu</string>
+  <!-- Button for abandoned promises dialog, to removes this abandoned promise icon. -->
   <string name="abandoned_clean_this">Desaniciar</string>
+  <!-- Button for abandoned promise dialog, to search in the market for the missing package. -->
   <string name="abandoned_search">Guetar</string>
+  <!-- Title for abandoned promise dialog. -->
   <string name="abandoned_promises_title">Esta app nun ta instalada</string>
+  <!-- Explanation for abandoned promise dialog. "The first 'it' refers to the shortcut icon.
+    The second "it" refers to the app. -->
   <string name="abandoned_promise_explanation">La app pa esti iconu nun ta instalada.
         Pues desanicialu, o guetar la app ya instalala manualmente.
     </string>
+  <!-- Strings for accessibility actions -->
+  <!-- Accessibility action to add an app to workspace. [CHAR_LIMIT=30] -->
   <string name="action_add_to_workspace">Amestar a la pantalla d\'aniciu</string>
+  <!-- Accessibility action to move item to the current location. [CHAR_LIMIT=30] -->
+  <!-- Accessibility confirmation for item added to workspace. -->
+  <!-- Accessibility confirmation for item removed. -->
+  <!-- Accessibility action to move an item on the workspace. [CHAR_LIMIT=30] -->
+  <!-- Accessibility description to move item to empty cell. -->
+  <!-- Accessibility description to move item inside a folder. -->
+  <!-- Accessibility description to move item to the hotseat. -->
+  <!-- Accessibility confirmation for item move. -->
+  <!-- Accessibility description to move item into an existing folder. -->
+  <!-- Accessibility description to move item into an existing folder containing an app. -->
+  <!-- Accessibility confirmation for item added to folder. -->
+  <!-- Accessibility description to create folder with another item. -->
+  <!-- Accessibility confirmation for folder created. -->
+  <!-- Accessibility action to move an item from folder to workspace. [CHAR_LIMIT=30] -->
+  <!-- Accessibility action to move an homescreen to the left. [CHAR_LIMIT=30] -->
+  <!-- Accessibility action to move an homescreen to the right. [CHAR_LIMIT=30] -->
+  <!-- Accessibility confirmation when a screen was moved. -->
+  <!-- Accessibility action to resize a widget. [CHAR_LIMIT=30] -->
+  <!-- Accessibility action to increase width of a widget. [CHAR_LIMIT=30] -->
+  <!-- Accessibility action to increase height of a widget. [CHAR_LIMIT=30] -->
+  <!-- Accessibility action to decrease width of a widget. [CHAR_LIMIT=30] -->
+  <!-- Accessibility action to decrease height of a widget. [CHAR_LIMIT=30] -->
+  <!-- Accessibility confirmation for widget resize. -->
 </resources>

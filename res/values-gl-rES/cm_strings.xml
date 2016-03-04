@@ -16,7 +16,19 @@
      limitations under the License.
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <!-- Application name -->
   <string name="home_screen_settings">AXUSTES DA PANTALLA DE INICIO</string>
   <string name="app_settings">AXUSTES DA APLICACIÓN</string>
+  <!-- Settings states -->
   <string name="setting_state_on">ACESO</string>
+  <!-- Folder titles -->
+  <!-- Wallpaper scroll effect -->
+  <!-- Dynamic Grid -->
+  <!-- Dialog -->
+  <!-- Home screen search bar -->
+  <!-- Larger icons -->
+  <!-- Icon labels -->
+  <!-- Protected apps -->
+  <!-- Drawer settings -->
+  <!-- Search Manager doesn't exist -->
 </resources>

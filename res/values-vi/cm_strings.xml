@@ -16,27 +16,39 @@
      limitations under the License.
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <!-- Application name -->
   <string name="home_screen_settings">CÀI ĐẶT MÀN HÌNH CHÍNH</string>
   <string name="drawer_settings">CÀI ĐẶT BẢNG</string>
   <string name="app_settings">CÀI ĐẶT ỨNG DỤNG</string>
+  <!-- Settings states -->
   <string name="setting_state_on">BẬT</string>
   <string name="setting_state_off">TẮT</string>
   <string name="setting_state_disabled">ĐÃ TẮT</string>
+  <!-- Folder titles -->
   <string name="play_folder_title">Phát</string>
+  <!-- Wallpaper scroll effect -->
   <string name="scrolling_wallpaper">Cuộn hình nền</string>
+  <!-- Dynamic Grid -->
   <string name="grid_size_text">Kích thước lưới</string>
   <string name="grid_size_comfortable">Thoải mái</string>
   <string name="grid_size_cozy">Ấm cúng</string>
   <string name="grid_size_condensed">Đã rút gọn</string>
   <string name="grid_size_custom">Tùy chỉnh (<xliff:g id="rows">%1$d</xliff:g> \u00d7 <xliff:g id="columns">%2$d</xliff:g>)</string>
   <string name="preferences_interface_homescreen_custom">Chọn kích thước tùy chỉnh</string>
+  <!-- Dialog -->
   <string name="dialog_confirm">Xác nhận</string>
+  <!-- Home screen search bar -->
   <string name="home_screen_search_text">Thanh tìm kiếm</string>
+  <!-- Larger icons -->
   <string name="larger_icons_text">Biểu tượng lớn hơn</string>
+  <!-- Icon labels -->
   <string name="icon_labels">Nhãn biểu tượng</string>
   <string name="icon_labels_show">Hiện</string>
   <string name="icon_labels_hide">Ẩn</string>
+  <!-- Protected apps -->
   <string name="protected_app_settings">Các ứng dụng được bảo vệ</string>
+  <!-- Drawer settings -->
   <string name="fast_scroller_type_vertical">Theo chiều dọc</string>
+  <!-- Search Manager doesn't exist -->
   <string name="search_activity_not_found">Không tìm thấy hoạt động tìm kiếm!</string>
 </resources>

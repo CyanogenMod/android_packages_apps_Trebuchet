@@ -16,27 +16,39 @@
      limitations under the License.
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <!-- Application name -->
   <string name="home_screen_settings">ƏSAS EKRAN TƏNZİMLƏMƏLƏRİ</string>
   <string name="drawer_settings">TƏTBİQETMƏ MENYUSU</string>
   <string name="app_settings">TƏTBİQETMƏ TƏNZİMLƏMƏLƏRİ</string>
+  <!-- Settings states -->
   <string name="setting_state_on">AÇIQ</string>
   <string name="setting_state_off">BAĞLI</string>
   <string name="setting_state_disabled">LƏĞV EDİLDİ</string>
+  <!-- Folder titles -->
   <string name="play_folder_title">Play</string>
+  <!-- Wallpaper scroll effect -->
   <string name="scrolling_wallpaper">Divar kağızını sürüşdür</string>
+  <!-- Dynamic Grid -->
   <string name="grid_size_text">Tor ölçüsü</string>
   <string name="grid_size_comfortable">Geniş</string>
   <string name="grid_size_cozy">Rahat</string>
   <string name="grid_size_condensed">Sıx</string>
   <string name="grid_size_custom">Özəl (<xliff:g id="rows">%1$d</xliff:g> \u00d7 <xliff:g id="columns">%2$d</xliff:g>)</string>
   <string name="preferences_interface_homescreen_custom">Xüsusi ölçü seçin</string>
+  <!-- Dialog -->
   <string name="dialog_confirm">Təsdiqlə</string>
+  <!-- Home screen search bar -->
   <string name="home_screen_search_text">Axtarış sətri</string>
+  <!-- Larger icons -->
   <string name="larger_icons_text">Böyük nişanlar</string>
+  <!-- Icon labels -->
   <string name="icon_labels">Nişan etiketləri</string>
   <string name="icon_labels_show">Göstər</string>
   <string name="icon_labels_hide">Gizlət</string>
+  <!-- Protected apps -->
   <string name="protected_app_settings">Qorunan tətbiqetmələr</string>
+  <!-- Drawer settings -->
   <string name="fast_scroller_type_vertical">Şaquli</string>
+  <!-- Search Manager doesn't exist -->
   <string name="search_activity_not_found">Axtarış fəaliyyəti tapılmadı!</string>
 </resources>
