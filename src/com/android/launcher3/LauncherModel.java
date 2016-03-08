@@ -3585,9 +3585,12 @@ public class LauncherModel extends BroadcastReceiver
                     // Refresh widget list, if there is any newly added widget
                     PackageManager pm = context.getPackageManager();
                     for (String pkg : mPackages) {
-                        needToRefresh |= !pm.queryBroadcastReceivers(
+                        List<ResolveInfo> resolveInfos = pm.queryBroadcastReceivers(
                                 new Intent(AppWidgetManager.ACTION_APPWIDGET_UPDATE)
-                                    .setPackage(pkg), 0).isEmpty();
+                                        .setPackage(pkg), 0);
+                        if (resolveInfos != null) {
+                            needToRefresh |= !resolveInfos.isEmpty();
+                        }
                     }
                 }
 
