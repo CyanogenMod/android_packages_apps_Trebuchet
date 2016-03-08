@@ -338,6 +338,10 @@ public class BaseRecyclerViewScrubber extends LinearLayout {
                 }
 
                 mBaseRecyclerView.setFastScrollDragging(mTouchingTrack);
+                if (mTouchingTrack) {
+                    mBaseRecyclerView.setPreviousSectionFastScrollFocused();
+                }
+
             }
         }
 

@@ -321,6 +321,8 @@ public abstract class BaseRecyclerView extends RecyclerView
 
     public void setFastScrollDragging(boolean dragging) {}
 
+    public void setPreviousSectionFastScrollFocused() {}
+
     /**
      * Updates the bounds for the scrollbar.
      * <p>Override in each subclass of this base class.
