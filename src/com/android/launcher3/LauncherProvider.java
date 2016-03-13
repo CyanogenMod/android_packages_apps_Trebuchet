@@ -778,6 +778,12 @@ public class LauncherProvider extends ContentProvider {
                     migrateLauncherFavorite(db, "org.cyanogenmod.snap", "com.android.camera2",
                             "com.android.camera.CameraLauncher",
                             "com.android.camera.CameraLauncher");
+                    migrateLauncherFavorite(db, "org.cyanogenmod.gello.browser", "com.android.browser",
+                            "com.android.browser.BrowserActivity",
+                            "com.android.browser.BrowserActivity");
+                    migrateLauncherFavorite(db, "com.android.browser", "org.cyanogenmod.gello.browser",
+                            "com.android.browser.BrowserActivity",
+                            "com.android.browser.BrowserActivity");
                 }
                 case 28: {
                     if (!ensureSubTypeColumn(db)) {
