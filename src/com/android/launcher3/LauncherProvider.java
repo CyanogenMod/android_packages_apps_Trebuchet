@@ -746,7 +746,8 @@ public class LauncherProvider extends ContentProvider {
                     if (!recreateWorkspaceTable(db)) {
                         break;
                     }
-                case 22: {
+                case 22:
+                case 23:
                     if (!addIntegerColumn(db, Favorites.OPTIONS, 0)) {
                         // Old version remains, which means we wipe old data
                         break;
@@ -755,9 +756,6 @@ public class LauncherProvider extends ContentProvider {
                         // Old version remains, which means we wipe old data
                         break;
                     }
-                }
-                case 23:
-                    // No-op
                 case 24:
                     ManagedProfileHeuristic.markExistingUsersForNoFolderCreation(mContext);
                 case 25:
@@ -782,18 +780,11 @@ public class LauncherProvider extends ContentProvider {
                             "com.android.camera.CameraLauncher");
                 }
                 case 28: {
-                    db.beginTransaction();
-                    try {
-                        db.execSQL("ALTER TABLE favorites " +
-                                "ADD COLUMN subType INTEGER DEFAULT 0;");
-                        db.setTransactionSuccessful();
-                        db.endTransaction();
-                        return;
-                    } catch (SQLException ex) {
+                    if (!ensureSubTypeColumn(db)) {
                         // Old version remains, which means we wipe old data
-                        Log.e(TAG, ex.getMessage(), ex);
-                        db.endTransaction();
+                        break;
                     }
+                    return;
                 }
             }
 
@@ -982,6 +973,22 @@ public class LauncherProvider extends ContentProvider {
                 // Old version remains, which means we wipe old data
                 Log.e(TAG, ex.getMessage(), ex);
                 return addIntegerColumn(db, Favorites.HIDDEN, 0);
+            }
+            return true;
+        }
+
+        @Thunk boolean ensureSubTypeColumn(SQLiteDatabase db) {
+            Cursor c = null;
+            try {
+                // Make sure subType exists
+                c = db.rawQuery("SELECT subType FROM favorites;", null);
+            } catch (SQLException ex) {
+                Log.e(TAG, ex.getMessage(), ex);
+                return addIntegerColumn(db, "subType", 0);
+            } finally {
+                if (c != null) {
+                    c.close();
+                }
             }
             return true;
         }
