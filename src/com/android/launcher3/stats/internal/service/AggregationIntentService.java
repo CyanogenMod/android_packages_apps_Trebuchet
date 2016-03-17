@@ -28,14 +28,15 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
+
 import com.android.launcher3.LauncherAppState;
-import com.android.launcher3.LauncherApplication;
 import com.android.launcher3.stats.external.StatsUtil;
 import com.android.launcher3.stats.external.TrackingBundle;
 import com.android.launcher3.stats.internal.db.DatabaseHelper;
 import com.android.launcher3.stats.internal.model.CountAction;
 import com.android.launcher3.stats.internal.model.CountOriginByPackageAction;
 import com.android.launcher3.stats.internal.model.ITrackingAction;
+import com.android.launcher3.stats.internal.model.RemoteFolderAction;
 import com.android.launcher3.stats.internal.model.TrackingEvent;
 import com.android.launcher3.stats.util.Logger;
 
@@ -115,20 +116,15 @@ public class AggregationIntentService extends IntentService {
                 continue;
             }
 
-            // Now crunch the data into actionable events for the server
-            for (ITrackingAction action : TRACKED_ACTIONS) {
-                try {
-                    for (Bundle bundle : action.createTrackingBundles(TRACKING_ID, category,
-                            eventList)) {
-                        performTrackingCall(bundle);
-                    }
-                } catch (NullPointerException e) {
-                    Log.e(TAG, "NPE fetching bundle list!", e);
-                } catch (IllegalArgumentException e) {
-                    Log.e(TAG, "Illegal argument!", e);
+            // Now crunch the data into actionable events for the server.
+            // Remote Folder data will process itself separately.
+            if (category == TrackingEvent.Category.REMOTE_FOLDER) {
+                performTrackingCall(new RemoteFolderAction(), category, eventList);
+            } else {
+                for (ITrackingAction action : TRACKED_ACTIONS) {
+                    performTrackingCall(action, category, eventList);
                 }
             }
-
         }
     }
 
@@ -168,8 +164,18 @@ public class AggregationIntentService extends IntentService {
         StatsUtil.sendEvent(this, bundle);
     }
 
-    private void performTrackingCall(Bundle bundle) throws IllegalArgumentException {
-        StatsUtil.sendEvent(this, bundle);
+    private void performTrackingCall(ITrackingAction action, TrackingEvent.Category category,
+                                     List<TrackingEvent> eventList)
+            throws IllegalArgumentException {
+        try {
+            for (Bundle bundle : action.createTrackingBundles(TRACKING_ID, category, eventList)) {
+                StatsUtil.sendEvent(this, bundle);
+            }
+        } catch (NullPointerException e) {
+            Log.e(TAG, "NPE fetching bundle list!", e);
+        } catch (IllegalArgumentException e) {
+            Log.e(TAG, "Illegal argument!", e);
+        }
     }
 
     private void unscheduleService() {

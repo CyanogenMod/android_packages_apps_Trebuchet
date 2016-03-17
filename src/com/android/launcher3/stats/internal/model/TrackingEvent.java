@@ -51,23 +51,13 @@ public class TrackingEvent {
         WALLPAPER_CHANGE,
         HOMESCREEN_PAGE,
         WIDGET,
-
-        // Remote folder specific
-        REMOTE_FOLDER_DISABLED,
-        REMOTE_DRAWER_DISABLED,
-        REMOTE_FOLDER_OPENED,
-        REMOTE_FOLDER_INFO_OPENED,
-        REMOTE_APP_OPENED,
-        REMOTE_APP_INSTALLED,
-        REMOTE_SYNC_TIME,
-        REMOTE_SYNC_ERROR,
-        REMOTE_SYNC_UNFILLED,
-        REMOTE_FEATURE_DISABLED_FEEDBACK
+        REMOTE_FOLDER
     }
 
     public static final String KEY_ORIGIN = TrackingBundle.KEY_METADATA_ORIGIN;
     public static final String KEY_VALUE = TrackingBundle.KEY_METADATA_VALUE;
     public static final String KEY_PACKAGE = TrackingBundle.KEY_METADATA_PACKAGE;
+    public static final String KEY_ACTION = TrackingBundle.KEY_EVENT_ACTION;
 
     /**
      * Constructor
