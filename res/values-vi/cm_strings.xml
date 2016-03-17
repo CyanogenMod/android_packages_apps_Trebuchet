@@ -48,7 +48,17 @@
   <!-- Protected apps -->
   <string name="protected_app_settings">Các ứng dụng được bảo vệ</string>
   <!-- Drawer settings -->
+  <string name="app_drawer_style">Kiểu ngăn kéo</string>
+  <string name="app_drawer_style_compact">Gọn</string>
+  <string name="app_drawer_style_sections">Phần</string>
+  <string name="app_drawer_color">Màu ngăn kéo</string>
+  <string name="app_drawer_color_dark">Tối</string>
+  <string name="app_drawer_color_light">Sáng</string>
+  <string name="fast_scroller">Cuộn nhanh</string>
+  <string name="fast_scroller_type">Loại cuộn nhanh</string>
+  <string name="fast_scroller_type_horizontal">Ngang</string>
   <string name="fast_scroller_type_vertical">Theo chiều dọc</string>
   <!-- Search Manager doesn't exist -->
   <string name="search_activity_not_found">Không tìm thấy hoạt động tìm kiếm!</string>
+  <!-- App not available toast text -->
 </resources>

@@ -48,12 +48,15 @@
   <!-- Protected apps -->
   <string name="protected_app_settings">Aplicații protejate</string>
   <!-- Drawer settings -->
+  <string name="app_drawer_style">Stil sertar</string>
   <string name="app_drawer_style_compact">Compact</string>
   <string name="app_drawer_style_sections">Secțiuni</string>
+  <string name="app_drawer_color">Culoare sertar</string>
   <string name="app_drawer_color_dark">Întunecat</string>
   <string name="fast_scroller">Derulare rapidă</string>
   <string name="fast_scroller_type_horizontal">Orizontal</string>
   <string name="fast_scroller_type_vertical">Vertical</string>
   <!-- Search Manager doesn't exist -->
   <string name="search_activity_not_found">Imposibil de găsit o activitate de căutare!</string>
+  <!-- App not available toast text -->
 </resources>

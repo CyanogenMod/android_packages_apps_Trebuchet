@@ -60,4 +60,5 @@
   <string name="fast_scroller_type_vertical">Bertikala</string>
   <!-- Search Manager doesn't exist -->
   <string name="search_activity_not_found">Ezin izan da bilaketa aktibitaterik aurkitu!</string>
+  <!-- App not available toast text -->
 </resources>

@@ -17,15 +17,48 @@
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
   <!-- Application name -->
+  <string name="home_screen_settings">باش ئېكران تەڭشەكلەر</string>
+  <string name="drawer_settings">تارتما تەڭشەكلەر</string>
+  <string name="app_settings">ئەپ تەڭشەكلەر</string>
   <!-- Settings states -->
+  <string name="setting_state_on">ئوچۇق</string>
+  <string name="setting_state_off">تاقاق</string>
+  <string name="setting_state_disabled">چەكلەندى</string>
   <!-- Folder titles -->
+  <string name="play_folder_title">قويۇش</string>
   <!-- Wallpaper scroll effect -->
+  <string name="scrolling_wallpaper">تەگلىكنى دوملىتىش</string>
   <!-- Dynamic Grid -->
+  <string name="grid_size_text">كاتەكچە چوڭلىقى</string>
+  <string name="grid_size_comfortable">ئازادە</string>
+  <string name="grid_size_cozy">مۇۋاپىق</string>
+  <string name="grid_size_condensed">ئىخچام</string>
+  <string name="grid_size_custom">خاسلاشتۇرۇش (<xliff:g id="rows">%1$d</xliff:g>\u00d7<xliff:g id="columns">%2$d</xliff:g>)</string>
+  <string name="preferences_interface_homescreen_custom">خاسلاشتۇرۇلغان ئۆلچەمنى تاللاش</string>
   <!-- Dialog -->
+  <string name="dialog_confirm">جەزملەش</string>
   <!-- Home screen search bar -->
+  <string name="home_screen_search_text">ئىزدەش رامكىسى</string>
   <!-- Larger icons -->
+  <string name="larger_icons_text">چوڭ سىنبەلگە</string>
   <!-- Icon labels -->
+  <string name="icon_labels">سىنبەلگە خەتكۈچى</string>
+  <string name="icon_labels_show">كۆرسىتىش</string>
+  <string name="icon_labels_hide">يوشۇرۇش</string>
   <!-- Protected apps -->
+  <string name="protected_app_settings">قوغدالغان ئەپلەر</string>
   <!-- Drawer settings -->
+  <string name="app_drawer_style">تارتما پاسونى</string>
+  <string name="app_drawer_style_compact">ئىخچام</string>
+  <string name="app_drawer_style_sections">گۇرۇپپىغا ئايرىش</string>
+  <string name="app_drawer_color">تارتما رەڭگى</string>
+  <string name="app_drawer_color_dark">خىرە رەڭ</string>
+  <string name="app_drawer_color_light">يورۇق</string>
+  <string name="fast_scroller">تىز دومىلىتىش</string>
+  <string name="fast_scroller_type">تىز دومىلىتىش تىپى</string>
+  <string name="fast_scroller_type_horizontal">يانتو</string>
+  <string name="fast_scroller_type_vertical">ۋېرتىكال</string>
   <!-- Search Manager doesn't exist -->
+  <string name="search_activity_not_found">ئىزدەش پائالىيىتىنى تاپالمىدى!</string>
+  <!-- App not available toast text -->
 </resources>

@@ -17,15 +17,48 @@
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
   <!-- Application name -->
+  <string name="home_screen_settings">முகப்புத் திரை அமைப்புகள்</string>
+  <string name="drawer_settings">DRAWER அமைப்புகள்</string>
+  <string name="app_settings">பயன்பாடு அமைப்புகள்</string>
   <!-- Settings states -->
+  <string name="setting_state_on">இயக்கு</string>
+  <string name="setting_state_off">முடக்கு</string>
+  <string name="setting_state_disabled">DISABLED</string>
   <!-- Folder titles -->
+  <string name="play_folder_title">இயக்கு</string>
   <!-- Wallpaper scroll effect -->
+  <string name="scrolling_wallpaper">வால்பேப்பரை உருட்டு</string>
   <!-- Dynamic Grid -->
+  <string name="grid_size_text">கட்ட அளவு</string>
+  <string name="grid_size_comfortable">வசதி</string>
+  <string name="grid_size_cozy">Cozy</string>
+  <string name="grid_size_condensed">சுருங்கப்பட்டது</string>
+  <string name="grid_size_custom">தனிப்பயன் (<xliff:g id="rows">%1$d</xliff:g> \u00d7 <xliff:g id="columns">%2$d</xliff:g>)</string>
+  <string name="preferences_interface_homescreen_custom">தனிப்பயன் அளவை தேர்வுசெய்</string>
   <!-- Dialog -->
+  <string name="dialog_confirm">உறுதிசெய்க</string>
   <!-- Home screen search bar -->
+  <string name="home_screen_search_text">தேடல் பட்டி</string>
   <!-- Larger icons -->
+  <string name="larger_icons_text">பெரிய படவுருக்கள்</string>
   <!-- Icon labels -->
+  <string name="icon_labels">படவுரு சிட்டைகள்</string>
+  <string name="icon_labels_show">காண்பி</string>
+  <string name="icon_labels_hide">மறை</string>
   <!-- Protected apps -->
+  <string name="protected_app_settings">பாதுகாக்கப்பட்ட ஆப்ஸ்</string>
   <!-- Drawer settings -->
+  <string name="app_drawer_style">வரைபவர் நடை</string>
+  <string name="app_drawer_style_compact">கச்சிதமான</string>
+  <string name="app_drawer_style_sections">பிரிவுகள்</string>
+  <string name="app_drawer_color">வரைபவர் வண்ணம்</string>
+  <string name="app_drawer_color_dark">அடர்</string>
+  <string name="app_drawer_color_light">வெளிர்</string>
+  <string name="fast_scroller">விரைவான உருட்டி</string>
+  <string name="fast_scroller_type">விரைவான உருட்டி வகை</string>
+  <string name="fast_scroller_type_horizontal">கிடைமட்டம்</string>
+  <string name="fast_scroller_type_vertical">செங்குத்து</string>
   <!-- Search Manager doesn't exist -->
+  <string name="search_activity_not_found">ஒரு தேடல் செயல்பாடு கண்டுபிடிக்கப்பட முடியவில்லை!</string>
+  <!-- App not available toast text -->
 </resources>

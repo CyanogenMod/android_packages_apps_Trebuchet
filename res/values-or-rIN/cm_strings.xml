@@ -17,15 +17,48 @@
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
   <!-- Application name -->
+  <string name="home_screen_settings">ମୂଳ ସ୍କ୍ରିନ୍‍ ସେଟିଂସମୂହ</string>
+  <string name="drawer_settings">ଡ୍ରଅର୍‍ ସେଟିଂସମୂହ</string>
+  <string name="app_settings">ଆପ୍ଲିକେସନ୍‍ ସେଟିଂସମୂହ</string>
   <!-- Settings states -->
+  <string name="setting_state_on">ଅନ୍</string>
+  <string name="setting_state_off">ଅଫ୍</string>
+  <string name="setting_state_disabled">ଅସାମର୍ଥ</string>
   <!-- Folder titles -->
+  <string name="play_folder_title">ଚଳାଅ</string>
   <!-- Wallpaper scroll effect -->
+  <string name="scrolling_wallpaper">ୱାଲପେ୍ପର ସ୍କ୍ରଲ କରନ୍ତୁ</string>
   <!-- Dynamic Grid -->
+  <string name="grid_size_text">ଗ୍ରିଡ୍ ଆକାର</string>
+  <string name="grid_size_comfortable">ଆରାମଦାୟକ</string>
+  <string name="grid_size_cozy">କୋଜି</string>
+  <string name="grid_size_condensed">କଣ୍ଡେନ୍ସଡ୍‍</string>
+  <string name="grid_size_custom">କଷ୍ଟମ୍‍ (<xliff:g id="rows">%1$d</xliff:g> \u00d7 <xliff:g id="columns">%2$d</xliff:g>)</string>
+  <string name="preferences_interface_homescreen_custom">କଷ୍ଟମ୍‍ ଆକାର ଚୟନ କରନ୍ତୁ</string>
   <!-- Dialog -->
+  <string name="dialog_confirm">ସୁନିଶ୍ଚିତ</string>
   <!-- Home screen search bar -->
+  <string name="home_screen_search_text">ସନ୍ଧାନ ବାର୍‍</string>
   <!-- Larger icons -->
+  <string name="larger_icons_text">ଅଧିକ ବଡ ଆଇକନ୍‍ଗୁଡିକ</string>
   <!-- Icon labels -->
+  <string name="icon_labels">ଆଇକନ୍‍ ଲେବେଲ୍‍ଗୁଡିକ</string>
+  <string name="icon_labels_show">ଦେଖନ୍ତୁ</string>
+  <string name="icon_labels_hide">ଲୁକ୍କାୟିତ</string>
   <!-- Protected apps -->
+  <string name="protected_app_settings">ସୁରଷିତ ଆପ୍ଲିକେସନ୍‍ଗୁଡିକ</string>
   <!-- Drawer settings -->
+  <string name="app_drawer_style">ଡ୍ରାର୍‍ ଶୈଳି</string>
+  <string name="app_drawer_style_compact">କମ୍ପାକ୍ଟ</string>
+  <string name="app_drawer_style_sections">ବିଭାଗଗୁଡିକ</string>
+  <string name="app_drawer_color">ଡ୍ରଅର୍‍ ରଙ୍ଗ</string>
+  <string name="app_drawer_color_dark">ଅନ୍ଧାର</string>
+  <string name="app_drawer_color_light">ଆଲୋକ</string>
+  <string name="fast_scroller">ଦ୍ରୁତ ସ୍କ୍ରଲର୍‍</string>
+  <string name="fast_scroller_type">ଦ୍ରୁତ ସ୍କ୍ରଲର୍‍ ପ୍ରକାର</string>
+  <string name="fast_scroller_type_horizontal">ଭୂସମାନ୍ତରାଳ</string>
+  <string name="fast_scroller_type_vertical">ଭୂଲମ୍ବ</string>
   <!-- Search Manager doesn't exist -->
+  <string name="search_activity_not_found">ଏକ ସନ୍ଧାନ କ୍ରିୟା ପ୍ରାପ୍ତ କରାଯାଇପାରିଲା ନାହିଁ!</string>
+  <!-- App not available toast text -->
 </resources>

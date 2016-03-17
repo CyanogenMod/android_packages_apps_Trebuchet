@@ -48,7 +48,17 @@
   <!-- Protected apps -->
   <string name="protected_app_settings">ಸಂರಕ್ಷಿತ ಆಪ್ಸ್</string>
   <!-- Drawer settings -->
+  <string name="app_drawer_style">ಡ್ರಾವರ್ ಶೈಲಿ‌</string>
+  <string name="app_drawer_style_compact">ಕಾಂಪ್ಯಾಕ್ಟ್‌</string>
+  <string name="app_drawer_style_sections">ವಿಭಾಗಗಳು</string>
+  <string name="app_drawer_color">ಡ್ರಾವರ್‌ ಬಣ್ಣ</string>
+  <string name="app_drawer_color_dark">ಗಾಢ ಹಿನ್ನೆಲೆ</string>
+  <string name="app_drawer_color_light">ಮಂದ ಬೆಳಕು</string>
+  <string name="fast_scroller">ಶೀಘ್ರ ಸ್ಕ್ರೋಲರ್</string>
+  <string name="fast_scroller_type">ಶೀಘ್ರ ಸ್ಕ್ರೋಲರ್ ವಿಧ</string>
+  <string name="fast_scroller_type_horizontal">ಲಂಬ</string>
   <string name="fast_scroller_type_vertical">ಲಂಬ</string>
   <!-- Search Manager doesn't exist -->
   <string name="search_activity_not_found">ಶೋಧನೆ ಚಟುವಟಿಕೆ ಪತ್ತೆಯಾಗಲಿಲ್ಲ!</string>
+  <!-- App not available toast text -->
 </resources>

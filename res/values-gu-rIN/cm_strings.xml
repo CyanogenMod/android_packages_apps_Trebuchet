@@ -17,15 +17,48 @@
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
   <!-- Application name -->
+  <string name="home_screen_settings">હોમ સ્ક્રીન સેટિંગ્સ</string>
+  <string name="drawer_settings">ડ્રોઅર સેટિંગ્સ</string>
+  <string name="app_settings">એપ્લિકેશન સેટિંગ્સ</string>
   <!-- Settings states -->
+  <string name="setting_state_on">ચાલુ</string>
+  <string name="setting_state_off">બંધ</string>
+  <string name="setting_state_disabled">નિષ્ક્રિય</string>
   <!-- Folder titles -->
+  <string name="play_folder_title">ચલાવો</string>
   <!-- Wallpaper scroll effect -->
+  <string name="scrolling_wallpaper">વૉલપેપર સ્ક્રોલ કરો</string>
   <!-- Dynamic Grid -->
+  <string name="grid_size_text">ગ્રિડ આકાર</string>
+  <string name="grid_size_comfortable">આરામદાયક</string>
+  <string name="grid_size_cozy">હૂંફાળું</string>
+  <string name="grid_size_condensed">સંક્ષિપ્ત કરેલ</string>
+  <string name="grid_size_custom">કસ્ટમ (<xliff:g id="rows">%1$d</xliff:g> \u00d7 <xliff:g id="columns">%2$d</xliff:g>)</string>
+  <string name="preferences_interface_homescreen_custom">કસ્ટમ સાઇઝ પસંદ કરો</string>
   <!-- Dialog -->
+  <string name="dialog_confirm">પુષ્ટિ કરો</string>
   <!-- Home screen search bar -->
+  <string name="home_screen_search_text">સર્ચ બાર</string>
   <!-- Larger icons -->
+  <string name="larger_icons_text">વધુ મોટા આઇકૉન</string>
   <!-- Icon labels -->
+  <string name="icon_labels">આઇકૉન લેબલો</string>
+  <string name="icon_labels_show">બતાવો</string>
+  <string name="icon_labels_hide">છુપાવો</string>
   <!-- Protected apps -->
+  <string name="protected_app_settings">સુરક્ષિત એપ્લિકેશન્સ</string>
   <!-- Drawer settings -->
+  <string name="app_drawer_style">ડ્રૉઅર શૈલી</string>
+  <string name="app_drawer_style_compact">કૉમ્પેક્ટ</string>
+  <string name="app_drawer_style_sections">વિભાગો</string>
+  <string name="app_drawer_color">ડ્રૉઅર રંગ</string>
+  <string name="app_drawer_color_dark">ઘાટું</string>
+  <string name="app_drawer_color_light">આછું</string>
+  <string name="fast_scroller">ફાસ્ટ સ્ક્રૉલર</string>
+  <string name="fast_scroller_type">ફાસ્ટ સ્ક્રૉલર પ્રકાર</string>
+  <string name="fast_scroller_type_horizontal">આડું</string>
+  <string name="fast_scroller_type_vertical">ઊભું</string>
   <!-- Search Manager doesn't exist -->
+  <string name="search_activity_not_found">સર્ચ પ્રવૃત્તિ મળી ન શકી!</string>
+  <!-- App not available toast text -->
 </resources>

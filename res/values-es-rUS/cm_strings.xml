@@ -17,15 +17,48 @@
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
   <!-- Application name -->
+  <string name="home_screen_settings">AJUSTES DEL INICIO</string>
+  <string name="drawer_settings">AJUSTES DE LAS APLICACIONES</string>
+  <string name="app_settings">AJUSTES DE LA APLICACIÓN</string>
   <!-- Settings states -->
+  <string name="setting_state_on">ACTIVAR</string>
+  <string name="setting_state_off">DESACTIVAR</string>
+  <string name="setting_state_disabled">DESACTIVADO</string>
   <!-- Folder titles -->
+  <string name="play_folder_title">Reproducir</string>
   <!-- Wallpaper scroll effect -->
+  <string name="scrolling_wallpaper">Desplazar fondo</string>
   <!-- Dynamic Grid -->
+  <string name="grid_size_text">Tamaño de la cuadrícula</string>
+  <string name="grid_size_comfortable">Normal</string>
+  <string name="grid_size_cozy">Cómoda</string>
+  <string name="grid_size_condensed">Comprimida</string>
+  <string name="grid_size_custom">Personalizado (<xliff:g id="rows">%1$d</xliff:g> \u00d7 <xliff:g id="columns">%2$d</xliff:g>)</string>
+  <string name="preferences_interface_homescreen_custom">Selecciona el tamaño personalizado</string>
   <!-- Dialog -->
+  <string name="dialog_confirm">Confirmar</string>
   <!-- Home screen search bar -->
+  <string name="home_screen_search_text">Barra de búsqueda</string>
   <!-- Larger icons -->
+  <string name="larger_icons_text">Iconos grandes</string>
   <!-- Icon labels -->
+  <string name="icon_labels">Etiquetas de iconos</string>
+  <string name="icon_labels_show">Mostrar</string>
+  <string name="icon_labels_hide">Ocultar</string>
   <!-- Protected apps -->
+  <string name="protected_app_settings">Aplicaciones protegidas</string>
   <!-- Drawer settings -->
+  <string name="app_drawer_style">Estilo del panel</string>
+  <string name="app_drawer_style_compact">Compacto</string>
+  <string name="app_drawer_style_sections">Secciones</string>
+  <string name="app_drawer_color">Color del panel</string>
+  <string name="app_drawer_color_dark">Oscuro</string>
+  <string name="app_drawer_color_light">Claro</string>
+  <string name="fast_scroller">Desplazamiento rápido</string>
+  <string name="fast_scroller_type">Tipo de desplazamiento rápido</string>
+  <string name="fast_scroller_type_horizontal">Horizontal</string>
+  <string name="fast_scroller_type_vertical">Vertical</string>
   <!-- Search Manager doesn't exist -->
+  <string name="search_activity_not_found">¡No se pudo encontrar un asistente de búsqueda!</string>
+  <!-- App not available toast text -->
 </resources>
