@@ -58,4 +58,5 @@
   <string name="fast_scroller_type_vertical">Loddrett</string>
   <!-- Search Manager doesn't exist -->
   <string name="search_activity_not_found">Finner ikke en søkeaktivitet!</string>
+  <!-- App not available toast text -->
 </resources>

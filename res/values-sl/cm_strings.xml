@@ -60,4 +60,5 @@
   <string name="fast_scroller_type_vertical">Navpična</string>
   <!-- Search Manager doesn't exist -->
   <string name="search_activity_not_found">Dejavnosti iskanja ni bilo mogoče najti!</string>
+  <!-- App not available toast text -->
 </resources>

@@ -51,4 +51,5 @@
   <string name="fast_scroller_type_vertical">Vertikal</string>
   <!-- Search Manager doesn't exist -->
   <string name="search_activity_not_found">Eng Sichaktivitéit konnt net fonnt ginn!</string>
+  <!-- App not available toast text -->
 </resources>

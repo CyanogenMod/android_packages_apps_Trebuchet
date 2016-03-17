@@ -60,4 +60,5 @@
   <string name="fast_scroller_type_vertical">Vertikaal</string>
   <!-- Search Manager doesn't exist -->
   <string name="search_activity_not_found">\'n Soektog aktiwiteit kon nie gevind word nie!</string>
+  <!-- App not available toast text -->
 </resources>

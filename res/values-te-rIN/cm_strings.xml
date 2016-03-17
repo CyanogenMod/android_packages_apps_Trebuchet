@@ -17,15 +17,48 @@
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
   <!-- Application name -->
+  <string name="home_screen_settings">హోమ్ స్క్రీన్ సెట్టింగులు</string>
+  <string name="drawer_settings">డ్రాయర్ సెట్టింగ్‌లు</string>
+  <string name="app_settings">ప్రోగ్రాం సెట్టింగ్‌లు</string>
   <!-- Settings states -->
+  <string name="setting_state_on">ఆన్‌లో ఉంది</string>
+  <string name="setting_state_off">ఆఫ్</string>
+  <string name="setting_state_disabled">నిలిపివేయబడినది</string>
   <!-- Folder titles -->
+  <string name="play_folder_title">ప్లే చేయి</string>
   <!-- Wallpaper scroll effect -->
+  <string name="scrolling_wallpaper">వాల్‌పేపరును స్క్రాల్ చేయుము</string>
   <!-- Dynamic Grid -->
+  <string name="grid_size_text">గ్రిడ్ పరిమాణం</string>
+  <string name="grid_size_comfortable">సౌకర్యవంతం</string>
+  <string name="grid_size_cozy">అనుకూలమైన</string>
+  <string name="grid_size_condensed">ఘనీభవించిన</string>
+  <string name="grid_size_custom">అనుకూలిత  (<xliff:g id="rows">%1$d</xliff:g> \u00d7 <xliff:g id="columns">%2$d</xliff:g>)</string>
+  <string name="preferences_interface_homescreen_custom">అనుకూల పరిమాణాన్ని ఎంచుకొనుము</string>
   <!-- Dialog -->
+  <string name="dialog_confirm">నిర్ధారించు</string>
   <!-- Home screen search bar -->
+  <string name="home_screen_search_text">శోధన పట్టీ</string>
   <!-- Larger icons -->
+  <string name="larger_icons_text">పెద్ద చిహ్నాలు</string>
   <!-- Icon labels -->
+  <string name="icon_labels">సూక్ష్మచిత్రం లేబుళ్ళు</string>
+  <string name="icon_labels_show">చూపుము</string>
+  <string name="icon_labels_hide">దాచు</string>
   <!-- Protected apps -->
+  <string name="protected_app_settings">రక్షించబడిన అనువర్తనాలు</string>
   <!-- Drawer settings -->
+  <string name="app_drawer_style">డ్రాయర్ శైలి</string>
+  <string name="app_drawer_style_compact">కాంపాక్ట్</string>
+  <string name="app_drawer_style_sections">విభాగాలు</string>
+  <string name="app_drawer_color">డ్రాయర్ రంగు</string>
+  <string name="app_drawer_color_dark">ముదురు రంగు</string>
+  <string name="app_drawer_color_light">లేత రంగు</string>
+  <string name="fast_scroller">వేగవంతమైన స్క్రోలర్</string>
+  <string name="fast_scroller_type">వేగవంతమైన స్క్రోలర్ రకము</string>
+  <string name="fast_scroller_type_horizontal">సమాంతరము</string>
+  <string name="fast_scroller_type_vertical">నిలువు</string>
   <!-- Search Manager doesn't exist -->
+  <string name="search_activity_not_found">శోధన కార్యకలాపం కనుగొనబడలేదు!</string>
+  <!-- App not available toast text -->
 </resources>

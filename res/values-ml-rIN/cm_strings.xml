@@ -17,15 +17,48 @@
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
   <!-- Application name -->
+  <string name="home_screen_settings">ഹോം സ്ക്രീൻ ക്രമീകരണങ്ങൾ</string>
+  <string name="drawer_settings">ഡ്രോയർ ക്രമീകരണങ്ങൾ</string>
+  <string name="app_settings">ആപ്ലിക്കേഷൻ ക്രമീകരണങ്ങൾ</string>
   <!-- Settings states -->
+  <string name="setting_state_on">ഓൺ</string>
+  <string name="setting_state_off">ഓഫ്</string>
+  <string name="setting_state_disabled">അപ്രാപ്തമാക്കി</string>
   <!-- Folder titles -->
+  <string name="play_folder_title">പ്ലേ ചെയ്യുക</string>
   <!-- Wallpaper scroll effect -->
+  <string name="scrolling_wallpaper">വാൾപേപ്പർ സ്ക്രോൾ ചെയ്യുക</string>
   <!-- Dynamic Grid -->
+  <string name="grid_size_text">ഗ്രിഡ് വലുപ്പം</string>
+  <string name="grid_size_comfortable">സുഖകരം</string>
+  <string name="grid_size_cozy">വിശാലം</string>
+  <string name="grid_size_condensed">ചുരുങ്ങിയ</string>
+  <string name="grid_size_custom">ഇഷ്ടാനുസൃതം (<xliff:g id="rows">%1$d</xliff:g> \u00d7 <xliff:g id="columns">%2$d</xliff:g>)</string>
+  <string name="preferences_interface_homescreen_custom">കസ്റ്റം വലുപ്പം തിരഞ്ഞെടുക്കുക</string>
   <!-- Dialog -->
+  <string name="dialog_confirm">സ്ഥിരീകരിക്കുക</string>
   <!-- Home screen search bar -->
+  <string name="home_screen_search_text">തിരയൽ ബാർ</string>
   <!-- Larger icons -->
+  <string name="larger_icons_text">വലിയ ഐക്കണുകള്‍</string>
   <!-- Icon labels -->
+  <string name="icon_labels">ഐക്കൺ ലേബലുകൾ</string>
+  <string name="icon_labels_show">കാണിക്കുക</string>
+  <string name="icon_labels_hide">മറയ്‌ക്കുക</string>
   <!-- Protected apps -->
+  <string name="protected_app_settings">സംരക്ഷിത ആപ്ലിക്കേഷനുകൾ</string>
   <!-- Drawer settings -->
+  <string name="app_drawer_style">വരയ്ക്കുന്ന രീതി</string>
+  <string name="app_drawer_style_compact">കോംപാക്റ്റ്</string>
+  <string name="app_drawer_style_sections">സെക്ഷനുകൾ</string>
+  <string name="app_drawer_color">വരയ്ക്കുന്ന നിറം</string>
+  <string name="app_drawer_color_dark">കടുപ്പമേറിയത്‌</string>
+  <string name="app_drawer_color_light">ലഘുവായി</string>
+  <string name="fast_scroller">പെട്ടെന്ന് മിന്നിമായുന്നത്</string>
+  <string name="fast_scroller_type">പെട്ടെന്ന് മിന്നിമായുന്ന രീതി</string>
+  <string name="fast_scroller_type_horizontal">ചക്രവാളത്തിന്‍ സമാന്തരമായി</string>
+  <string name="fast_scroller_type_vertical">ലംബമായ</string>
   <!-- Search Manager doesn't exist -->
+  <string name="search_activity_not_found">ഒരു തിരയല്‍ നടപടി കണ്ടെത്താൻ കഴിഞ്ഞില്ല!</string>
+  <!-- App not available toast text -->
 </resources>

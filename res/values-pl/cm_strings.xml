@@ -60,4 +60,5 @@
   <string name="fast_scroller_type_vertical">Pionowo</string>
   <!-- Search Manager doesn't exist -->
   <string name="search_activity_not_found">Nie można odnaleźć aktywności związanej z wyszukiwaniem!</string>
+  <!-- App not available toast text -->
 </resources>

@@ -60,4 +60,5 @@
   <string name="fast_scroller_type_vertical">Вертыкальнае</string>
   <!-- Search Manager doesn't exist -->
   <string name="search_activity_not_found">Немагчыма запусціць дадатак пошуку!</string>
+  <!-- App not available toast text -->
 </resources>

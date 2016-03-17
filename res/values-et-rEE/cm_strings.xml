@@ -60,4 +60,5 @@
   <string name="fast_scroller_type_vertical">Vertikaalne</string>
   <!-- Search Manager doesn't exist -->
   <string name="search_activity_not_found">Otsimise tegevusala ei leitud!</string>
+  <!-- App not available toast text -->
 </resources>

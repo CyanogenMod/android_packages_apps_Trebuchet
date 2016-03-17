@@ -60,4 +60,5 @@
   <string name="fast_scroller_type_vertical">Függőleges</string>
   <!-- Search Manager doesn't exist -->
   <string name="search_activity_not_found">Keresési tevékenység nem található!</string>
+  <!-- App not available toast text -->
 </resources>

@@ -17,15 +17,48 @@
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
   <!-- Application name -->
+  <string name="home_screen_settings">হোম স্ক্ৰীণ ছেটিংচ</string>
+  <string name="drawer_settings">ড্ৰৱাৰ ছেটিংচ</string>
+  <string name="app_settings">এপ্প্‌ ছেটিংচ</string>
   <!-- Settings states -->
+  <string name="setting_state_on">খোলা</string>
+  <string name="setting_state_off">অফ</string>
+  <string name="setting_state_disabled">নিস্ক্ৰিয়</string>
   <!-- Folder titles -->
+  <string name="play_folder_title">চলাওঁক</string>
   <!-- Wallpaper scroll effect -->
+  <string name="scrolling_wallpaper">স্ক্ৰ\'ল ৱালপেপাৰ</string>
   <!-- Dynamic Grid -->
+  <string name="grid_size_text">গ্ৰীডৰ আকাৰ</string>
+  <string name="grid_size_comfortable">আৰামদায়ক</string>
+  <string name="grid_size_cozy">ক\'জি</string>
+  <string name="grid_size_condensed">কণ্ডেনচড</string>
+  <string name="grid_size_custom">কাষ্টম (<xliff:g id="rows">%1$d</xliff:g> \u00d7 <xliff:g id="columns">%2$d</xliff:g>)</string>
+  <string name="preferences_interface_homescreen_custom">কাষ্টম আকাৰ চয়ন কৰক</string>
   <!-- Dialog -->
+  <string name="dialog_confirm">নিশ্চিত কৰা</string>
   <!-- Home screen search bar -->
+  <string name="home_screen_search_text">অনুসনআধান বাৰ</string>
   <!-- Larger icons -->
+  <string name="larger_icons_text">ডাঙৰ আইকনসমূহ</string>
   <!-- Icon labels -->
+  <string name="icon_labels">আইকন লেবেল</string>
+  <string name="icon_labels_show">দেখুৱাওঁক</string>
+  <string name="icon_labels_hide">লুকুৱা</string>
   <!-- Protected apps -->
+  <string name="protected_app_settings">প্ৰতিৰোধী এপ্প্</string>
   <!-- Drawer settings -->
+  <string name="app_drawer_style">ড্ৰৱাৰ ষ্টাইল</string>
+  <string name="app_drawer_style_compact">কম্পেক্ট</string>
+  <string name="app_drawer_style_sections">শাখা</string>
+  <string name="app_drawer_color">ড্ৰৱাৰ ৰং</string>
+  <string name="app_drawer_color_dark">আন্ধাৰ</string>
+  <string name="app_drawer_color_light">পোহৰ</string>
+  <string name="fast_scroller">দ্ৰুত স্ক্ৰ\'লাৰ</string>
+  <string name="fast_scroller_type">দ্ৰুত স্ক্ৰ\'লাৰ প্ৰকাৰ</string>
+  <string name="fast_scroller_type_horizontal">অনুভূমিক</string>
+  <string name="fast_scroller_type_vertical">উলম্ব</string>
   <!-- Search Manager doesn't exist -->
+  <string name="search_activity_not_found">এটা অনুসন্ধান কাৰ্যকলাপ পোৱা নগ\'ল!</string>
+  <!-- App not available toast text -->
 </resources>

@@ -60,4 +60,5 @@
   <string name="fast_scroller_type_vertical">垂直</string>
   <!-- Search Manager doesn't exist -->
   <string name="search_activity_not_found">无法找到搜索活动！</string>
+  <!-- App not available toast text -->
 </resources>
