@@ -485,7 +485,23 @@ public class AllAppsContainerView extends BaseContainerView implements DragSourc
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
-        return handleTouchEvent(ev);
+        int y = (int) ev.getY();
+        int[] location = new int[2];
+        int height = 0;
+
+        // Ignore the touch if it is below scrubber (if enabled) or below app recycler view
+        if (useScroller() && useScrubber()) {
+            mScrubber.getLocationInWindow(location);
+            height = mScrubber.getHeight();
+        } else {
+            mAppsRecyclerView.getLocationInWindow(location);
+            height = mAppsRecyclerView.getHeight();
+        }
+        if (y >= location[1] + height) {
+            return true;
+        } else {
+            return handleTouchEvent(ev);
+        }
     }
 
     @SuppressLint("ClickableViewAccessibility")
