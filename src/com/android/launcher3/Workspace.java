@@ -4375,7 +4375,9 @@ public class Workspace extends PagedView
                 final int N = folderPagedView.getItemCount();
                 for (int page = 0; page < N; page++) {
                     final CellLayout cellLayout = folderPagedView.getPageAt(page);
-                    updateUnvailableItemsInCellLayout(cellLayout, packages);
+                    if (cellLayout != null) {
+                        updateUnvailableItemsInCellLayout(cellLayout, packages);
+                    }
                 }
                 folder.invalidate();
             }
