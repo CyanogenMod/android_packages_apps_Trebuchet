@@ -61,4 +61,5 @@
   <!-- Search Manager doesn't exist -->
   <string name="search_activity_not_found">ไม่พบกิจกรรมการค้นหา!</string>
   <!-- App not available toast text -->
+  <string name="app_not_available">ไม่สามารถใช้งานแอปได้</string>
 </resources>

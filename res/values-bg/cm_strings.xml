@@ -49,8 +49,8 @@
   <string name="protected_app_settings">Защитени приложения</string>
   <!-- Drawer settings -->
   <string name="app_drawer_style">Стил на менюто</string>
-  <string name="app_drawer_style_compact">Компактно</string>
-  <string name="app_drawer_style_sections">Разделено</string>
+  <string name="app_drawer_style_compact">Компактен</string>
+  <string name="app_drawer_style_sections">Разделен</string>
   <string name="app_drawer_color">Цвят на менюто за известия</string>
   <string name="app_drawer_color_dark">Тъмно</string>
   <string name="app_drawer_color_light">Светло</string>
@@ -61,4 +61,5 @@
   <!-- Search Manager doesn't exist -->
   <string name="search_activity_not_found">Не може да бъде намерено приложението за търсене!</string>
   <!-- App not available toast text -->
+  <string name="app_not_available">Приложението не е налично</string>
 </resources>

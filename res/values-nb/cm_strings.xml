@@ -54,6 +54,8 @@
   <string name="app_drawer_color">Skuff farge</string>
   <string name="app_drawer_color_dark">Mørk</string>
   <string name="app_drawer_color_light">Lys</string>
+  <string name="fast_scroller">Rask rulling</string>
+  <string name="fast_scroller_type">Rask rulling type</string>
   <string name="fast_scroller_type_horizontal">Vannrett</string>
   <string name="fast_scroller_type_vertical">Loddrett</string>
   <!-- Search Manager doesn't exist -->

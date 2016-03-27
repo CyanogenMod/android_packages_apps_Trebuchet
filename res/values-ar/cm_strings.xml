@@ -48,8 +48,18 @@
   <!-- Protected apps -->
   <string name="protected_app_settings">التطبيقات المحمية</string>
   <!-- Drawer settings -->
+  <string name="app_drawer_style">نمط الرسام</string>
+  <string name="app_drawer_style_compact">ضغط</string>
+  <string name="app_drawer_style_sections">الأقسام</string>
+  <string name="app_drawer_color">لون الرسام</string>
+  <string name="app_drawer_color_dark">داكن</string>
+  <string name="app_drawer_color_light">فاتح</string>
+  <string name="fast_scroller">ممرر سريع</string>
+  <string name="fast_scroller_type">نوع ممرر سريع</string>
+  <string name="fast_scroller_type_horizontal">أفقي</string>
   <string name="fast_scroller_type_vertical">رأسي</string>
   <!-- Search Manager doesn't exist -->
   <string name="search_activity_not_found">لا يمكن العثور على نشاط بحثي!</string>
   <!-- App not available toast text -->
+  <string name="app_not_available">التطبيق غير متاح</string>
 </resources>

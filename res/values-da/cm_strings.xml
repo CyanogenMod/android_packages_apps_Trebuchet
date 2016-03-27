@@ -48,8 +48,18 @@
   <!-- Protected apps -->
   <string name="protected_app_settings">Beskyttede apps</string>
   <!-- Drawer settings -->
+  <string name="app_drawer_style">Oversigtsstil</string>
+  <string name="app_drawer_style_compact">Kompakt</string>
+  <string name="app_drawer_style_sections">Sektioner</string>
+  <string name="app_drawer_color">Oversigtsfarve</string>
+  <string name="app_drawer_color_dark">Mørk</string>
+  <string name="app_drawer_color_light">Lys</string>
+  <string name="fast_scroller">Hurtig scroller</string>
+  <string name="fast_scroller_type">Hurtig scrollertype</string>
+  <string name="fast_scroller_type_horizontal">Vandret</string>
   <string name="fast_scroller_type_vertical">Lodret</string>
   <!-- Search Manager doesn't exist -->
   <string name="search_activity_not_found">En funktion til søgning findes ikke!</string>
   <!-- App not available toast text -->
+  <string name="app_not_available">App ikke tilgængelig</string>
 </resources>

@@ -61,4 +61,5 @@
   <!-- Search Manager doesn't exist -->
   <string name="search_activity_not_found">\'n Soektog aktiwiteit kon nie gevind word nie!</string>
   <!-- App not available toast text -->
+  <string name="app_not_available">Toep nie beskikbaar nie</string>
 </resources>
