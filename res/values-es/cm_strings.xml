@@ -61,4 +61,5 @@
   <!-- Search Manager doesn't exist -->
   <string name="search_activity_not_found">¡No se pudo encontrar un asistente de búsqueda!</string>
   <!-- App not available toast text -->
+  <string name="app_not_available">Aplicación no disponible</string>
 </resources>

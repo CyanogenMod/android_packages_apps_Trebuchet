@@ -61,4 +61,5 @@
   <!-- Search Manager doesn't exist -->
   <string name="search_activity_not_found">Hakuhistoriaa ei löytynyt!</string>
   <!-- App not available toast text -->
+  <string name="app_not_available">Sovellus ei käytettävissä</string>
 </resources>
