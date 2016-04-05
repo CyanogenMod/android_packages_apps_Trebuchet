@@ -18,7 +18,7 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
   <!-- Application name -->
   <string name="home_screen_settings">הגדרות מסך הבית</string>
-  <string name="drawer_settings">הגדרות מגירת יישומים</string>
+  <string name="drawer_settings">הגדרות חלונית יישומים</string>
   <string name="app_settings">הגדרות יישום</string>
   <!-- Settings states -->
   <string name="setting_state_on">מופעל</string>
@@ -48,10 +48,10 @@
   <!-- Protected apps -->
   <string name="protected_app_settings">יישומים מוגנים</string>
   <!-- Drawer settings -->
-  <string name="app_drawer_style">סגנון מגירת יישומים</string>
+  <string name="app_drawer_style">סגנון חלונית יישומים</string>
   <string name="app_drawer_style_compact">קומפקטי</string>
   <string name="app_drawer_style_sections">חלקים</string>
-  <string name="app_drawer_color">צבע מגירת היישומים</string>
+  <string name="app_drawer_color">צבע חלונית יישומים</string>
   <string name="app_drawer_color_dark">כהה</string>
   <string name="app_drawer_color_light">בהיר</string>
   <string name="fast_scroller">גלילה מהירה</string>

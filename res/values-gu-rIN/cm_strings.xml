@@ -61,4 +61,5 @@
   <!-- Search Manager doesn't exist -->
   <string name="search_activity_not_found">સર્ચ પ્રવૃત્તિ મળી ન શકી!</string>
   <!-- App not available toast text -->
+  <string name="app_not_available">એપ્લિકેશન ઉપલબ્ધ નથી</string>
 </resources>
