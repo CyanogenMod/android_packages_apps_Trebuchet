@@ -18,7 +18,7 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
   <!-- Application name -->
   <string name="home_screen_settings">CONFIGURAÇÕES DA TELA DE INÍCIO</string>
-  <string name="drawer_settings">CONFIGURAÇÕES DA GAVETA APLICAÇÕES</string>
+  <string name="drawer_settings">CONFIGURAÇÕES DA GAVETA</string>
   <string name="app_settings">CONFIGURAÇÕES DE APLICATIVO</string>
   <!-- Settings states -->
   <string name="setting_state_on">LIG</string>
