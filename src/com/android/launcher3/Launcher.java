@@ -523,7 +523,6 @@ public class Launcher extends Activity
         mAppWidgetManager = AppWidgetManagerCompat.getInstance(this);
 
         mAppWidgetHost = new LauncherAppWidgetHost(this, APPWIDGET_HOST_ID);
-        mAppWidgetHost.startListening();
 
         if (sRemoteFolderManager == null) {
             sRemoteFolderManager = new RemoteFolderManager(this);
@@ -1099,6 +1098,8 @@ public class Launcher extends Activity
         if (mLauncherCallbacks != null) {
             mLauncherCallbacks.onStart();
         }
+        // If AppwidgetService failed to bind in onCreate, this will attempt binding again.
+        onAppWidgetHostReset();
     }
 
     @Override

@@ -21,6 +21,7 @@ import android.appwidget.AppWidgetHostView;
 import android.appwidget.AppWidgetProviderInfo;
 import android.content.Context;
 import android.os.TransactionTooLargeException;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -69,6 +70,7 @@ public class LauncherAppWidgetHost extends AppWidgetHost {
         try {
             super.startListening();
         } catch (Exception e) {
+            /*
             if (e.getCause() instanceof TransactionTooLargeException) {
                 // We're willing to let this slide. The exception is being caused by the list of
                 // RemoteViews which is being passed back. The startListening relationship will
@@ -76,7 +78,10 @@ public class LauncherAppWidgetHost extends AppWidgetHost {
                 // widgets upon bind anyway. See issue 14255011 for more context.
             } else {
                 throw new RuntimeException(e);
-            }
+            }*/
+            // If we can't bind to the app widget service, move on. We will retry at the next
+            // onStart().
+            Log.e("LauncherAppWidgetHost", "Error binding to IAppWidgetService", e);
         }
     }
 
