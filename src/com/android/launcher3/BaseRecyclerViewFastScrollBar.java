@@ -140,6 +140,10 @@ public class BaseRecyclerViewFastScrollBar {
             if ((mFastScrollMode & FAST_SCROLL_FOCUS_DIMMABLE) == 0) {
                 return;
             }
+            // Clean up the previous dim animator
+            if (mFastScrollDimAnimator != null) {
+                mFastScrollDimAnimator.cancel();
+            }
 
             if (!animated) {
                 mFastScrollDimmed = dimmed;
@@ -147,10 +151,6 @@ public class BaseRecyclerViewFastScrollBar {
             } else  if (mFastScrollDimmed != dimmed) {
                 mFastScrollDimmed = dimmed;
 
-                // Clean up the previous dim animator
-                if (mFastScrollDimAnimator != null) {
-                    mFastScrollDimAnimator.cancel();
-                }
                 mFastScrollDimAnimator = ObjectAnimator.ofFloat(mView, View.ALPHA, dimmed ? 0.4f : 1f);
                 mFastScrollDimAnimator.setDuration(dimmed ?
                         FAST_SCROLL_FOCUS_FADE_IN_DURATION : FAST_SCROLL_FOCUS_FADE_OUT_DURATION);
