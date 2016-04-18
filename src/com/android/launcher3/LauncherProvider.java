@@ -69,7 +69,7 @@ public class LauncherProvider extends ContentProvider {
     private static final String TAG = "LauncherProvider";
     private static final boolean LOGD = false;
 
-    private static final int DATABASE_VERSION = 28;
+    private static final int DATABASE_VERSION = 29;
 
     public static final String AUTHORITY = ProviderConfig.AUTHORITY;
 
@@ -796,6 +796,11 @@ public class LauncherProvider extends ContentProvider {
                         // Old version remains, which means we wipe old data
                         break;
                     }
+                }
+                case 29: {
+                    migrateLauncherFavorite(db, "com.cyngn.dialer", "com.android.dialer",
+                            "com.android.dialer.DialtactsActivity",
+                            "com.android.dialer.DialtactsActivity");
                     return;
                 }
             }
