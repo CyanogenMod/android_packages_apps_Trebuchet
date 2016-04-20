@@ -16,37 +16,53 @@
      limitations under the License.
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <!-- Application name -->
+  <!-- App version -->
   <string name="home_screen_settings">SETĂRI ECRAN PRINCIPAL</string>
   <string name="drawer_settings">SETĂRI ECRAN APLICAȚII</string>
   <string name="app_settings">SETĂRI APLICAȚIE</string>
+  <!-- Settings states -->
   <string name="setting_state_on">ACTIV</string>
   <string name="setting_state_off">INACTIV</string>
+  <!-- Themes button -->
   <string name="themes_button_text">Teme</string>
   <string name="scrolling_page_outlines">Contururi pagină</string>
   <string name="scrolling_fade_adjacent">Estompează paginile secundare</string>
+  <!-- Wallpaper scroll effect -->
   <string name="scrolling_wallpaper">Scroll-ează fundal</string>
+  <!-- Dynamic Grid -->
   <string name="grid_size_text">Dimensiune grilă</string>
   <string name="grid_size_comfortable">Confortabil</string>
   <string name="grid_size_cozy">Comod</string>
   <string name="grid_size_condensed">Condensat</string>
   <string name="grid_size_custom">Particularizat (<xliff:g id="rows">%1$d</xliff:g> \u00d7 <xliff:g id="columns">%2$d</xliff:g>)</string>
   <string name="preferences_interface_homescreen_custom">Selectare dimensiune particularizată</string>
+  <!-- Folder titles -->
   <string name="play_folder_title">Play</string>
+  <!-- Scroll effect -->
   <string name="scroll_effect_text">Efect scroll</string>
+  <!-- Drawer sorting mode -->
   <string name="drawer_sorting_text">Mod sortare</string>
   <string name="sort_mode_title">Titlu</string>
   <string name="sort_mode_launch_count">Numărare lansare</string>
   <string name="sort_mode_install_time">Timp de instalare</string>
+  <!-- Home screen search bar -->
   <string name="home_screen_search_text">Bară de căutare</string>
+  <!-- Larger icons -->
   <string name="larger_icons_text">Icon-uri mai mari</string>
+  <!-- Icon labels -->
   <string name="icon_labels">Etichete icon-uri</string>
   <string name="icon_labels_show">Arată</string>
   <string name="icon_labels_hide">Ascunde</string>
+  <!-- Protected apps -->
   <string name="protected_app_settings">Aplicații protejate</string>
+  <!-- Dialog -->
   <string name="dialog_confirm">Confirmă</string>
+  <!-- Drawer type -->
   <string name="drawer_type">Aspect</string>
   <string name="drawer_type_drawer">Vertical</string>
   <string name="drawer_type_pager">Paginat</string>
   <string name="setting_state_disabled">DEZACTIVAT</string>
+  <!-- Search Manager doesn't exist -->
   <string name="search_activity_not_found">Imposibil de găsit o activitate de căutare!</string>
 </resources>

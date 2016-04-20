@@ -16,37 +16,53 @@
      limitations under the License.
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <!-- Application name -->
+  <!-- App version -->
   <string name="home_screen_settings">NASTAVENIA DOMOVSKEJ OBRAZOVKY</string>
   <string name="drawer_settings">NASTAVENIA PONUKY</string>
   <string name="app_settings">NASTAVENIA APLIKÁCIÍ</string>
+  <!-- Settings states -->
   <string name="setting_state_on">Zapnuté</string>
   <string name="setting_state_off">VYPNUTÉ</string>
+  <!-- Themes button -->
   <string name="themes_button_text">Témy</string>
   <string name="scrolling_page_outlines">Obrysy stránky</string>
   <string name="scrolling_fade_adjacent">Stmavnuté bočné strany</string>
+  <!-- Wallpaper scroll effect -->
   <string name="scrolling_wallpaper">Posun tapety</string>
+  <!-- Dynamic Grid -->
   <string name="grid_size_text">Veľkosť mriežky</string>
   <string name="grid_size_comfortable">Pohodlná</string>
   <string name="grid_size_cozy">Útulná</string>
   <string name="grid_size_condensed">Zhustená</string>
   <string name="grid_size_custom">Vlastná (<xliff:g id="rows">%1$d</xliff:g> \u00d7 <xliff:g id="columns">%2$d</xliff:g>)</string>
   <string name="preferences_interface_homescreen_custom">Vyberte vlastnú veľkosť</string>
+  <!-- Folder titles -->
   <string name="play_folder_title">Play</string>
+  <!-- Scroll effect -->
   <string name="scroll_effect_text">Efekt posunu</string>
+  <!-- Drawer sorting mode -->
   <string name="drawer_sorting_text">Režim triedenia</string>
   <string name="sort_mode_title">Názov</string>
   <string name="sort_mode_launch_count">Počet spustení</string>
   <string name="sort_mode_install_time">Čas inštalácie</string>
+  <!-- Home screen search bar -->
   <string name="home_screen_search_text">Vyhľadávací panel</string>
+  <!-- Larger icons -->
   <string name="larger_icons_text">Väčšie ikony</string>
+  <!-- Icon labels -->
   <string name="icon_labels">Menovky ikon</string>
   <string name="icon_labels_show">Zobraziť</string>
   <string name="icon_labels_hide">Skryť</string>
+  <!-- Protected apps -->
   <string name="protected_app_settings">Chránené aplikácie</string>
+  <!-- Dialog -->
   <string name="dialog_confirm">Potvrdiť</string>
+  <!-- Drawer type -->
   <string name="drawer_type">Rozloženie</string>
   <string name="drawer_type_drawer">Zvislé</string>
   <string name="drawer_type_pager">Stránkované</string>
   <string name="setting_state_disabled">ZAKÁZANÉ</string>
+  <!-- Search Manager doesn't exist -->
   <string name="search_activity_not_found">Aktivita vyhľadávania sa nenašla!</string>
 </resources>

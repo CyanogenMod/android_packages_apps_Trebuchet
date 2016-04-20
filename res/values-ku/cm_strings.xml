@@ -16,30 +16,46 @@
      limitations under the License.
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <!-- Application name -->
+  <!-- App version -->
   <string name="home_screen_settings">رێکخستنی ڕوونمای سەرەکی</string>
   <string name="drawer_settings">ڕێکخستنی کێشان</string>
   <string name="app_settings">ڕێکخستنەکانی بەرنامە</string>
+  <!-- Settings states -->
   <string name="setting_state_on">هەڵگیرساو</string>
   <string name="setting_state_off">کووژاوە</string>
+  <!-- Themes button -->
   <string name="themes_button_text">رووکارەکان</string>
   <string name="scrolling_page_outlines">ده‌رهێڵی لاپه‌ڕه‌</string>
   <string name="scrolling_fade_adjacent">کاڵبوونه‌وه‌ی لاپه‌ڕه‌ هێڵ</string>
+  <!-- Wallpaper scroll effect -->
   <string name="scrolling_wallpaper">بابۆڵه‌کردنی سه‌رڕوونما</string>
+  <!-- Dynamic Grid -->
   <string name="grid_size_text">قه‌باره‌ی تۆڕ</string>
   <string name="grid_size_comfortable">ئاسووده‌</string>
   <string name="grid_size_cozy">پێدانی ئاسوده‌یی</string>
   <string name="grid_size_condensed">خه‌ستکراو</string>
   <string name="preferences_interface_homescreen_custom">دیاریکردنی قه‌باره‌ی خوازراو</string>
+  <!-- Folder titles -->
+  <!-- Scroll effect -->
   <string name="scroll_effect_text">کاریگه‌ری بابۆڵه‌کردن</string>
+  <!-- Drawer sorting mode -->
   <string name="drawer_sorting_text">جۆری پۆڵێنکردن</string>
   <string name="sort_mode_title">ناونیشان</string>
   <string name="sort_mode_launch_count">دانانی هه‌ژمار</string>
   <string name="sort_mode_install_time">کاتی دامەزراندن</string>
+  <!-- Home screen search bar -->
   <string name="home_screen_search_text">شریتی گەڕان</string>
+  <!-- Larger icons -->
   <string name="larger_icons_text">وێنۆچکەی گەورەتر</string>
+  <!-- Icon labels -->
   <string name="icon_labels">ته‌خته‌ی وێنۆچکه‌کان</string>
   <string name="icon_labels_show">پیشاندان</string>
   <string name="icon_labels_hide">شاردنەوە</string>
+  <!-- Protected apps -->
   <string name="protected_app_settings">بەرنامە پارێزراوەکان</string>
+  <!-- Dialog -->
   <string name="dialog_confirm">دلنیاکردنەوە</string>
+  <!-- Drawer type -->
+  <!-- Search Manager doesn't exist -->
 </resources>

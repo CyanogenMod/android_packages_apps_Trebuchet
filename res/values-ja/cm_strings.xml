@@ -16,37 +16,53 @@
      limitations under the License.
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <!-- Application name -->
+  <!-- App version -->
   <string name="home_screen_settings">ホーム画面の設定</string>
   <string name="drawer_settings">ドロワーの設定</string>
   <string name="app_settings">アプリの設定</string>
+  <!-- Settings states -->
   <string name="setting_state_on">ON</string>
   <string name="setting_state_off">OFF</string>
+  <!-- Themes button -->
   <string name="themes_button_text">テーマ</string>
   <string name="scrolling_page_outlines">ページの外枠</string>
   <string name="scrolling_fade_adjacent">側面のページをフェード</string>
+  <!-- Wallpaper scroll effect -->
   <string name="scrolling_wallpaper">壁紙をスクロール</string>
+  <!-- Dynamic Grid -->
   <string name="grid_size_text">グリッドサイズ</string>
   <string name="grid_size_comfortable">Comfortable</string>
   <string name="grid_size_cozy">Cozy</string>
   <string name="grid_size_condensed">Condensed</string>
   <string name="grid_size_custom">カスタム（<xliff:g id="rows">%1$d</xliff:g> \u00d7 <xliff:g id="columns">%2$d</xliff:g>）</string>
   <string name="preferences_interface_homescreen_custom">カスタムのサイズを選択</string>
+  <!-- Folder titles -->
   <string name="play_folder_title">Play</string>
+  <!-- Scroll effect -->
   <string name="scroll_effect_text">スクロール効果</string>
+  <!-- Drawer sorting mode -->
   <string name="drawer_sorting_text">並べ替えモード</string>
   <string name="sort_mode_title">タイトル</string>
   <string name="sort_mode_launch_count">起動回数</string>
   <string name="sort_mode_install_time">インストール日時</string>
+  <!-- Home screen search bar -->
   <string name="home_screen_search_text">検索バー</string>
+  <!-- Larger icons -->
   <string name="larger_icons_text">大きいアイコン</string>
+  <!-- Icon labels -->
   <string name="icon_labels">アイコンラベル</string>
   <string name="icon_labels_show">表示する</string>
   <string name="icon_labels_hide">表示しない</string>
+  <!-- Protected apps -->
   <string name="protected_app_settings">アプリの保護</string>
+  <!-- Dialog -->
   <string name="dialog_confirm">確認</string>
+  <!-- Drawer type -->
   <string name="drawer_type">レイアウト</string>
   <string name="drawer_type_drawer">縦</string>
   <string name="drawer_type_pager">ページ</string>
   <string name="setting_state_disabled">無効</string>
+  <!-- Search Manager doesn't exist -->
   <string name="search_activity_not_found">検索アクティビティが見つかりませんでした。</string>
 </resources>

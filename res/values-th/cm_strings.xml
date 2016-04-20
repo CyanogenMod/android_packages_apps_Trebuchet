@@ -16,37 +16,53 @@
      limitations under the License.
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <!-- Application name -->
+  <!-- App version -->
   <string name="home_screen_settings">การตั้งค่าหน้าจอหลัก</string>
   <string name="drawer_settings">การตั้งค่าแผงแสดงแอป</string>
   <string name="app_settings">การตั้งค่าแอป</string>
+  <!-- Settings states -->
   <string name="setting_state_on">เปิด</string>
   <string name="setting_state_off">ปิด</string>
+  <!-- Themes button -->
   <string name="themes_button_text">ชุดรูปแบบ</string>
   <string name="scrolling_page_outlines">โครงร่างเพจ</string>
   <string name="scrolling_fade_adjacent">จางลงจากหน้าด้านข้าง</string>
+  <!-- Wallpaper scroll effect -->
   <string name="scrolling_wallpaper">เลื่อนภาพพื้นหลัง</string>
+  <!-- Dynamic Grid -->
   <string name="grid_size_text">ขนาดกริด</string>
   <string name="grid_size_comfortable">สะดวก</string>
   <string name="grid_size_cozy">โคซี่</string>
   <string name="grid_size_condensed">บีบ</string>
   <string name="grid_size_custom">กำหนดเอง  (<xliff:g id="rows">%1$d</xliff:g> \u00d7 <xliff:g id="columns">%2$d</xliff:g>)</string>
   <string name="preferences_interface_homescreen_custom">เลือกขนาดที่กำหนดเอง</string>
+  <!-- Folder titles -->
   <string name="play_folder_title">เล่น</string>
+  <!-- Scroll effect -->
   <string name="scroll_effect_text">เอฟเฟกต์การเลื่อน</string>
+  <!-- Drawer sorting mode -->
   <string name="drawer_sorting_text">โหมดการแยกประเภท</string>
   <string name="sort_mode_title">ชื่อเรื่อง</string>
   <string name="sort_mode_launch_count">ตัวนับครั้งการเปิด</string>
   <string name="sort_mode_install_time">เวลาติดตั้ง</string>
+  <!-- Home screen search bar -->
   <string name="home_screen_search_text">แถบค้นหา</string>
+  <!-- Larger icons -->
   <string name="larger_icons_text">ไอคอนใหญ่ขึ้น</string>
+  <!-- Icon labels -->
   <string name="icon_labels">ป้ายชื่อไอคอน</string>
   <string name="icon_labels_show">แสดง</string>
   <string name="icon_labels_hide">ซ่อน</string>
+  <!-- Protected apps -->
   <string name="protected_app_settings">แอปที่ได้รับการปกป้อง</string>
+  <!-- Dialog -->
   <string name="dialog_confirm">ยืนยัน</string>
+  <!-- Drawer type -->
   <string name="drawer_type">การจัดวาง</string>
   <string name="drawer_type_drawer">แนวตั้ง</string>
   <string name="drawer_type_pager">หน้า</string>
   <string name="setting_state_disabled">ปิดการใช้งาน</string>
+  <!-- Search Manager doesn't exist -->
   <string name="search_activity_not_found">ไม่พบกิจกรรมการค้นหา!</string>
 </resources>

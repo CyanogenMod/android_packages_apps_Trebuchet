@@ -16,37 +16,53 @@
      limitations under the License.
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <!-- Application name -->
+  <!-- App version -->
   <string name="home_screen_settings">KEZDŐKÉPERNYŐ BEÁLLÍTÁSOK</string>
   <string name="drawer_settings">ALKALMAZÁSKÉPERNYŐ BEÁLLÍTÁSOK</string>
   <string name="app_settings">ALKALMAZÁS BEÁLLÍTÁSAI</string>
+  <!-- Settings states -->
   <string name="setting_state_on">BE</string>
   <string name="setting_state_off">KI</string>
+  <!-- Themes button -->
   <string name="themes_button_text">Témák</string>
   <string name="scrolling_page_outlines">Oldal körvonalak</string>
   <string name="scrolling_fade_adjacent">Elhalványuló váltás az oldalak közt</string>
+  <!-- Wallpaper scroll effect -->
   <string name="scrolling_wallpaper">Háttérkép görgetése</string>
+  <!-- Dynamic Grid -->
   <string name="grid_size_text">Rácsméret</string>
   <string name="grid_size_comfortable">Kényelmes</string>
   <string name="grid_size_cozy">Hangulatos</string>
   <string name="grid_size_condensed">Tömörített</string>
   <string name="grid_size_custom">Egyéni (<xliff:g id="rows">%1$d</xliff:g> \u00d7 <xliff:g id="columns">%2$d</xliff:g>)</string>
   <string name="preferences_interface_homescreen_custom">Válassza ki az egyéni méretet</string>
+  <!-- Folder titles -->
   <string name="play_folder_title">Play</string>
+  <!-- Scroll effect -->
   <string name="scroll_effect_text">Görgetés effekt</string>
+  <!-- Drawer sorting mode -->
   <string name="drawer_sorting_text">Rendezési mód</string>
   <string name="sort_mode_title">Név</string>
   <string name="sort_mode_launch_count">Indítások száma</string>
   <string name="sort_mode_install_time">Telepítés ideje</string>
+  <!-- Home screen search bar -->
   <string name="home_screen_search_text">Keresési sáv</string>
+  <!-- Larger icons -->
   <string name="larger_icons_text">Nagyobb ikonok</string>
+  <!-- Icon labels -->
   <string name="icon_labels">Ikon feliratok</string>
   <string name="icon_labels_show">Megjelenítés</string>
   <string name="icon_labels_hide">Elrejtés</string>
+  <!-- Protected apps -->
   <string name="protected_app_settings">Védett alkalmazások</string>
+  <!-- Dialog -->
   <string name="dialog_confirm">Megerősítés</string>
+  <!-- Drawer type -->
   <string name="drawer_type">Kinézet</string>
   <string name="drawer_type_drawer">Függőleges</string>
   <string name="drawer_type_pager">Lapozható</string>
   <string name="setting_state_disabled">LETILTVA</string>
+  <!-- Search Manager doesn't exist -->
   <string name="search_activity_not_found">Keresési tevékenység nem található!</string>
 </resources>

@@ -16,37 +16,53 @@
      limitations under the License.
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <!-- Application name -->
+  <!-- App version -->
   <string name="home_screen_settings">POSTAVKE POČETNOG ZASLONA</string>
   <string name="drawer_settings">POSTAVKE LADICE</string>
   <string name="app_settings">POSTAVKE APLIKACIJA</string>
+  <!-- Settings states -->
   <string name="setting_state_on">UKLJUČENO</string>
   <string name="setting_state_off">ISKLJUČENO</string>
+  <!-- Themes button -->
   <string name="themes_button_text">Teme</string>
   <string name="scrolling_page_outlines">Obrisi stranica</string>
   <string name="scrolling_fade_adjacent">Zamagli krajeve stranica</string>
+  <!-- Wallpaper scroll effect -->
   <string name="scrolling_wallpaper">Klizanje pozadine</string>
+  <!-- Dynamic Grid -->
   <string name="grid_size_text">Veličina rešetke</string>
   <string name="grid_size_comfortable">Udoban</string>
   <string name="grid_size_cozy">Udobno</string>
   <string name="grid_size_condensed">Kondenzirano</string>
   <string name="grid_size_custom">Prilagođeno (<xliff:g id="rows">%1$d </xliff:g> \u00d7 <xliff:g id="columns">%2$d </xliff:g>)</string>
   <string name="preferences_interface_homescreen_custom">Odabir prilagođene veličine</string>
+  <!-- Folder titles -->
   <string name="play_folder_title">Sviraj</string>
+  <!-- Scroll effect -->
   <string name="scroll_effect_text">Efekt pomicanja</string>
+  <!-- Drawer sorting mode -->
   <string name="drawer_sorting_text">Razvrstavanja</string>
   <string name="sort_mode_title">Naslov</string>
   <string name="sort_mode_launch_count">Broj pokretanja</string>
   <string name="sort_mode_install_time">Datum instaliranja</string>
+  <!-- Home screen search bar -->
   <string name="home_screen_search_text">Traka za pretraživanje</string>
+  <!-- Larger icons -->
   <string name="larger_icons_text">Veće ikone</string>
+  <!-- Icon labels -->
   <string name="icon_labels">Oznake ikona</string>
   <string name="icon_labels_show">Pokaži</string>
   <string name="icon_labels_hide">Sakrij</string>
+  <!-- Protected apps -->
   <string name="protected_app_settings">Zaštićene aplikacije</string>
+  <!-- Dialog -->
   <string name="dialog_confirm">Potvrdi</string>
+  <!-- Drawer type -->
   <string name="drawer_type">Izgled</string>
   <string name="drawer_type_drawer">Okomito</string>
   <string name="drawer_type_pager">Prema stranici</string>
   <string name="setting_state_disabled">ONEMOGUĆENO</string>
+  <!-- Search Manager doesn't exist -->
   <string name="search_activity_not_found">Aktivnosti pretraživanja nije moguće pronaći.</string>
 </resources>

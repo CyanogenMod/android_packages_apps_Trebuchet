@@ -16,37 +16,53 @@
      limitations under the License.
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <!-- Application name -->
+  <!-- App version -->
   <string name="home_screen_settings">ಹೋಮ್ ಪರದೆ ಸೆಟ್ಟಿಂಗ್ಸ್</string>
   <string name="drawer_settings">ಡ್ರಾ ಸೆಟ್ಟಿಂಗ್ಸ್</string>
   <string name="app_settings">ಆಪ್ ಸೆಟ್ಟಿಂಗ್ಸ್</string>
+  <!-- Settings states -->
   <string name="setting_state_on">ಆನ್</string>
   <string name="setting_state_off">ಆಫ್</string>
+  <!-- Themes button -->
   <string name="themes_button_text">ಥೀಮ್ಸ್</string>
   <string name="scrolling_page_outlines">ಪುಟ ರೂಪರೇಖೆ</string>
   <string name="scrolling_fade_adjacent">ಬದಿ ಪುಟಗಳನ್ನು ಫೇಡ್‍ಮಾಡು</string>
+  <!-- Wallpaper scroll effect -->
   <string name="scrolling_wallpaper">ವಾಲ್‍ಪೇಪರ್ ಸ್ಕ್ರೋಲ್ ಮಾಡು</string>
+  <!-- Dynamic Grid -->
   <string name="grid_size_text">ಗ್ರಿಡ್ ಗಾತ್ರ</string>
   <string name="grid_size_comfortable">ಆರಾಮದಾಯಕ</string>
   <string name="grid_size_cozy">ಅನುಕೂಲಕರ</string>
   <string name="grid_size_condensed">ಸಾಂದ್ರೀಕೃತ</string>
   <string name="grid_size_custom">ಕಸ್ಟಮ್ (<xliff:g id="rows">%1$d</xliff:g> \u00d7 <xliff:g id="columns">%2$d</xliff:g>)</string>
   <string name="preferences_interface_homescreen_custom">ಕಸ್ಟಮ್ ಗಾತ್ರ ಆಯ್ಕೆಮಾಡಿ</string>
+  <!-- Folder titles -->
   <string name="play_folder_title">ಪ್ಲೇ</string>
+  <!-- Scroll effect -->
   <string name="scroll_effect_text">ಸ್ಕ್ರೋಲ್ ಎಫೆಕ್ಟ್</string>
+  <!-- Drawer sorting mode -->
   <string name="drawer_sorting_text">ಶೋಧನೆ ಮೋಡ್</string>
   <string name="sort_mode_title">ಶೀರ್ಷಿಕೆ</string>
   <string name="sort_mode_launch_count">ಆರಂಭಗೊಂಡ ಎಣಿಕೆ</string>
   <string name="sort_mode_install_time">ಸ್ಥಾಪಿತ ಸಮಯ</string>
+  <!-- Home screen search bar -->
   <string name="home_screen_search_text">ಹುಡುಕುವ ಬಾರ್</string>
+  <!-- Larger icons -->
   <string name="larger_icons_text">ದೊಡ್ಡ ಐಕಾನ್ಸ್</string>
+  <!-- Icon labels -->
   <string name="icon_labels">ಐಕಾನ್ ಲೇಬಲ್ಸ್</string>
   <string name="icon_labels_show">ಪ್ರದರ್ಶಿಸು</string>
   <string name="icon_labels_hide">ಮರೆಮಾಡು</string>
+  <!-- Protected apps -->
   <string name="protected_app_settings">ಸಂರಕ್ಷಿತ ಆಪ್ಸ್</string>
+  <!-- Dialog -->
   <string name="dialog_confirm">ಖಚಿತಪಡಿಸಿ</string>
+  <!-- Drawer type -->
   <string name="drawer_type">ವಿನ್ಯಾಸ</string>
   <string name="drawer_type_drawer">ಲಂಬ</string>
   <string name="drawer_type_pager">ಪುಟವಾದ</string>
   <string name="setting_state_disabled">ನಿಷ್ಕ್ರಿಯಗೊಂಡಿದೆ</string>
+  <!-- Search Manager doesn't exist -->
   <string name="search_activity_not_found">ಶೋಧನೆ ಚಟುವಟಿಕೆ ಪತ್ತೆಯಾಗಲಿಲ್ಲ!</string>
 </resources>

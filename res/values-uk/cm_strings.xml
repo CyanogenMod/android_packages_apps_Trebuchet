@@ -16,37 +16,53 @@
      limitations under the License.
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <!-- Application name -->
+  <!-- App version -->
   <string name="home_screen_settings">НАЛАШТУВАННЯ ДОМІВКИ</string>
   <string name="drawer_settings">МЕНЮ ПРОГРАМ</string>
   <string name="app_settings">НАЛАШТУВАННЯ ПРОГРАМ</string>
+  <!-- Settings states -->
   <string name="setting_state_on">УВІМК</string>
   <string name="setting_state_off">ВИМК</string>
+  <!-- Themes button -->
   <string name="themes_button_text">Теми</string>
   <string name="scrolling_page_outlines">Межі сторінок</string>
   <string name="scrolling_fade_adjacent">Затемняти краї при гортанні</string>
+  <!-- Wallpaper scroll effect -->
   <string name="scrolling_wallpaper">Прокручувати шпалери</string>
+  <!-- Dynamic Grid -->
   <string name="grid_size_text">Розмір сітки</string>
   <string name="grid_size_comfortable">Комфортна</string>
   <string name="grid_size_cozy">Зручна</string>
   <string name="grid_size_condensed">Стиснута</string>
   <string name="grid_size_custom">Користувацький (<xliff:g id="rows">%1$d</xliff:g>\u00d7<xliff:g id="columns">%2$d </xliff:g>)</string>
   <string name="preferences_interface_homescreen_custom">Виберіть розмір сітки</string>
+  <!-- Folder titles -->
   <string name="play_folder_title">Play</string>
+  <!-- Scroll effect -->
   <string name="scroll_effect_text">Ефект гортання</string>
+  <!-- Drawer sorting mode -->
   <string name="drawer_sorting_text">Режим сортування</string>
   <string name="sort_mode_title">За назвою</string>
   <string name="sort_mode_launch_count">За частотою використання</string>
   <string name="sort_mode_install_time">За часом встановлення</string>
+  <!-- Home screen search bar -->
   <string name="home_screen_search_text">Рядок пошуку</string>
+  <!-- Larger icons -->
   <string name="larger_icons_text">Великі піктограми</string>
+  <!-- Icon labels -->
   <string name="icon_labels">Мітки піктограм</string>
   <string name="icon_labels_show">Показати</string>
   <string name="icon_labels_hide">Приховати</string>
+  <!-- Protected apps -->
   <string name="protected_app_settings">Заблоковані програми</string>
+  <!-- Dialog -->
   <string name="dialog_confirm">Підтвердити</string>
+  <!-- Drawer type -->
   <string name="drawer_type">Тип меню</string>
   <string name="drawer_type_drawer">Вертикальне</string>
   <string name="drawer_type_pager">Сторінками</string>
   <string name="setting_state_disabled">ВИМКНЕНО</string>
+  <!-- Search Manager doesn't exist -->
   <string name="search_activity_not_found">Діяльність з пошуку не виявлена!</string>
 </resources>

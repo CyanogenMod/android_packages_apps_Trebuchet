@@ -16,37 +16,53 @@
      limitations under the License.
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <!-- Application name -->
+  <!-- App version -->
   <string name="home_screen_settings">PARAMÈTRES DE L\'ÉCRAN D\'ACCUEIL</string>
   <string name="drawer_settings">PARAMÈTRES DE L\'ÉCRAN DES APPLICATIONS</string>
   <string name="app_settings">PARAMÈTRES DE L\'APPLICATION</string>
+  <!-- Settings states -->
   <string name="setting_state_on">OUI</string>
   <string name="setting_state_off">NON</string>
+  <!-- Themes button -->
   <string name="themes_button_text">Thèmes</string>
-  <string name="scrolling_page_outlines">Espacement des pages</string>
+  <string name="scrolling_page_outlines">Contour des pages</string>
   <string name="scrolling_fade_adjacent">Estomper les pages adjacentes</string>
+  <!-- Wallpaper scroll effect -->
   <string name="scrolling_wallpaper">Défilement du fond d\'écran</string>
+  <!-- Dynamic Grid -->
   <string name="grid_size_text">Taille de la grille</string>
   <string name="grid_size_comfortable">Confortable</string>
-  <string name="grid_size_cozy">Confortable</string>
+  <string name="grid_size_cozy">Cosy</string>
   <string name="grid_size_condensed">Condensé</string>
   <string name="grid_size_custom">Personnalisé (<xliff:g id="rows">%1$d</xliff:g> \u00d7 <xliff:g id="columns">%2$d</xliff:g>)</string>
   <string name="preferences_interface_homescreen_custom">Sélectionner la taille personnalisée</string>
+  <!-- Folder titles -->
   <string name="play_folder_title">Play</string>
+  <!-- Scroll effect -->
   <string name="scroll_effect_text">Effet de défilement</string>
+  <!-- Drawer sorting mode -->
   <string name="drawer_sorting_text">Mode de tri</string>
   <string name="sort_mode_title">Titre</string>
   <string name="sort_mode_launch_count">Nombre de lancements</string>
   <string name="sort_mode_install_time">Date d\'installation</string>
+  <!-- Home screen search bar -->
   <string name="home_screen_search_text">Barre de recherche</string>
+  <!-- Larger icons -->
   <string name="larger_icons_text">Grandes icônes</string>
+  <!-- Icon labels -->
   <string name="icon_labels">Nom des icônes</string>
   <string name="icon_labels_show">Afficher</string>
   <string name="icon_labels_hide">Masquer</string>
+  <!-- Protected apps -->
   <string name="protected_app_settings">Applications protégées</string>
+  <!-- Dialog -->
   <string name="dialog_confirm">Confirmer</string>
+  <!-- Drawer type -->
   <string name="drawer_type">Disposition</string>
-  <string name="drawer_type_drawer">Verticale</string>
-  <string name="drawer_type_pager">Paginée</string>
+  <string name="drawer_type_drawer">Vertical</string>
+  <string name="drawer_type_pager">Paginé</string>
   <string name="setting_state_disabled">DÉSACTIVÉ</string>
+  <!-- Search Manager doesn't exist -->
   <string name="search_activity_not_found">Aucune recherche n\'a pu être trouvée !</string>
 </resources>

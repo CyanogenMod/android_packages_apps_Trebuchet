@@ -16,37 +16,53 @@
      limitations under the License.
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <!-- Application name -->
+  <!-- App version -->
   <string name="home_screen_settings">ДОМАШНИЙ ЭКРАН</string>
   <string name="drawer_settings">МЕНЮ ПРИЛОЖЕНИЙ</string>
   <string name="app_settings">ОБЩИЕ НАСТРОЙКИ</string>
+  <!-- Settings states -->
   <string name="setting_state_on">ВКЛ.</string>
   <string name="setting_state_off">ВЫКЛ.</string>
+  <!-- Themes button -->
   <string name="themes_button_text">Темы</string>
   <string name="scrolling_page_outlines">Границы страниц</string>
   <string name="scrolling_fade_adjacent">Затемнять края при переходе</string>
+  <!-- Wallpaper scroll effect -->
   <string name="scrolling_wallpaper">Прокрутка обоев</string>
+  <!-- Dynamic Grid -->
   <string name="grid_size_text">Размер сетки</string>
   <string name="grid_size_comfortable">Просторная</string>
   <string name="grid_size_cozy">Удобная</string>
   <string name="grid_size_condensed">Сжатая</string>
   <string name="grid_size_custom">Своя (<xliff:g id="rows">%1$d</xliff:g> \u00d7 <xliff:g id="columns">%2$d</xliff:g>)</string>
   <string name="preferences_interface_homescreen_custom">Выберите размер сетки</string>
+  <!-- Folder titles -->
   <string name="play_folder_title">Сервисы Play</string>
+  <!-- Scroll effect -->
   <string name="scroll_effect_text">Эффект прокрутки</string>
+  <!-- Drawer sorting mode -->
   <string name="drawer_sorting_text">Режим сортировки</string>
   <string name="sort_mode_title">По названию</string>
   <string name="sort_mode_launch_count">По частоте исп.</string>
   <string name="sort_mode_install_time">По врем. устан.</string>
+  <!-- Home screen search bar -->
   <string name="home_screen_search_text">Строка поиска</string>
+  <!-- Larger icons -->
   <string name="larger_icons_text">Крупные значки</string>
+  <!-- Icon labels -->
   <string name="icon_labels">Подписи значков</string>
   <string name="icon_labels_show">Показывать</string>
   <string name="icon_labels_hide">Скрывать</string>
+  <!-- Protected apps -->
   <string name="protected_app_settings">Заблокированные приложения</string>
+  <!-- Dialog -->
   <string name="dialog_confirm">Подтвердить</string>
+  <!-- Drawer type -->
   <string name="drawer_type">Тип меню</string>
   <string name="drawer_type_drawer">Вертикальное</string>
   <string name="drawer_type_pager">Постраничное</string>
   <string name="setting_state_disabled">НЕДОСТУПНО</string>
+  <!-- Search Manager doesn't exist -->
   <string name="search_activity_not_found">Невозможно запустить приложение поиска!</string>
 </resources>
