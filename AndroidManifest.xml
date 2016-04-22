@@ -237,5 +237,8 @@
 
         <meta-data android:name="android.nfc.disable_beam_default"
                        android:value="true" />
+
+        <meta-data android:name="com.cyanogen.ambient.analytics.key"
+                   android:value="DScKo29EpMBx1833F7ln1811KFPf14UT"/>
     </application>
 </manifest>

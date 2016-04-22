@@ -28,6 +28,7 @@ LOCAL_STATIC_JAVA_LIBRARIES := \
     android-support-v7-recyclerview \
     org.cyanogenmod.platform.internal
 
+LOCAL_STATIC_JAVA_AAR_LIBRARIES := ambientsdk
 
 LOCAL_SRC_FILES := $(call all-java-files-under, src) \
     $(call all-java-files-under, WallpaperPicker/src) \
