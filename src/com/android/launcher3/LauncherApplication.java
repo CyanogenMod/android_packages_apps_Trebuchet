@@ -20,14 +20,10 @@ import android.app.Application;
 
 import com.android.launcher3.stats.LauncherStats;
 import com.android.launcher3.stats.internal.service.AggregationIntentService;
-import com.cyanogen.ambient.analytics.AnalyticsServices;
-import com.cyanogen.ambient.analytics.Event;
-import com.cyanogen.ambient.common.api.AmbientApiClient;
 
 public class LauncherApplication extends Application {
 
     private static LauncherStats sLauncherStats = null;
-    private AmbientApiClient mClient;
 
     /**
      * Get the reference handle for LauncherStats commands
@@ -41,18 +37,8 @@ public class LauncherApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        mClient = new AmbientApiClient.Builder(this)
-                .addApi(AnalyticsServices.API)
-                .build();
-        mClient.connect();
         sLauncherStats = LauncherStats.getInstance(this);
         AggregationIntentService.scheduleService(this);
-    }
-
-    public void sendEvent(Event event) {
-        if (mClient.isConnected()) {
-            AnalyticsServices.AnalyticsApi.sendEvent(mClient, event);
-        }
     }
 
 }
