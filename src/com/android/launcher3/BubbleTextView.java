@@ -166,7 +166,7 @@ public class BubbleTextView extends TextView
             Bitmap b = info.getIcon(iconCache);
 
             if (b.getWidth() > mIconSize || b.getHeight() > mIconSize) {
-                b = Bitmap.createScaledBitmap(b, mIconSize, mIconSize, false);
+                b = Bitmap.createScaledBitmap(b, mIconSize, mIconSize, true);
                 info.setIcon(b);
                 info.updateIcon(iconCache);
             }
