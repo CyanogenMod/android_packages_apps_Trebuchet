@@ -183,7 +183,7 @@ public class WidgetCell extends LinearLayout implements OnLayoutChangeListener {
 
     public void ensurePreview() {
         if (mActiveRequest != null) {
-            return;
+            mActiveRequest.cleanup();
         }
         int[] size = getPreviewSize();
         if (DEBUG) {
@@ -226,5 +226,9 @@ public class WidgetCell extends LinearLayout implements OnLayoutChangeListener {
             return getTag().toString();
         }
         return "";
+    }
+
+    public PreviewLoadRequest getActiveRequest() {
+        return mActiveRequest;
     }
 }
