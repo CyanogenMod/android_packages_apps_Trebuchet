@@ -246,7 +246,7 @@ public class WidgetsContainerView extends BaseContainerView
 
             int[] previewSizeBeforeScale = new int[1];
             preview = getWidgetPreviewLoader().generateWidgetPreview(mLauncher,
-                    createWidgetInfo.info, maxWidth, null, previewSizeBeforeScale);
+                    createWidgetInfo.info, maxWidth, null, previewSizeBeforeScale, null);
 
             if (previewSizeBeforeScale[0] < icon.getWidth()) {
                 // The icon has extra padding around it.
