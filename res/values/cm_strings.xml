@@ -77,4 +77,6 @@
 
     <!-- App not available toast text -->
     <string name="app_not_available">App not available</string>
+
+    <string name="storage_permission_denied">Can\'t access storage</string>
 </resources>
