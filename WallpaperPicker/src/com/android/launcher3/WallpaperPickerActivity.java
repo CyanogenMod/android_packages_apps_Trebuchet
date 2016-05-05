@@ -721,7 +721,7 @@ public class WallpaperPickerActivity extends WallpaperCropActivity {
     public void onStop() {
         super.onStop();
         mWallpaperStrip = findViewById(R.id.wallpaper_strip);
-        if (mWallpaperStrip.getAlpha() < 1f) {
+        if (mWallpaperStrip != null && mWallpaperStrip.getAlpha() < 1f) {
             mWallpaperStrip.setAlpha(1f);
             mWallpaperStrip.setVisibility(View.VISIBLE);
         }

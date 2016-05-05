@@ -16,6 +16,7 @@
 
 package com.android.launcher3;
 
+import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.ActionBar;
 import android.app.Activity;
@@ -23,6 +24,7 @@ import android.app.WallpaperManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -58,6 +60,8 @@ import java.util.WeakHashMap;
 public class WallpaperCropActivity extends BaseActivity implements Handler.Callback {
     private static final String LOGTAG = "Launcher3.CropActivity";
 
+    private static final int REQUEST_CODE_STORAGE_PERMISSION_CHECK = 100;
+
     protected static final String WALLPAPER_WIDTH_KEY = WallpaperUtils.WALLPAPER_WIDTH_KEY;
     protected static final String WALLPAPER_HEIGHT_KEY = WallpaperUtils.WALLPAPER_HEIGHT_KEY;
 
@@ -90,6 +94,34 @@ public class WallpaperCropActivity extends BaseActivity implements Handler.Callb
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        if (!hasStoragePermissions()) {
+            requestStoragePermissions();
+        } else {
+           load();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            int[] grantResults) {
+        if (requestCode == REQUEST_CODE_STORAGE_PERMISSION_CHECK) {
+            for (int i = 0; i < permissions.length; i++ ) {
+                final String permission = permissions[i];
+                final int grantResult = grantResults[i];
+                if (permission.equals(Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                    if (grantResult == PackageManager.PERMISSION_GRANTED) {
+                       load();
+                    } else {
+                        Toast.makeText(this, getString(R.string.storage_permission_denied),
+                                Toast.LENGTH_SHORT).show();
+                        finish();
+                    }
+                }
+            }
+        }
+    }
+
+    private void load() {
         mLoaderThread = new HandlerThread("wallpaper_loader");
         mLoaderThread.start();
         mLoaderHandler = new Handler(mLoaderThread.getLooper(), this);
@@ -449,6 +481,16 @@ public class WallpaperCropActivity extends BaseActivity implements Handler.Callb
         editor.commit();
         WallpaperUtils.suggestWallpaperDimension(getResources(),
                 sp, getWindowManager(), WallpaperManager.getInstance(getContext()), true);
+    }
+
+    private boolean hasStoragePermissions() {
+        return checkCallingOrSelfPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE) ==
+                PackageManager.PERMISSION_GRANTED;
+    }
+
+    private void requestStoragePermissions() {
+        requestPermissions(new String[] {android.Manifest.permission.READ_EXTERNAL_STORAGE},
+                REQUEST_CODE_STORAGE_PERMISSION_CHECK);
     }
 
     static class LoadRequest {
