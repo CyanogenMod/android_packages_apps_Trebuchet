@@ -117,22 +117,28 @@ public class AlphabeticIndexCompat extends BaseAlphabeticIndex {
     public String computeSectionName(CharSequence cs) {
         String s = Utilities.trim(cs);
         String sectionName = getBucketLabel(getBucketIndex(s));
-        if (Utilities.trim(sectionName).isEmpty() && s.length() > 0) {
-            int c = s.codePointAt(0);
-            boolean startsWithDigit = Character.isDigit(c);
-            if (startsWithDigit) {
-                // Digit section
-                return "#";
-            } else {
-                boolean startsWithLetter = Character.isLetter(c);
-                if (startsWithLetter) {
-                    return mDefaultMiscLabel;
+        if (Utilities.trim(sectionName).isEmpty()) {
+            if (s.length() > 0) {
+                int c = s.codePointAt(0);
+                boolean startsWithDigit = Character.isDigit(c);
+                if (startsWithDigit) {
+                    // Digit section
+                    return "#";
                 } else {
-                    // In languages where these differ, this ensures that we differentiate
-                    // between the misc section in the native language and a misc section
-                    // for everything else.
-                    return MID_DOT;
+                    boolean startsWithLetter = Character.isLetter(c);
+                    if (startsWithLetter) {
+                        return mDefaultMiscLabel;
+                    } else {
+                        // In languages where these differ, this ensures that we differentiate
+                        // between the misc section in the native language and a misc section
+                        // for everything else.
+                        return MID_DOT;
+                    }
                 }
+            } else {
+                // Somehow this app's name is all white/java space characters.
+                // Put it in the bucket with all the other crazies.
+                return MID_DOT;
             }
         }
         return sectionName;
