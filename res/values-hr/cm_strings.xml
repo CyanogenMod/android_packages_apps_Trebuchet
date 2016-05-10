@@ -62,4 +62,5 @@
   <string name="search_activity_not_found">Aktivnosti pretraživanja nije moguće pronaći.</string>
   <!-- App not available toast text -->
   <string name="app_not_available">Aplikacija nije dostupna</string>
+  <string name="storage_permission_denied">Ne mogu pristupiti pohrani</string>
 </resources>

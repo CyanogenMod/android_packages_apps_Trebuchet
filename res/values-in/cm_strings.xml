@@ -62,4 +62,5 @@
   <string name="search_activity_not_found">Aktivitas penelusuran tidak dapat ditemukan!</string>
   <!-- App not available toast text -->
   <string name="app_not_available">Aplikasi tidak tersedia</string>
+  <string name="storage_permission_denied">Tidak dapat mengakses penyimpanan</string>
 </resources>

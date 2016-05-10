@@ -62,4 +62,5 @@
   <string name="search_activity_not_found">无法找到搜索活动！</string>
   <!-- App not available toast text -->
   <string name="app_not_available">应用不可用</string>
+  <string name="storage_permission_denied">无法访问存储</string>
 </resources>

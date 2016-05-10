@@ -62,4 +62,5 @@
   <string name="search_activity_not_found">Δεν βρέθηκε καμία δραστηριότητα αναζήτησης!</string>
   <!-- App not available toast text -->
   <string name="app_not_available">Η εφαρμογή δεν είναι διαθέσιμη</string>
+  <string name="storage_permission_denied">Δεν είναι δυνατή η πρόσβαση στον αποθ. χώρο</string>
 </resources>

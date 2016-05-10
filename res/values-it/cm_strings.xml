@@ -62,4 +62,5 @@
   <string name="search_activity_not_found">Impossibile trovare un\'activity di ricerca!</string>
   <!-- App not available toast text -->
   <string name="app_not_available">App non disponibile</string>
+  <string name="storage_permission_denied">Impossibile accedere alla memoria</string>
 </resources>

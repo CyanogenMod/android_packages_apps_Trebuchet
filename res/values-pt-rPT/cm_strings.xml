@@ -62,4 +62,5 @@
   <string name="search_activity_not_found">Não foi encontrado nenhum gestor de pesquisas!</string>
   <!-- App not available toast text -->
   <string name="app_not_available">Aplicação não disponível</string>
+  <string name="storage_permission_denied">Não é possível aceder ao armazenamento</string>
 </resources>
