@@ -34,6 +34,7 @@ import android.content.pm.ProviderInfo;
 import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.Point;
 import android.net.Uri;
 import android.os.Environment;
 import android.os.Handler;
@@ -2451,13 +2452,43 @@ public class LauncherModel extends BroadcastReceiver
                 for (FolderInfo folder : sBgFolders) {
                     Collections.sort(folder.contents, Folder.ITEM_POS_COMPARATOR);
                     int pos = 0;
+                    int needIndexing = 0;
                     for (ShortcutInfo info : folder.contents) {
-                        if (info.usingLowResIcon) {
+                        if (info.usingLowResIcon && pos < FolderIcon.NUM_ITEMS_IN_PREVIEW) {
                             info.updateIcon(mIconCache, false);
                         }
                         pos ++;
-                        if (pos >= FolderIcon.NUM_ITEMS_IN_PREVIEW) {
-                            break;
+                        needIndexing += info.screenId + info.cellX + info.cellY;
+                    }
+                    // If all screenId, cellX, and cellY are 0, then we assume they were all null.
+                    if (needIndexing == 0) {
+                        synchronized (sBgLock) {
+                            int curX = 0;
+                            int curY = 0;
+                            int folderScreenId = 0;
+                            int folderCount = folder.contents.size();
+                            Point point = Utilities
+                                    .caluclateFolderContentDimensions(folderCount, countX, countY);
+                            int maxX = point.x;
+                            int maxY = point.y;
+                            for (ShortcutInfo info : folder.contents) {
+                                ItemInfo itemInfo = sBgItemsIdMap.get(info.id);
+                                if (curY == maxY) { // New screen
+                                    curX = 0;
+                                    curY = 0;
+                                    folderScreenId++;
+                                }
+                                itemInfo.screenId = folderScreenId;
+                                itemInfo.cellX = curX;
+                                itemInfo.cellY = curY;
+                                LauncherModel.updateItemInDatabase(context, itemInfo);
+                                if (curX == maxX - 1) {
+                                    curX = 0;
+                                    curY++;
+                                } else {
+                                    curX++;
+                                }
+                            }
                         }
                     }
                 }

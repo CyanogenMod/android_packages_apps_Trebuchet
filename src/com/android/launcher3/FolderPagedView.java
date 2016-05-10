@@ -18,6 +18,7 @@ package com.android.launcher3;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Point;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
@@ -116,34 +117,9 @@ public class FolderPagedView extends PagedView {
      */
     public void setupContentDimensions(int count) {
         mAllocatedContentSize = count;
-        boolean done;
-        if (count >= mMaxItemsPerPage) {
-            mGridCountX = mMaxCountX;
-            mGridCountY = mMaxCountY;
-            done = true;
-        } else {
-            done = false;
-        }
-
-        while (!done) {
-            int oldCountX = mGridCountX;
-            int oldCountY = mGridCountY;
-            if (mGridCountX * mGridCountY < count) {
-                // Current grid is too small, expand it
-                if ((mGridCountX <= mGridCountY || mGridCountY == mMaxCountY) && mGridCountX < mMaxCountX) {
-                    mGridCountX++;
-                } else if (mGridCountY < mMaxCountY) {
-                    mGridCountY++;
-                }
-                if (mGridCountY == 0) mGridCountY++;
-            } else if ((mGridCountY - 1) * mGridCountX >= count && mGridCountY >= mGridCountX) {
-                mGridCountY = Math.max(0, mGridCountY - 1);
-            } else if ((mGridCountX - 1) * mGridCountY >= count) {
-                mGridCountX = Math.max(0, mGridCountX - 1);
-            }
-            done = mGridCountX == oldCountX && mGridCountY == oldCountY;
-        }
-
+        Point point = Utilities.caluclateFolderContentDimensions(count, mMaxCountX, mMaxCountY);
+        mGridCountX = point.x;
+        mGridCountY = point.y;
         // Update grid size
         for (int i = getPageCount() - 1; i >= 0; i--) {
             getPageAt(i).setGridSize(mGridCountX, mGridCountY);
