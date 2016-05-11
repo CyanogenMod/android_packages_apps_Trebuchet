@@ -30,7 +30,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.OperationApplicationException;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.content.res.AssetManager;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.SQLException;
@@ -44,8 +47,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Process;
 import android.os.StrictMode;
+import android.os.SystemProperties;
 import android.os.UserManager;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.SparseArray;
 
@@ -78,6 +83,8 @@ public class LauncherProvider extends ContentProvider {
     static final String EMPTY_DATABASE_CREATED = "EMPTY_DATABASE_CREATED";
 
     private static final String RESTRICTION_PACKAGE_NAME = "workspace.configuration.package.name";
+
+    private static final String MCC_PROP_NAME = "ro.prebundled.mcc";
 
     @Thunk LauncherProviderChangeListener mListener;
     @Thunk DatabaseHelper mOpenHelper;
@@ -442,10 +449,50 @@ public class LauncherProvider extends ContentProvider {
     }
 
     private DefaultLayoutParser getDefaultLayoutParser() {
+        String mcc = SystemProperties.get(MCC_PROP_NAME);
+        Resources customResources = null;
+        if (!TextUtils.isEmpty(mcc)) {
+            if (LOGD) Log.d(TAG, "mcc: " + mcc);
+
+            Configuration tempConfiguration = new Configuration(getContext().getResources().
+                    getConfiguration());
+            boolean shouldUseTempConfig = false;
+
+            try {
+                tempConfiguration.mcc = Integer.parseInt(mcc);
+                shouldUseTempConfig = true;
+            } catch (NumberFormatException e) {
+                // not able to parse mcc, catch exception and exit out of this logic
+                Log.e(TAG, "Unable to parse mcc", e);
+            }
+
+            if (shouldUseTempConfig) {
+                String publicSrcDir = null;
+                try {
+                    String packageName = getContext().getPackageName();
+                    publicSrcDir = getContext().getPackageManager().
+                            getApplicationInfo(packageName, 0).publicSourceDir;
+                } catch (PackageManager.NameNotFoundException e) {
+                    Log.e(TAG, "Failed getting source dir", e);
+                }
+
+                AssetManager assetManager = new AssetManager();
+                if (!TextUtils.isEmpty(publicSrcDir)) {
+                    assetManager.addAssetPath(publicSrcDir);
+                }
+                customResources = new Resources(assetManager, new DisplayMetrics(),
+                        tempConfiguration);
+            }
+        }
+
         int defaultLayout = LauncherAppState.getInstance()
                 .getInvariantDeviceProfile().defaultLayoutId;
+
         return new DefaultLayoutParser(getContext(), mOpenHelper.mAppWidgetHost,
-                mOpenHelper, getContext().getResources(), defaultLayout);
+                mOpenHelper, customResources != null ?
+                customResources :
+                getContext().getResources(),
+                defaultLayout);
     }
 
     public void migrateLauncher2Shortcuts() {
