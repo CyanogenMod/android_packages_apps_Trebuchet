@@ -62,4 +62,5 @@
   <string name="search_activity_not_found">לא ניתן היה למצוא פעולת חיפוש!</string>
   <!-- App not available toast text -->
   <string name="app_not_available">יישום לא זמין</string>
+  <string name="storage_permission_denied">לא ניתן לגשת לאחסון</string>
 </resources>

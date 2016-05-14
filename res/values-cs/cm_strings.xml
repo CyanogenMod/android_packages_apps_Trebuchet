@@ -62,4 +62,5 @@
   <string name="search_activity_not_found">Vyhledávací aktivita nenalezena!</string>
   <!-- App not available toast text -->
   <string name="app_not_available">Aplikace není k dispozici</string>
+  <string name="storage_permission_denied">Nelze získat přístup k úložišti</string>
 </resources>

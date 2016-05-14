@@ -62,4 +62,5 @@
   <string name="search_activity_not_found">Ezin izan da bilaketa aktibitaterik aurkitu!</string>
   <!-- App not available toast text -->
   <string name="app_not_available">Aplikazioa ez dago eskuragarri</string>
+  <string name="storage_permission_denied">Ezin da biltegiratzea atzitu</string>
 </resources>

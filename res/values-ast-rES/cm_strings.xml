@@ -48,8 +48,19 @@
   <!-- Protected apps -->
   <string name="protected_app_settings">Apps protexíes</string>
   <!-- Drawer settings -->
+  <string name="app_drawer_style">Estilu del caxón</string>
+  <string name="app_drawer_style_compact">Compautu</string>
+  <string name="app_drawer_style_sections">Estayes</string>
+  <string name="app_drawer_color">Color del caxón</string>
+  <string name="app_drawer_color_dark">Escuru</string>
+  <string name="app_drawer_color_light">Claru</string>
+  <string name="fast_scroller">Desplazador rápidu</string>
+  <string name="fast_scroller_type">Triba de desplazador rápidu</string>
+  <string name="fast_scroller_type_horizontal">Horizontal</string>
   <string name="fast_scroller_type_vertical">Vertical</string>
   <!-- Search Manager doesn't exist -->
   <string name="search_activity_not_found">¡Nun pudo atopase un encontu de gueta!</string>
   <!-- App not available toast text -->
+  <string name="app_not_available">L\'aplicación nun ta disponible</string>
+  <string name="storage_permission_denied">Nun pue accedese al almacenamientu</string>
 </resources>

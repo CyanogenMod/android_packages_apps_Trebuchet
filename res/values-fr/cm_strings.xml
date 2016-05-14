@@ -61,4 +61,6 @@
   <!-- Search Manager doesn't exist -->
   <string name="search_activity_not_found">Aucune recherche n\'a pu être trouvée !</string>
   <!-- App not available toast text -->
+  <string name="app_not_available">Application non disponible</string>
+  <string name="storage_permission_denied">Impossible d\'accéder au stockage</string>
 </resources>

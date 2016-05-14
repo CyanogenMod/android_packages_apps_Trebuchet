@@ -61,4 +61,6 @@
   <!-- Search Manager doesn't exist -->
   <string name="search_activity_not_found">Không tìm thấy hoạt động tìm kiếm!</string>
   <!-- App not available toast text -->
+  <string name="app_not_available">Không sẵn có ứng dụng</string>
+  <string name="storage_permission_denied">Không thể truy cập vào bộ lưu trữ</string>
 </resources>
