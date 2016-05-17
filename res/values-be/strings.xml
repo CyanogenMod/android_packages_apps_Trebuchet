@@ -25,6 +25,7 @@
   <!-- Application name -->
   <!-- Default folder name -->
   <!-- Work folder name -->
+  <string name="work_folder_name">Тэчка</string>
   <!-- Displayed when user selects a shortcut for an app that was uninstalled [CHAR_LIMIT=none]-->
   <!-- Displayed when user selects a shortcut for an app that is current not available [CHAR_LIMIT=none]-->
   <!-- SafeMode shortcut error string -->
@@ -85,6 +86,7 @@
   <!-- Text for widget add button -->
   <!-- Text for wallpaper change button -->
   <!-- Text for settings button -->
+  <string name="settings_button_text">Налады</string>
   <!-- Strings for settings -->
   <!-- Title for Allow Rotation setting. [CHAR LIMIT=50] -->
   <!-- Label on an icon that references an uninstalled package, for which we have no information about when it might be installed. [CHAR_LIMIT=15] -->
