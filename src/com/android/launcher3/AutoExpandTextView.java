@@ -197,11 +197,14 @@ public class AutoExpandTextView extends TextView {
 
         SpannableStringBuilder builder = new SpannableStringBuilder();
         for (HighlightedText highlightText : sections) {
-            SpannableString spannable = new SpannableString(highlightText.mText.substring(0, 1));
-            spannable.setSpan(
-                    new ForegroundColorSpan(highlightText.mHighlight ? highlightColor : grayColor),
-                    0, spannable.length(), 0);
-            builder.append(spannable);
+            if (!TextUtils.isEmpty(highlightText.mText)) {
+                SpannableString spannable =
+                        new SpannableString(highlightText.mText.substring(0, 1));
+                spannable.setSpan(
+                        new ForegroundColorSpan(highlightText.mHighlight ? highlightColor :
+                                grayColor), 0, spannable.length(), 0);
+                builder.append(spannable);
+            }
         }
 
         setText(builder);
