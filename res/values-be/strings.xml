@@ -31,6 +31,8 @@
   <!-- SafeMode shortcut error string -->
   <!-- SafeMode widget error string -->
   <!--  Labels for the tabs in the customize drawer -->
+  <string name="widgets_tab_label">Аздабленьні</string>
+  <string name="widget_adder">Аздабленьне</string>
   <!-- AppsCustomize pane -->
   <!-- Message to tell the user to press and hold on a widget to add it [CHAR_LIMIT=50] -->
   <!-- The format string for the dimensions of a widget in the drawer -->
@@ -138,6 +140,7 @@ s -->
   <!-- Text for widget add button -->
   <!-- Text for wallpaper change button -->
   <!-- Text for settings button -->
+  <string name="settings_button_text">Налады</string>
   <!-- Label on an icon that references an uninstalled package, that is going to be installed at some point. [CHAR_LIMIT=15] -->
   <!-- Label on an icon that references an uninstalled package, that is currently being downloaded. [CHAR_LIMIT=15] -->
   <!-- Label on an icon that references an uninstalled package, that is currently being installed. [CHAR_LIMIT=15] -->
