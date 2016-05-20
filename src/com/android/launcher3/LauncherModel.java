@@ -1834,13 +1834,54 @@ public class LauncherModel extends BroadcastReceiver
             // Check if any workspace icons overlap with each other
             for (int x = item.cellX; x < (item.cellX+item.spanX); x++) {
                 for (int y = item.cellY; y < (item.cellY+item.spanY); y++) {
-                    if (!shouldResizeAndUpdateDB && screens[x][y] != null) {
-                        Log.e(TAG, "Error loading shortcut " + item
-                            + " into cell (" + containerIndex + "-" + item.screenId + ":"
-                            + x + "," + y
-                            + ") occupied by "
-                            + screens[x][y]);
-                        return false;
+                    if (screens[x][y] != null) {
+                        if (!shouldResizeAndUpdateDB) {
+                            Log.e(TAG, "Error loading shortcut " + item
+                                    + " into cell (" + containerIndex + "-" + item.screenId + ":"
+                                    + x + "," + y
+                                    + ") occupied by "
+                                    + screens[x][y]);
+                            return false;
+                        }
+                        ItemInfo occupiedItem = screens[x][y];
+                        // If an item is overlapping another because one of them
+                        // was moved due to the size of the grid changing,
+                        // move the current item to a free spot past this one.
+                        if (occupiedItem.wasMovedDueToReducedSpace
+                                || item.wasMovedDueToReducedSpace) {
+                            // overlapping icon exists here
+                            // we must find a free space.
+                            boolean freeFound = false;
+                            int nextX = 0;
+                            int nextY = 0;
+                            while (!freeFound) {
+                                if (screens[nextX][nextY] == null) {
+                                    item.cellX = nextX;
+                                    item.cellY = nextY;
+                                    freeFound = true;
+                                } else {
+                                    if (nextX + item.spanX == countX) {
+                                        if (nextY + item.spanY == countY) {
+                                            // If we've reached the bottom of the page and are still
+                                            // searching, add a new page to place this item.
+                                            item.screenId += 1;
+                                            nextY = 0;
+                                            nextX = 0;
+                                            if (!occupied.containsKey(item.screenId)) {
+                                                ItemInfo[][] items = new ItemInfo[countX][countY];
+                                                occupied.put(item.screenId, items);
+                                            }
+                                            screens = occupied.get(item.screenId);
+                                        } else {
+                                            nextX = 0;
+                                            nextY++;
+                                        }
+                                    } else {
+                                        nextX++;
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
