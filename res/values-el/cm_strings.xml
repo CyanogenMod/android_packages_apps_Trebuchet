@@ -16,37 +16,53 @@
      limitations under the License.
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <!-- Application name -->
+  <!-- App version -->
   <string name="home_screen_settings">ΡΥΘΜΙΣΕΙΣ ΑΡΧΙΚΗΣ ΟΘΟΝΗΣ</string>
   <string name="drawer_settings">ΡΥΘΜΙΣΕΙΣ ΣΥΡΤΑΡΙΟΥ</string>
   <string name="app_settings">ΡΥΘΜΙΣΕΙΣ ΕΦΑΡΜΟΓΩΝ</string>
+  <!-- Settings states -->
   <string name="setting_state_on">ΕΝΕΡΓΟ</string>
   <string name="setting_state_off">ΑΝΕΝΕΡΓΟ</string>
+  <!-- Themes button -->
   <string name="themes_button_text">Θέματα</string>
   <string name="scrolling_page_outlines">Περίγραμμα σελιδών</string>
   <string name="scrolling_fade_adjacent">Ξεθώριασμα πλευρικών σελίδων</string>
+  <!-- Wallpaper scroll effect -->
   <string name="scrolling_wallpaper">Κύλιση ταπετσαρίας</string>
+  <!-- Dynamic Grid -->
   <string name="grid_size_text">Μέγεθος πλέγματος</string>
   <string name="grid_size_comfortable">Άνετο</string>
   <string name="grid_size_cozy">Κανονικό</string>
   <string name="grid_size_condensed">Συμπυκνωμένο</string>
   <string name="grid_size_custom">Προσαρμοσμένο (<xliff:g id="rows">%1$d</xliff:g> \u00d7 <xliff:g id="columns">%2$d</xliff:g>)</string>
   <string name="preferences_interface_homescreen_custom">Επιλέξτε προσαρμοσμένο μέγεθος</string>
+  <!-- Folder titles -->
   <string name="play_folder_title">Play</string>
+  <!-- Scroll effect -->
   <string name="scroll_effect_text">Εφέ κύλισης</string>
+  <!-- Drawer sorting mode -->
   <string name="drawer_sorting_text">Ταξινόμηση</string>
   <string name="sort_mode_title">Τίτλος</string>
   <string name="sort_mode_launch_count">Αριθμός εκκινήσεων</string>
   <string name="sort_mode_install_time">Χρόνος εγκατάστασης</string>
+  <!-- Home screen search bar -->
   <string name="home_screen_search_text">Μπάρα αναζήτησης</string>
+  <!-- Larger icons -->
   <string name="larger_icons_text">Μεγαλύτερα εικονίδια</string>
+  <!-- Icon labels -->
   <string name="icon_labels">Ετικέτες εικονιδίων</string>
   <string name="icon_labels_show">Εμφάνιση</string>
   <string name="icon_labels_hide">Απόκρυψη</string>
+  <!-- Protected apps -->
   <string name="protected_app_settings">Προστατευμένες εφαρμογές</string>
+  <!-- Dialog -->
   <string name="dialog_confirm">Επιβεβαίωση</string>
+  <!-- Drawer type -->
   <string name="drawer_type">Διάταξη</string>
   <string name="drawer_type_drawer">Κάθετη</string>
   <string name="drawer_type_pager">Οριζόντια</string>
   <string name="setting_state_disabled">ΑΠΕΝΕΡΓΟΠΟΙΗΜΕΝΟ</string>
+  <!-- Search Manager doesn't exist -->
   <string name="search_activity_not_found">Δεν βρέθηκε καμία δραστηριότητα αναζήτησης!</string>
 </resources>

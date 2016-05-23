@@ -16,37 +16,53 @@
      limitations under the License.
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <!-- Application name -->
+  <!-- App version -->
   <string name="home_screen_settings">ХАТНІ ЭКРАН</string>
   <string name="drawer_settings">МЕНЮ ДАДАТКАЎ</string>
   <string name="app_settings">АГУЛЬНЫЯ НАЛАДЫ</string>
+  <!-- Settings states -->
   <string name="setting_state_on">УКЛ.</string>
   <string name="setting_state_off">АДКЛ.</string>
+  <!-- Themes button -->
   <string name="themes_button_text">Тэмы</string>
   <string name="scrolling_page_outlines">Межы старонак</string>
   <string name="scrolling_fade_adjacent">Зацямняць краі пры пераходзе</string>
+  <!-- Wallpaper scroll effect -->
   <string name="scrolling_wallpaper">Прагортка шпалер</string>
+  <!-- Dynamic Grid -->
   <string name="grid_size_text">Памер сеткі</string>
   <string name="grid_size_comfortable">Прасторная</string>
   <string name="grid_size_cozy">Зручная</string>
   <string name="grid_size_condensed">Сціснутая</string>
   <string name="grid_size_custom">Свая (<xliff:g id="rows">%1$d</xliff:g>\u00d7<xliff:g id="columns">%2$d</xliff:g>)</string>
   <string name="preferences_interface_homescreen_custom">Абярыце памер сеткі</string>
+  <!-- Folder titles -->
   <string name="play_folder_title">Сэрвісы Play</string>
+  <!-- Scroll effect -->
   <string name="scroll_effect_text">Анімацыя</string>
+  <!-- Drawer sorting mode -->
   <string name="drawer_sorting_text">Рэжым сартавання</string>
   <string name="sort_mode_title">Па назве</string>
   <string name="sort_mode_launch_count">Па частасці выкарыстання</string>
   <string name="sort_mode_install_time">Па часе ўсталёўкі</string>
+  <!-- Home screen search bar -->
   <string name="home_screen_search_text">Радок пошуку</string>
+  <!-- Larger icons -->
   <string name="larger_icons_text">Буйныя значкі</string>
+  <!-- Icon labels -->
   <string name="icon_labels">Подпісы значкоў</string>
   <string name="icon_labels_show">Паказваць</string>
   <string name="icon_labels_hide">Хаваць</string>
+  <!-- Protected apps -->
   <string name="protected_app_settings">Заблакаваныя дадаткі</string>
+  <!-- Dialog -->
   <string name="dialog_confirm">Пацвердзіць</string>
+  <!-- Drawer type -->
   <string name="drawer_type">Тып меню</string>
   <string name="drawer_type_drawer">Вертыкальнае</string>
   <string name="drawer_type_pager">Пастаронкавае</string>
   <string name="setting_state_disabled">НЕДАСТУПНА</string>
+  <!-- Search Manager doesn't exist -->
   <string name="search_activity_not_found">Немагчыма запусціць дадатак пошуку!</string>
 </resources>

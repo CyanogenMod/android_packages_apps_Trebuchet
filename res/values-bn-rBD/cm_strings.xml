@@ -16,5 +16,21 @@
      limitations under the License.
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <!-- Application name -->
+  <!-- App version -->
   <string name="app_settings">অ্যাপ এর রুপান্তর নির্ধারণ</string>
+  <!-- Settings states -->
+  <!-- Themes button -->
+  <!-- Wallpaper scroll effect -->
+  <!-- Dynamic Grid -->
+  <!-- Folder titles -->
+  <!-- Scroll effect -->
+  <!-- Drawer sorting mode -->
+  <!-- Home screen search bar -->
+  <!-- Larger icons -->
+  <!-- Icon labels -->
+  <!-- Protected apps -->
+  <!-- Dialog -->
+  <!-- Drawer type -->
+  <!-- Search Manager doesn't exist -->
 </resources>

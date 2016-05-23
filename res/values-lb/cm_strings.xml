@@ -16,37 +16,53 @@
      limitations under the License.
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <!-- Application name -->
+  <!-- App version -->
   <string name="home_screen_settings">STARTSCHIERM-ASTELLUNGEN</string>
   <string name="drawer_settings">ASTELLUNGE VUN DER APP-IWWERSIICHT</string>
   <string name="app_settings">APP-ASTELLUNGEN</string>
+  <!-- Settings states -->
   <string name="setting_state_on">UN</string>
   <string name="setting_state_off">AUS</string>
+  <!-- Themes button -->
   <string name="themes_button_text">Designen</string>
   <string name="scrolling_page_outlines">Säiterummen</string>
   <string name="scrolling_fade_adjacent">Säiten um Rand ausblenden</string>
+  <!-- Wallpaper scroll effect -->
   <string name="scrolling_wallpaper">Hannergrondbild scrollen</string>
+  <!-- Dynamic Grid -->
   <string name="grid_size_text">Gittergréisst</string>
   <string name="grid_size_comfortable">Gemittlech</string>
   <string name="grid_size_cozy">Heemlech</string>
   <string name="grid_size_condensed">Schmuel</string>
   <string name="grid_size_custom">Personaliséiert (<xliff:g id="rows">%1$d</xliff:g> \u00d7 <xliff:g id="columns">%2$d</xliff:g>)</string>
   <string name="preferences_interface_homescreen_custom">Personaliséiert Gréisst auswielen</string>
+  <!-- Folder titles -->
   <string name="play_folder_title">Play</string>
+  <!-- Scroll effect -->
   <string name="scroll_effect_text">Scrolleffekt</string>
+  <!-- Drawer sorting mode -->
   <string name="drawer_sorting_text">Zortéiermodus</string>
   <string name="sort_mode_title">Titel</string>
   <string name="sort_mode_launch_count">Startunzuel</string>
   <string name="sort_mode_install_time">Installatiounszäit</string>
+  <!-- Home screen search bar -->
   <string name="home_screen_search_text">Sichkëscht</string>
+  <!-- Larger icons -->
   <string name="larger_icons_text">Grouss Symboler</string>
+  <!-- Icon labels -->
   <string name="icon_labels">Symbol-Beschrëftungen</string>
   <string name="icon_labels_show">Uweisen</string>
   <string name="icon_labels_hide">Verstoppen</string>
+  <!-- Protected apps -->
   <string name="protected_app_settings">Geschützt Appen</string>
+  <!-- Dialog -->
   <string name="dialog_confirm">Bestätegen</string>
+  <!-- Drawer type -->
   <string name="drawer_type">Layout</string>
   <string name="drawer_type_drawer">Vertikal</string>
   <string name="drawer_type_pager">Säiten</string>
   <string name="setting_state_disabled">DESAKTIVÉIEREN</string>
+  <!-- Search Manager doesn't exist -->
   <string name="search_activity_not_found">Eng Sichaktivitéit konnt net fonnt ginn!</string>
 </resources>

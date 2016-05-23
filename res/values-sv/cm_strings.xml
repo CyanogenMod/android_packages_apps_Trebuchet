@@ -16,37 +16,53 @@
      limitations under the License.
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <!-- Application name -->
+  <!-- App version -->
   <string name="home_screen_settings">HEMSKÄRMSINSTÄLLNINGAR</string>
   <string name="drawer_settings">APPMENYINSTÄLLNINGAR</string>
   <string name="app_settings">APPINSTÄLLNINGAR</string>
+  <!-- Settings states -->
   <string name="setting_state_on">PÅ</string>
   <string name="setting_state_off">AV</string>
+  <!-- Themes button -->
   <string name="themes_button_text">Teman</string>
   <string name="scrolling_page_outlines">Skärmkonturer</string>
   <string name="scrolling_fade_adjacent">Tona skärmsidor</string>
+  <!-- Wallpaper scroll effect -->
   <string name="scrolling_wallpaper">Rulla bakgrundsbild</string>
+  <!-- Dynamic Grid -->
   <string name="grid_size_text">Rutnätsstorlek</string>
   <string name="grid_size_comfortable">Komfortabel</string>
   <string name="grid_size_cozy">Mysig</string>
   <string name="grid_size_condensed">Kondenserad</string>
   <string name="grid_size_custom">Anpassad (<xliff:g id="rows">%1$d</xliff:g> \u00d7 <xliff:g id="columns">%2$d</xliff:g>)</string>
   <string name="preferences_interface_homescreen_custom">Välj anpassad storlek</string>
+  <!-- Folder titles -->
   <string name="play_folder_title">Spela</string>
+  <!-- Scroll effect -->
   <string name="scroll_effect_text">Rullningseffekt</string>
+  <!-- Drawer sorting mode -->
   <string name="drawer_sorting_text">Sorteringsläge</string>
   <string name="sort_mode_title">Titel</string>
   <string name="sort_mode_launch_count">Startantal</string>
   <string name="sort_mode_install_time">Installationstillfälle</string>
+  <!-- Home screen search bar -->
   <string name="home_screen_search_text">Sökfält</string>
+  <!-- Larger icons -->
   <string name="larger_icons_text">Större ikoner</string>
+  <!-- Icon labels -->
   <string name="icon_labels">Ikonetiketter</string>
   <string name="icon_labels_show">Visa</string>
   <string name="icon_labels_hide">Dölj</string>
+  <!-- Protected apps -->
   <string name="protected_app_settings">Skyddade appar</string>
+  <!-- Dialog -->
   <string name="dialog_confirm">Bekräfta</string>
+  <!-- Drawer type -->
   <string name="drawer_type">Layout</string>
   <string name="drawer_type_drawer">Vertikal</string>
   <string name="drawer_type_pager">Paginerad</string>
   <string name="setting_state_disabled">INAKTIVERAD</string>
+  <!-- Search Manager doesn't exist -->
   <string name="search_activity_not_found">Kunde inte hitta en sökaktivitet!</string>
 </resources>

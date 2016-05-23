@@ -16,36 +16,52 @@
      limitations under the License.
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <!-- Application name -->
+  <!-- App version -->
   <string name="home_screen_settings">HOME SCREEN SETTINGS</string>
   <string name="drawer_settings">DRAWER SETTINGS</string>
   <string name="app_settings">APP SETTINGS</string>
+  <!-- Settings states -->
   <string name="setting_state_on">ON</string>
   <string name="setting_state_off">OFF</string>
+  <!-- Themes button -->
   <string name="themes_button_text">Themes</string>
   <string name="scrolling_page_outlines">Page outlines</string>
   <string name="scrolling_fade_adjacent">Fade side pages</string>
+  <!-- Wallpaper scroll effect -->
   <string name="scrolling_wallpaper">Scroll wallpaper</string>
+  <!-- Dynamic Grid -->
   <string name="grid_size_text">Grid size</string>
   <string name="grid_size_comfortable">Comfortable</string>
   <string name="grid_size_cozy">Cozy</string>
   <string name="grid_size_condensed">Condensed</string>
   <string name="grid_size_custom">Custom (<xliff:g id="rows">%1$d</xliff:g> \u00d7 <xliff:g id="columns">%2$d</xliff:g>)</string>
   <string name="preferences_interface_homescreen_custom">Select custom size</string>
+  <!-- Folder titles -->
+  <!-- Scroll effect -->
   <string name="scroll_effect_text">Scroll effect</string>
+  <!-- Drawer sorting mode -->
   <string name="drawer_sorting_text">Sorting mode</string>
   <string name="sort_mode_title">Title</string>
   <string name="sort_mode_launch_count">Launch count</string>
   <string name="sort_mode_install_time">Install time</string>
+  <!-- Home screen search bar -->
   <string name="home_screen_search_text">Search bar</string>
+  <!-- Larger icons -->
   <string name="larger_icons_text">Larger icons</string>
+  <!-- Icon labels -->
   <string name="icon_labels">Icon labels</string>
   <string name="icon_labels_show">Show</string>
   <string name="icon_labels_hide">Hide</string>
+  <!-- Protected apps -->
   <string name="protected_app_settings">Protected apps</string>
+  <!-- Dialog -->
   <string name="dialog_confirm">Confirm</string>
+  <!-- Drawer type -->
   <string name="drawer_type">Layout</string>
   <string name="drawer_type_drawer">Vertical</string>
   <string name="drawer_type_pager">Paged</string>
   <string name="setting_state_disabled">DISABLED</string>
+  <!-- Search Manager doesn't exist -->
   <string name="search_activity_not_found">A search activity could not be found!</string>
 </resources>

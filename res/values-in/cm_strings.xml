@@ -16,37 +16,53 @@
      limitations under the License.
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-  <string name="home_screen_settings">PENGATURAN LAYAR HOME</string>
-  <string name="drawer_settings">PENGATURAN DRAWER</string>
+  <!-- Application name -->
+  <!-- App version -->
+  <string name="home_screen_settings">PENGATURAN LAYAR BERANDA</string>
+  <string name="drawer_settings">PENGATURAN LACI</string>
   <string name="app_settings">PENGATURAN APL</string>
-  <string name="setting_state_on">ON</string>
-  <string name="setting_state_off">OFF</string>
+  <!-- Settings states -->
+  <string name="setting_state_on">MENYALA</string>
+  <string name="setting_state_off">PADAM</string>
+  <!-- Themes button -->
   <string name="themes_button_text">Tema</string>
-  <string name="scrolling_page_outlines">Garis luar halaman</string>
-  <string name="scrolling_fade_adjacent">Fade side pages</string>
-  <string name="scrolling_wallpaper">Gulir wallpaper</string>
+  <string name="scrolling_page_outlines">Tepian laman</string>
+  <string name="scrolling_fade_adjacent">Lesapkan sisi laman</string>
+  <!-- Wallpaper scroll effect -->
+  <string name="scrolling_wallpaper">Gulir gambar latar</string>
+  <!-- Dynamic Grid -->
   <string name="grid_size_text">Ukuran grid</string>
-  <string name="grid_size_comfortable">Comfortable</string>
-  <string name="grid_size_cozy">Cozy</string>
-  <string name="grid_size_condensed">Condensed</string>
-  <string name="grid_size_custom">Kustom (<xliff:g id="rows">%1$d</xliff:g> \u00d7 <xliff:g id="columns">%2$d</xliff:g>)</string>
-  <string name="preferences_interface_homescreen_custom">Pilih ukuran kustom</string>
+  <string name="grid_size_comfortable">Menyenangkan</string>
+  <string name="grid_size_cozy">Nikmat</string>
+  <string name="grid_size_condensed">Ringkas</string>
+  <string name="grid_size_custom">Khusus (<xliff:g id="rows">%1$d</xliff:g> \u00d7 <xliff:g id="columns">%2$d</xliff:g>)</string>
+  <string name="preferences_interface_homescreen_custom">Pilih ukuran khusus</string>
+  <!-- Folder titles -->
   <string name="play_folder_title">Putar</string>
+  <!-- Scroll effect -->
   <string name="scroll_effect_text">Efek gulir</string>
-  <string name="drawer_sorting_text">Mode penyortiran</string>
+  <!-- Drawer sorting mode -->
+  <string name="drawer_sorting_text">Modus penyortiran</string>
   <string name="sort_mode_title">Judul</string>
   <string name="sort_mode_launch_count">Hitungan peluncur</string>
-  <string name="sort_mode_install_time">Waktu pemasangan</string>
-  <string name="home_screen_search_text">Bar pencarian</string>
+  <string name="sort_mode_install_time">Waktu instalasi</string>
+  <!-- Home screen search bar -->
+  <string name="home_screen_search_text">Bilah penelusuran</string>
+  <!-- Larger icons -->
   <string name="larger_icons_text">Ikon lebih besar</string>
+  <!-- Icon labels -->
   <string name="icon_labels">Label ikon</string>
   <string name="icon_labels_show">Tampilkan</string>
   <string name="icon_labels_hide">Sembunyikan</string>
+  <!-- Protected apps -->
   <string name="protected_app_settings">Aplikasi yang di lindungi</string>
+  <!-- Dialog -->
   <string name="dialog_confirm">Konfirmasi</string>
+  <!-- Drawer type -->
   <string name="drawer_type">Tata letak</string>
   <string name="drawer_type_drawer">Vertikal</string>
-  <string name="drawer_type_pager">Berhalaman</string>
+  <string name="drawer_type_pager">Berlaman</string>
   <string name="setting_state_disabled">DINONAKTIFKAN</string>
-  <string name="search_activity_not_found">Aktivitas pencarian tidak dapat ditemukan!</string>
+  <!-- Search Manager doesn't exist -->
+  <string name="search_activity_not_found">Aktivitas penelusuran tidak dapat ditemukan!</string>
 </resources>

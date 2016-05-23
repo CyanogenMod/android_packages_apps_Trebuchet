@@ -16,37 +16,53 @@
      limitations under the License.
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <!-- Application name -->
+  <!-- App version -->
   <string name="home_screen_settings">IMPOSTAZIONI SCHERMATA HOME</string>
   <string name="drawer_settings">IMPOSTAZIONI DRAWER</string>
   <string name="app_settings">IMPOSTAZIONI APP</string>
+  <!-- Settings states -->
   <string name="setting_state_on">ON</string>
   <string name="setting_state_off">OFF</string>
+  <!-- Themes button -->
   <string name="themes_button_text">Temi</string>
   <string name="scrolling_page_outlines">Contorni pagina</string>
   <string name="scrolling_fade_adjacent">Dissolvenza pagine laterali</string>
+  <!-- Wallpaper scroll effect -->
   <string name="scrolling_wallpaper">Sfondo scorrevole</string>
+  <!-- Dynamic Grid -->
   <string name="grid_size_text">Dimensione griglia</string>
   <string name="grid_size_comfortable">Confortevole</string>
   <string name="grid_size_cozy">Accogliente</string>
   <string name="grid_size_condensed">Condensato</string>
   <string name="grid_size_custom">Personalizzato (<xliff:g id="rows">%1$d</xliff:g> \u00d7 <xliff:g id="columns">%2$d</xliff:g>)</string>
   <string name="preferences_interface_homescreen_custom">Personalizza dimensione</string>
+  <!-- Folder titles -->
   <string name="play_folder_title">Play</string>
+  <!-- Scroll effect -->
   <string name="scroll_effect_text">Effetto scorrimento</string>
+  <!-- Drawer sorting mode -->
   <string name="drawer_sorting_text">Modalità ordinamento</string>
   <string name="sort_mode_title">Titolo</string>
   <string name="sort_mode_launch_count">Numero avvii</string>
   <string name="sort_mode_install_time">Tempo installazione</string>
+  <!-- Home screen search bar -->
   <string name="home_screen_search_text">Barra di ricerca</string>
+  <!-- Larger icons -->
   <string name="larger_icons_text">Icone grandi</string>
+  <!-- Icon labels -->
   <string name="icon_labels">Etichette icone</string>
   <string name="icon_labels_show">Mostra</string>
   <string name="icon_labels_hide">Nascondi</string>
+  <!-- Protected apps -->
   <string name="protected_app_settings">App protette</string>
+  <!-- Dialog -->
   <string name="dialog_confirm">Conferma</string>
+  <!-- Drawer type -->
   <string name="drawer_type">Disposizione</string>
   <string name="drawer_type_drawer">Verticale</string>
   <string name="drawer_type_pager">Paginato</string>
   <string name="setting_state_disabled">DISATTIVATO</string>
+  <!-- Search Manager doesn't exist -->
   <string name="search_activity_not_found">Impossibile trovare un\'activity di ricerca!</string>
 </resources>

@@ -16,37 +16,53 @@
      limitations under the License.
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <!-- Application name -->
+  <!-- App version -->
   <string name="home_screen_settings">PAGRINDINIO EKRANO NUSTATYMAI</string>
   <string name="drawer_settings">STALČIAUS NUSTATYMAI</string>
   <string name="app_settings">PROGRAMOS NUSTATYMAI</string>
+  <!-- Settings states -->
   <string name="setting_state_on">ĮJUNGTA</string>
   <string name="setting_state_off">IŠJUNGTA</string>
+  <!-- Themes button -->
   <string name="themes_button_text">Temos</string>
   <string name="scrolling_page_outlines">Puslapio kontūrai</string>
   <string name="scrolling_fade_adjacent">Išblukinti šoninius puslapius</string>
+  <!-- Wallpaper scroll effect -->
   <string name="scrolling_wallpaper">Slinkti darbalaukio foną</string>
+  <!-- Dynamic Grid -->
   <string name="grid_size_text">Tinklelio dydis</string>
   <string name="grid_size_comfortable">Patogus</string>
   <string name="grid_size_cozy">Jaukus</string>
   <string name="grid_size_condensed">Suglaustas</string>
   <string name="grid_size_custom">Priskirtas (<xliff:g id="rows">%1$d</xliff:g> \u00d7 <xliff:g id="columns">%2$d</xliff:g>)</string>
   <string name="preferences_interface_homescreen_custom">Pasirinkite tinkintą dydį</string>
+  <!-- Folder titles -->
   <string name="play_folder_title">Play</string>
+  <!-- Scroll effect -->
   <string name="scroll_effect_text">Slinkimo efektas</string>
+  <!-- Drawer sorting mode -->
   <string name="drawer_sorting_text">Rūšiavimo režimas</string>
   <string name="sort_mode_title">Pavadinimas</string>
   <string name="sort_mode_launch_count">Paleidimų kiekis</string>
   <string name="sort_mode_install_time">Įdiegimo laikas</string>
+  <!-- Home screen search bar -->
   <string name="home_screen_search_text">Paieškos juosta</string>
+  <!-- Larger icons -->
   <string name="larger_icons_text">Didesnės piktogramos</string>
+  <!-- Icon labels -->
   <string name="icon_labels">Piktogramų pavadinimai</string>
   <string name="icon_labels_show">Rodyti</string>
   <string name="icon_labels_hide">Paslėpti</string>
+  <!-- Protected apps -->
   <string name="protected_app_settings">Apsaugotos programos</string>
+  <!-- Dialog -->
   <string name="dialog_confirm">Patvirtinti</string>
+  <!-- Drawer type -->
   <string name="drawer_type">Išdėstymas</string>
   <string name="drawer_type_drawer">Vertikalus</string>
   <string name="drawer_type_pager">Puslapiai</string>
   <string name="setting_state_disabled">NELEIDŽIAMA</string>
+  <!-- Search Manager doesn't exist -->
   <string name="search_activity_not_found">Paieškos veikla negali būti rasta!</string>
 </resources>

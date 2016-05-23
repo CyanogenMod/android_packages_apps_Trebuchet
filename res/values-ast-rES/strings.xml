@@ -18,104 +18,235 @@
 */
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <!-- General -->
+  <!-- URI used to import old favorites. [DO NOT TRANSLATE] -->
+  <!-- Permission to receive the com.android.launcher3.action.LAUNCH intent -->
+  <!-- Permission to receive the com.android.launcher3.action.FIRST_LOAD_COMPLETE intent -->
+  <!-- Application name -->
   <string name="application_name">Launcher3</string>
+  <!-- Accessibility-facing application name -->
   <string name="home">Aniciu</string>
+  <!-- Name for all applications running as this uid. -->
   <string name="uid_name">Aplicaciones básiques d\'Android</string>
+  <!-- Default folder name -->
+  <!-- Displayed when user selects a shortcut for an app that was uninstalled [CHAR_LIMIT=none]-->
   <string name="activity_not_found">L\'aplicación nun ta instalada.</string>
+  <!-- Displayed when user selects a shortcut for an app that is current not available [CHAR_LIMIT=none]-->
+  <!-- SafeMode shortcut error string -->
   <string name="safemode_shortcut_error">Descargar app deshabilitada en Mou Seguru</string>
+  <!-- SafeMode widget error string -->
+  <!--  Labels for the tabs in the customize drawer -->
   <string name="widgets_tab_label">Widgets</string>
   <string name="widget_adder">Widgets</string>
   <string name="toggle_weight_watcher">Amosar memoria</string>
+  <!-- AppsCustomize pane -->
+  <!-- Message to tell the user to press and hold on a widget to add it [CHAR_LIMIT=50] -->
   <string name="long_press_widget_to_add">Caltén primíu\'l widget que quieras esbillar.</string>
+  <!-- The format string for the dimensions of a widget in the drawer -->
+  <!-- There is a special version of this format string for Farsi -->
   <string name="widget_dims_format">%1$d \u00d7 %2$d</string>
+  <!-- External-drop widget pick label format string [CHAR_LIMIT=25] -->
+  <!-- External-drop widget error string.  This is the error that is shown
+         when you drag and item into the homescreen and it is unable to fit,
+         or an error is encountered. [CHAR_LIMIT=50] -->
   <string name="external_drop_widget_error">Fallu al arrastrar l\'elementu a la pantalla d\'aniciu.</string>
+  <!-- External-drop widget pick title.  This is shown as the title of the
+         dialog which allows you to pick which widgets to handle a particular
+         drop if there are multiple choices. [CHAR_LIMIT=35] -->
   <string name="external_drop_widget_pick_title">Esbilla un widget p\'amestar</string>
+  <!-- Folders -->
+  <!-- Label of Folder name field in Rename folder dialog box -->
   <string name="rename_folder_label">Nome de carpeta</string>
+  <!-- Title of dialog box -->
   <string name="rename_folder_title">Camudar nome de carpeta</string>
+  <!-- Buttons in Rename folder dialog box -->
   <string name="rename_action">Aceutar</string>
+  <!-- Buttons in Rename folder dialog box -->
   <string name="cancel_action">Encaboxar</string>
+  <!-- Shortcuts -->
+  <!-- Title of dialog box -->
   <string name="menu_item_add_item">Amestar a la pantalla d\'aniciu</string>
+  <!-- Options in "Add to Home" dialog box; Title of the group containing the list of all apps -->
   <string name="group_applications">Aplicaciones</string>
+  <!-- Options in "Add to Home" dialog box; Title of the group containing the list of all shortcut
+s -->
   <string name="group_shortcuts">Accesos direutos</string>
+  <!-- Options in "Add to Home" dialog box; Title of the group containing the list of all widgets/gadgets -->
   <string name="group_widgets">Widgets</string>
+  <!-- Error message when user has filled all their home screens -->
   <string name="completely_out_of_space">Nun queda espaciu nes pantalles d\'aniciu.</string>
+  <!-- Error message when user has filled a home screen -->
   <string name="out_of_space">Nun queda espaciu na pantalla d\'aniciu.</string>
+  <!-- Error message when user has filled the hotseat -->
   <string name="hotseat_out_of_space">Nun queda espaciu na barra d\'accesos direutos</string>
+  <!-- Error message when user tries to drop an invalid item on the hotseat -->
   <string name="invalid_hotseat_item">Esti widget ye abondo grande pa la barra d\'accesos direutos</string>
+  <!-- Message displayed when a shortcut is created by an external application -->
   <string name="shortcut_installed">Creóse l\'accesu direutu \"<xliff:g id="NAME">%s</xliff:g>\".</string>
+  <!-- Message displayed when a shortcut is uninstalled by an external application -->
   <string name="shortcut_uninstalled">Desanicióse l\'accesu direutu \"<xliff:g id="NAME">%s</xliff:g>\".</string>
+  <!-- Message displayed when an external application attemps to create a shortcut that already exists -->
   <string name="shortcut_duplicate">L\'accesu direutu \"<xliff:g id="NAME">%s</xliff:g>\" yá esiste.</string>
+  <!-- Title of dialog when user is selecting shortcut to add to homescreen -->
   <string name="title_select_shortcut">Esbilla un accesu direutu</string>
+  <!-- Title of dialog when user is selecting an application to add to homescreen -->
   <string name="title_select_application">Esbilla una aplicación</string>
+  <!-- All applications label -->
   <string name="all_apps_button_label">Aplicaciones</string>
+  <!-- Label for button in all applications label to go back home (to the workspace / desktop)
+         for accessibilty (spoken when the button gets focus). -->
   <string name="all_apps_home_button_label">Aniciu</string>
+  <!-- Label for trash icon on workspace. Meant to communicate the idea of removing the
+         icon/widget from the home screen, but not permanently. [CHAR_LIMIT=30] -->
   <string name="delete_zone_label_workspace">Desaniciar</string>
+  <!-- Label for trash icon in All Apps. The icon/widget will become completely unavailable on the
+         device. [CHAR_LIMIT=30]-->
   <string name="delete_zone_label_all_apps">Desinstalar</string>
+  <!-- Label for delete drop target. [CHAR_LIMIT=20] -->
   <string name="delete_target_label">Desaniciar</string>
+  <!-- Label for uninstall drop target. [CHAR_LIMIT=20]-->
   <string name="delete_target_uninstall_label">Desinstalar</string>
+  <!-- Label for the info icon. [CHAR_LIMIT=20] -->
   <string name="info_target_label">Información de l\'aplicación</string>
+  <!-- Accessibility: AllApps button -->
   <string name="accessibility_all_apps_button">Aplicaciones</string>
+  <!-- Accessibility: Delete button -->
   <string name="accessibility_delete_button">Desaniciar</string>
+  <!-- Label for trash icon in All Apps, when an updated system app is selected. The update will
+         be uninstalled. [CHAR_LIMIT=30] -->
   <string name="delete_zone_label_all_apps_system_app">Desinstalar anovamientu</string>
+  <!-- URL pointing to help text. If empty, no link to help will be created [DO NOT TRANSLATE] -->
+  <!--  Strings for the contextual action bar (CAB) in All Apps -->
+  <!-- Describes the button for uninstalling the currently selected application.
+         Text is not displayed, but provided for accessibility. [CHAR_LIMIT=none] -->
   <string name="cab_menu_delete_app">Desinstalar aplicación</string>
+  <!-- Describes the button for getting details/info about currently selected application.
+         Text is not displayed, but provided for accessibility. [CHAR_LIMIT=none] -->
   <string name="cab_menu_app_info">Información de l\'aplicación</string>
+  <!-- Appears in the CAB when an app is selected in All Apps or Customize mode. [CHAR_LIMIT=50] -->
   <string name="cab_app_selection_text">1 aplicación esbillada</string>
+  <!-- Appears in the CAB when a widget is selected in Customize mode. [CHAR_LIMIT=50] -->
   <string name="cab_widget_selection_text">1 widget esbilláu</string>
+  <!-- Appears in the CAB when a folder is selected in Customize mode. [CHAR_LIMIT=50] -->
   <string name="cab_folder_selection_text">1 carpeta esbillada</string>
+  <!-- Appears in the CAB when a shortcut is selected in Customize mode. [CHAR_LIMIT=50] -->
   <string name="cab_shortcut_selection_text">1 accesu direutu esbilláu</string>
+  <!-- Permissions: -->
+  <!-- Permission short label -->
   <string name="permlab_install_shortcut">instalar accesos direutos</string>
+  <!-- Permission description -->
   <string name="permdesc_install_shortcut">Permite qu\'una aplicación amieste accesos direutos ensin intervención del usuariu.</string>
+  <!-- Permission short label -->
   <string name="permlab_uninstall_shortcut">desinstalar accesos direutos</string>
+  <!-- Permission description -->
   <string name="permdesc_uninstall_shortcut">Permite que l\'aplicación desanicie
         accesos direutos ensin intervención del usuariu.</string>
+  <!-- Permission short label -->
   <string name="permlab_read_settings">lleer información d\'accesos direutos y d\'axustes</string>
+  <!-- Permission description -->
   <string name="permdesc_read_settings">Permite que l\'aplicación consulte los axustes y
         los accesos direutos de la pantalla d\'aniciu.</string>
+  <!-- Permission short label -->
   <string name="permlab_write_settings">escribir información d\'atayos y d\'axustes de la pantalla d\'aniciu</string>
+  <!-- Permission description -->
   <string name="permdesc_write_settings">Permite que les aplicaciones camuden los axustes y los accesos direutos de la pantalla d\'aniciu.</string>
+  <!-- Widgets: -->
+  <!-- Text to show user in place of a gadget when we can't display it properly -->
   <string name="gadget_error_text">Fallu al cargar el widget</string>
+  <!-- Text to show user in place of a gadget when it is not yet initialized. -->
   <string name="gadget_setup_text">Configuración</string>
+  <!-- Text to inform the user that they can't uninstall a system application -->
   <string name="uninstall_system_app_text">Esta aplicación ye del sistema y nun pue desinstalase.</string>
+  <!-- Title of the Android Dreams (screensaver) module -->
   <string name="dream_name">Rocket Launcher</string>
+  <!-- Default folder title -->
+  <!-- Accessibility -->
+  <!-- The format string for Workspace descriptions [CHAR_LIMIT=none] -->
   <string name="workspace_description_format">Pantalla d\'aniciu %1$d</string>
+  <!-- The format string for default page scroll text [CHAR_LIMIT=none] -->
   <string name="default_scroll_format">Páxina %1$d de %2$d</string>
+  <!-- The format string for Workspace page scroll text [CHAR_LIMIT=none] -->
   <string name="workspace_scroll_format">Pantalla d\'aniciu %1$d de %2$d</string>
+  <!-- The format string for AppsCustomize Apps page scroll text [CHAR_LIMIT=none] -->
   <string name="apps_customize_apps_scroll_format">Páxina d\'aplicaciones %1$d de %2$d</string>
+  <!-- The format string for AppsCustomize Apps page scroll text [CHAR_LIMIT=none] -->
   <string name="apps_customize_widgets_scroll_format">Páxina de widgets %1$d de %2$d</string>
+  <!-- Clings -->
+  <!-- The title text for the workspace cling [CHAR_LIMIT=30] -->
   <string name="first_run_cling_title">Dámoste l\'acoyida</string>
+  <!-- The description of how to use the workspace [CHAR_LIMIT=60] -->
   <string name="first_run_cling_description">Personaliza la to pantalla d\'aniciu.</string>
+  <!-- The description of how to use the workspace [CHAR_LIMIT=60] -->
+  <!-- The description of how to use the workspace [CHAR_LIMIT=60] -->
+  <!-- The description of how to use the workspace [CHAR_LIMIT=60] -->
   <string name="first_run_cling_create_screens_hint">Crea más pantalles p\'aplicaciones y carpetes</string>
+  <!-- The title text for the migration cling [CHAR_LIMIT=30] -->
   <string name="migration_cling_title">Copia los tos iconos d\'aplicación</string>
+  <!-- The description of what migration does [CHAR_LIMIT=70] -->
   <string name="migration_cling_description">¿Importar los iconos y carpetes de les tos pantalles d\'aniciu vieyes?</string>
+  <!-- The description of the button to migrate apps from another launcher [CHAR_LIMIT=30] -->
   <string name="migration_cling_copy_apps">COPIAR ICONOS</string>
+  <!-- The description of the button to use the default launcher layout [CHAR_LIMIT=30] -->
   <string name="migration_cling_use_default">ANICIAR REFRESCU</string>
+  <!-- The title text for the workspace cling [CHAR_LIMIT=30] -->
   <string name="workspace_cling_title">Organiza\'l to espaciu</string>
+  <!-- The description of how to use the workspace [CHAR_LIMIT=70] -->
   <string name="workspace_cling_move_item">Caltén primíu\'l fondu p\'alministrar el fondu pantalla, los widgets y los axustes.</string>
+  <!-- The title text for workspace longpress action [CHAR_LIMIT=40] -->
   <string name="workspace_cling_longpress_title">Fondos pantalla, widgets, &amp; axustes</string>
+  <!-- The description of how to use the workspace [CHAR_LIMIT=70] -->
   <string name="workspace_cling_longpress_description">Toca y caltén fondu pa personalizar</string>
+  <!-- The description of the button to dismiss the cling [CHAR_LIMIT=30] -->
   <string name="workspace_cling_longpress_dismiss">FECHO</string>
+  <!-- The title text for the Folder cling [CHAR_LIMIT=30] -->
   <string name="folder_cling_title">Esto ye una carpeta</string>
+  <!-- The description of how to create a folder [CHAR_LIMIT=70] -->
   <string name="folder_cling_create_folder">Pa crear una carpeta como esta, caltén primida una aplicación y muévila sobre otra.</string>
+  <!-- The text on the button to dismiss a cling [CHAR_LIMIT=30] -->
   <string name="cling_dismiss">Aceutar</string>
+  <!-- Error message on dummy custom cling layout [DO NOT TRANSLATE] -->
+  <!-- Folder accessibility -->
+  <!-- The format string for when a folder is opened, speaks the dimensions -->
   <string name="folder_opened">Carpeta abierta, <xliff:g id="WIDTH">%1$d</xliff:g> por <xliff:g id="HEIGHT">%2$d</xliff:g></string>
+  <!-- Instruction that clicking outside will close folder -->
   <string name="folder_tap_to_close">Primi pa zarrar la carpeta</string>
+  <!-- Instruction that clicking outside will commit folder rename -->
   <string name="folder_tap_to_rename">Primi pa camudar el nome nuevu</string>
+  <!-- Indication that folder closed -->
   <string name="folder_closed">Carpeta zarrada</string>
+  <!-- Folder renamed format -->
   <string name="folder_renamed">Camudóse\'l nome la carpeta a <xliff:g id="NAME">%1$s</xliff:g></string>
+  <!-- Folder name format -->
   <string name="folder_name_format">Carpeta: <xliff:g id="NAME">%1$s</xliff:g></string>
+  <!-- Debug-only activity name. [DO NOT TRANSLATE] -->
   <string name="debug_memory_activity">* HPROF</string>
+  <!-- Strings for the customization mode -->
+  <!-- Text for widget add button -->
   <string name="widget_button_text">Widgets</string>
+  <!-- Text for wallpaper change button -->
   <string name="wallpaper_button_text">Fondos de pantalla</string>
+  <!-- Text for settings button -->
   <string name="settings_button_text">Axustes</string>
+  <!-- Label on an icon that references an uninstalled package, that is going to be installed at some point. [CHAR_LIMIT=15] -->
   <string name="package_state_enqueued">Esperando</string>
+  <!-- Label on an icon that references an uninstalled package, that is currently being downloaded. [CHAR_LIMIT=15] -->
   <string name="package_state_downloading">Descargando</string>
+  <!-- Label on an icon that references an uninstalled package, that is currently being installed. [CHAR_LIMIT=15] -->
   <string name="package_state_installing">Instalando</string>
+  <!-- Label on an icon that references an uninstalled package, for which we have no information about when it might be installed. [CHAR_LIMIT=15] -->
   <string name="package_state_unknown">Desconocíu</string>
+  <!-- Label on an icon that references an uninstalled package, for which restore from market has failed. [CHAR_LIMIT=15] -->
   <string name="package_state_error">Non restauráu</string>
+  <!-- Button for abandoned promises dialog, that removes all abandoned promise icons. -->
   <string name="abandoned_clean_all">Desanicialo too</string>
+  <!-- Button for abandoned promises dialog, to removes this abandoned promise icon. -->
   <string name="abandoned_clean_this">Desaniciar</string>
+  <!-- Button for abandoned promise dialog, to search in the market for the missing package. -->
   <string name="abandoned_search">Guetar</string>
+  <!-- Title for abandoned promise dialog. -->
   <string name="abandoned_promises_title">Esta app nun ta instalada</string>
+  <!-- Explanation for abandoned promise dialog. "The first 'it' refers to the shortcut icon.
+    The second "it" refers to the app. -->
   <string name="abandoned_promise_explanation">La app pa esti iconu nun ta instalada.
         Pues desanicialu, o guetar la app ya instalala manualmente.
     </string>
