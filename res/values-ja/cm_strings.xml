@@ -62,4 +62,5 @@
   <string name="search_activity_not_found">検索アクティビティが見つかりませんでした。</string>
   <!-- App not available toast text -->
   <string name="app_not_available">アプリが利用できません</string>
+  <string name="storage_permission_denied">ストレージにアクセスできません</string>
 </resources>

@@ -51,7 +51,7 @@
   <string name="app_drawer_style">Стил на менюто</string>
   <string name="app_drawer_style_compact">Компактен</string>
   <string name="app_drawer_style_sections">Разделен</string>
-  <string name="app_drawer_color">Цвят на менюто за известия</string>
+  <string name="app_drawer_color">Изглед на менюто</string>
   <string name="app_drawer_color_dark">Тъмно</string>
   <string name="app_drawer_color_light">Светло</string>
   <string name="fast_scroller">Бързо прелистване</string>
