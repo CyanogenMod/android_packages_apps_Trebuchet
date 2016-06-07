@@ -31,7 +31,6 @@ LOCAL_STATIC_JAVA_LIBRARIES := \
 LOCAL_STATIC_JAVA_AAR_LIBRARIES := ambientsdk
 
 LOCAL_SRC_FILES := $(call all-java-files-under, src) \
-    $(call all-java-files-under, WallpaperPicker/src) \
     $(call all-proto-files-under, protos)
 
 LOCAL_RESOURCE_DIR := $(LOCAL_PATH)/WallpaperPicker/res \
