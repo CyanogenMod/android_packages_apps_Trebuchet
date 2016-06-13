@@ -17,19 +17,19 @@
 -->
 <resources>
   <string-array name="transition_effect_entries">
-    <item>Tidak Ada</item>
-    <item>Memperbesar</item>
-    <item>Memperkecil</item>
-    <item>Memutar keatas</item>
-    <item>Memutar kebawah</item>
+    <item>Tidak ada</item>
+    <item>Perbesar</item>
+    <item>Perkecil</item>
+    <item>Memutar ke atas</item>
+    <item>Memutar ke bawah</item>
     <item>Kubus masuk</item>
     <item>Kubus keluar</item>
     <item>Tumpukan</item>
     <item>Akordion</item>
-    <item>Membalik</item>
+    <item>Balik</item>
     <item>Silinder masuk</item>
     <item>Silinder keluar</item>
     <item>Komedi putar</item>
-    <item>Overview</item>
+    <item>Penjelasan umum</item>
   </string-array>
 </resources>

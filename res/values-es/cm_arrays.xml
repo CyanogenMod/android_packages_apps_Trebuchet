@@ -18,10 +18,10 @@
 <resources>
   <string-array name="transition_effect_entries">
     <item>Ninguno</item>
-    <item>Zoom entrante</item>
-    <item>Zoom saliente</item>
-    <item>Rotar arriba</item>
-    <item>Rotar abajo</item>
+    <item>Acercamiento</item>
+    <item>Alejamiento</item>
+    <item>Girar hacia arriba</item>
+    <item>Girar hacia abajo</item>
     <item>Cúbico entrante</item>
     <item>Cúbico saliente</item>
     <item>Apilar</item>

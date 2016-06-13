@@ -17,17 +17,17 @@
 -->
 <resources>
   <string-array name="transition_effect_entries">
-    <item>لا شيء</item>
+    <item>بلا</item>
     <item>تكبير</item>
     <item>تصغير</item>
     <item>تدوير للأعلى</item>
     <item>تدوير للأسفل</item>
     <item>مكعب لداخل</item>
     <item>مكعب للخارج</item>
-    <item>جميع</item>
+    <item>مكدس</item>
     <item>Accordion</item>
-    <item>لف</item>
-    <item>اسطوانة لداخل</item>
+    <item>قلب</item>
+    <item>في الأسطوانة</item>
     <item>اسطوانة للخارج</item>
     <item>دائري</item>
     <item>نظرة عامّة</item>

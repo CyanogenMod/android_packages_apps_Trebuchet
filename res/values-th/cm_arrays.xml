@@ -22,14 +22,14 @@
     <item>ซูมออก</item>
     <item>หมุนขึ้น</item>
     <item>หมุนลง</item>
-    <item>เข้าลูกบาศก์</item>
-    <item>ออกลูกบาศก์</item>
-    <item>ไพ่</item>
+    <item>เคลื่อนเข้าแบบลูกบาศก์</item>
+    <item>เคลื่อนออกจากลูกบาศก์</item>
+    <item>กองที่ซ้อนกัน</item>
     <item>หีบเพลง</item>
     <item>พลิก</item>
     <item>เข้าทรงกระบอก</item>
-    <item>ออกทรงกระบอก</item>
-    <item>Carousel</item>
+    <item>ทรงกระบอกออก</item>
+    <item>เคลื่อนแบบม้าหมุน</item>
     <item>ภาพรวม</item>
   </string-array>
 </resources>

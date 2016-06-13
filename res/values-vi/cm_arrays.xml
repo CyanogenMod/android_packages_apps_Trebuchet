@@ -18,18 +18,18 @@
 <resources>
   <string-array name="transition_effect_entries">
     <item>Không có</item>
-    <item>Zoom in</item>
-    <item>Zoom out</item>
-    <item>Rotate up</item>
-    <item>Rotate down</item>
-    <item>Cube in</item>
-    <item>Cube out</item>
-    <item>Stack</item>
+    <item>Phóng to</item>
+    <item>Thu nhỏ</item>
+    <item>Xoay lên</item>
+    <item>Xoay xuống</item>
+    <item>Lập phương vào trong</item>
+    <item>Lập phương ra ngoài</item>
+    <item>Xếp chồng</item>
     <item>Accordion</item>
-    <item>Flip</item>
-    <item>Cylinder in</item>
-    <item>Cylinder out</item>
-    <item>Carousel</item>
-    <item>Overview</item>
+    <item>Lật</item>
+    <item>Hình trụ vào trong</item>
+    <item>Hình trụ ra ngoài</item>
+    <item>Xoay tròn</item>
+    <item>Toàn cảnh</item>
   </string-array>
 </resources>
