@@ -26,6 +26,7 @@
   <string name="app_name">Launcher3</string>
   <!-- Default folder name -->
   <!-- Work folder name -->
+  <string name="work_folder_name">Trabayu</string>
   <!-- Displayed when user selects a shortcut for an app that was uninstalled [CHAR_LIMIT=none]-->
   <string name="activity_not_found">L\'aplicación nun ta instalada.</string>
   <!-- Displayed when user selects a shortcut for an app that is current not available [CHAR_LIMIT=none]-->
@@ -41,10 +42,14 @@
   <string name="widget_dims_format">%1$d \u00d7 %2$d</string>
   <!-- All Apps -->
   <!-- Search bar text in the apps view. [CHAR_LIMIT=50] -->
+  <string name="all_apps_search_bar_hint">Guetar aplicaciones</string>
   <!-- Loading apps text. [CHAR_LIMIT=50] -->
+  <string name="all_apps_loading_message">Cargando aplicaciones&#8230;</string>
   <!-- No-search-results text. [CHAR_LIMIT=50] -->
+  <string name="all_apps_no_search_results">Nun s\'alcontraron aplicaciones que concasen con «<xliff:g id="query" example="Android">%1$s</xliff:g>»</string>
   <!-- Search market text.  This is a format string where the first argument is the name of the activity
          handling the search.  The format string does not need to handle both of these arguments. [CHAR_LIMIT=50] -->
+  <string name="all_apps_search_market_message">Dir a <xliff:g id="query" example="Play Store">%1$s</xliff:g></string>
   <!-- Drag and drop -->
   <!-- Error message when user has filled a home screen -->
   <string name="out_of_space">Nun queda espaciu na pantalla d\'aniciu.</string>
@@ -76,6 +81,7 @@
   <!-- Permission description -->
   <string name="permdesc_write_settings">Permite que les aplicaciones camuden los axustes y los accesos direutos de la pantalla d\'aniciu.</string>
   <!-- Toast shown on clicking a direct call shortcut. [CHAR_LIMIT=80] -->
+  <string name="msg_no_phone_permission"><xliff:g id="app_name" example="Launcher3">%1$s</xliff:g> nun tien permisu pa facer llamaes telefóniques</string>
   <!-- Widgets: -->
   <!-- Text to show user in place of a gadget when we can't display it properly -->
   <string name="gadget_error_text">Fallu al cargar el widget</string>
@@ -84,6 +90,7 @@
   <!-- Text to inform the user that they can't uninstall a system application -->
   <string name="uninstall_system_app_text">Esta aplicación ye del sistema y nun pue desinstalase.</string>
   <!-- Default folder title -->
+  <string name="folder_hint_text">Carpeta ensin nome</string>
   <!-- Accessibility -->
   <!-- The format string for default page scroll text [CHAR_LIMIT=none] -->
   <string name="default_scroll_format">Páxina %1$d de %2$d</string>
@@ -130,6 +137,7 @@
   <string name="settings_button_text">Axustes</string>
   <!-- Strings for settings -->
   <!-- Title for Allow Rotation setting. [CHAR LIMIT=50] -->
+  <string name="allow_rotation_title">Permitir voltéu</string>
   <!-- Label on an icon that references an uninstalled package, for which we have no information about when it might be installed. [CHAR_LIMIT=15] -->
   <string name="package_state_unknown">Desconocíu</string>
   <!-- Button for abandoned promises dialog, to removes this abandoned promise icon. -->
@@ -147,26 +155,49 @@
   <!-- Accessibility action to add an app to workspace. [CHAR_LIMIT=30] -->
   <string name="action_add_to_workspace">Amestar a la pantalla d\'aniciu</string>
   <!-- Accessibility action to move item to the current location. [CHAR_LIMIT=30] -->
+  <string name="action_move_here">Mover l\'elementu equí</string>
   <!-- Accessibility confirmation for item added to workspace. -->
+  <string name="item_added_to_workspace">Amestóse l\'elementu a la pantalla d\'anciu</string>
   <!-- Accessibility confirmation for item removed. -->
+  <string name="item_removed">Desanicióse l\'elementu</string>
   <!-- Accessibility action to move an item on the workspace. [CHAR_LIMIT=30] -->
+  <string name="action_move">Mover elementu</string>
   <!-- Accessibility description to move item to empty cell. -->
+  <string name="move_to_empty_cell">Mover a filera <xliff:g id="number" example="1">%1$s</xliff:g> columna <xliff:g id="number" example="1">%2$s</xliff:g></string>
   <!-- Accessibility description to move item inside a folder. -->
+  <string name="move_to_position">Mover a la posición <xliff:g id="number" example="1">%1$s</xliff:g></string>
   <!-- Accessibility description to move item to the hotseat. -->
+  <string name="move_to_hotseat_position">Mover a la posición de favoritos <xliff:g id="number" example="1">%1$s</xliff:g></string>
   <!-- Accessibility confirmation for item move. -->
+  <string name="item_moved">Movióse l\'elementu</string>
   <!-- Accessibility description to move item into an existing folder. -->
+  <string name="add_to_folder">Amestar a carpeta: <xliff:g id="name" example="Games">%1$s</xliff:g></string>
   <!-- Accessibility description to move item into an existing folder containing an app. -->
+  <string name="add_to_folder_with_app">Amestar a carpeta con <xliff:g id="name" example="Messenger">%1$s</xliff:g></string>
   <!-- Accessibility confirmation for item added to folder. -->
+  <string name="added_to_folder">Elementu amestáu a carpeta</string>
   <!-- Accessibility description to create folder with another item. -->
+  <string name="create_folder_with">Crear carpeta con: <xliff:g id="name" example="Game">%1$s</xliff:g></string>
   <!-- Accessibility confirmation for folder created. -->
+  <string name="folder_created">Creóse la carpeta</string>
   <!-- Accessibility action to move an item from folder to workspace. [CHAR_LIMIT=30] -->
+  <string name="action_move_to_workspace">Mover a la pantalla d\'aniciu</string>
   <!-- Accessibility action to move an homescreen to the left. [CHAR_LIMIT=30] -->
+  <string name="action_move_screen_left">Mover pantalla a la izquierda</string>
   <!-- Accessibility action to move an homescreen to the right. [CHAR_LIMIT=30] -->
+  <string name="action_move_screen_right">Mover pantalla a la drecha</string>
   <!-- Accessibility confirmation when a screen was moved. -->
+  <string name="screen_moved">Movióse la pantalla</string>
   <!-- Accessibility action to resize a widget. [CHAR_LIMIT=30] -->
+  <string name="action_resize">Redimensionar</string>
   <!-- Accessibility action to increase width of a widget. [CHAR_LIMIT=30] -->
+  <string name="action_increase_width">Aumentar anchor</string>
   <!-- Accessibility action to increase height of a widget. [CHAR_LIMIT=30] -->
+  <string name="action_increase_height">Aumentar altor</string>
   <!-- Accessibility action to decrease width of a widget. [CHAR_LIMIT=30] -->
+  <string name="action_decrease_width">Amenorgar anchor</string>
   <!-- Accessibility action to decrease height of a widget. [CHAR_LIMIT=30] -->
+  <string name="action_decrease_height">Amenorgar altor</string>
   <!-- Accessibility confirmation for widget resize. -->
+  <string name="widget_resized">Redimensionóse\'l widget al anchor <xliff:g id="number" example="2">%1$s</xliff:g> altor <xliff:g id="number" example="1">%2$s</xliff:g></string>
 </resources>
