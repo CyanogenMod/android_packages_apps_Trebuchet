@@ -42,6 +42,7 @@
   <string name="long_press_widget_to_add">Caltén primíu\'l widget que quieras esbillar.</string>
   <!-- Market button text.  The market button text is removed in Launcher.java
          in the Phone UI. [CHAR LIMIT=32] -->
+  <string name="market">Tienda</string>
   <!-- The format string for the dimensions of a widget in the drawer -->
   <!-- There is a special version of this format string for Farsi -->
   <string name="widget_dims_format">%1$d \u00d7 %2$d</string>
@@ -111,6 +112,7 @@ s -->
   <!-- Accessibility: Search button -->
   <string name="accessibility_search_button">Guetar</string>
   <!-- Accessibility: Voice Search button -->
+  <string name="accessibility_voice_search_button">Gueta por voz</string>
   <!-- Accessibility: AllApps button -->
   <string name="accessibility_all_apps_button">Aplicaciones</string>
   <!-- Accessibility: Delete button -->
