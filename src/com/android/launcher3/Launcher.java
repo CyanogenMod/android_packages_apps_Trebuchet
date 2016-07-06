@@ -41,6 +41,7 @@ import android.content.BroadcastReceiver;
 import android.content.ComponentCallbacks2;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -69,7 +70,11 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.StrictMode;
 import android.os.SystemClock;
+import android.os.SystemProperties;
 import android.os.UserHandle;
+import android.provider.Settings;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.text.Selection;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
@@ -121,10 +126,14 @@ import com.android.launcher3.widget.WidgetsContainerView;
 
 import java.io.File;
 import java.io.FileDescriptor;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.channels.FileChannel;
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -225,6 +234,9 @@ public class Launcher extends Activity
 
     private static final String QSB_WIDGET_ID = "qsb_widget_id";
     private static final String QSB_WIDGET_PROVIDER = "qsb_widget_provider";
+    private static final String PROPERTY_SHOW_TREB_HIDDEN =
+            "persist.data.show_treb_hidden";
+    private final int PERMISSION_REQUEST_CODE_EXPORT_DB = 1;
 
     public static final String USER_HAS_MIGRATED = "launcher.user_migrated_from_old_data";
 
@@ -268,6 +280,7 @@ public class Launcher extends Activity
     private DragController mDragController;
     private View mWeightWatcher;
     private DynamicGridSizeFragment mDynamicGridSizeFragment;
+    private boolean mIsHiddenMenuOptionEnabled;
 
     protected static RemoteFolderManager sRemoteFolderManager;
 
@@ -330,6 +343,8 @@ public class Launcher extends Activity
     private boolean mVisible = false;
     private boolean mHasFocus = false;
     private boolean mAttached = false;
+
+    private File mExportedLauncherDB = null;
 
     private LauncherClings mClings;
 
@@ -482,6 +497,79 @@ public class Launcher extends Activity
         }
     };
 
+    private void requestWriteExternalPermission(){
+        ActivityCompat.requestPermissions(
+            this,
+            new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+            PERMISSION_REQUEST_CODE_EXPORT_DB
+            );
+    }
+
+    private boolean checkWriteExternalPermission(){
+        int result = ContextCompat.checkSelfPermission(
+            this,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+            );
+        if (result == PackageManager.PERMISSION_GRANTED) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    // returns true if mIsHiddenMenuOptionEnabled was updated else
+    // returns false
+    private boolean updateHiddenMenuOption() {
+        boolean option = SystemProperties.getBoolean(
+            PROPERTY_SHOW_TREB_HIDDEN,
+            false
+            );
+        if ( option == mIsHiddenMenuOptionEnabled ) {
+            return false;
+        } else {
+            mIsHiddenMenuOptionEnabled = option;
+            return true;
+        }
+    }
+
+    private void deleteExportedLauncerDB() {
+        if ( mExportedLauncherDB != null && mExportedLauncherDB.exists() ) {
+            mExportedLauncherDB.delete();
+        }
+        mExportedLauncherDB = null;
+    }
+
+    private File exportFile(File inputFile, String outputPath) throws IOException {
+        File outputFolder = new File( outputPath );
+        if( !outputFolder.exists() ) {
+            outputFolder.mkdir();
+        }
+
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        File outputFile = new File(
+            outputPath + File.separator + "launcher_" + timeStamp + ".db"
+            );
+        FileChannel inChannel = null;
+        FileChannel outChannel = null;
+
+        try {
+            inChannel = new FileInputStream(inputFile).getChannel();
+            outChannel = new FileOutputStream(outputFile).getChannel();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            inChannel.transferTo(0, inChannel.size(), outChannel);
+        } finally {
+            if (inChannel != null)
+                inChannel.close();
+            if (outChannel != null)
+                outChannel.close();
+        }
+        return outputFile;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         if (DEBUG_STRICT_MODE) {
@@ -542,6 +630,7 @@ public class Launcher extends Activity
 
         setContentView(R.layout.launcher);
 
+        updateHiddenMenuOption();
         setupViews();
         mDeviceProfile.layout(this);
 
@@ -616,6 +705,48 @@ public class Launcher extends Activity
         IntentFilter searchBarVisibilityFilter = new IntentFilter(
                 SettingsPinnedHeaderAdapter.ACTION_SEARCH_BAR_VISIBILITY_CHANGED);
         registerReceiver(searchBarVisibilityChangedReceiver, searchBarVisibilityFilter);
+    }
+
+    public void checkPermissionsAndExportDBFile(){
+        if( checkWriteExternalPermission() == false) {
+            requestWriteExternalPermission();
+        } else {
+            exportDBFile();
+        }
+    }
+
+    public void exportDBFile() {
+        ContextWrapper c = new ContextWrapper(this);
+        File dbFile = c.getDatabasePath("launcher.db");
+        try {
+            deleteExportedLauncerDB();
+            mExportedLauncherDB = exportFile(
+                dbFile,
+                Environment.getExternalStorageDirectory().getAbsolutePath()
+                );
+        } catch (IOException e) {
+            Toast.makeText(
+                this,
+                getString(R.string.export_db_could_not),
+                Toast.LENGTH_SHORT
+                ).show();
+        }
+    }
+
+    private final int EMAIL_DB_FILE_CODE = 101;
+    public void emailExportedFile() {
+        if( mExportedLauncherDB == null ) {
+            return;
+        }
+        Uri path = Uri.fromFile(mExportedLauncherDB);
+        Intent emailIntent = new Intent(Intent.ACTION_SEND);
+        emailIntent.setType("vnd.android.cursor.dir/email");
+        emailIntent.putExtra(Intent.EXTRA_STREAM, path);
+        emailIntent.putExtra(
+            Intent.EXTRA_SUBJECT,
+            getString(R.string.export_db_email_subject)
+            );
+        startActivityForResult(emailIntent , EMAIL_DB_FILE_CODE);
     }
 
     @Override
@@ -980,7 +1111,11 @@ public class Launcher extends Activity
     @Override
     protected void onActivityResult(
             final int requestCode, final int resultCode, final Intent data) {
-        handleActivityResult(requestCode, resultCode, data);
+        if (requestCode == EMAIL_DB_FILE_CODE) {
+            deleteExportedLauncerDB();
+        } else {
+            handleActivityResult(requestCode, resultCode, data);
+        }
         if (mLauncherCallbacks != null) {
             mLauncherCallbacks.onActivityResult(requestCode, resultCode, data);
         }
@@ -1005,6 +1140,19 @@ public class Launcher extends Activity
                 // TODO: Show a snack bar with link to settings
                 Toast.makeText(this, getString(R.string.msg_no_phone_permission,
                         getString(R.string.app_name)), Toast.LENGTH_SHORT).show();
+            }
+        } else if (requestCode == PERMISSION_REQUEST_CODE_EXPORT_DB) {
+            if (grantResults.length > 0
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                exportDBFile();
+                emailExportedFile();
+            } else {
+                Toast.makeText(
+                    this,
+                    getString(R.string.export_db_could_not) + ". " +
+                             getString(R.string.storage_permission_denied),
+                    Toast.LENGTH_LONG
+                    ).show();
             }
         }
         if (mLauncherCallbacks != null) {
@@ -1217,6 +1365,9 @@ public class Launcher extends Activity
         if (gridFragment != null) {
             ((DynamicGridSizeFragment) gridFragment).setSize();
             unlockScreenOrientation(true);
+        }
+        if( updateHiddenMenuOption() && mOverviewSettingsPanel != null){
+            mOverviewSettingsPanel.initializeAdapter();
         }
     }
 
@@ -2387,6 +2538,10 @@ public class Launcher extends Activity
 
         unregisterReceiver(protectedAppsChangedReceiver);
         unregisterReceiver(searchBarVisibilityChangedReceiver);
+    }
+
+    public boolean getIsHiddenMenuOptionEnabled(){
+        return mIsHiddenMenuOptionEnabled;
     }
 
     public DragController getDragController() {

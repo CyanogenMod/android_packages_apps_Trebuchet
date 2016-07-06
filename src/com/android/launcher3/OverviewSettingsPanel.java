@@ -38,10 +38,18 @@ public class OverviewSettingsPanel {
                 res.getString(R.string.drawer_settings),
                 res.getString(R.string.app_settings)};
 
-        String[] valuesApp = new String[] {
+        String[] valuesApp = null;
+
+        if( mLauncher.getIsHiddenMenuOptionEnabled() == false ) {
+            valuesApp = new String[] {
                 res.getString(R.string.larger_icons_text),
                 res.getString(R.string.protected_app_settings)};
-
+        } else {
+            valuesApp = new String[] {
+                res.getString(R.string.larger_icons_text),
+                res.getString(R.string.protected_app_settings),
+                res.getString(R.string.export_workspace_layout)};
+        }
         mSettingsAdapter = new SettingsPinnedHeaderAdapter(mLauncher);
         mSettingsAdapter.setHeaders(headers);
         mSettingsAdapter.addPartition(false, true);
