@@ -47,6 +47,7 @@
   <string name="icon_labels_hide">숨기기</string>
   <!-- Protected apps -->
   <string name="protected_app_settings">보호된 앱</string>
+  <!-- Developer settings -->
   <!-- Drawer settings -->
   <string name="app_drawer_style">서랍 스타일</string>
   <string name="app_drawer_style_compact">촘촘함</string>

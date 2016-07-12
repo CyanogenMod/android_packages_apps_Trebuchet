@@ -47,6 +47,7 @@
   <string name="icon_labels_hide">Хаваць</string>
   <!-- Protected apps -->
   <string name="protected_app_settings">Заблакаваныя дадаткі</string>
+  <!-- Developer settings -->
   <!-- Drawer settings -->
   <string name="app_drawer_style">Стыль мэню</string>
   <string name="app_drawer_style_compact">Кампактны</string>

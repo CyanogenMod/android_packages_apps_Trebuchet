@@ -47,6 +47,7 @@
   <string name="icon_labels_hide">लपवा</string>
   <!-- Protected apps -->
   <string name="protected_app_settings">संरक्षित अनुप्रयोग</string>
+  <!-- Developer settings -->
   <!-- Drawer settings -->
   <string name="app_drawer_style">ड्रॉवर शैली</string>
   <string name="app_drawer_style_compact">संक्षिप्त</string>

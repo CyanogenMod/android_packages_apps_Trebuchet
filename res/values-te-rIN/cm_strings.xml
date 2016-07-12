@@ -47,6 +47,7 @@
   <string name="icon_labels_hide">దాచు</string>
   <!-- Protected apps -->
   <string name="protected_app_settings">రక్షించబడిన అనువర్తనాలు</string>
+  <!-- Developer settings -->
   <!-- Drawer settings -->
   <string name="app_drawer_style">డ్రాయర్ శైలి</string>
   <string name="app_drawer_style_compact">కాంపాక్ట్</string>

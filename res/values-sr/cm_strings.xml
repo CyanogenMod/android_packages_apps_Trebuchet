@@ -47,6 +47,7 @@
   <string name="icon_labels_hide">Сакриј</string>
   <!-- Protected apps -->
   <string name="protected_app_settings">Заштићене апликације</string>
+  <!-- Developer settings -->
   <!-- Drawer settings -->
   <string name="app_drawer_style">Стил фиоке</string>
   <string name="app_drawer_style_compact">Компактан</string>

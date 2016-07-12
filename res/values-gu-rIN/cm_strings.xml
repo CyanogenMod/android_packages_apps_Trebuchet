@@ -47,6 +47,7 @@
   <string name="icon_labels_hide">છુપાવો</string>
   <!-- Protected apps -->
   <string name="protected_app_settings">સુરક્ષિત એપ્લિકેશન્સ</string>
+  <!-- Developer settings -->
   <!-- Drawer settings -->
   <string name="app_drawer_style">ડ્રૉઅર શૈલી</string>
   <string name="app_drawer_style_compact">કૉમ્પેક્ટ</string>

@@ -46,6 +46,7 @@
   <string name="icon_labels_hide">Hide</string>
   <!-- Protected apps -->
   <string name="protected_app_settings">Protected apps</string>
+  <!-- Developer settings -->
   <!-- Drawer settings -->
   <string name="fast_scroller_type_vertical">Vertical</string>
   <!-- Search Manager doesn't exist -->

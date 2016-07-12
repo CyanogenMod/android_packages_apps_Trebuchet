@@ -47,6 +47,7 @@
   <string name="icon_labels_hide">Ocultar</string>
   <!-- Protected apps -->
   <string name="protected_app_settings">Aplicações protegidas</string>
+  <!-- Developer settings -->
   <!-- Drawer settings -->
   <string name="app_drawer_style">Estilo da gaveta de aplicações</string>
   <string name="app_drawer_style_compact">Compacto</string>

@@ -47,6 +47,7 @@
   <string name="icon_labels_hide">Ascunde</string>
   <!-- Protected apps -->
   <string name="protected_app_settings">Aplicații protejate</string>
+  <!-- Developer settings -->
   <!-- Drawer settings -->
   <string name="app_drawer_style">Stil sertar</string>
   <string name="app_drawer_style_compact">Compact</string>

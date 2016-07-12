@@ -47,6 +47,7 @@
   <string name="icon_labels_hide">إخفاء</string>
   <!-- Protected apps -->
   <string name="protected_app_settings">التطبيقات المحمية</string>
+  <!-- Developer settings -->
   <!-- Drawer settings -->
   <string name="app_drawer_style">نمط الرسام</string>
   <string name="app_drawer_style_compact">ضغط</string>

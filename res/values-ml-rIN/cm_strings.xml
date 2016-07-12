@@ -47,6 +47,7 @@
   <string name="icon_labels_hide">മറയ്‌ക്കുക</string>
   <!-- Protected apps -->
   <string name="protected_app_settings">സംരക്ഷിത ആപ്ലിക്കേഷനുകൾ</string>
+  <!-- Developer settings -->
   <!-- Drawer settings -->
   <string name="app_drawer_style">വരയ്ക്കുന്ന രീതി</string>
   <string name="app_drawer_style_compact">കോംപാക്റ്റ്</string>

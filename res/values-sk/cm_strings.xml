@@ -47,6 +47,7 @@
   <string name="icon_labels_hide">Skryť</string>
   <!-- Protected apps -->
   <string name="protected_app_settings">Chránené aplikácie</string>
+  <!-- Developer settings -->
   <!-- Drawer settings -->
   <string name="fast_scroller_type_vertical">Zvislé</string>
   <!-- Search Manager doesn't exist -->

@@ -47,6 +47,7 @@
   <string name="icon_labels_hide">Sembunyikan</string>
   <!-- Protected apps -->
   <string name="protected_app_settings">Aplikasi yang di lindungi</string>
+  <!-- Developer settings -->
   <!-- Drawer settings -->
   <string name="app_drawer_style">Gaya Laci</string>
   <string name="app_drawer_style_compact">Padat</string>

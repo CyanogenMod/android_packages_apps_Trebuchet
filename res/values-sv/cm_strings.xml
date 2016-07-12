@@ -47,6 +47,7 @@
   <string name="icon_labels_hide">Dölj</string>
   <!-- Protected apps -->
   <string name="protected_app_settings">Skyddade appar</string>
+  <!-- Developer settings -->
   <!-- Drawer settings -->
   <string name="app_drawer_style">Stil på appmenyn</string>
   <string name="app_drawer_style_compact">Kompakt</string>

@@ -47,6 +47,7 @@
   <string name="icon_labels_hide">Masquer</string>
   <!-- Protected apps -->
   <string name="protected_app_settings">Applications protégées</string>
+  <!-- Developer settings -->
   <!-- Drawer settings -->
   <string name="app_drawer_style">Style de tiroir</string>
   <string name="app_drawer_style_compact">Compact</string>

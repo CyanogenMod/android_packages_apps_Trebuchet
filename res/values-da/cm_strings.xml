@@ -47,6 +47,7 @@
   <string name="icon_labels_hide">Skjul</string>
   <!-- Protected apps -->
   <string name="protected_app_settings">Beskyttede apps</string>
+  <!-- Developer settings -->
   <!-- Drawer settings -->
   <string name="app_drawer_style">Oversigtsstil</string>
   <string name="app_drawer_style_compact">Kompakt</string>

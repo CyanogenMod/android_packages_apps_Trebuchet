@@ -47,6 +47,7 @@
   <string name="icon_labels_hide">Gizle</string>
   <!-- Protected apps -->
   <string name="protected_app_settings">Korunan uygulamalar</string>
+  <!-- Developer settings -->
   <!-- Drawer settings -->
   <string name="app_drawer_style">Çekmece stili</string>
   <string name="app_drawer_style_compact">Kompakt</string>

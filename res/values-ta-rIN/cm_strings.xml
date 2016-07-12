@@ -47,6 +47,7 @@
   <string name="icon_labels_hide">மறை</string>
   <!-- Protected apps -->
   <string name="protected_app_settings">பாதுகாக்கப்பட்ட ஆப்ஸ்</string>
+  <!-- Developer settings -->
   <!-- Drawer settings -->
   <string name="app_drawer_style">வரைபவர் நடை</string>
   <string name="app_drawer_style_compact">கச்சிதமான</string>

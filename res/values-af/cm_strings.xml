@@ -47,6 +47,7 @@
   <string name="icon_labels_hide">Wegsteek</string>
   <!-- Protected apps -->
   <string name="protected_app_settings">Beskermde programme</string>
+  <!-- Developer settings -->
   <!-- Drawer settings -->
   <string name="app_drawer_style">Laai styl</string>
   <string name="app_drawer_style_compact">Kompak</string>

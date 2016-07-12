@@ -47,6 +47,7 @@
   <string name="icon_labels_hide">ಮರೆಮಾಡು</string>
   <!-- Protected apps -->
   <string name="protected_app_settings">ಸಂರಕ್ಷಿತ ಆಪ್ಸ್</string>
+  <!-- Developer settings -->
   <!-- Drawer settings -->
   <string name="app_drawer_style">ಡ್ರಾವರ್ ಶೈಲಿ‌</string>
   <string name="app_drawer_style_compact">ಕಾಂಪ್ಯಾಕ್ಟ್‌</string>

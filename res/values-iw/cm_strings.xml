@@ -47,6 +47,7 @@
   <string name="icon_labels_hide">הסתר</string>
   <!-- Protected apps -->
   <string name="protected_app_settings">יישומים מוגנים</string>
+  <!-- Developer settings -->
   <!-- Drawer settings -->
   <string name="app_drawer_style">סגנון חלונית יישומים</string>
   <string name="app_drawer_style_compact">קומפקטי</string>

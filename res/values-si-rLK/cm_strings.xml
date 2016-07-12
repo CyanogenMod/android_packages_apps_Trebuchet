@@ -44,6 +44,7 @@
   <string name="icon_labels_hide">සඟවන්න</string>
   <!-- Protected apps -->
   <string name="protected_app_settings">ආරක්ෂිත යෙදුම්</string>
+  <!-- Developer settings -->
   <!-- Drawer settings -->
   <!-- Search Manager doesn't exist -->
   <!-- App not available toast text -->

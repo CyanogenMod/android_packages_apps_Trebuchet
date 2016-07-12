@@ -47,6 +47,7 @@
   <string name="icon_labels_hide">Απόκρυψη</string>
   <!-- Protected apps -->
   <string name="protected_app_settings">Προστατευμένες εφαρμογές</string>
+  <!-- Developer settings -->
   <!-- Drawer settings -->
   <string name="app_drawer_style">Στυλ συρταριού</string>
   <string name="app_drawer_style_compact">Συμπαγές</string>

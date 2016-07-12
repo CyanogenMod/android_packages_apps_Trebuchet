@@ -45,6 +45,7 @@
   <string name="icon_labels_hide">隱藏</string>
   <!-- Protected apps -->
   <string name="protected_app_settings">受保護的應用程式</string>
+  <!-- Developer settings -->
   <!-- Drawer settings -->
   <string name="fast_scroller_type_vertical">垂直</string>
   <!-- Search Manager doesn't exist -->

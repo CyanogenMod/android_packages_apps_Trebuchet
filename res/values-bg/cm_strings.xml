@@ -47,6 +47,7 @@
   <string name="icon_labels_hide">Скрий</string>
   <!-- Protected apps -->
   <string name="protected_app_settings">Защитени приложения</string>
+  <!-- Developer settings -->
   <!-- Drawer settings -->
   <string name="app_drawer_style">Стил на менюто</string>
   <string name="app_drawer_style_compact">Компактен</string>

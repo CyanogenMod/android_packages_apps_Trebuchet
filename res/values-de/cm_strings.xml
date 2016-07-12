@@ -47,6 +47,7 @@
   <string name="icon_labels_hide">Ausblenden</string>
   <!-- Protected apps -->
   <string name="protected_app_settings">Geschützte Apps</string>
+  <!-- Developer settings -->
   <!-- Drawer settings -->
   <string name="app_drawer_style">Stil der App-Übersicht</string>
   <string name="app_drawer_style_compact">Kompakt</string>

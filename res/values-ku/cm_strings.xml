@@ -44,6 +44,7 @@
   <string name="icon_labels_hide">شاردنەوە</string>
   <!-- Protected apps -->
   <string name="protected_app_settings">بەرنامە پارێزراوەکان</string>
+  <!-- Developer settings -->
   <!-- Drawer settings -->
   <!-- Search Manager doesn't exist -->
   <!-- App not available toast text -->

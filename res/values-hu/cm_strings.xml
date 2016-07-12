@@ -47,6 +47,7 @@
   <string name="icon_labels_hide">Elrejtés</string>
   <!-- Protected apps -->
   <string name="protected_app_settings">Védett alkalmazások</string>
+  <!-- Developer settings -->
   <!-- Drawer settings -->
   <string name="app_drawer_style">Alkalmazásindító stílusa</string>
   <string name="app_drawer_style_compact">Kompakt</string>

@@ -26,6 +26,7 @@
   <!-- Larger icons -->
   <!-- Icon labels -->
   <!-- Protected apps -->
+  <!-- Developer settings -->
   <!-- Drawer settings -->
   <string name="app_drawer_style">Estilo del panel</string>
   <string name="app_drawer_style_compact">Compacto</string>

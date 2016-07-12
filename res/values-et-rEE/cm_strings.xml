@@ -47,6 +47,7 @@
   <string name="icon_labels_hide">Peida</string>
   <!-- Protected apps -->
   <string name="protected_app_settings">Kaitstud rakendused</string>
+  <!-- Developer settings -->
   <!-- Drawer settings -->
   <string name="app_drawer_style">Sahtli stiil</string>
   <string name="app_drawer_style_compact">Kompaktne</string>

@@ -47,6 +47,7 @@
   <string name="icon_labels_hide">Paslėpti</string>
   <!-- Protected apps -->
   <string name="protected_app_settings">Apsaugotos programos</string>
+  <!-- Developer settings -->
   <!-- Drawer settings -->
   <string name="fast_scroller_type_vertical">Vertikalus</string>
   <!-- Search Manager doesn't exist -->

@@ -47,6 +47,7 @@
   <string name="icon_labels_hide">Skrij</string>
   <!-- Protected apps -->
   <string name="protected_app_settings">Zaščitene aplikacije</string>
+  <!-- Developer settings -->
   <!-- Drawer settings -->
   <string name="app_drawer_style">Slog predala</string>
   <string name="app_drawer_style_compact">Strnjen</string>

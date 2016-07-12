@@ -47,6 +47,7 @@
   <string name="icon_labels_hide">Anubrir</string>
   <!-- Protected apps -->
   <string name="protected_app_settings">Apps protexíes</string>
+  <!-- Developer settings -->
   <!-- Drawer settings -->
   <string name="app_drawer_style">Estilu del caxón</string>
   <string name="app_drawer_style_compact">Compautu</string>

@@ -47,6 +47,7 @@
   <string name="icon_labels_hide">Nascondi</string>
   <!-- Protected apps -->
   <string name="protected_app_settings">App protette</string>
+  <!-- Developer settings -->
   <!-- Drawer settings -->
   <string name="app_drawer_style">Stile drawer</string>
   <string name="app_drawer_style_compact">Compatto</string>

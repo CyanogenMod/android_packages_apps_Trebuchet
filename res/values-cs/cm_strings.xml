@@ -47,6 +47,7 @@
   <string name="icon_labels_hide">Skrýt</string>
   <!-- Protected apps -->
   <string name="protected_app_settings">Chráněné aplikace</string>
+  <!-- Developer settings -->
   <!-- Drawer settings -->
   <string name="app_drawer_style">Styl složky</string>
   <string name="app_drawer_style_compact">Kompaktní</string>

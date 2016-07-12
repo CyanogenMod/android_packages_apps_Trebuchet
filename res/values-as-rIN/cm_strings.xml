@@ -47,6 +47,7 @@
   <string name="icon_labels_hide">লুকুৱা</string>
   <!-- Protected apps -->
   <string name="protected_app_settings">প্ৰতিৰোধী এপ্প্</string>
+  <!-- Developer settings -->
   <!-- Drawer settings -->
   <string name="app_drawer_style">ড্ৰৱাৰ ষ্টাইল</string>
   <string name="app_drawer_style_compact">কম্পেক্ট</string>

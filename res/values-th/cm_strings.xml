@@ -47,6 +47,7 @@
   <string name="icon_labels_hide">ซ่อน</string>
   <!-- Protected apps -->
   <string name="protected_app_settings">แอปที่ได้รับการปกป้อง</string>
+  <!-- Developer settings -->
   <!-- Drawer settings -->
   <string name="app_drawer_style">รูปแบบหน้าแอป</string>
   <string name="app_drawer_style_compact">กระชับ</string>

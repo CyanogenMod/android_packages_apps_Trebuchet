@@ -47,6 +47,7 @@
   <string name="icon_labels_hide">Verstoppen</string>
   <!-- Protected apps -->
   <string name="protected_app_settings">Geschützt Appen</string>
+  <!-- Developer settings -->
   <!-- Drawer settings -->
   <string name="fast_scroller_type_vertical">Vertikal</string>
   <!-- Search Manager doesn't exist -->

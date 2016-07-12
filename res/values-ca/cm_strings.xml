@@ -47,6 +47,7 @@
   <string name="icon_labels_hide">Amaga</string>
   <!-- Protected apps -->
   <string name="protected_app_settings">Aplicacions protegides</string>
+  <!-- Developer settings -->
   <!-- Drawer settings -->
   <string name="app_drawer_style">Estil del calaix</string>
   <string name="app_drawer_style_compact">Compacte</string>

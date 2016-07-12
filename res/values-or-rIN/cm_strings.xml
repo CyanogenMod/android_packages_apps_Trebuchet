@@ -47,6 +47,7 @@
   <string name="icon_labels_hide">ଲୁକ୍କାୟିତ</string>
   <!-- Protected apps -->
   <string name="protected_app_settings">ସୁରଷିତ ଆପ୍ଲିକେସନ୍‍ଗୁଡିକ</string>
+  <!-- Developer settings -->
   <!-- Drawer settings -->
   <string name="app_drawer_style">ଡ୍ରାର୍‍ ଶୈଳି</string>
   <string name="app_drawer_style_compact">କମ୍ପାକ୍ଟ</string>

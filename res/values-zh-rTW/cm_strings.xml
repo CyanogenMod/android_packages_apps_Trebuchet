@@ -47,6 +47,7 @@
   <string name="icon_labels_hide">隱藏</string>
   <!-- Protected apps -->
   <string name="protected_app_settings">受保護的應用程式</string>
+  <!-- Developer settings -->
   <!-- Drawer settings -->
   <string name="app_drawer_style">程式集風格</string>
   <string name="app_drawer_style_compact">連續</string>
