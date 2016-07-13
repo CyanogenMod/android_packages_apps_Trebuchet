@@ -48,6 +48,7 @@
   <!-- Protected apps -->
   <string name="protected_app_settings">App protette</string>
   <!-- Developer settings -->
+  <string name="export_workspace_layout">Esporta layout</string>
   <!-- Drawer settings -->
   <string name="app_drawer_style">Stile drawer</string>
   <string name="app_drawer_style_compact">Compatto</string>
@@ -64,4 +65,6 @@
   <!-- App not available toast text -->
   <string name="app_not_available">App non disponibile</string>
   <string name="storage_permission_denied">Impossibile accedere alla memoria</string>
+  <string name="export_db_email_subject">Database launcher per regione</string>
+  <string name="export_db_could_not">Impossibile esportare file DB</string>
 </resources>

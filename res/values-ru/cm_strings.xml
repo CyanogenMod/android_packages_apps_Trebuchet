@@ -48,6 +48,7 @@
   <!-- Protected apps -->
   <string name="protected_app_settings">Заблокированные приложения</string>
   <!-- Developer settings -->
+  <string name="export_workspace_layout">Экспорт раскладки</string>
   <!-- Drawer settings -->
   <string name="app_drawer_style">Стиль меню</string>
   <string name="app_drawer_style_compact">Компактный</string>
@@ -64,4 +65,6 @@
   <!-- App not available toast text -->
   <string name="app_not_available">Приложение недоступно</string>
   <string name="storage_permission_denied">Невозможно получить доступ к хранилищу</string>
+  <string name="export_db_email_subject">БД домашнего экрана</string>
+  <string name="export_db_could_not">Не удалось экспортировать базу данных</string>
 </resources>

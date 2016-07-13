@@ -48,6 +48,7 @@
   <!-- Protected apps -->
   <string name="protected_app_settings">Zaščitene aplikacije</string>
   <!-- Developer settings -->
+  <string name="export_workspace_layout">Izvozi razporeditev</string>
   <!-- Drawer settings -->
   <string name="app_drawer_style">Slog predala</string>
   <string name="app_drawer_style_compact">Strnjen</string>
@@ -64,4 +65,6 @@
   <!-- App not available toast text -->
   <string name="app_not_available">Aplikacija ni na voljo</string>
   <string name="storage_permission_denied">Do pomnilniške naprave ni mogoče dostopati</string>
+  <string name="export_db_email_subject">Pod. zbirka zaganjalnika za območje</string>
+  <string name="export_db_could_not">Datoteke pod. zbirke ni bilo mogoče izvoziti</string>
 </resources>

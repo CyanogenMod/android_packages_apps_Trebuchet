@@ -48,6 +48,7 @@
   <!-- Protected apps -->
   <string name="protected_app_settings">Chráněné aplikace</string>
   <!-- Developer settings -->
+  <string name="export_workspace_layout">Exportovat rozvržení</string>
   <!-- Drawer settings -->
   <string name="app_drawer_style">Styl složky</string>
   <string name="app_drawer_style_compact">Kompaktní</string>
@@ -64,4 +65,6 @@
   <!-- App not available toast text -->
   <string name="app_not_available">Aplikace není k dispozici</string>
   <string name="storage_permission_denied">Nelze získat přístup k úložišti</string>
+  <string name="export_db_email_subject">DB spouštěče pro oblast</string>
+  <string name="export_db_could_not">Nelze exportovat soubor DB</string>
 </resources>
