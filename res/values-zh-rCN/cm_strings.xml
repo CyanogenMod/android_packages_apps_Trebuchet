@@ -48,6 +48,7 @@
   <!-- Protected apps -->
   <string name="protected_app_settings">受保护的应用</string>
   <!-- Developer settings -->
+  <string name="export_workspace_layout">导出布局</string>
   <!-- Drawer settings -->
   <string name="app_drawer_style">抽屉样式</string>
   <string name="app_drawer_style_compact">紧凑</string>
@@ -64,4 +65,6 @@
   <!-- App not available toast text -->
   <string name="app_not_available">应用不可用</string>
   <string name="storage_permission_denied">无法访问存储</string>
+  <string name="export_db_email_subject">启动器的区域数据库</string>
+  <string name="export_db_could_not">无法导出数据库文件</string>
 </resources>
