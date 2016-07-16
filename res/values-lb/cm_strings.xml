@@ -49,8 +49,17 @@
   <string name="protected_app_settings">Geschützt Appen</string>
   <!-- Developer settings -->
   <!-- Drawer settings -->
+  <string name="app_drawer_style">Stil vun der der App-Iwwersiicht</string>
+  <string name="app_drawer_style_compact">Kompakt</string>
+  <string name="app_drawer_style_sections">Beräicher</string>
+  <string name="app_drawer_color">Faarf vun der der App-Iwwersiicht</string>
+  <string name="app_drawer_color_dark">Däischter</string>
+  <string name="app_drawer_color_light">Hell</string>
+  <string name="fast_scroller_type_horizontal">Horizontal</string>
   <string name="fast_scroller_type_vertical">Vertikal</string>
   <!-- Search Manager doesn't exist -->
   <string name="search_activity_not_found">Eng Sichaktivitéit konnt net fonnt ginn!</string>
   <!-- App not available toast text -->
+  <string name="app_not_available">App net disponibel</string>
+  <string name="storage_permission_denied">Kann net op de Späicher zougräifen</string>
 </resources>

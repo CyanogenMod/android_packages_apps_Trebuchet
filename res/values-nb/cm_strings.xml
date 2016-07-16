@@ -48,6 +48,7 @@
   <!-- Protected apps -->
   <string name="protected_app_settings">Beskyttede apps</string>
   <!-- Developer settings -->
+  <string name="export_workspace_layout">Eksporter oppsett</string>
   <!-- Drawer settings -->
   <string name="app_drawer_style">Skuff stil</string>
   <string name="app_drawer_style_compact">Kompakt</string>
@@ -64,4 +65,6 @@
   <!-- App not available toast text -->
   <string name="app_not_available">App ikke tilgjengelig</string>
   <string name="storage_permission_denied">Får ikke tilgang til lagring</string>
+  <string name="export_db_email_subject">Oppstarter DB for region</string>
+  <string name="export_db_could_not">Kunne ikke eksportere DB fil</string>
 </resources>

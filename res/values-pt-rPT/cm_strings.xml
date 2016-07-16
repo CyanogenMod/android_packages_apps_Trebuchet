@@ -48,6 +48,7 @@
   <!-- Protected apps -->
   <string name="protected_app_settings">Aplicações protegidas</string>
   <!-- Developer settings -->
+  <string name="export_workspace_layout">Exportar esquema</string>
   <!-- Drawer settings -->
   <string name="app_drawer_style">Estilo da gaveta de aplicações</string>
   <string name="app_drawer_style_compact">Compacto</string>
@@ -64,4 +65,6 @@
   <!-- App not available toast text -->
   <string name="app_not_available">Aplicação não disponível</string>
   <string name="storage_permission_denied">Não é possível aceder ao armazenamento</string>
+  <string name="export_db_email_subject">BD do iniciador por região</string>
+  <string name="export_db_could_not">Não foi possível exportar o ficheiro da BD</string>
 </resources>
