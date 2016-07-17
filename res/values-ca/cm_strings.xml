@@ -48,6 +48,7 @@
   <!-- Protected apps -->
   <string name="protected_app_settings">Aplicacions protegides</string>
   <!-- Developer settings -->
+  <string name="export_workspace_layout">Exporta la disposició</string>
   <!-- Drawer settings -->
   <string name="app_drawer_style">Estil del calaix</string>
   <string name="app_drawer_style_compact">Compacte</string>
@@ -64,4 +65,6 @@
   <!-- App not available toast text -->
   <string name="app_not_available">Aplicació no disponible</string>
   <string name="storage_permission_denied">No es pot accedir a l\'emmagatzematge</string>
+  <string name="export_db_email_subject">Llançador de BD per regió</string>
+  <string name="export_db_could_not">No s\'ha pogut exportar el fitxer de BD</string>
 </resources>
