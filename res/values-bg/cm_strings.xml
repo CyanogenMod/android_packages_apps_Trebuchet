@@ -48,6 +48,7 @@
   <!-- Protected apps -->
   <string name="protected_app_settings">Защитени приложения</string>
   <!-- Developer settings -->
+  <string name="export_workspace_layout">Експортиране на оформление</string>
   <!-- Drawer settings -->
   <string name="app_drawer_style">Стил на менюто</string>
   <string name="app_drawer_style_compact">Компактен</string>
@@ -64,4 +65,6 @@
   <!-- App not available toast text -->
   <string name="app_not_available">Приложението не е налично</string>
   <string name="storage_permission_denied">Няма достъп до хранилището</string>
+  <string name="export_db_email_subject">Стартер с базата данни за региона</string>
+  <string name="export_db_could_not">Не можете да експортирате файла с базата данни</string>
 </resources>
