@@ -48,6 +48,7 @@
   <!-- Protected apps -->
   <string name="protected_app_settings">Προστατευμένες εφαρμογές</string>
   <!-- Developer settings -->
+  <string name="export_workspace_layout">Εξαγωγή διάταξης</string>
   <!-- Drawer settings -->
   <string name="app_drawer_style">Στυλ συρταριού</string>
   <string name="app_drawer_style_compact">Συμπαγές</string>
@@ -64,4 +65,6 @@
   <!-- App not available toast text -->
   <string name="app_not_available">Η εφαρμογή δεν είναι διαθέσιμη</string>
   <string name="storage_permission_denied">Δεν είναι δυνατή η πρόσβαση στον αποθ. χώρο</string>
+  <string name="export_db_email_subject">Βάση δεδομένων αρχικής οθόνης για την περιοχή</string>
+  <string name="export_db_could_not">Δεν ήταν δυνατή η εξαγωγή του αρχείου βάσης δεδομένων</string>
 </resources>
