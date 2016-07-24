@@ -48,6 +48,7 @@
   <!-- Protected apps -->
   <string name="protected_app_settings">Zaštićene aplikacije</string>
   <!-- Developer settings -->
+  <string name="export_workspace_layout">Izvezi raspored</string>
   <!-- Drawer settings -->
   <string name="app_drawer_style">Stil ladice</string>
   <string name="app_drawer_style_compact">Kompaktno</string>
@@ -64,4 +65,5 @@
   <!-- App not available toast text -->
   <string name="app_not_available">Aplikacija nije dostupna</string>
   <string name="storage_permission_denied">Ne mogu pristupiti pohrani</string>
+  <string name="export_db_could_not">Nije moguć Izvoz DB datoteke</string>
 </resources>
