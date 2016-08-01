@@ -48,6 +48,7 @@
   <!-- Protected apps -->
   <string name="protected_app_settings">יישומים מוגנים</string>
   <!-- Developer settings -->
+  <string name="export_workspace_layout">ייצוא פריסה</string>
   <!-- Drawer settings -->
   <string name="app_drawer_style">סגנון חלונית יישומים</string>
   <string name="app_drawer_style_compact">קומפקטי</string>
@@ -64,4 +65,5 @@
   <!-- App not available toast text -->
   <string name="app_not_available">יישום לא זמין</string>
   <string name="storage_permission_denied">לא ניתן לגשת לאחסון</string>
+  <string name="export_db_could_not">לא ניתן לייצא את קובץ מסד הנתונים</string>
 </resources>
