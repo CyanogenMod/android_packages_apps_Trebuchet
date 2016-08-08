@@ -59,7 +59,7 @@
   <string name="fast_scroller">Быстрая прокрутка</string>
   <string name="fast_scroller_type">Тип быстрой прокрутки</string>
   <string name="fast_scroller_type_horizontal">Горизонтальная</string>
-  <string name="fast_scroller_type_vertical">Вертикальная</string>
+  <string name="fast_scroller_type_vertical">Вертикальное</string>
   <!-- Search Manager doesn't exist -->
   <string name="search_activity_not_found">Невозможно запустить приложение поиска!</string>
   <!-- App not available toast text -->
