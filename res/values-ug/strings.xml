@@ -25,6 +25,7 @@
   <!-- Application name -->
   <!-- Default folder name -->
   <!-- Work folder name -->
+  <string name="work_folder_name">ئىش</string>
   <!-- Displayed when user selects a shortcut for an app that was uninstalled [CHAR_LIMIT=none]-->
   <!-- Displayed when user selects a shortcut for an app that is current not available [CHAR_LIMIT=none]-->
   <!-- SafeMode shortcut error string -->
