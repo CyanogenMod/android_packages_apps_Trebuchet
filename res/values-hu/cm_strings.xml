@@ -62,4 +62,5 @@
   <string name="search_activity_not_found">Keresési tevékenység nem található!</string>
   <!-- App not available toast text -->
   <string name="app_not_available">Alkalmazás nem elérhető</string>
+  <string name="storage_permission_denied">Tárhely elérése sikertelen</string>
 </resources>
