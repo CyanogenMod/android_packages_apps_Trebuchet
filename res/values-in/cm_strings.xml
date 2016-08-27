@@ -18,19 +18,19 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
   <!-- Application name -->
   <string name="home_screen_settings">PENGATURAN LAYAR BERANDA</string>
-  <string name="drawer_settings">PENGATURAN LACI</string>
+  <string name="drawer_settings">PENGATURAN DRAWER</string>
   <string name="app_settings">PENGATURAN APL</string>
   <!-- Settings states -->
-  <string name="setting_state_on">MENYALA</string>
-  <string name="setting_state_off">PADAM</string>
+  <string name="setting_state_on">HIDUP</string>
+  <string name="setting_state_off">MATI</string>
   <string name="setting_state_disabled">DINONAKTIFKAN</string>
   <!-- Folder titles -->
   <string name="play_folder_title">Putar</string>
   <!-- Wallpaper scroll effect -->
-  <string name="scrolling_wallpaper">Gulir gambar latar</string>
+  <string name="scrolling_wallpaper">Gulir wallpaper</string>
   <!-- Dynamic Grid -->
   <string name="grid_size_text">Ukuran grid</string>
-  <string name="grid_size_comfortable">Menyenangkan</string>
+  <string name="grid_size_comfortable">Nyaman</string>
   <string name="grid_size_cozy">Nikmat</string>
   <string name="grid_size_condensed">Ringkas</string>
   <string name="grid_size_custom">Khusus (<xliff:g id="rows">%1$d</xliff:g> \u00d7 <xliff:g id="columns">%2$d</xliff:g>)</string>
@@ -38,7 +38,7 @@
   <!-- Dialog -->
   <string name="dialog_confirm">Konfirmasi</string>
   <!-- Home screen search bar -->
-  <string name="home_screen_search_text">Bilah penelusuran</string>
+  <string name="home_screen_search_text">Bar pencarian</string>
   <!-- Larger icons -->
   <string name="larger_icons_text">Ikon lebih besar</string>
   <!-- Icon labels -->
@@ -46,22 +46,25 @@
   <string name="icon_labels_show">Tampilkan</string>
   <string name="icon_labels_hide">Sembunyikan</string>
   <!-- Protected apps -->
-  <string name="protected_app_settings">Aplikasi yang di lindungi</string>
+  <string name="protected_app_settings">Aplikasi dilindungi</string>
   <!-- Developer settings -->
+  <string name="export_workspace_layout">Ekspor susunan</string>
   <!-- Drawer settings -->
-  <string name="app_drawer_style">Gaya Laci</string>
-  <string name="app_drawer_style_compact">Padat</string>
-  <string name="app_drawer_style_sections">Bagian-Bagian</string>
-  <string name="app_drawer_color">Warna Laci</string>
+  <string name="app_drawer_style">Gaya Drawer</string>
+  <string name="app_drawer_style_compact">Kompak</string>
+  <string name="app_drawer_style_sections">Bagian</string>
+  <string name="app_drawer_color">Warna Drawer</string>
   <string name="app_drawer_color_dark">Gelap</string>
-  <string name="app_drawer_color_light">Ringan</string>
-  <string name="fast_scroller">Scroller cepat</string>
-  <string name="fast_scroller_type">Jenis scroller cepat</string>
-  <string name="fast_scroller_type_horizontal">Garis mendatar</string>
+  <string name="app_drawer_color_light">Terang</string>
+  <string name="fast_scroller">Gulir cepat</string>
+  <string name="fast_scroller_type">Jenis gulir cepat</string>
+  <string name="fast_scroller_type_horizontal">Horisontal</string>
   <string name="fast_scroller_type_vertical">Vertikal</string>
   <!-- Search Manager doesn't exist -->
-  <string name="search_activity_not_found">Aktivitas penelusuran tidak dapat ditemukan!</string>
+  <string name="search_activity_not_found">Aktivitas pencarian tidak dapat ditemukan!</string>
   <!-- App not available toast text -->
   <string name="app_not_available">Aplikasi tidak tersedia</string>
   <string name="storage_permission_denied">Tidak dapat mengakses penyimpanan</string>
+  <string name="export_db_email_subject">Aktifkan DB untuk wilayah</string>
+  <string name="export_db_could_not">Tidak bisa mengekspor berkas DB</string>
 </resources>

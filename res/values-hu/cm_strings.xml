@@ -48,6 +48,7 @@
   <!-- Protected apps -->
   <string name="protected_app_settings">Védett alkalmazások</string>
   <!-- Developer settings -->
+  <string name="export_workspace_layout">Elrendezés exportálása</string>
   <!-- Drawer settings -->
   <string name="app_drawer_style">Alkalmazásindító stílusa</string>
   <string name="app_drawer_style_compact">Kompakt</string>
@@ -63,4 +64,7 @@
   <string name="search_activity_not_found">Keresési tevékenység nem található!</string>
   <!-- App not available toast text -->
   <string name="app_not_available">Alkalmazás nem elérhető</string>
+  <string name="storage_permission_denied">Tárhely elérése sikertelen</string>
+  <string name="export_db_email_subject">Adatbázis indító régióhoz</string>
+  <string name="export_db_could_not">Nem sikerült exportálni az adatbázis fájlt</string>
 </resources>
