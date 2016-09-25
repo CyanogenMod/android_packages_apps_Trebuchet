@@ -48,6 +48,7 @@
   <!-- Protected apps -->
   <string name="protected_app_settings">Beschermde apps</string>
   <!-- Developer settings -->
+  <string name="export_workspace_layout">Lay-out exporteren</string>
   <!-- Drawer settings -->
   <string name="app_drawer_style">Stijl app-overzicht</string>
   <string name="app_drawer_style_compact">Compact</string>

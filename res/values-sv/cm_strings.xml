@@ -48,6 +48,7 @@
   <!-- Protected apps -->
   <string name="protected_app_settings">Skyddade appar</string>
   <!-- Developer settings -->
+  <string name="export_workspace_layout">Exportera layout</string>
   <!-- Drawer settings -->
   <string name="app_drawer_style">Stil på appmenyn</string>
   <string name="app_drawer_style_compact">Kompakt</string>
