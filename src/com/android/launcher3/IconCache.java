@@ -597,12 +597,7 @@ public class IconCache {
                             if (DEBUG) Log.d(TAG, "using package default icon for " +
                                     componentName.toShortString());
                             entry.icon = packageEntry.icon;
-                            if (isCustomTitle) {
-                                entry.title = ((LauncherApplication) mContext)
-                                    .getStkAppName();
-                            } else {
-                                entry.title = packageEntry.title;
-                            }
+                            entry.title = packageEntry.title;
                             entry.contentDescription = packageEntry.contentDescription;
                         }
                     }
@@ -615,15 +610,16 @@ public class IconCache {
             }
 
             if (TextUtils.isEmpty(entry.title) && info != null) {
-                if (isCustomTitle) {
-                    entry.title = ((LauncherApplication) mContext)
-                        .getStkAppName();
-                } else {
-                    entry.title = info.getLabel();
-                }
+                entry.title = info.getLabel();
                 entry.contentDescription = mUserManager.getBadgedLabelForUser(entry.title, user);
             }
         }
+
+        if (isCustomTitle) {
+            entry.title = ((LauncherApplication) mContext)
+                .getStkAppName();
+        }
+
         return entry;
     }
 
