@@ -67,7 +67,6 @@ import com.android.launcher3.util.Thunk;
 import cyanogenmod.providers.CMSettings;
 
 import com.android.launcher3.settings.SettingsProvider;
-import com.android.launcher3.stats.internal.service.AggregationIntentService;
 
 import java.lang.ref.WeakReference;
 import java.net.URISyntaxException;
@@ -1064,7 +1063,6 @@ public class LauncherModel extends BroadcastReceiver
         int widgetCount = LauncherModel.sBgAppWidgets.size();
         SharedPreferences prefs = context.getSharedPreferences(LauncherAppState
                         .getSharedPreferencesKey(), Context.MODE_PRIVATE);
-        prefs.edit().putInt(AggregationIntentService.PREF_KEY_WIDGET_COUNT, widgetCount).apply();
     }
 
     /**
@@ -1224,7 +1222,6 @@ public class LauncherModel extends BroadcastReceiver
         int pageCount = LauncherModel.sBgWorkspaceScreens.size();
         SharedPreferences prefs = context.getSharedPreferences(LauncherAppState
                         .getSharedPreferencesKey(), Context.MODE_PRIVATE);
-        prefs.edit().putInt(AggregationIntentService.PREF_KEY_PAGE_COUNT, pageCount).apply();
     }
 
     /**

@@ -70,10 +70,8 @@
     <uses-permission android:name="com.android.launcher3.permission.RECEIVE_LAUNCH_BROADCASTS" />
     <uses-permission android:name="com.android.launcher3.permission.RECEIVE_FIRST_LOAD_BROADCAST" />
     <uses-permission android:name="cyanogenmod.permission.PROTECTED_APP" />
-    <uses-permission android:name="com.cyngn.stats.SEND_ANALYTICS" />
 
     <application
-        android:name="com.android.launcher3.LauncherApplication"
         android:allowBackup="@bool/enable_backup"
         android:backupAgent="com.android.launcher3.LauncherBackupAgentHelper"
         android:hardwareAccelerated="true"
@@ -185,14 +183,6 @@
         <service android:name="com.android.launcher3.MemoryTracker"
             android:enabled="@bool/debug_memory_enabled"
             >
-        </service>
-
-        <service
-            android:name="com.android.launcher3.stats.internal.service.AggregationIntentService"
-            android:exported="false">
-            <intent-filter>
-               <action android:name="com.cyanogenmod.trebuchet.AGGREGATE_AND_TRACK" />
-            </intent-filter>
         </service>
 
         <receiver

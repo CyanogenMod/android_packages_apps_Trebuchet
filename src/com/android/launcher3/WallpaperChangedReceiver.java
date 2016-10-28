@@ -21,7 +21,6 @@ import android.content.Context;
 import android.content.Intent;
 
 import android.content.SharedPreferences;
-import com.android.launcher3.stats.LauncherStats;
 
 public class WallpaperChangedReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent data) {
@@ -31,14 +30,6 @@ public class WallpaperChangedReceiver extends BroadcastReceiver {
         SharedPreferences prefs = context.getSharedPreferences(LauncherAppState
                         .getSharedPreferencesKey(), Context.MODE_PRIVATE);
         boolean fromSelf = prefs.getBoolean(Launcher.LONGPRESS_CHANGE, false);
-        if (fromSelf) {
-            prefs.edit().putBoolean(Launcher.LONGPRESS_CHANGE, false).apply();
-            LauncherApplication.getLauncherStats().sendWallpaperChangedEvent(
-                    LauncherStats.ORIGIN_TREB_LONGPRESS);
-        } else {
-            LauncherApplication.getLauncherStats().sendWallpaperChangedEvent(
-                    LauncherStats.ORIGIN_CHOOSER);
-        }
-
+        prefs.edit().putBoolean(Launcher.LONGPRESS_CHANGE, false).apply();
     }
 }

@@ -2290,7 +2290,6 @@ public class Launcher extends Activity
         AppWidgetProviderInfo info = mAppWidgetManager.getAppWidgetInfo(launcherInfo.appWidgetId);
         if (info != null) {
             String packageName = info.providerInfo.packageName;
-            LauncherApplication.getLauncherStats().sendWidgetRemoveEvent(packageName);
         }
     }
 
@@ -2790,7 +2789,6 @@ public class Launcher extends Activity
                     appWidgetInfo);
             mWorkspace.removeExtraEmptyScreenDelayed(true, onComplete, delay, false);
             String packageName = appWidgetInfo.providerInfo.packageName;
-            LauncherApplication.getLauncherStats().sendWidgetAddEvent(packageName);
         }
     }
 
@@ -3050,13 +3048,6 @@ public class Launcher extends Activity
         } else if (tag instanceof AppInfo) {
             AppInfo info = (AppInfo) tag;
             startAppShortcutOrInfoActivity(v);
-            LauncherApplication.getLauncherStats().sendAppLaunchEvent(
-                    LauncherStats.ORIGIN_APPDRAWER, info.componentName.getPackageName());
-            String packageName = info.getIntent().getComponent().getPackageName();
-            if (LauncherStats.SETTINGS_PACKAGE_NAME.equals(packageName)) {
-                LauncherApplication.getLauncherStats()
-                        .sendSettingsOpenedEvent(LauncherStats.ORIGIN_APPDRAWER);
-            }
         } else if (tag instanceof LauncherAppWidgetInfo) {
             if (v instanceof PendingAppWidgetHostView) {
                 onClickPendingWidget((PendingAppWidgetHostView) v);
@@ -3205,17 +3196,6 @@ public class Launcher extends Activity
 
         // Start activities
         startAppShortcutOrInfoActivity(v);
-        ComponentName componentName = intent.getComponent();
-        if (componentName != null) {
-            String packageName = intent.getComponent().getPackageName();
-            LauncherApplication.getLauncherStats()
-                    .sendAppLaunchEvent(LauncherStats.ORIGIN_HOMESCREEN,
-                            packageName);
-            if (LauncherStats.SETTINGS_PACKAGE_NAME.equals(packageName)) {
-                LauncherApplication.getLauncherStats().sendSettingsOpenedEvent(
-                        LauncherStats.ORIGIN_HOMESCREEN);
-            }
-        }
 
         if (mLauncherCallbacks != null) {
             mLauncherCallbacks.onClickAppShortcut(v);
@@ -5487,9 +5467,6 @@ public class Launcher extends Activity
 
             AnimationDrawable frameAnimation = (AnimationDrawable) mAnimatedArrow.getBackground();
             frameAnimation.start();
-
-            LauncherApplication.getLauncherStats().sendSettingsOpenedEvent(
-                    LauncherStats.ORIGIN_TREB_LONGPRESS);
         }
 
         @Override
