@@ -17,40 +17,17 @@
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
   <!-- Application name -->
-  <string name="home_screen_settings">AGORDOJ DE LA HEJMA PAĜO</string>
-  <string name="drawer_settings">AGORDOJ DE LA APLIKAĴA EKRANO</string>
-  <string name="app_settings">AGORDOJ DE LA APLIKAĴO</string>
   <!-- Settings states -->
-  <string name="setting_state_on">EK</string>
-  <string name="setting_state_off">FOR</string>
-  <string name="setting_state_disabled">MALŜALTITA</string>
   <!-- Folder titles -->
-  <string name="play_folder_title">Ludi</string>
   <!-- Wallpaper scroll effect -->
-  <string name="scrolling_wallpaper">Rulumo de la ekranfono</string>
   <!-- Dynamic Grid -->
-  <string name="grid_size_text">Grandeco de la krado</string>
-  <string name="grid_size_comfortable">Komforta</string>
-  <string name="grid_size_cozy">Koketa</string>
-  <string name="grid_size_condensed">Densiga</string>
-  <string name="grid_size_custom">Propra (<xliff:g id="rows">%1$d</xliff:g> \u00d7 <xliff:g id="columns">%2$d</xliff:g>)</string>
-  <string name="preferences_interface_homescreen_custom">Elekti propran tipar-grandecon</string>
   <!-- Dialog -->
-  <string name="dialog_confirm">Konfirmi</string>
   <!-- Home screen search bar -->
-  <string name="home_screen_search_text">Serĉ-breto</string>
   <!-- Larger icons -->
-  <string name="larger_icons_text">Grandaj piktogramoj</string>
   <!-- Icon labels -->
-  <string name="icon_labels">Etikedo de la piktogramoj</string>
-  <string name="icon_labels_show">Montri</string>
-  <string name="icon_labels_hide">Kaŝi</string>
   <!-- Protected apps -->
-  <string name="protected_app_settings">Protektitaj aplikaĵoj</string>
   <!-- Developer settings -->
   <!-- Drawer settings -->
-  <string name="fast_scroller_type_vertical">Vertikala</string>
   <!-- Search Manager doesn't exist -->
-  <string name="search_activity_not_found">Neniu serĉilo troveblas!</string>
   <!-- App not available toast text -->
 </resources>

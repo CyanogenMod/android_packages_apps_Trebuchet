@@ -65,5 +65,6 @@
   <!-- App not available toast text -->
   <string name="app_not_available">App ikke tilgængelig</string>
   <string name="storage_permission_denied">Kunne ikke få adgang til lager</string>
+  <string name="export_db_email_subject">Launcher DB for region</string>
   <string name="export_db_could_not">Kunne ikke eksportere DB-fil</string>
 </resources>
