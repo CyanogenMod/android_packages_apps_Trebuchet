@@ -65,5 +65,6 @@
   <!-- App not available toast text -->
   <string name="app_not_available">יישום לא זמין</string>
   <string name="storage_permission_denied">לא ניתן לגשת לאחסון</string>
+  <string name="export_db_email_subject">ייצא מסד נתונים עבור אזור</string>
   <string name="export_db_could_not">לא ניתן לייצא את קובץ מסד הנתונים</string>
 </resources>

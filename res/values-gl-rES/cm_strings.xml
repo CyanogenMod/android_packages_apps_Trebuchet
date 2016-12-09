@@ -18,19 +18,53 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
   <!-- Application name -->
   <string name="home_screen_settings">AXUSTES DA PANTALLA DE INICIO</string>
+  <string name="drawer_settings">AXUSTES DO PANEL</string>
   <string name="app_settings">AXUSTES DA APLICACIÓN</string>
   <!-- Settings states -->
   <string name="setting_state_on">ACESO</string>
+  <string name="setting_state_off">APAGADO</string>
+  <string name="setting_state_disabled">DESACTIVADO</string>
   <!-- Folder titles -->
+  <string name="play_folder_title">Reproducir</string>
   <!-- Wallpaper scroll effect -->
+  <string name="scrolling_wallpaper">Desprazar o fondo de pantalla</string>
   <!-- Dynamic Grid -->
+  <string name="grid_size_text">Tamaño da grella</string>
+  <string name="grid_size_comfortable">Confortábel</string>
+  <string name="grid_size_cozy">Cómodo</string>
+  <string name="grid_size_condensed">Condensado</string>
+  <string name="grid_size_custom">Personalizado (<xliff:g id="rows">%1$d</xliff:g> \u00d7 <xliff:g id="columns">%2$d</xliff:g>)</string>
+  <string name="preferences_interface_homescreen_custom">Seleccionar o tamaño personalizado</string>
   <!-- Dialog -->
+  <string name="dialog_confirm">Confirmar</string>
   <!-- Home screen search bar -->
+  <string name="home_screen_search_text">Barra de busca</string>
   <!-- Larger icons -->
+  <string name="larger_icons_text">Iconas grandes</string>
   <!-- Icon labels -->
+  <string name="icon_labels">Etiquetas das iconas</string>
+  <string name="icon_labels_show">Amosar</string>
+  <string name="icon_labels_hide">Agochar</string>
   <!-- Protected apps -->
+  <string name="protected_app_settings">Aplicacións protexidas</string>
   <!-- Developer settings -->
+  <string name="export_workspace_layout">Exportar deseño</string>
   <!-- Drawer settings -->
+  <string name="app_drawer_style">Estilo do caixón</string>
+  <string name="app_drawer_style_compact">Compacto</string>
+  <string name="app_drawer_style_sections">Seccions</string>
+  <string name="app_drawer_color">Color do caixón</string>
+  <string name="app_drawer_color_dark">Escuro</string>
+  <string name="app_drawer_color_light">Claro</string>
+  <string name="fast_scroller">Desprazamento rápido</string>
+  <string name="fast_scroller_type">Tipo de desprazamento rápido</string>
+  <string name="fast_scroller_type_horizontal">Horizontal</string>
+  <string name="fast_scroller_type_vertical">Vertical</string>
   <!-- Search Manager doesn't exist -->
+  <string name="search_activity_not_found">Non se atopou ningunha actividade de busca!</string>
   <!-- App not available toast text -->
+  <string name="app_not_available">Aplicación non dispoñíbel</string>
+  <string name="storage_permission_denied">Non é posible acceder ao almacenamento</string>
+  <string name="export_db_email_subject">DB do lanzador por rexión</string>
+  <string name="export_db_could_not">Non se puido exportar o ficheiro DB</string>
 </resources>

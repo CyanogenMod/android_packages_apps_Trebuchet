@@ -48,6 +48,7 @@
   <!-- Protected apps -->
   <string name="protected_app_settings">Beschermde apps</string>
   <!-- Developer settings -->
+  <string name="export_workspace_layout">Lay-out exporteren</string>
   <!-- Drawer settings -->
   <string name="app_drawer_style">Stijl app-overzicht</string>
   <string name="app_drawer_style_compact">Compact</string>
@@ -64,4 +65,6 @@
   <!-- App not available toast text -->
   <string name="app_not_available">App niet beschikbaar</string>
   <string name="storage_permission_denied">Geen toegang tot opslag</string>
+  <string name="export_db_email_subject">Launcher-database voor regio</string>
+  <string name="export_db_could_not">Kan database-bestand niet exporteren</string>
 </resources>

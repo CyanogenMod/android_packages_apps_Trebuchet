@@ -35,7 +35,6 @@
   <!-- There is a special version of this format string for Farsi -->
   <!-- All Apps -->
   <!-- Search bar text in the apps view. [CHAR_LIMIT=50] -->
-  <string name="all_apps_search_bar_hint">Serĉi aplikaĵojn</string>
   <!-- Loading apps text. [CHAR_LIMIT=50] -->
   <!-- No-search-results text. [CHAR_LIMIT=50] -->
   <!-- Search market text.  This is a format string where the first argument is the name of the activity
@@ -44,13 +43,10 @@
   <!-- Error message when user has filled a home screen -->
   <!-- Error message when user has filled the hotseat -->
   <!-- All applications label -->
-  <string name="all_apps_button_label">Aplikaĵoj</string>
   <!-- Label for button in all applications label to go back home (to the workspace / desktop)
          for accessibilty (spoken when the button gets focus). -->
   <!-- Label for delete drop target. [CHAR_LIMIT=20] -->
-  <string name="delete_target_label">Forigi</string>
   <!-- Label for uninstall drop target. [CHAR_LIMIT=20]-->
-  <string name="delete_target_uninstall_label">Malinstali</string>
   <!-- Label for the info icon. [CHAR_LIMIT=20] -->
   <!-- Permissions: -->
   <!-- Permission short label -->
@@ -89,14 +85,11 @@
   <!-- Text for widget add button -->
   <!-- Text for wallpaper change button -->
   <!-- Text for settings button -->
-  <string name="settings_button_text">Agordoj</string>
   <!-- Strings for settings -->
   <!-- Title for Allow Rotation setting. [CHAR LIMIT=50] -->
   <!-- Label on an icon that references an uninstalled package, for which we have no information about when it might be installed. [CHAR_LIMIT=15] -->
   <!-- Button for abandoned promises dialog, to removes this abandoned promise icon. -->
-  <string name="abandoned_clean_this">Forigi</string>
   <!-- Button for abandoned promise dialog, to search in the market for the missing package. -->
-  <string name="abandoned_search">Serĉi</string>
   <!-- Title for abandoned promise dialog. -->
   <!-- Explanation for abandoned promise dialog. "The first 'it' refers to the shortcut icon.
     The second "it" refers to the app. -->
