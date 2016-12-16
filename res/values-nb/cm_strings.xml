@@ -46,7 +46,7 @@
   <string name="icon_labels_show">Vis</string>
   <string name="icon_labels_hide">Skjul</string>
   <!-- Protected apps -->
-  <string name="protected_app_settings">Beskyttede apps</string>
+  <string name="protected_app_settings">Beskyttede apper</string>
   <!-- Developer settings -->
   <string name="export_workspace_layout">Eksporter oppsett</string>
   <!-- Drawer settings -->
