@@ -50,7 +50,6 @@
   <!-- Shortcuts -->
   <!-- Title of dialog box -->
   <!-- Options in "Add to Home" dialog box; Title of the group containing the list of all apps -->
-  <string name="group_applications">Aplikaĵoj</string>
   <!-- Options in "Add to Home" dialog box; Title of the group containing the list of all shortcut
 s -->
   <!-- Options in "Add to Home" dialog box; Title of the group containing the list of all widgets/gadgets -->
@@ -64,31 +63,23 @@ s -->
   <!-- Title of dialog when user is selecting shortcut to add to homescreen -->
   <!-- Title of dialog when user is selecting an application to add to homescreen -->
   <!-- All applications label -->
-  <string name="all_apps_button_label">Aplikaĵoj</string>
   <!-- Label for button in all applications label to go back home (to the workspace / desktop)
          for accessibilty (spoken when the button gets focus). -->
   <!-- Label for trash icon on workspace. Meant to communicate the idea of removing the
          icon/widget from the home screen, but not permanently. [CHAR_LIMIT=30] -->
-  <string name="delete_zone_label_workspace">Forigi</string>
   <!-- Label for trash icon in All Apps. The icon/widget will become completely unavailable on the
          device. [CHAR_LIMIT=30]-->
-  <string name="delete_zone_label_all_apps">Malinstali</string>
   <!-- Label for delete drop target. [CHAR_LIMIT=20] -->
-  <string name="delete_target_label">Forigi</string>
   <!-- Label for uninstall drop target. [CHAR_LIMIT=20]-->
-  <string name="delete_target_uninstall_label">Malinstali</string>
   <!-- Label for the info icon. [CHAR_LIMIT=20] -->
   <!-- Accessibility: AllApps button -->
-  <string name="accessibility_all_apps_button">Aplikaĵoj</string>
   <!-- Accessibility: Delete button -->
-  <string name="accessibility_delete_button">Forigi</string>
   <!-- Label for trash icon in All Apps, when an updated system app is selected. The update will
          be uninstalled. [CHAR_LIMIT=30] -->
   <!-- URL pointing to help text. If empty, no link to help will be created [DO NOT TRANSLATE] -->
   <!--  Strings for the contextual action bar (CAB) in All Apps -->
   <!-- Describes the button for uninstalling the currently selected application.
          Text is not displayed, but provided for accessibility. [CHAR_LIMIT=none] -->
-  <string name="cab_menu_delete_app">Malinstali aplikaĵon</string>
   <!-- Describes the button for getting details/info about currently selected application.
          Text is not displayed, but provided for accessibility. [CHAR_LIMIT=none] -->
   <!-- Appears in the CAB when an app is selected in All Apps or Customize mode. [CHAR_LIMIT=50] -->
@@ -147,7 +138,6 @@ s -->
   <!-- Text for widget add button -->
   <!-- Text for wallpaper change button -->
   <!-- Text for settings button -->
-  <string name="settings_button_text">Agordoj</string>
   <!-- Label on an icon that references an uninstalled package, that is going to be installed at some point. [CHAR_LIMIT=15] -->
   <!-- Label on an icon that references an uninstalled package, that is currently being downloaded. [CHAR_LIMIT=15] -->
   <!-- Label on an icon that references an uninstalled package, that is currently being installed. [CHAR_LIMIT=15] -->
@@ -155,9 +145,7 @@ s -->
   <!-- Label on an icon that references an uninstalled package, for which restore from market has failed. [CHAR_LIMIT=15] -->
   <!-- Button for abandoned promises dialog, that removes all abandoned promise icons. -->
   <!-- Button for abandoned promises dialog, to removes this abandoned promise icon. -->
-  <string name="abandoned_clean_this">Forigi</string>
   <!-- Button for abandoned promise dialog, to search in the market for the missing package. -->
-  <string name="abandoned_search">Serĉi</string>
   <!-- Title for abandoned promise dialog. -->
   <!-- Explanation for abandoned promise dialog. "The first 'it' refers to the shortcut icon.
     The second "it" refers to the app. -->

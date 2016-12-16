@@ -15,21 +15,21 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<resources>
-  <string-array name="transition_effect_entries">
-    <item>Nenio</item>
-    <item>Zomi</item>
-    <item>Malzomi</item>
-    <item>Rotacii supren</item>
-    <item>Rotacii malsupren</item>
-    <item>Kubo interne</item>
-    <item>Kubo ekstere</item>
-    <item>Stako</item>
-    <item>Akordiono</item>
-    <item>Renversi</item>
-    <item>Cilindro interne</item>
-    <item>Cilindro ekstere</item>
-    <item>Karuselo</item>
-    <item>Superrigardo</item>
-  </string-array>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <!-- Application name -->
+  <!-- App version -->
+  <!-- Settings states -->
+  <!-- Themes button -->
+  <!-- Wallpaper scroll effect -->
+  <!-- Dynamic Grid -->
+  <!-- Folder titles -->
+  <!-- Scroll effect -->
+  <!-- Drawer sorting mode -->
+  <!-- Home screen search bar -->
+  <!-- Larger icons -->
+  <!-- Icon labels -->
+  <!-- Protected apps -->
+  <!-- Dialog -->
+  <!-- Drawer type -->
+  <!-- Search Manager doesn't exist -->
 </resources>

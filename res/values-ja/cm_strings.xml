@@ -40,7 +40,7 @@
   <!-- Folder titles -->
   <string name="play_folder_title">Play</string>
   <!-- Scroll effect -->
-  <string name="scroll_effect_text">スクロール効果</string>
+  <string name="scroll_effect_text">スクロールエフェクト</string>
   <!-- Drawer sorting mode -->
   <string name="drawer_sorting_text">並べ替えモード</string>
   <string name="sort_mode_title">タイトル</string>

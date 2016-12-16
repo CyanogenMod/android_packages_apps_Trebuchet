@@ -44,7 +44,7 @@
   <!-- Drawer sorting mode -->
   <string name="drawer_sorting_text">Način razvrščanja</string>
   <string name="sort_mode_title">Naziv</string>
-  <string name="sort_mode_launch_count">Zaženi štetje</string>
+  <string name="sort_mode_launch_count">Št. zagonov</string>
   <string name="sort_mode_install_time">Čas namestitve</string>
   <!-- Home screen search bar -->
   <string name="home_screen_search_text">Iskalna vrstica</string>
