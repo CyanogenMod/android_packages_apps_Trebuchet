@@ -48,9 +48,23 @@
   <!-- Protected apps -->
   <string name="protected_app_settings">Chránené aplikácie</string>
   <!-- Developer settings -->
+  <string name="export_workspace_layout">Exportovať rozloženie</string>
   <!-- Drawer settings -->
+  <string name="app_drawer_style">Štýl kreslenia</string>
+  <string name="app_drawer_style_compact">Kompaktný</string>
+  <string name="app_drawer_style_sections">Sekcie</string>
+  <string name="app_drawer_color">Farba kreslenia</string>
+  <string name="app_drawer_color_dark">Tmavá</string>
+  <string name="app_drawer_color_light">Svetlá</string>
+  <string name="fast_scroller">Rýchly scroller</string>
+  <string name="fast_scroller_type">Typ rýchleho scrollera</string>
+  <string name="fast_scroller_type_horizontal">Vodorovný</string>
   <string name="fast_scroller_type_vertical">Zvislé</string>
   <!-- Search Manager doesn't exist -->
   <string name="search_activity_not_found">Aktivita vyhľadávania sa nenašla!</string>
   <!-- App not available toast text -->
+  <string name="app_not_available">Aplikácia nie je k dispozícii</string>
+  <string name="storage_permission_denied">Nie je možné pristupovať k úložisku</string>
+  <string name="export_db_email_subject">DB spúšťač pre oblasť</string>
+  <string name="export_db_could_not">Nie je možné exportovať súbor DB</string>
 </resources>
