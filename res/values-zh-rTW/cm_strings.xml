@@ -18,14 +18,14 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
   <!-- Application name -->
   <string name="home_screen_settings">主螢幕設定</string>
-  <string name="drawer_settings">抽屜設定</string>
+  <string name="drawer_settings">清單設定</string>
   <string name="app_settings">應用程式設定</string>
   <!-- Settings states -->
   <string name="setting_state_on">開啟</string>
   <string name="setting_state_off">關閉</string>
   <string name="setting_state_disabled">已停用</string>
   <!-- Folder titles -->
-  <string name="play_folder_title">播放</string>
+  <string name="play_folder_title">開始</string>
   <!-- Wallpaper scroll effect -->
   <string name="scrolling_wallpaper">滾動桌面</string>
   <!-- Dynamic Grid -->
@@ -48,11 +48,12 @@
   <!-- Protected apps -->
   <string name="protected_app_settings">受保護的應用程式</string>
   <!-- Developer settings -->
+  <string name="export_workspace_layout">匯出佈局</string>
   <!-- Drawer settings -->
-  <string name="app_drawer_style">程式集風格</string>
+  <string name="app_drawer_style">清單樣式</string>
   <string name="app_drawer_style_compact">連續</string>
   <string name="app_drawer_style_sections">分頁</string>
-  <string name="app_drawer_color">程式集色彩</string>
+  <string name="app_drawer_color">清單色彩</string>
   <string name="app_drawer_color_dark">深色</string>
   <string name="app_drawer_color_light">淺色</string>
   <string name="fast_scroller">快速捲動</string>
@@ -60,6 +61,10 @@
   <string name="fast_scroller_type_horizontal">橫向</string>
   <string name="fast_scroller_type_vertical">垂直</string>
   <!-- Search Manager doesn't exist -->
-  <string name="search_activity_not_found">找不到搜索活動 ！</string>
+  <string name="search_activity_not_found">找不到搜尋活動 ！</string>
   <!-- App not available toast text -->
+  <string name="app_not_available">應用程式不可用</string>
+  <string name="storage_permission_denied">無法存取裝置。</string>
+  <string name="export_db_email_subject">區域性的啟動器資料庫</string>
+  <string name="export_db_could_not">無法匯出資料庫檔案</string>
 </resources>
