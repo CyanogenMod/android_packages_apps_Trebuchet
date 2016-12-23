@@ -19,11 +19,13 @@
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
   <!-- General -->
+  <skip></skip>
   <!-- URI used to import old favorites. [DO NOT TRANSLATE] -->
   <!-- Permission to receive the com.android.launcher3.action.LAUNCH intent. [DO NOT TRANSLATE] -->
   <!-- Permission to receive the com.android.launcher3.action.FIRST_LOAD_COMPLETE intent. [DO NOT TRANSLATE] -->
   <!-- Application name -->
   <!-- Default folder name -->
+  <string name="folder_name"></string>
   <!-- Work folder name -->
   <!-- Displayed when user selects a shortcut for an app that was uninstalled [CHAR_LIMIT=none]-->
   <!-- Displayed when user selects a shortcut for an app that is current not available [CHAR_LIMIT=none]-->
@@ -41,6 +43,7 @@
   <!-- Search market text.  This is a format string where the first argument is the name of the activity
          handling the search.  The format string does not need to handle both of these arguments. [CHAR_LIMIT=50] -->
   <!-- Drag and drop -->
+  <skip></skip>
   <!-- Error message when user has filled a home screen -->
   <!-- Error message when user has filled the hotseat -->
   <!-- All applications label -->
@@ -53,6 +56,7 @@
   <string name="delete_target_uninstall_label">Malinstali</string>
   <!-- Label for the info icon. [CHAR_LIMIT=20] -->
   <!-- Permissions: -->
+  <skip></skip>
   <!-- Permission short label -->
   <!-- Permission description -->
   <!-- Permission short label -->
@@ -61,11 +65,13 @@
   <!-- Permission description -->
   <!-- Toast shown on clicking a direct call shortcut. [CHAR_LIMIT=80] -->
   <!-- Widgets: -->
+  <skip></skip>
   <!-- Text to show user in place of a gadget when we can't display it properly -->
   <!-- Text to show user in place of a gadget when it is not yet initialized. -->
   <!-- Text to inform the user that they can't uninstall a system application -->
   <!-- Default folder title -->
   <!-- Accessibility -->
+  <skip></skip>
   <!-- The format string for default page scroll text [CHAR_LIMIT=none] -->
   <!-- The format string for Workspace page scroll text [CHAR_LIMIT=none] -->
   <!-- Clings -->

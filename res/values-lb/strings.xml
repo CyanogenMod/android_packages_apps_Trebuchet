@@ -19,12 +19,14 @@
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
   <!-- General -->
+  <skip></skip>
   <!-- URI used to import old favorites. [DO NOT TRANSLATE] -->
   <!-- Permission to receive the com.android.launcher3.action.LAUNCH intent. [DO NOT TRANSLATE] -->
   <!-- Permission to receive the com.android.launcher3.action.FIRST_LOAD_COMPLETE intent. [DO NOT TRANSLATE] -->
   <!-- Application name -->
   <string name="app_name">Launcher3</string>
   <!-- Default folder name -->
+  <string name="folder_name"></string>
   <!-- Work folder name -->
   <!-- Displayed when user selects a shortcut for an app that was uninstalled [CHAR_LIMIT=none]-->
   <string name="activity_not_found">D\'App ass net installéiert.</string>
@@ -48,6 +50,7 @@
   <!-- Search market text.  This is a format string where the first argument is the name of the activity
          handling the search.  The format string does not need to handle both of these arguments. [CHAR_LIMIT=50] -->
   <!-- Drag and drop -->
+  <skip></skip>
   <!-- Error message when user has filled a home screen -->
   <string name="out_of_space">Keng Plaz méi op dësem Startschierm.</string>
   <!-- Error message when user has filled the hotseat -->
@@ -64,6 +67,7 @@
   <!-- Label for the info icon. [CHAR_LIMIT=20] -->
   <string name="info_target_label">App-Info</string>
   <!-- Permissions: -->
+  <skip></skip>
   <!-- Permission short label -->
   <string name="permlab_install_shortcut">Ofkierzungen installéieren</string>
   <!-- Permission description -->
@@ -78,6 +82,7 @@
   <string name="permdesc_write_settings">Erlaabt der App, d\'Startschierm-Astellungen an -Ofkierzungen z\'änneren.</string>
   <!-- Toast shown on clicking a direct call shortcut. [CHAR_LIMIT=80] -->
   <!-- Widgets: -->
+  <skip></skip>
   <!-- Text to show user in place of a gadget when we can't display it properly -->
   <string name="gadget_error_text">Problem beim Luede vum Widget</string>
   <!-- Text to show user in place of a gadget when it is not yet initialized. -->
@@ -86,6 +91,7 @@
   <string name="uninstall_system_app_text">Dëst ass eng System-App a kann net desinstalléiert ginn.</string>
   <!-- Default folder title -->
   <!-- Accessibility -->
+  <skip></skip>
   <!-- The format string for default page scroll text [CHAR_LIMIT=none] -->
   <string name="default_scroll_format">Säit %1$d / %2$d</string>
   <!-- The format string for Workspace page scroll text [CHAR_LIMIT=none] -->
