@@ -19,6 +19,7 @@
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
   <!-- General -->
+  <skip></skip>
   <!-- URI used to import old favorites. [DO NOT TRANSLATE] -->
   <!-- Permission to receive the com.android.launcher3.action.LAUNCH intent -->
   <!-- Permission to receive the com.android.launcher3.action.FIRST_LOAD_COMPLETE intent -->
@@ -26,6 +27,7 @@
   <!-- Accessibility-facing application name -->
   <!-- Name for all applications running as this uid. -->
   <!-- Default folder name -->
+  <string name="folder_name"></string>
   <!-- Displayed when user selects a shortcut for an app that was uninstalled [CHAR_LIMIT=none]-->
   <!-- Displayed when user selects a shortcut for an app that is current not available [CHAR_LIMIT=none]-->
   <!-- SafeMode shortcut error string -->
@@ -43,11 +45,13 @@
          dialog which allows you to pick which widgets to handle a particular
          drop if there are multiple choices. [CHAR_LIMIT=35] -->
   <!-- Folders -->
+  <skip></skip>
   <!-- Label of Folder name field in Rename folder dialog box -->
   <!-- Title of dialog box -->
   <!-- Buttons in Rename folder dialog box -->
   <!-- Buttons in Rename folder dialog box -->
   <!-- Shortcuts -->
+  <skip></skip>
   <!-- Title of dialog box -->
   <!-- Options in "Add to Home" dialog box; Title of the group containing the list of all apps -->
   <!-- Options in "Add to Home" dialog box; Title of the group containing the list of all shortcut
@@ -78,6 +82,7 @@ s -->
          be uninstalled. [CHAR_LIMIT=30] -->
   <!-- URL pointing to help text. If empty, no link to help will be created [DO NOT TRANSLATE] -->
   <!--  Strings for the contextual action bar (CAB) in All Apps -->
+  <skip></skip>
   <!-- Describes the button for uninstalling the currently selected application.
          Text is not displayed, but provided for accessibility. [CHAR_LIMIT=none] -->
   <!-- Describes the button for getting details/info about currently selected application.
@@ -87,6 +92,7 @@ s -->
   <!-- Appears in the CAB when a folder is selected in Customize mode. [CHAR_LIMIT=50] -->
   <!-- Appears in the CAB when a shortcut is selected in Customize mode. [CHAR_LIMIT=50] -->
   <!-- Permissions: -->
+  <skip></skip>
   <!-- Permission short label -->
   <!-- Permission description -->
   <!-- Permission short label -->
@@ -96,12 +102,14 @@ s -->
   <!-- Permission short label -->
   <!-- Permission description -->
   <!-- Widgets: -->
+  <skip></skip>
   <!-- Text to show user in place of a gadget when we can't display it properly -->
   <!-- Text to show user in place of a gadget when it is not yet initialized. -->
   <!-- Text to inform the user that they can't uninstall a system application -->
   <!-- Title of the Android Dreams (screensaver) module -->
   <!-- Default folder title -->
   <!-- Accessibility -->
+  <skip></skip>
   <!-- The format string for Workspace descriptions [CHAR_LIMIT=none] -->
   <!-- The format string for default page scroll text [CHAR_LIMIT=none] -->
   <!-- The format string for Workspace page scroll text [CHAR_LIMIT=none] -->
@@ -111,7 +119,9 @@ s -->
   <!-- The title text for the workspace cling [CHAR_LIMIT=30] -->
   <!-- The description of how to use the workspace [CHAR_LIMIT=60] -->
   <!-- The description of how to use the workspace [CHAR_LIMIT=60] -->
+  <string name="first_run_cling_custom_content_hint"></string>
   <!-- The description of how to use the workspace [CHAR_LIMIT=60] -->
+  <string name="first_run_cling_search_bar_hint"></string>
   <!-- The description of how to use the workspace [CHAR_LIMIT=60] -->
   <!-- The title text for the migration cling [CHAR_LIMIT=30] -->
   <!-- The description of what migration does [CHAR_LIMIT=70] -->
@@ -126,6 +136,7 @@ s -->
   <!-- The description of how to create a folder [CHAR_LIMIT=70] -->
   <!-- The text on the button to dismiss a cling [CHAR_LIMIT=30] -->
   <!-- Error message on dummy custom cling layout [DO NOT TRANSLATE] -->
+  <add-resource type="string" name="default_folder_name"></add-resource>
   <!-- Folder accessibility -->
   <!-- The format string for when a folder is opened, speaks the dimensions -->
   <!-- Instruction that clicking outside will close folder -->

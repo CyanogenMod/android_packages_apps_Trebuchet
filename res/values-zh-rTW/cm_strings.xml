@@ -19,7 +19,7 @@
   <!-- Application name -->
   <!-- App version -->
   <string name="home_screen_settings">主螢幕設定</string>
-  <string name="drawer_settings">抽屜設定</string>
+  <string name="drawer_settings">清單設定</string>
   <string name="app_settings">應用程式設定</string>
   <!-- Settings states -->
   <string name="setting_state_on">開啟</string>
@@ -38,7 +38,7 @@
   <string name="grid_size_custom">自訂 (<xliff:g id="rows">%1$d</xliff:g> \u00d7 <xliff:g id="columns">%2$d</xliff:g>)</string>
   <string name="preferences_interface_homescreen_custom">選擇自訂大小</string>
   <!-- Folder titles -->
-  <string name="play_folder_title">播放</string>
+  <string name="play_folder_title">開始</string>
   <!-- Scroll effect -->
   <string name="scroll_effect_text">滾動效果</string>
   <!-- Drawer sorting mode -->
@@ -64,5 +64,5 @@
   <string name="drawer_type_pager">分頁</string>
   <string name="setting_state_disabled">已停用</string>
   <!-- Search Manager doesn't exist -->
-  <string name="search_activity_not_found">找不到搜索活動 ！</string>
+  <string name="search_activity_not_found">找不到搜尋活動 ！</string>
 </resources>

@@ -19,6 +19,7 @@
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
   <!-- General -->
+  <skip></skip>
   <!-- URI used to import old favorites. [DO NOT TRANSLATE] -->
   <!-- Permission to receive the com.android.launcher3.action.LAUNCH intent -->
   <!-- Permission to receive the com.android.launcher3.action.FIRST_LOAD_COMPLETE intent -->
@@ -29,6 +30,7 @@
   <!-- Name for all applications running as this uid. -->
   <string name="uid_name">Aplicaciones básiques d\'Android</string>
   <!-- Default folder name -->
+  <string name="folder_name"></string>
   <!-- Displayed when user selects a shortcut for an app that was uninstalled [CHAR_LIMIT=none]-->
   <string name="activity_not_found">L\'aplicación nun ta instalada.</string>
   <!-- Displayed when user selects a shortcut for an app that is current not available [CHAR_LIMIT=none]-->
@@ -55,6 +57,7 @@
          drop if there are multiple choices. [CHAR_LIMIT=35] -->
   <string name="external_drop_widget_pick_title">Esbilla un widget p\'amestar</string>
   <!-- Folders -->
+  <skip></skip>
   <!-- Label of Folder name field in Rename folder dialog box -->
   <string name="rename_folder_label">Nome de carpeta</string>
   <!-- Title of dialog box -->
@@ -64,6 +67,7 @@
   <!-- Buttons in Rename folder dialog box -->
   <string name="cancel_action">Encaboxar</string>
   <!-- Shortcuts -->
+  <skip></skip>
   <!-- Title of dialog box -->
   <string name="menu_item_add_item">Amestar a la pantalla d\'aniciu</string>
   <!-- Options in "Add to Home" dialog box; Title of the group containing the list of all apps -->
@@ -117,6 +121,7 @@ s -->
   <string name="delete_zone_label_all_apps_system_app">Desinstalar anovamientu</string>
   <!-- URL pointing to help text. If empty, no link to help will be created [DO NOT TRANSLATE] -->
   <!--  Strings for the contextual action bar (CAB) in All Apps -->
+  <skip></skip>
   <!-- Describes the button for uninstalling the currently selected application.
          Text is not displayed, but provided for accessibility. [CHAR_LIMIT=none] -->
   <string name="cab_menu_delete_app">Desinstalar aplicación</string>
@@ -132,6 +137,7 @@ s -->
   <!-- Appears in the CAB when a shortcut is selected in Customize mode. [CHAR_LIMIT=50] -->
   <string name="cab_shortcut_selection_text">1 accesu direutu esbilláu</string>
   <!-- Permissions: -->
+  <skip></skip>
   <!-- Permission short label -->
   <string name="permlab_install_shortcut">instalar accesos direutos</string>
   <!-- Permission description -->
@@ -151,6 +157,7 @@ s -->
   <!-- Permission description -->
   <string name="permdesc_write_settings">Permite que les aplicaciones camuden los axustes y los accesos direutos de la pantalla d\'aniciu.</string>
   <!-- Widgets: -->
+  <skip></skip>
   <!-- Text to show user in place of a gadget when we can't display it properly -->
   <string name="gadget_error_text">Fallu al cargar el widget</string>
   <!-- Text to show user in place of a gadget when it is not yet initialized. -->
@@ -161,6 +168,7 @@ s -->
   <string name="dream_name">Rocket Launcher</string>
   <!-- Default folder title -->
   <!-- Accessibility -->
+  <skip></skip>
   <!-- The format string for Workspace descriptions [CHAR_LIMIT=none] -->
   <string name="workspace_description_format">Pantalla d\'aniciu %1$d</string>
   <!-- The format string for default page scroll text [CHAR_LIMIT=none] -->
@@ -177,7 +185,9 @@ s -->
   <!-- The description of how to use the workspace [CHAR_LIMIT=60] -->
   <string name="first_run_cling_description">Personaliza la to pantalla d\'aniciu.</string>
   <!-- The description of how to use the workspace [CHAR_LIMIT=60] -->
+  <string name="first_run_cling_custom_content_hint"></string>
   <!-- The description of how to use the workspace [CHAR_LIMIT=60] -->
+  <string name="first_run_cling_search_bar_hint"></string>
   <!-- The description of how to use the workspace [CHAR_LIMIT=60] -->
   <string name="first_run_cling_create_screens_hint">Crea más pantalles p\'aplicaciones y carpetes</string>
   <!-- The title text for the migration cling [CHAR_LIMIT=30] -->
@@ -205,6 +215,7 @@ s -->
   <!-- The text on the button to dismiss a cling [CHAR_LIMIT=30] -->
   <string name="cling_dismiss">Aceutar</string>
   <!-- Error message on dummy custom cling layout [DO NOT TRANSLATE] -->
+  <add-resource type="string" name="default_folder_name"></add-resource>
   <!-- Folder accessibility -->
   <!-- The format string for when a folder is opened, speaks the dimensions -->
   <string name="folder_opened">Carpeta abierta, <xliff:g id="WIDTH">%1$d</xliff:g> por <xliff:g id="HEIGHT">%2$d</xliff:g></string>
